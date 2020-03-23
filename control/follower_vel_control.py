@@ -10,10 +10,7 @@ import math
 import numpy 
 import sys
 import heapq
-<<<<<<< HEAD
 import copy
-=======
->>>>>>> 0f5c47fd97cf0ee2f414346b113bbcc958d29f96
 
 class Follower:
 
@@ -66,10 +63,6 @@ class Follower:
 
     def avoid_vel_callback(self, msg):
         self.avoid_vel = msg
-<<<<<<< HEAD
-        print('here')
-=======
->>>>>>> 0f5c47fd97cf0ee2f414346b113bbcc958d29f96
         #if not self.avoid_vel.x == 0:
         #    print('follower'+str(self.id-1)+' avoid_vel: ',self.avoid_vel)
 

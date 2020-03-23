@@ -1,0 +1,28 @@
+ <!-- UAV1 -->
+    <group ns="uav1">
+        <!-- MAVROS and vehicle configs -->        
+        <arg name="ID" value="1"/>
+        <!--default="14540@localhost:14557"/>-->
+        
+        <arg name="fcu_url" default="udp://:14540@127.0.0.1:14557"/>
+        <!-- PX4 SITL and vehicle spawn -->
+        <include file="$(find px4)/launch/single_vehicle_spawn.launch">
+            <arg name="x" value="1"/>
+            <arg name="y" value="0"/>
+            <arg name="z" value="0"/>
+            <arg name="R" value="0"/>
+            <arg name="P" value="0"/>
+            <arg name="Y" value="0"/>
+            <arg name="vehicle" value="$(arg vehicle)"/>
+            <arg name="rcS" value="$(find px4)/posix-configs/SITL/init/$(arg est)/$(arg vehicle)_1"/>
+            <arg name="mavlink_udp_port" value="14560"/>
+            <arg name="ID" value="$(arg ID)"/>
+        </include>
+        <!-- MAVROS -->
+        <include file="$(find mavros)/launch/px4.launch">
+            <arg name="fcu_url" value="$(arg fcu_url)"/>
+            <arg name="gcs_url" value=""/>
+            <arg name="tgt_system" value="$(arg ID)"/>
+            <arg name="tgt_component" value="1"/>
+        </include>
+    </group>

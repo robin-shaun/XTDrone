@@ -1,0 +1,702 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name="arm">
+    <pose>0 0 0.09 0 0 0</pose>
+    <link name="arm_link_0">
+      <pose>0.143000 0 0.046000 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <inertia>
+          <ixx>0.010000</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.010000</iyy>
+          <iyz>0</iyz>
+          <izz>0.010000</izz>
+        </inertia>
+        <mass>0.845000</mass>
+      </inertial>
+      <collision name="arm_link_0_geom">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://youbot/meshes/arm/arm0_convex.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0</mu>
+              <mu2>0</mu2>
+              <fdir1>0 0 0</fdir1>
+              <slip1>0</slip1>
+              <slip2>0</slip2>
+            </ode>
+          </friction>
+          <bounce>
+            <restitution_coefficient>0</restitution_coefficient>
+            <threshold>0</threshold>
+          </bounce>
+          <contact>
+            <ode>
+              <soft_cfm>0</soft_cfm>
+              <soft_erp>0.200000</soft_erp>
+              <kp>10000000000000.000000</kp>
+              <kd>100000000000.000000</kd>
+              <max_vel>-1</max_vel>
+              <min_depth>0</min_depth>
+            </ode>
+          </contact>
+        </surface>
+        <laser_retro>0</laser_retro>
+      </collision>
+      <visual name="arm_link_0_geom_visual">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://youbot/meshes/arm/arm0.dae</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://youbot/materials/scripts/youbot.material</uri>
+            <name>youbot/DarkGrey</name>
+          </script>
+        </material>
+      </visual>
+      <gravity>1</gravity>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+    </link>
+    <link name="arm_link_1">
+      <pose>0.167000 0 0.142000 0 0 2.967060</pose>
+      <inertial>
+        <pose>0.014890 0.002130 0.002130 0 0 0</pose>
+        <inertia>
+          <ixx>0.003863</ixx>
+          <ixy>-0.000979</ixy>
+          <ixz>0</ixz>
+          <iyy>0.006196</iyy>
+          <iyz>0</iyz>
+          <izz>0.006369</izz>
+        </inertia>
+        <mass>2.412000</mass>
+      </inertial>
+      <collision name="arm_link_1_geom">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://youbot/meshes/arm/arm1_convex.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0</mu>
+              <mu2>0</mu2>
+              <fdir1>0 0 0</fdir1>
+              <slip1>0</slip1>
+              <slip2>0</slip2>
+            </ode>
+          </friction>
+          <bounce>
+            <restitution_coefficient>0</restitution_coefficient>
+            <threshold>0</threshold>
+          </bounce>
+          <contact>
+            <ode>
+              <soft_cfm>0</soft_cfm>
+              <soft_erp>0.200000</soft_erp>
+              <kp>10000000000000.000000</kp>
+              <kd>100000000000.000000</kd>
+              <max_vel>-1</max_vel>
+              <min_depth>0</min_depth>
+            </ode>
+          </contact>
+        </surface>
+        <laser_retro>0</laser_retro>
+      </collision>
+      <visual name="arm_link_1_geom_visual">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://youbot/meshes/arm/arm1.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <gravity>1</gravity>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+    </link>
+    <link name="arm_link_2">
+      <pose>0.134501 0.005730 0.161000 0 -1.134460 2.967060</pose>
+      <inertial>
+        <pose>0.104530 0.001700 -0.002970 0 0 0</pose>
+        <inertia>
+          <ixx>0.000823</ixx>
+          <ixy>0</ixy>
+          <ixz>-0.000000</ixz>
+          <iyy>0.004447</iyy>
+          <iyz>0</iyz>
+          <izz>0.004439</izz>
+        </inertia>
+        <mass>1.155000</mass>
+      </inertial>
+      <collision name="arm_link_2_geom">
+        <pose>0 -0.032000 0.078000 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://youbot/meshes/arm/arm2_convex.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0</mu>
+              <mu2>0</mu2>
+              <fdir1>0 0 0</fdir1>
+              <slip1>0</slip1>
+              <slip2>0</slip2>
+            </ode>
+          </friction>
+          <bounce>
+            <restitution_coefficient>0</restitution_coefficient>
+            <threshold>0</threshold>
+          </bounce>
+          <contact>
+            <ode>
+              <soft_cfm>0</soft_cfm>
+              <soft_erp>0.200000</soft_erp>
+              <kp>10000000000000.000000</kp>
+              <kd>100000000000.000000</kd>
+              <max_vel>-1</max_vel>
+              <min_depth>0</min_depth>
+            </ode>
+          </contact>
+        </surface>
+        <laser_retro>0</laser_retro>
+      </collision>
+      <visual name="arm_link_2_geom_visual">
+        <pose>0 -0.032000 0.078000 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://youbot/meshes/arm/arm2.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <gravity>1</gravity>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+    </link>
+    <link name="arm_link_3">
+      <pose>0.272845 -0.018663 0.226506 0 1.413720 2.967060</pose>
+      <inertial>
+        <pose>0.000100 0.096700 0.021070 0 0 0</pose>
+        <inertia>
+          <ixx>0.002459</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.002571</iyy>
+          <iyz>-0.000000</iyz>
+          <izz>0.000535</izz>
+        </inertia>
+        <mass>0.934000</mass>
+      </inertial>
+      <collision name="arm_link_3_geom">
+        <pose>0 0.028000 0.079000 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://youbot/meshes/arm/arm3_convex.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0</mu>
+              <mu2>0</mu2>
+              <fdir1>0 0 0</fdir1>
+              <slip1>0</slip1>
+              <slip2>0</slip2>
+            </ode>
+          </friction>
+          <bounce>
+            <restitution_coefficient>0</restitution_coefficient>
+            <threshold>0</threshold>
+          </bounce>
+          <contact>
+            <ode>
+              <soft_cfm>0</soft_cfm>
+              <soft_erp>0.200000</soft_erp>
+              <kp>10000000000000.000000</kp>
+              <kd>100000000000.000000</kd>
+              <max_vel>-1</max_vel>
+              <min_depth>0</min_depth>
+            </ode>
+          </contact>
+        </surface>
+        <laser_retro>0</laser_retro>
+      </collision>
+      <visual name="arm_link_3_geom_visual">
+        <pose>0 0.028000 0.079000 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://youbot/meshes/arm/arm3.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <gravity>1</gravity>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+    </link>
+    <link name="arm_link_4">
+      <pose>0.141533 0.004491 0.247624 0 -0.375246 2.967060</pose>
+      <inertial>
+        <pose>0.000110 0.051030 -0.023190 0 0 0</pose>
+        <inertia>
+          <ixx>0.000869</ixx>
+          <ixy>0</ixy>
+          <ixz>-0.000000</ixz>
+          <iyy>0.001173</iyy>
+          <iyz>-0.000231</iyz>
+          <izz>0.001091</izz>
+        </inertia>
+        <mass>0.877000</mass>
+      </inertial>
+      <collision name="arm_link_4_geom">
+        <pose>0 -0.010000 0.029000 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://youbot/meshes/arm/arm4_convex.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0</mu>
+              <mu2>0</mu2>
+              <fdir1>0 0 0</fdir1>
+              <slip1>0</slip1>
+              <slip2>0</slip2>
+            </ode>
+          </friction>
+          <bounce>
+            <restitution_coefficient>0</restitution_coefficient>
+            <threshold>0</threshold>
+          </bounce>
+          <contact>
+            <ode>
+              <soft_cfm>0</soft_cfm>
+              <soft_erp>0.200000</soft_erp>
+              <kp>10000000000000.000000</kp>
+              <kd>100000000000.000000</kd>
+              <max_vel>-1</max_vel>
+              <min_depth>0</min_depth>
+            </ode>
+          </contact>
+        </surface>
+        <laser_retro>0</laser_retro>
+      </collision>
+      <visual name="arm_link_4_geom_visual">
+        <pose>0 -0.010000 0.029000 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://youbot/meshes/arm/arm4.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <gravity>1</gravity>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+    </link>
+    <link name="arm_link_5">
+      <pose>0.190287 -0.004106 0.367846 -0.085052 0.365926 -0.408445</pose>
+      <inertial>
+        <pose>0 0.001150 -0.016830 0 0 0</pose>
+        <inertia>
+          <ixx>0.000280</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.000339</iyy>
+          <iyz>0</iyz>
+          <izz>0.000119</izz>
+        </inertia>
+        <mass>0.251000</mass>
+      </inertial>
+      <collision name="arm_link_5_geom">
+        <pose>0.003000 0 -0.034000 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://youbot/meshes/arm/arm5_convex.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <bounce>
+            <restitution_coefficient>0</restitution_coefficient>
+            <threshold>0</threshold>
+          </bounce>
+          <contact>
+            <ode>
+              <soft_cfm>0</soft_cfm>
+              <soft_erp>0.200000</soft_erp>
+              <kp>10000000000000.000000</kp>
+              <kd>100000000000.000000</kd>
+              <max_vel>-1</max_vel>
+              <min_depth>0</min_depth>
+            </ode>
+          </contact>
+        </surface>
+        <laser_retro>0</laser_retro>
+      </collision>
+      <visual name="arm_link_5_geom_visual">
+        <pose>0.003000 0 -0.034000 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://youbot/meshes/arm/arm5.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <gravity>1</gravity>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+    </link>
+    <link name="gripper_palm_link">
+      <pose>0.190287 -0.004106 0.367846 -0.085052 0.365926 -0.408445</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <inertia>
+          <ixx>0.010000</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.010000</iyy>
+          <iyz>0</iyz>
+          <izz>0.010000</izz>
+        </inertia>
+        <mass>0.100000</mass>
+      </inertial>
+      <collision name="gripper_palm_link_geom">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://youbot/meshes/gripper/palm_convex.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0</mu>
+              <mu2>0</mu2>
+              <fdir1>0 0 0</fdir1>
+              <slip1>0</slip1>
+              <slip2>0</slip2>
+            </ode>
+          </friction>
+          <bounce>
+            <restitution_coefficient>0</restitution_coefficient>
+            <threshold>0</threshold>
+          </bounce>
+          <contact>
+            <ode>
+              <soft_cfm>0</soft_cfm>
+              <soft_erp>0.200000</soft_erp>
+              <kp>10000000000000.000000</kp>
+              <kd>100000000000.000000</kd>
+              <max_vel>-1</max_vel>
+              <min_depth>0</min_depth>
+            </ode>
+          </contact>
+        </surface>
+        <laser_retro>0</laser_retro>
+      </collision>
+      <visual name="gripper_palm_link_geom_visual">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://youbot/meshes/gripper/palm.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Black</name>
+          </script>
+        </material>
+      </visual>
+      <gravity>1</gravity>
+      <self_collide>1</self_collide>
+      <kinematic>0</kinematic>
+    </link>
+    <link name="gripper_finger_link_l">
+      <pose>0.213260 -0.001105 0.408579 0.085052 -0.365926 2.733150</pose>
+      <inertial>
+        <pose>0 -0.001000 0 0 0 0</pose>
+        <inertia>
+          <ixx>0.010000</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.010000</iyy>
+          <iyz>0</iyz>
+          <izz>0.010000</izz>
+        </inertia>
+        <mass>0.010000</mass>
+      </inertial>
+      <collision name="gripper_finger_link_l_geom">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://youbot/meshes/gripper/finger_convex.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <bounce>
+            <restitution_coefficient>0</restitution_coefficient>
+            <threshold>0</threshold>
+          </bounce>
+          <contact>
+            <ode>
+              <soft_cfm>0</soft_cfm>
+              <soft_erp>0.200000</soft_erp>
+              <kp>10000000000000.000000</kp>
+              <kd>100000000000.000000</kd>
+              <max_vel>-1</max_vel>
+              <min_depth>0</min_depth>
+            </ode>
+          </contact>
+        </surface>
+        <laser_retro>0</laser_retro>
+      </collision>
+      <visual name="gripper_finger_link_l_geom_visual">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://youbot/meshes/gripper/finger.stl</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <gravity>1</gravity>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+    </link>
+    <link name="gripper_finger_link_r">
+      <pose>0.207375 -0.015929 0.409848 -0.085052 0.365926 -0.408445</pose>
+      <inertial>
+        <pose>0 -0.001000 0 0 0 0</pose>
+        <inertia>
+          <ixx>0.010000</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.010000</iyy>
+          <iyz>0</iyz>
+          <izz>0.010000</izz>
+        </inertia>
+        <mass>0.010000</mass>
+      </inertial>
+      <collision name="gripper_finger_link_r_geom">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://youbot/meshes/gripper/finger_convex.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <bounce>
+            <restitution_coefficient>0</restitution_coefficient>
+            <threshold>0</threshold>
+          </bounce>
+          <contact>
+            <ode>
+              <soft_cfm>0</soft_cfm>
+              <soft_erp>0.200000</soft_erp>
+              <kp>10000000000000.000000</kp>
+              <kd>100000000000.000000</kd>
+              <max_vel>-1</max_vel>
+              <min_depth>0</min_depth>
+            </ode>
+          </contact>
+        </surface>
+        <laser_retro>0</laser_retro>
+      </collision>
+      <visual name="gripper_finger_link_r_geom_visual">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://youbot/meshes/gripper/finger.stl</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <gravity>1</gravity>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+    </link>
+    <joint name="arm_joint_0" type="revolute">
+      <pose>0 0 0 0 0 0</pose>
+      <parent>base_link</parent>
+      <child>arm_link_0</child>
+      <axis>
+        <dynamics>
+          <damping>0</damping>
+          <friction>0</friction>
+        </dynamics>
+        <limit>
+          <lower>0</lower>
+          <upper>0</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <xyz>0 0 1</xyz>
+        <use_parent_model_frame>true</use_parent_model_frame>
+      </axis>
+    </joint>
+    <joint name="arm_joint_1" type="revolute">
+      <pose>0 0 0 0 0 0</pose>
+      <parent>arm_link_0</parent>
+      <child>arm_link_1</child>
+      <axis>
+        <dynamics>
+          <damping>1</damping>
+          <friction>0</friction>
+        </dynamics>
+        <limit>
+          <lower>0</lower>
+          <upper>5.899213</upper>
+          <effort>9.5</effort>
+        </limit>
+        <xyz>0 0 -1</xyz>
+        <use_parent_model_frame>true</use_parent_model_frame>
+      </axis>
+    </joint>
+    <joint name="arm_joint_2" type="revolute">
+      <pose>0 0 0 0 0 0</pose>
+      <parent>arm_link_1</parent>
+      <child>arm_link_2</child>
+      <axis>
+        <dynamics>
+          <damping>1</damping>
+          <friction>0</friction>
+        </dynamics>
+        <limit>
+          <lower>0</lower>
+          <upper>2.705260</upper>
+          <effort>9.5</effort>
+          <velocity>-1</velocity>
+        </limit>
+        <xyz>-0.173648 -0.984808 0</xyz>
+        <use_parent_model_frame>true</use_parent_model_frame>
+      </axis>
+    </joint>
+    <joint name="arm_joint_3" type="revolute">
+      <pose>0 0 0 0 0 0</pose>
+      <parent>arm_link_2</parent>
+      <child>arm_link_3</child>
+      <axis>
+        <dynamics>
+          <damping>1</damping>
+          <friction>0</friction>
+        </dynamics>
+        <limit>
+          <lower>-5.183628</lower>
+          <upper>0</upper>
+          <effort>6.0</effort>
+          <velocity>-1</velocity>
+        </limit>
+        <xyz>-0.173648 -0.984808 0</xyz>
+        <use_parent_model_frame>true</use_parent_model_frame>
+      </axis>
+    </joint>
+    <joint name="arm_joint_4" type="revolute">
+      <pose>0 0 0 0 0 0</pose>
+      <parent>arm_link_3</parent>
+      <child>arm_link_4</child>
+      <axis>
+        <dynamics>
+          <damping>1</damping>
+          <friction>0</friction>
+        </dynamics>
+        <limit>
+          <lower>0</lower>
+          <upper>3.577925</upper>
+          <effort>2.0</effort>
+          <velocity>-1</velocity>
+        </limit>
+        <xyz>-0.173648 -0.984808 0</xyz>
+        <use_parent_model_frame>true</use_parent_model_frame>
+      </axis>
+    </joint>
+    <joint name="arm_joint_5" type="revolute">
+      <pose>0 0 0 0 0 0</pose>
+      <parent>arm_link_4</parent>
+      <child>arm_link_5</child>
+      <axis>
+        <dynamics>
+          <damping>1</damping>
+          <friction>0</friction>
+        </dynamics>
+        <limit>
+          <lower>0</lower>
+          <upper>5.846853</upper>
+          <effort>1.0</effort>
+          <velocity>-1</velocity>
+        </limit>
+        <xyz>-0.360933 0.063642 -0.930418</xyz>
+        <use_parent_model_frame>true</use_parent_model_frame>
+      </axis>
+    </joint>
+    <joint name="gripper_palm_joint" type="revolute">
+      <pose>0 0 0 0 0 0</pose>
+      <parent>arm_link_5</parent>
+      <child>gripper_palm_link</child>
+      <axis>
+        <dynamics>
+          <damping>0</damping>
+          <friction>0</friction>
+        </dynamics>
+        <limit>
+          <lower>0</lower>
+          <upper>0</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <xyz>0 0 1</xyz>
+        <use_parent_model_frame>true</use_parent_model_frame>
+      </axis>
+    </joint>
+    <joint name="gripper_finger_joint_l" type="prismatic">
+      <pose>0 0 0 0 0 0</pose>
+      <parent>gripper_palm_link</parent>
+      <child>gripper_finger_link_l</child>
+      <axis>
+        <dynamics>
+          <damping>1</damping>
+          <friction>0</friction>
+        </dynamics>
+        <limit>
+          <lower>0</lower>
+          <upper>0.011500</upper>
+          <effort>1.0</effort>
+          <velocity>-1</velocity>
+        </limit>
+        <xyz>0.367852 0.926495 -0.079325</xyz>
+        <use_parent_model_frame>true</use_parent_model_frame>
+      </axis>
+    </joint>
+    <joint name="gripper_finger_joint_r" type="prismatic">
+      <pose>0 0 0 0 0 0</pose>
+      <parent>gripper_palm_link</parent>
+      <child>gripper_finger_link_r</child>
+      <axis>
+        <dynamics>
+          <damping>1</damping>
+          <friction>0</friction>
+        </dynamics>
+        <limit>
+          <lower>0</lower>
+          <upper>0.011500</upper>
+          <effort>1.0</effort>
+          <velocity>-1</velocity>
+        </limit>
+        <xyz>-0.367852 -0.926495 0.079325</xyz>
+        <use_parent_model_frame>true</use_parent_model_frame>
+      </axis>
+    </joint>
+  <static>0</static>
+  </model>
+</sdf>

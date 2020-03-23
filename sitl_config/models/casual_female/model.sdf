@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name="casual_female">
+    <static>true</static>
+    <link name="link">
+      <collision name="box">
+        <pose>0 0 0.9 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.76 0.33 1.77</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <pose>0 0 0.02 0.04 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://casual_female/meshes/casual_female.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+  </model>
+</sdf>

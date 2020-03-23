@@ -1,0 +1,248 @@
+<?xml version="1.0" ?>
+<gazebo version="1.2">
+  <model name="simple_gripper">
+    <link name="riser">
+      <pose>-0.15 0.0 0.5 0 0 0</pose>
+      <inertial>
+        <mass>10</mass>
+      </inertial>
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>0.05 0.05 1.0</size>
+          </box>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <max_vel>0.0</max_vel>
+            </ode>
+          </contact>
+        </surface>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <box>
+            <size>0.05 0.05 1.0</size>
+          </box>
+        </geometry>
+      </visual>
+    </link>
+    <link name="palm">
+      <pose>0.0 0.0 0.05 0 0 0</pose>
+      <inertial>
+        <mass>0.5</mass>
+      </inertial>
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>0.1 0.2 0.1</size>
+          </box>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <max_vel>0.0</max_vel>
+            </ode>
+          </contact>
+        </surface>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <box>
+            <size>0.1 0.2 0.1</size>
+          </box>
+        </geometry>
+      </visual>
+    </link>
+    <link name="left_finger">
+      <pose>0.1 0.2 0.05 0 0 -0.78539</pose>
+      <inertial>
+        <mass>0.1</mass>
+      </inertial>
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>0.1 0.3 0.1</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.1</mu>
+              <mu2>0</mu2>
+            </ode>
+          </friction>
+          <contact>
+            <ode>
+              <max_vel>0.0</max_vel>
+            </ode>
+          </contact>
+        </surface>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <box>
+            <size>0.1 0.3 0.1</size>
+          </box>
+        </geometry>
+      </visual>
+    </link>
+    <link name="left_finger_tip">
+      <pose>0.336 0.3 0.05 0 0 1.5707</pose>
+      <inertial>
+        <mass>0.5</mass>
+      </inertial>
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>0.1 0.2 0.1</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>.1</mu>
+              <mu2>0</mu2>
+            </ode>
+          </friction>
+          <contact>
+            <ode>
+              <max_vel>0.0</max_vel>
+            </ode>
+          </contact>
+        </surface>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <box>
+            <size>0.1 0.2 0.1</size>
+          </box>
+        </geometry>
+      </visual>
+    </link>
+    <link name="right_finger">
+      <pose>0.1 -0.2 0.05 0 0 .78539</pose>
+      <inertial>
+        <mass>0.1</mass>
+      </inertial>
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>0.1 0.3 0.1</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.1</mu>
+              <mu2>0</mu2>
+            </ode>
+          </friction>
+          <contact>
+            <ode>
+              <max_vel>0.0</max_vel>
+            </ode>
+          </contact>
+        </surface>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <box>
+            <size>0.1 0.3 0.1</size>
+          </box>
+        </geometry>
+      </visual>
+    </link>
+    <link name="right_finger_tip">
+      <pose>0.336 -0.3 0.05 0 0 1.5707</pose>
+      <inertial>
+        <mass>0.1</mass>
+      </inertial>
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>0.1 0.2 0.1</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.1</mu>
+              <mu2>0</mu2>
+            </ode>
+          </friction>
+          <contact>
+            <ode>
+              <max_vel>0.0</max_vel>
+            </ode>
+          </contact>
+        </surface>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <box>
+            <size>0.1 0.2 0.1</size>
+          </box>
+        </geometry>
+      </visual>
+    </link>
+    <joint name="palm_left_finger" type="revolute">
+      <pose>0 -0.15 0 0 0 0</pose>
+      <child>left_finger</child>
+      <parent>palm</parent>
+      <axis>
+        <limit><lower>-0.8</lower><upper>0.8</upper></limit>
+        <xyz>0 0 1</xyz>
+      </axis>
+    </joint>
+    <joint name="left_finger_tip" type="revolute">
+      <pose>0 0.1 0 0 0 0</pose>
+      <child>left_finger_tip</child>
+      <parent>left_finger</parent>
+      <axis>
+        <limit><lower>-0.8</lower><upper>0.8</upper></limit>
+        <xyz>0 0 1</xyz>
+      </axis>
+    </joint>
+    <joint name="palm_right_finger" type="revolute">
+      <pose>0 0.15 0 0 0 0</pose>
+      <child>right_finger</child>
+      <parent>palm</parent>
+      <axis>
+        <limit><lower>-0.8</lower><upper>0.8</upper></limit>
+        <xyz>0 0 1</xyz>
+      </axis>
+    </joint>
+    <joint name="right_finger_tip" type="revolute">
+      <pose>0 0.1 0 0 0 0</pose>
+      <child>right_finger_tip</child>
+      <parent>right_finger</parent>
+      <axis>
+        <limit><lower>-0.8</lower><upper>0.8</upper></limit>
+        <xyz>0 0 1</xyz>
+      </axis>
+    </joint>
+    <joint name="palm_riser" type="prismatic">
+      <child>palm</child>
+      <parent>riser</parent>
+      <axis>
+        <limit><lower>0</lower><upper>0.9</upper></limit>
+        <xyz>0 0 1</xyz>
+      </axis>
+    </joint>
+
+    <gripper name="simple_gripper">
+      <grasp_check>
+        <detach_steps>40</detach_steps>
+        <attach_steps>20</attach_steps>
+        <min_contact_count>2</min_contact_count>
+      </grasp_check>
+      <gripper_link>right_finger</gripper_link>
+      <gripper_link>right_finger_tip</gripper_link>
+      <gripper_link>left_finger</gripper_link>
+      <gripper_link>left_finger_tip</gripper_link>
+      <palm_link>palm</palm_link>
+    </gripper>
+  </model>
+</gazebo>

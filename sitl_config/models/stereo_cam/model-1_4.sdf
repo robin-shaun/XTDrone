@@ -1,0 +1,60 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+  <model name="stereocamera">
+    <link name="link">
+      <pose>0.05 0.05 0.05 0 0 0</pose>
+      <inertial>
+        <mass>0.1</mass>
+      </inertial>
+
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>0.1 0.1 0.1</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <visual name="visual">
+        <geometry>
+          <box>
+            <size>0.1 0.1 0.1</size>
+          </box>
+        </geometry>
+      </visual>
+
+      <sensor name="camera" type="multicamera">
+        <always_on>1</always_on>
+        <update_rate>30</update_rate>
+        <visualize>false</visualize>
+
+        <camera name="left">
+          <pose>0 0.2 0 0 0 0</pose>
+          <horizontal_fov>1.047</horizontal_fov>
+          <image>
+            <width>320</width>
+            <height>240</height>
+          </image>
+          <clip>
+            <near>0.1</near>
+            <far>100</far>
+          </clip>
+        </camera>
+
+        <camera name="right">
+          <pose>0 -0.2 0 0 0 0</pose>
+          <horizontal_fov>1.047</horizontal_fov>
+          <image>
+            <width>320</width>
+            <height>240</height>
+          </image>
+          <clip>
+            <near>0.1</near>
+            <far>100</far>
+          </clip>
+        </camera>
+
+      </sensor>
+    </link>
+  </model>
+</sdf>

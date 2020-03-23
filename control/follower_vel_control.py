@@ -92,7 +92,7 @@ class Follower:
                     self.following_local_pose_sub[following_id[0]] = rospy.Subscriber("/uav"+str(following_id[0]+1)+"/mavros/local_position/pose", PoseStamped , self.following_local_pose_callback,following_id[0])
                     self.following_count += 1
                     time.sleep(1)
-            print(self.avoid_vel)
+            #print(self.avoid_vel)
             self.cmd_vel_enu.linear = copy.deepcopy(self.avoid_vel)
             if self.cmd_vel_enu.linear.x == 0 and self.cmd_vel_enu.linear.y == 0 and self.cmd_vel_enu.linear.z == 0:
                 for following_id in self.following_ids:

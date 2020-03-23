@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: sitl_gazebo
+    relative_path: models/rotors_description/urdf/iris_arm_base.xacro
+    xacro_args: --inorder rotors_description_dir:=/home/peter/NewDisk/PX4-1.9.2/Firmware/Tools/sitl_gazebo/models/rotors_description
+  SRDF:
+    relative_path: config/iris.srdf
+  CONFIG:
+    author_name: Tan
+    author_email: 478710209@qq.com
+    generated_timestamp: 1584639369

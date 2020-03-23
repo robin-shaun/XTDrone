@@ -1,0 +1,87 @@
+<?xml version="1.0" ?>
+<!--This does not replace URDF, and is not an extension of URDF.
+    This is a format for representing semantic information about the robot structure.
+    A URDF file must exist for this robot as well, where the joints and the links that are referenced are defined
+-->
+<robot name="iris">
+    <!--GROUPS: Representation of a set of joints and links. This can be useful for specifying DOF to plan for, defining arms, end effectors, etc-->
+    <!--LINKS: When a link is specified, the parent joint of that link (if it exists) is automatically included-->
+    <!--JOINTS: When a joint is specified, the child link of that joint (which will always exist) is automatically included-->
+    <!--CHAINS: When a chain is specified, all the links along the chain (including endpoints) are included in the group. Additionally, all the joints that are parents to included links are also included. This means that joints along the chain and the parent joint of the base link are included in the group-->
+    <!--SUBGROUPS: Groups can also be formed by referencing to already defined group names-->
+    <group name="iris">
+        <joint name="base_joint" />
+        <joint name="rotor_0_joint" />
+        <joint name="rotor_1_joint" />
+        <joint name="rotor_2_joint" />
+        <joint name="rotor_3_joint" />
+        <joint name="/imu_joint" />
+    </group>
+    <group name="arm">
+        <joint name="arm_connect_joint" />
+        <joint name="joint1" />
+        <joint name="joint2" />
+        <joint name="joint3" />
+        <joint name="joint4" />
+        <joint name="joint5" />
+        <joint name="joint6" />
+    </group>
+    <group name="hand">
+        <joint name="finger_joint1" />
+        <joint name="finger_joint2" />
+        <joint name="grasping_frame_joint" />
+    </group>
+    <!--GROUP STATES: Purpose: Define a named state for a particular group, in terms of joint values. This is useful to define states like 'folded arms'-->
+    <group_state name="pose0" group="arm">
+        <joint name="joint1" value="0" />
+        <joint name="joint2" value="1.1104" />
+        <joint name="joint3" value="0.3455" />
+        <joint name="joint4" value="0" />
+        <joint name="joint5" value="0" />
+        <joint name="joint6" value="0" />
+    </group_state>
+    <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
+    <end_effector name="gripper" parent_link="grasping_frame" group="hand" />
+    <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
+    <disable_collisions link1="base_link_inertia" link2="link0" reason="Adjacent" />
+    <disable_collisions link1="base_link_inertia" link2="link1" reason="Never" />
+    <disable_collisions link1="base_link_inertia" link2="rotor_0" reason="Adjacent" />
+    <disable_collisions link1="base_link_inertia" link2="rotor_1" reason="Adjacent" />
+    <disable_collisions link1="base_link_inertia" link2="rotor_2" reason="Adjacent" />
+    <disable_collisions link1="base_link_inertia" link2="rotor_3" reason="Adjacent" />
+    <disable_collisions link1="gripper_finger_link1" link2="link2" reason="Never" />
+    <disable_collisions link1="gripper_finger_link1" link2="link6" reason="Adjacent" />
+    <disable_collisions link1="gripper_finger_link2" link2="link2" reason="Never" />
+    <disable_collisions link1="gripper_finger_link2" link2="link4" reason="Never" />
+    <disable_collisions link1="gripper_finger_link2" link2="link5" reason="Default" />
+    <disable_collisions link1="gripper_finger_link2" link2="link6" reason="Adjacent" />
+    <disable_collisions link1="link0" link2="link1" reason="Adjacent" />
+    <disable_collisions link1="link0" link2="rotor_0" reason="Adjacent" />
+    <disable_collisions link1="link0" link2="rotor_1" reason="Adjacent" />
+    <disable_collisions link1="link0" link2="rotor_2" reason="Adjacent" />
+    <disable_collisions link1="link0" link2="rotor_3" reason="Adjacent" />
+    <disable_collisions link1="link1" link2="link2" reason="Adjacent" />
+    <disable_collisions link1="link1" link2="link4" reason="Never" />
+    <disable_collisions link1="link1" link2="link5" reason="Never" />
+    <disable_collisions link1="link1" link2="rotor_0" reason="Never" />
+    <disable_collisions link1="link1" link2="rotor_1" reason="Never" />
+    <disable_collisions link1="link1" link2="rotor_2" reason="Never" />
+    <disable_collisions link1="link1" link2="rotor_3" reason="Never" />
+    <disable_collisions link1="link2" link2="link3" reason="Adjacent" />
+    <disable_collisions link1="link2" link2="link4" reason="Never" />
+    <disable_collisions link1="link2" link2="link5" reason="Never" />
+    <disable_collisions link1="link2" link2="link6" reason="Never" />
+    <disable_collisions link1="link2" link2="rotor_0" reason="Never" />
+    <disable_collisions link1="link2" link2="rotor_1" reason="Never" />
+    <disable_collisions link1="link2" link2="rotor_2" reason="Never" />
+    <disable_collisions link1="link2" link2="rotor_3" reason="Never" />
+    <disable_collisions link1="link3" link2="link4" reason="Adjacent" />
+    <disable_collisions link1="link4" link2="link5" reason="Adjacent" />
+    <disable_collisions link1="link5" link2="link6" reason="Adjacent" />
+    <disable_collisions link1="rotor_0" link2="rotor_1" reason="Adjacent" />
+    <disable_collisions link1="rotor_0" link2="rotor_2" reason="Adjacent" />
+    <disable_collisions link1="rotor_0" link2="rotor_3" reason="Adjacent" />
+    <disable_collisions link1="rotor_1" link2="rotor_2" reason="Adjacent" />
+    <disable_collisions link1="rotor_1" link2="rotor_3" reason="Adjacent" />
+    <disable_collisions link1="rotor_2" link2="rotor_3" reason="Adjacent" />
+</robot>

@@ -1,0 +1,3 @@
+# The name of this file shouldn't be changed, or else the Setup Assistant won't detect it
+sensors:
+  - {}

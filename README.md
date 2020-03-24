@@ -3,7 +3,7 @@
 <div id="sidebar"><a href="./README.en.md" target="_blank"><font color=#0000FF size=5px >[ENGLISH]<font></center><a></div>
 
 #### 介绍
-这是基于PX4和ROS的无人机仿真平台(目前模拟器使用Gazebo，与Airsim的连接正在开发中)。
+这是基于PX4和ROS的无人机仿真平台(目前模拟器使用Gazebo，与Airsim的连接正在开发中)。论文见[XTDrone: A Customizable Multi-Rotor UAVs Simulation Platform](https://arxiv.org/abs/2003.09700)
 
 <img src="./image/architecture.png" width="640" height="480" /> 
 

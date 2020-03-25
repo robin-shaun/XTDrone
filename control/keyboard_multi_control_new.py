@@ -12,8 +12,7 @@ ANG_VEL_STEP_SIZE = 0.01
 
 cmd_vel_mask = False
 ctrl_leader = False
-uav_num=9
-#uav_num = int(sys.argv[1])
+uav_num = int(sys.argv[1])
 if uav_num == 9:
     formation_configs = ['waiting', 'cube', 'pyramid', 'triangle']
 if uav_num == 6:

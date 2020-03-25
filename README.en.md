@@ -4,7 +4,10 @@
 
 #### Description
 
-XTdrone is a customizable Multi-Rotor UAVs simulation platform based on PX4 and ROS. Now the simulator of XTDrone is Gazebo, and the connection to Airsim is being developed.
+XTdrone is a customizable Multi-Rotor UAVs simulation platform based on PX4 and ROS. Now the simulator of XTDrone is Gazebo, and the connection to Airsim is being developed. 
+
+Related paper: [XTDrone: A Customizable Multi-Rotor UAVs Simulation Platform](https://arxiv.org/abs/2003.09700)
+
 
 <img src="./image/architecture.png" width="640" height="480" /> 
 

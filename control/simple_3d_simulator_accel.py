@@ -9,10 +9,10 @@ import sys
 
 use_1_8 = 1
 
+uav_num=9
+#uav_num = int(sys.argv[1])
 
-uav_num = int(sys.argv[1])
-
-step_time=0.001
+step_time=0.01
 
 pose_puber=[None]*uav_num
 vel_puber=[None]*uav_num
@@ -20,6 +20,7 @@ vel_puber=[None]*uav_num
 plot_x=[0]*(uav_num)
 plot_y=[0]*(uav_num)
 plot_z=[0]*(uav_num)
+local_vel = [TwistStamped()]*(uav_num)
 
 for i in range(uav_num):
     uav_id=i+use_1_8
@@ -51,20 +52,24 @@ def init():
     ax.set_zlim3d(-label_lim, label_lim)
 
 
-#def cmd_accel_callback(msg,id):
-    accel=msg
-    plot_x[id]+=step_time*accel.linear.x
-    plot_y[id]+=step_time*accel.linear.y
-    plot_z[id]+=step_time*accel.linear.z
+def cmd_vel_callback(msg,id):
+ #   accel=msg
+ #   plot_x[id]+=step_time*accel.linear.x
+  #  plot_y[id]+=step_time*accel.linear.y
+  #  plot_z[id]+=step_time*accel.linear.z
+    local_vel[id].twist=msg
+    plot_x[id]+=step_time*local_vel[id].twist.linear.x
+    plot_y[id]+=step_time*local_vel[id].twist.linear.y
+    plot_z[id]+=step_time*local_vel[id].twist.linear.z
 
 
 rospy.init_node('simple_3d_simulator')
-rate = rospy.Rate(1000)
+rate = rospy.Rate(1/step_time)
 
 for i in range(uav_num):
     uav_id=i+use_1_8
-    rospy.Subscriber('/xtdrone/uav'+str(uav_id)+'/cmd_accel_flu', Twist, cmd_accel_callback,i) 
-    rospy.Subscriber('/xtdrone/uav'+str(uav_id)+'/cmd_accel_enu', Twist, cmd_accel_callback,i)    
+    rospy.Subscriber('/xtdrone/uav'+str(uav_id)+'/cmd_vel_flu', Twist, cmd_vel_callback,i) 
+    rospy.Subscriber('/xtdrone/uav'+str(uav_id)+'/cmd_vel_enu', Twist, cmd_vel_callback,i)    
 
 try:
     while not rospy.is_shutdown():
@@ -74,7 +79,7 @@ try:
             local_pose.pose.position.y=plot_y[i]
             local_pose.pose.position.z=plot_z[i]    
             pose_puber[i].publish(local_pose)
-            pose_puber[i].publish(local_pose)
+            vel_puber[i].publish(local_vel[i])
         init()
         ax.scatter(plot_x,plot_y,plot_z,marker="x")
         plt.pause(step_time)

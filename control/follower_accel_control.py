@@ -4,12 +4,13 @@ import rospy
 from geometry_msgs.msg import Twist, Vector3, PoseStamped, TwistStamped
 from std_msgs.msg import String 
 from pyquaternion import Quaternion
-from formation_dict import formation_dict
+from formation_dict import formation_dict_9
 import time
 import math
 import numpy 
 import sys
 import heapq
+import copy
 
 class Follower:
 
@@ -26,14 +27,16 @@ class Follower:
         self.following_ids = []
         self.formation_config = 'waiting'
         self.following_count = 0
-        self.Kp = 100
+        self.Kp = 50  #100
         self.kr = (4/int((self.uav_num-1)/3))**0.5
+        #self.kr = 1
         self.f = 50
-        self.velxy_max = 0.5
+        #self.f=1/0.01
+        self.velxy_max = 0.5  #0.5
         self.velz_max = 1
-        self.following_local_pose = [None]*self.uav_num
+        self.following_local_pose = [PoseStamped()]*self.uav_num
         self.following_local_pose_sub = [None]*self.uav_num
-        self.following_local_velocity = [None]*self.uav_num
+        self.following_local_velocity = [TwistStamped()]*self.uav_num
         self.following_local_velocity_sub = [None]*self.uav_num
         self.arrive_count = 0
         self.local_pose_sub = rospy.Subscriber("/uav"+str(self.id)+"/mavros/local_position/pose", PoseStamped , self.local_pose_callback)
@@ -44,19 +47,22 @@ class Follower:
         self.vel_enu_pub =  rospy.Publisher('/xtdrone/uav'+str(self.id)+'/cmd_vel_enu', Twist, queue_size=10)
         self.info_pub = rospy.Publisher('/xtdrone/uav'+str(self.id)+'/info', String, queue_size=10)
         
+
     def local_pose_callback(self, msg):
         self.local_pose = msg
         #print(self.arrive_count)
 
     def local_velocity_callback(self, msg):
         self.local_velocity = msg
+        #print(self.arrive_count)
 
     def following_local_pose_callback(self, msg, id):
         self.following_local_pose[id] = msg 
-        #print('here')
+       
     
     def following_local_velocity_callback(self, msg, id):
         self.following_local_velocity[id] = msg
+        
 
     def cmd_vel_callback(self, msg):
         self.cmd_vel_enu = msg
@@ -79,7 +85,7 @@ class Follower:
     def loop(self):
         rospy.init_node('follower'+str(self.id-1))
         rate = rospy.Rate(self.f)
-        while True:
+        while not rospy.is_shutdown():
             if self.arrive_count > 100:
                 self.info_pub.publish("Arrived")
                 #print("Arrived")
@@ -87,7 +93,7 @@ class Follower:
                 self.following_switch = False
                 self.info_pub.publish("Received")
                 print("Follower"+str(self.id-1)+": Switch to Formation "+self.formation_config)
-                self.L_matrix = self.get_L_matrix(formation_dict[self.formation_config])
+                self.L_matrix = self.get_L_matrix(formation_dict_9[self.formation_config])
                 #print(self.L_matrix)
                 #self.L_matrix = numpy.array([[0,0,0,0,0,0,0,0,0],[1,-1,0,0,0,0,0,0,0],[1,0,-1,0,0,0,0,0,0],[1,0,0,-1,0,0,0,0,0],[1,0,0,0,-1,0,0,0,0],[1,0,0,0,0,-1,0,0,0],[1,0,0,0,0,0,-1,0,0],[1,0,0,0,0,0,0,-1,0],[1,0,0,0,0,0,0,0,-1]])
                 self.following_ids = numpy.argwhere(self.L_matrix[self.id-1,:] == 1)
@@ -107,32 +113,42 @@ class Follower:
                     time.sleep(1)
 
             self.cmd_accel_enu = Vector3(0, 0, 0)
+            #self.cmd_vel_enu.linear = copy.deepcopy(self.avoid_vel)
             for following_id in self.following_ids:
                 if self.following_local_pose[following_id[0]] == None and self.following_local_velocity[following_id[0]] == None:
-                    print(following_id)
-                self.cmd_accel_enu.x += self.following_local_pose[following_id[0]].pose.position.x + self.kr * self.following_local_velocity[following_id[0]].twist.linear.x - self.local_pose.pose.position.x - self.kr * self.local_velocity.twist.linear.x + formation_dict[self.formation_config][0, self.id-2]
-                self.cmd_accel_enu.y += self.following_local_pose[following_id[0]].pose.position.y + self.kr * self.following_local_velocity[following_id[0]].twist.linear.y - self.local_pose.pose.position.y - self.kr * self.local_velocity.twist.linear.y + formation_dict[self.formation_config][1, self.id-2]
-                self.cmd_accel_enu.z += self.following_local_pose[following_id[0]].pose.position.z + self.kr * self.following_local_velocity[following_id[0]].twist.linear.z - self.local_pose.pose.position.z - self.kr * self.local_velocity.twist.linear.z + formation_dict[self.formation_config][2, self.id-2]
+                    print(following_id)     
+                self.cmd_accel_enu.x += self.following_local_pose[following_id[0]].pose.position.x + self.kr * self.following_local_velocity[following_id[0]].twist.linear.x - self.local_pose.pose.position.x - self.kr * self.local_velocity.twist.linear.x + formation_dict_9[self.formation_config][0, self.id-2]
+                self.cmd_accel_enu.y += self.following_local_pose[following_id[0]].pose.position.y + self.kr * self.following_local_velocity[following_id[0]].twist.linear.y - self.local_pose.pose.position.y - self.kr * self.local_velocity.twist.linear.y + formation_dict_9[self.formation_config][1, self.id-2]
+                self.cmd_accel_enu.z += self.following_local_pose[following_id[0]].pose.position.z + self.kr * self.following_local_velocity[following_id[0]].twist.linear.z - self.local_pose.pose.position.z - self.kr * self.local_velocity.twist.linear.z + formation_dict_9[self.formation_config][2, self.id-2]
+            
                 if not following_id[0] == 0:
-                    self.cmd_accel_enu.x -= formation_dict[self.formation_config][0, following_id[0]-1]
-                    self.cmd_accel_enu.y -= formation_dict[self.formation_config][1, following_id[0]-1]
-                    self.cmd_accel_enu.z -= formation_dict[self.formation_config][2, following_id[0]-1]
+                    self.cmd_accel_enu.x -= formation_dict_9[self.formation_config][0, following_id[0]-1]
+                    self.cmd_accel_enu.y -= formation_dict_9[self.formation_config][1, following_id[0]-1]
+                    self.cmd_accel_enu.z -= formation_dict_9[self.formation_config][2, following_id[0]-1]
            
             self.cmd_vel_enu.linear.x = self.local_velocity.twist.linear.x + self.avoid_vel.x +  self.Kp * self.cmd_accel_enu.x / self.f
             self.cmd_vel_enu.linear.y = self.local_velocity.twist.linear.y +self.avoid_vel.y +  self.Kp * self.cmd_accel_enu.y / self.f
             self.cmd_vel_enu.linear.z = self.local_velocity.twist.linear.z +self.avoid_vel.z +  self.Kp * self.cmd_accel_enu.z / self.f
+
             if self.cmd_vel_enu.linear.x > self.velxy_max:
                 self.cmd_vel_enu.linear.x = self.velxy_max
+            elif self.cmd_vel_enu.linear.x < - self.velxy_max:
+                self.cmd_vel_enu.linear.x = - self.velxy_max
             if self.cmd_vel_enu.linear.y > self.velxy_max:
                 self.cmd_vel_enu.linear.y = self.velxy_max
+            elif self.cmd_vel_enu.linear.y < - self.velxy_max:
+                self.cmd_vel_enu.linear.y = - self.velxy_max
             if self.cmd_vel_enu.linear.z > self.velz_max:
                 self.cmd_vel_enu.linear.z = self.velz_max
+            elif self.cmd_vel_enu.linear.z < - self.velz_max:
+                self.cmd_vel_enu.linear.z = - self.velz_max
 
             if (self.cmd_vel_enu.linear.x)**2+(self.cmd_vel_enu.linear.y)**2+(self.cmd_vel_enu.linear.z)**2<0.2:
                 self.arrive_count += 1
             else:
                 self.arrive_count = 0
-            self.vel_enu_pub.publish(self.cmd_vel_enu)
+            if not self.formation_config == 'waiting':
+                self.vel_enu_pub.publish(self.cmd_vel_enu)
             rate.sleep()
 
     #函数输入为相对leader的位置矩阵和无人机数量，输出为L矩阵
@@ -323,5 +339,7 @@ class Follower:
 '''
 
 if __name__ == '__main__':
-    follower = Follower(int(sys.argv[1]),9)
+    follower = Follower(int(sys.argv[1]),int(sys.argv[2]))
+  #follower = Follower(int(sys.argv[1]),9)
+    #follower = Follower(9,9)
     follower.loop()   

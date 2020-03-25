@@ -9,8 +9,8 @@ import sys
 
 use_1_8 = 1
 
-uav_num=9
-#uav_num = int(sys.argv[1])
+#uav_num=9
+uav_num = int(sys.argv[1])
 
 step_time=0.01
 

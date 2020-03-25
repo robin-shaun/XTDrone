@@ -1,3 +1,4 @@
 papers
 competition
 *.bag
+*.pyc

@@ -61,7 +61,7 @@ class Leader:
         rospy.init_node('leader')
         rate = rospy.Rate(50)
         while True:
-            self.cmd_vel_enu = Twist()
+            #self.cmd_vel_enu = Twist()
             for follower_info in self.followers_info:
                 if follower_info == "Arrived":
                     self.follower_arrived_num += 1

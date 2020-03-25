@@ -77,9 +77,9 @@ class Follower:
                 self.following_switch = False
                 self.info_pub.publish("Received")
                 print("Follower"+str(self.id-1)+": Switch to Formation "+self.formation_config)
-                #self.L_matrix = self.get_L_matrix(formation_dict_9[self.formation_config])
+                self.L_matrix = self.get_L_matrix(formation_dict_9[self.formation_config])
                 #print(self.L_matrix)
-                self.L_matrix = numpy.array([[0,0,0,0,0,0,0,0,0],[1,-1,0,0,0,0,0,0,0],[1,0,-1,0,0,0,0,0,0],[1,0,0,-1,0,0,0,0,0],[1,0,0,0,-1,0,0,0,0],[1,0,0,0,0,-1,0,0,0],[1,0,0,0,0,0,-1,0,0],[1,0,0,0,0,0,0,-1,0],[1,0,0,0,0,0,0,0,-1]])
+                #self.L_matrix = numpy.array([[0,0,0,0,0,0,0,0,0],[1,-1,0,0,0,0,0,0,0],[1,0,-1,0,0,0,0,0,0],[1,0,0,-1,0,0,0,0,0],[1,0,0,0,-1,0,0,0,0],[1,0,0,0,0,-1,0,0,0],[1,0,0,0,0,0,-1,0,0],[1,0,0,0,0,0,0,-1,0],[1,0,0,0,0,0,0,0,-1]])
                 self.following_ids = numpy.argwhere(self.L_matrix[self.id-1,:] == 1)
                 #if self.id == 2:
                     #print(self.following_ids)
@@ -92,13 +92,13 @@ class Follower:
                     self.following_local_pose_sub[following_id[0]] = rospy.Subscriber("/uav"+str(following_id[0]+1)+"/mavros/local_position/pose", PoseStamped , self.following_local_pose_callback,following_id[0])
                     self.following_count += 1
                     time.sleep(1)
-            print(self.avoid_vel)
+            #print(self.avoid_vel)
             self.cmd_vel_enu.linear = copy.deepcopy(self.avoid_vel)
             if self.cmd_vel_enu.linear.x == 0 and self.cmd_vel_enu.linear.y == 0 and self.cmd_vel_enu.linear.z == 0:
                 for following_id in self.following_ids:
                     self.cmd_vel_enu.linear.x += self.following_local_pose[following_id[0]].pose.position.x - self.local_pose.pose.position.x + formation_dict_9[self.formation_config][0, self.id-2]
                     self.cmd_vel_enu.linear.y += self.following_local_pose[following_id[0]].pose.position.y - self.local_pose.pose.position.y + formation_dict_9[self.formation_config][1, self.id-2]
-                    self.cmd_vel_enu.linear.z += self.following_local_pose[following_id[0]].pose.position.z - self.local_pose.pose.position.z+ formation_dict_9[self.formation_config][2, self.id-2]
+                    self.cmd_vel_enu.linear.z += self.following_local_pose[following_id[0]].pose.position.z - self.local_pose.pose.position.z + formation_dict_9[self.formation_config][2, self.id-2]
                     if not following_id[0] == 0:
                         self.cmd_vel_enu.linear.x -= formation_dict_9[self.formation_config][0, following_id[0]-1]
                         self.cmd_vel_enu.linear.y -= formation_dict_9[self.formation_config][1, following_id[0]-1]

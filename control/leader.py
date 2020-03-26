@@ -23,6 +23,7 @@ class Leader:
         self.avoid_vel = Vector3(0,0,0)
         self.formation_config = 'waiting'
         self.target_height_recorded = False
+        self.f = 500
         self.Kz = 0.5
         self.local_pose_sub = rospy.Subscriber("/uav"+str(self.id)+"/mavros/local_position/pose", PoseStamped , self.local_pose_callback)
         self.cmd_vel_sub = rospy.Subscriber("/xtdrone/leader/cmd_vel", Twist, self.cmd_vel_callback)
@@ -59,7 +60,7 @@ class Leader:
 
     def loop(self):
         rospy.init_node('leader')
-        rate = rospy.Rate(50)
+        rate = rospy.Rate(self.f)
         while True:
             #self.cmd_vel_enu = Twist()
             for follower_info in self.followers_info:

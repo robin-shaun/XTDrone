@@ -4,7 +4,7 @@ import rospy
 from geometry_msgs.msg import Twist, Vector3, PoseStamped, TwistStamped
 from std_msgs.msg import String 
 from pyquaternion import Quaternion
-from formation_dict import formation_dict_6
+from formation_dict import formation_dict_9
 import time
 import math
 import numpy 
@@ -27,10 +27,10 @@ class Follower:
         self.following_ids = []
         self.formation_config = 'waiting'
         self.following_count = 0
-        self.Kp = 50  #100
+        self.Kp = 100  #100
         self.kr = (4/int((self.uav_num-1)/3))**0.5
         #self.kr = 1
-        self.f = 50
+        self.f = 500
         #self.f=1/0.01
         self.velxy_max = 0.5  #0.5
         self.velz_max = 1
@@ -93,7 +93,7 @@ class Follower:
                 self.following_switch = False
                 self.info_pub.publish("Received")
                 print("Follower"+str(self.id-1)+": Switch to Formation "+self.formation_config)
-                self.L_matrix = self.get_L_matrix(formation_dict_6[self.formation_config])
+                self.L_matrix = self.get_L_matrix(formation_dict_9[self.formation_config])
                 #print(self.L_matrix)
                 #self.L_matrix = numpy.array([[0,0,0,0,0,0,0,0,0],[1,-1,0,0,0,0,0,0,0],[1,0,-1,0,0,0,0,0,0],[1,0,0,-1,0,0,0,0,0],[1,0,0,0,-1,0,0,0,0],[1,0,0,0,0,-1,0,0,0],[1,0,0,0,0,0,-1,0,0],[1,0,0,0,0,0,0,-1,0],[1,0,0,0,0,0,0,0,-1]])
                 self.following_ids = numpy.argwhere(self.L_matrix[self.id-1,:] == 1)
@@ -117,14 +117,14 @@ class Follower:
             for following_id in self.following_ids:
                 if self.following_local_pose[following_id[0]] == None and self.following_local_velocity[following_id[0]] == None:
                     print(following_id)     
-                self.cmd_accel_enu.x += self.following_local_pose[following_id[0]].pose.position.x + self.kr * self.following_local_velocity[following_id[0]].twist.linear.x - self.local_pose.pose.position.x - self.kr * self.local_velocity.twist.linear.x + formation_dict_6[self.formation_config][0, self.id-2]
-                self.cmd_accel_enu.y += self.following_local_pose[following_id[0]].pose.position.y + self.kr * self.following_local_velocity[following_id[0]].twist.linear.y - self.local_pose.pose.position.y - self.kr * self.local_velocity.twist.linear.y + formation_dict_6[self.formation_config][1, self.id-2]
-                self.cmd_accel_enu.z += self.following_local_pose[following_id[0]].pose.position.z + self.kr * self.following_local_velocity[following_id[0]].twist.linear.z - self.local_pose.pose.position.z - self.kr * self.local_velocity.twist.linear.z + formation_dict_6[self.formation_config][2, self.id-2]
+                self.cmd_accel_enu.x += self.following_local_pose[following_id[0]].pose.position.x + self.kr * self.following_local_velocity[following_id[0]].twist.linear.x - self.local_pose.pose.position.x - self.kr * self.local_velocity.twist.linear.x + formation_dict_9[self.formation_config][0, self.id-2]
+                self.cmd_accel_enu.y += self.following_local_pose[following_id[0]].pose.position.y + self.kr * self.following_local_velocity[following_id[0]].twist.linear.y - self.local_pose.pose.position.y - self.kr * self.local_velocity.twist.linear.y + formation_dict_9[self.formation_config][1, self.id-2]
+                self.cmd_accel_enu.z += self.following_local_pose[following_id[0]].pose.position.z + self.kr * self.following_local_velocity[following_id[0]].twist.linear.z - self.local_pose.pose.position.z - self.kr * self.local_velocity.twist.linear.z + formation_dict_9[self.formation_config][2, self.id-2]
             
                 if not following_id[0] == 0:
-                    self.cmd_accel_enu.x -= formation_dict_6[self.formation_config][0, following_id[0]-1]
-                    self.cmd_accel_enu.y -= formation_dict_6[self.formation_config][1, following_id[0]-1]
-                    self.cmd_accel_enu.z -= formation_dict_6[self.formation_config][2, following_id[0]-1]
+                    self.cmd_accel_enu.x -= formation_dict_9[self.formation_config][0, following_id[0]-1]
+                    self.cmd_accel_enu.y -= formation_dict_9[self.formation_config][1, following_id[0]-1]
+                    self.cmd_accel_enu.z -= formation_dict_9[self.formation_config][2, following_id[0]-1]
            
             self.cmd_vel_enu.linear.x = self.local_velocity.twist.linear.x + self.avoid_vel.x +  self.Kp * self.cmd_accel_enu.x / self.f
             self.cmd_vel_enu.linear.y = self.local_velocity.twist.linear.y +self.avoid_vel.y +  self.Kp * self.cmd_accel_enu.y / self.f

@@ -15,26 +15,25 @@ import copy
 class Follower:
 
     def __init__(self, uav_id, uav_num):
-        self.hover = "HOVER"
-        self.offboard = "OFFBOARD"
+        self.hover = True
         self.id = uav_id
         self.uav_num = uav_num
         self.local_pose = PoseStamped()
         self.local_velocity = TwistStamped()
         self.cmd_vel_enu = Twist()
         self.cmd_accel_enu = Vector3()
-        self.avoid_accel = Vector3()
+        self.avoid_vel = Vector3()
         self.following_switch = False
-        self.arrive_print = True
         self.following_ids = []
         self.formation_config = 'waiting'
         self.following_count = 0
-        self.Kp = 100 #100
+        self.Kp = 20
         #self.kr = (4/int((self.uav_num-1)/2))**0.5
-        self.kr = 1
+        self.kr = 0.1
         self.f = 100
-        self.velxy_max = 1
-        self.velz_max = 1
+        self.first_x=True
+        self.first_y=True
+        self.first_z=True
         self.following_local_pose = [PoseStamped() for i in range (self.uav_num)]
         self.following_local_pose_sub = [None]*self.uav_num
         self.following_local_velocity = [TwistStamped() for i in range (self.uav_num)]
@@ -43,11 +42,11 @@ class Follower:
         self.local_pose_sub = rospy.Subscriber("/uav"+str(self.id)+"/mavros/local_position/pose", PoseStamped , self.local_pose_callback)
         self.local_velocity_sub = rospy.Subscriber("/uav"+str(self.id)+"/mavros/local_position/velocity_local", TwistStamped , self.local_velocity_callback)
         #self.cmd_vel_sub = rospy.Subscriber("/xtdrone/follower/cmd_vel", Twist, self.cmd_vel_callback)
-        self.avoid_accel_sub = rospy.Subscriber("/xtdrone/uav"+str(self.id)+"/avoid_accel", Vector3, self.avoid_accel_callback)
+        #self.avoid_vel_sub = rospy.Subscriber("/xtdrone/uav"+str(self.id)+"/avoid_vel", Vector3, self.avoid_vel_callback)
         self.formation_switch_sub = rospy.Subscriber("/xtdrone/formation_switch",String, self.formation_switch_callback)
-        self.vel_enu_pub =  rospy.Publisher('/xtdrone/uav'+str(self.id)+'/cmd_vel_enu', Twist, queue_size=10)
+        #self.vel_enu_pub =  rospy.Publisher('/xtdrone/uav'+str(self.id)+'/cmd_vel_enu', Twist, queue_size=10)
+        self.accel_enu_pub =  rospy.Publisher('/xtdrone/uav'+str(self.id)+'/cmd_accel_enu', Vector3, queue_size=10)
         self.info_pub = rospy.Publisher('/xtdrone/uav'+str(self.id)+'/info', String, queue_size=10)
-        self.cmd_pub = rospy.Publisher('/xtdrone/uav'+str(self.id)+'/cmd',String,queue_size=10)
         
 
     def local_pose_callback(self, msg):
@@ -68,6 +67,10 @@ class Follower:
 
     def cmd_vel_callback(self, msg):
         self.cmd_vel_enu = msg
+        if msg.linear.z == 0:
+            self.hover = True
+        else:
+            self.hover = False
 
     def formation_switch_callback(self, msg):
         if not self.formation_config == msg.data:
@@ -75,8 +78,8 @@ class Follower:
         self.formation_config = msg.data
         
 
-    def avoid_accel_callback(self, msg):
-        self.avoid_accel = msg
+    #def avoid_vel_callback(self, msg):
+        #self.avoid_vel = msg
 
     def loop(self):
         rospy.init_node('follower'+str(self.id-1))
@@ -87,10 +90,7 @@ class Follower:
                 self.arrive_print = False
             if self.following_switch:
                 self.following_switch = False
-                self.arrive_print = True
-                self.arrive_count = 0
                 for i in range(self.f/10):
-                    self.cmd_pub.publish(self.offboard)
                     self.info_pub.publish("Received")
                     print("Follower"+str(self.id-1)+": Switch to Formation "+self.formation_config)
                     self.L_matrix = self.get_L_matrix(formation_dict_6[self.formation_config])
@@ -111,9 +111,8 @@ class Follower:
                         self.following_local_velocity_sub[following_id[0]] = rospy.Subscriber("/uav"+str(following_id[0]+1)+"/mavros/local_position/velocity_local", TwistStamped , self.following_local_velocity_callback,following_id[0])
                         self.following_count += 1
 
-
             self.cmd_accel_enu = Vector3(0, 0, 0)
-            #self.cmd_vel_enu.linear = copy.deepcopy(self.avoid_accel)
+            #self.cmd_vel_enu.linear = copy.deepcopy(self.avoid_vel)
             for following_id in self.following_ids:
                 if self.following_local_pose[following_id[0]] == None and self.following_local_velocity[following_id[0]] == None:
                     print(following_id)     
@@ -125,32 +124,13 @@ class Follower:
                     self.cmd_accel_enu.x -= formation_dict_6[self.formation_config][0, following_id[0]-1]
                     self.cmd_accel_enu.y -= formation_dict_6[self.formation_config][1, following_id[0]-1]
                     self.cmd_accel_enu.z -= formation_dict_6[self.formation_config][2, following_id[0]-1]
-            if self.arrive_count <= 100:
-                self.cmd_vel_enu.linear.x = self.local_velocity.twist.linear.x + self.Kp * (self.avoid_accel.x + self.cmd_accel_enu.x / self.f)
-                self.cmd_vel_enu.linear.y = self.local_velocity.twist.linear.y + self.Kp * (self.avoid_accel.y + self.cmd_accel_enu.y / self.f)
-                self.cmd_vel_enu.linear.z = self.local_velocity.twist.linear.z + self.Kp * (self.avoid_accel.z + self.cmd_accel_enu.z / self.f)
-            else:
-                self.cmd_pub.publish(self.hover)
-            if self.cmd_vel_enu.linear.x > self.velxy_max:
-                self.cmd_vel_enu.linear.x = self.velxy_max
-            elif self.cmd_vel_enu.linear.x < - self.velxy_max:
-                self.cmd_vel_enu.linear.x = - self.velxy_max
-            if self.cmd_vel_enu.linear.y > self.velxy_max:
-                self.cmd_vel_enu.linear.y = self.velxy_max
-            elif self.cmd_vel_enu.linear.y < - self.velxy_max:
-                self.cmd_vel_enu.linear.y = - self.velxy_max
-            if self.cmd_vel_enu.linear.z > self.velz_max:
-                self.cmd_vel_enu.linear.z = self.velz_max
-            elif self.cmd_vel_enu.linear.z < - self.velz_max:
-                self.cmd_vel_enu.linear.z = - self.velz_max
-
-            if (self.cmd_vel_enu.linear.x)**2+(self.cmd_vel_enu.linear.y)**2+(self.cmd_vel_enu.linear.z)**2<0.2:
-                self.arrive_count += 1
-            else:
-                self.arrive_count = 0
+                
+            if self.arrive_count > 100:
+                self.cmd_accel_enu = Vector3(0,0,0)
             if not self.formation_config == 'waiting':
-                self.vel_enu_pub.publish(self.cmd_vel_enu)
+                self.accel_enu_pub.publish(self.cmd_accel_enu)
             rate.sleep()
+        
 
     #函数输入为相对leader的位置矩阵和无人机数量，输出为L矩阵
     def get_L_matrix(self,rel_posi):

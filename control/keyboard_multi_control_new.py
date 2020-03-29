@@ -209,10 +209,10 @@ if __name__=="__main__":
                 ctrl_leader = not ctrl_leader
                 print_msg()
             elif key == 'k':
-                cmd = 'AUTO.LOITER'
+                cmd = 'HOVER'
                 cmd_vel_mask = False
                 print_msg()
-                print('Loiter')
+                print('Hover')
             elif key == 's' :
                 cmd_vel_mask = False
                 target_forward_vel   = 0.0

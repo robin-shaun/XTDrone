@@ -1,5 +1,5 @@
 import rospy
-from geometry_msgs.msg import Twist
+from geometry_msgs.msg import Twist, Vector3
 import sys, select, os
 import tty, termios
 from std_msgs.msg import String
@@ -12,6 +12,11 @@ ANG_VEL_STEP_SIZE = 0.01
 
 cmd_vel_mask = False
 ctrl_leader = False
+uav_num = int(sys.argv[1])
+if uav_num == 9:
+    formation_configs = ['waiting', 'cube', 'pyramid', 'triangle']
+if uav_num == 6:
+     formation_configs = ['waiting', 'T', 'diamond', 'triangle']
 
 msg2all = """
 Control Your XTDrone!
@@ -116,17 +121,17 @@ if __name__=="__main__":
 
     settings = termios.tcgetattr(sys.stdin)
 
-    uav_num = int(sys.argv[1])
     rospy.init_node('keyboard_control')
     multi_cmd_vel_flu_pub = [None]*uav_num
     multi_cmd_pub = [None]*uav_num
     for i in range(uav_num):
-        multi_cmd_vel_flu_pub[i] = rospy.Publisher('/xtdrone/uav'+str(i)+'/cmd_vel_flu', Twist, queue_size=10)
-        multi_cmd_pub[i] = rospy.Publisher('/xtdrone/uav'+str(i)+'/cmd',String,queue_size=10)
-    leader_cmd_vel_pub = rospy.Publisher("/xtdrone/leader/cmd_vel", Twist, queue_size=10)
-    leader_cmd_pub = rospy.Publisher("/xtdrone/leader_cmd", String, queue_size=10)
+        multi_cmd_vel_flu_pub[i] = rospy.Publisher('/xtdrone/uav'+str(i+1)+'/cmd_accel_enu', Vector3, queue_size=10)
+        multi_cmd_pub[i] = rospy.Publisher('/xtdrone/uav'+str(i+1)+'/cmd',String,queue_size=10)
+    leader_cmd_vel_pub = rospy.Publisher("/xtdrone/leader/cmd_accel", Vector3, queue_size=10)
+    formation_switch_pub = rospy.Publisher("/gcs/formation_switch", String, queue_size=10)
     cmd= String()
     twist = Twist()    
+    accel = Vector3()
 
 
     target_forward_vel   = 0.0
@@ -224,7 +229,7 @@ if __name__=="__main__":
             else:
                 for i in range(10):
                     if key == str(i):
-                        cmd = 'mission'+key
+                        cmd = formation_configs[i]
                         print_msg()
                         print(cmd)
                         cmd_vel_mask = True
@@ -239,14 +244,17 @@ if __name__=="__main__":
 
             control_angular_vel = makeSimpleProfile(control_angular_vel, target_angular_vel, (ANG_VEL_STEP_SIZE/2.0))
             twist.angular.x = 0.0; twist.angular.y = 0.0;  twist.angular.z = control_angular_vel
+            
+            accel = twist.linear
 
             for i in range(uav_num):
                 if ctrl_leader:
-                    leader_cmd_vel_pub.publish(twist)
-                    leader_cmd_pub.publish(cmd)
+                    leader_cmd_vel_pub.publish(accel)
+                    if not cmd == '':
+                        formation_switch_pub.publish(cmd)
                 else:
                     if not cmd_vel_mask:
-                        multi_cmd_vel_flu_pub[i].publish(twist)    
+                        multi_cmd_vel_flu_pub[i].publish(accel)    
                     multi_cmd_pub[i].publish(cmd)
                     
             cmd = ''
@@ -256,9 +264,10 @@ if __name__=="__main__":
     finally:
         twist.linear.x = 0.0; twist.linear.y = 0.0; twist.linear.z = 0.0
         twist.angular.x = 0.0; twist.angular.y = 0.0; twist.angular.z = 0.0
+        accel.x = 0.0; accel.y = 0.0; accel.z = 0.0
         cmd = ''
         for i in range(uav_num):
-                multi_cmd_vel_flu_pub[i].publish(twist)
+                multi_cmd_vel_flu_pub[i].publish(accel)
                 multi_cmd_pub[i].publish(cmd)
 
     termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)

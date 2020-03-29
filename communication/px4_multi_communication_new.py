@@ -21,6 +21,7 @@ class PX4Communication:
         self.current_state = None
         self.current_heading = None
         self.takeoff_height = 1
+        self.hover_flag = 0
 
         self.target_motion = PositionTarget()
         self.global_target = None
@@ -132,23 +133,28 @@ class PX4Communication:
         self.target_motion = self.construct_target(x=msg.position.x,y=msg.position.y,z=msg.position.z)
 
     def cmd_vel_flu_callback(self, msg):
-        self.flag = 1
-        target_vx_enu, target_vy_enu = self.flu2enu(msg.linear.x, msg.linear.y)
-        target_vz_enu = msg.linear.z
-        target_yaw_rate = msg.angular.z
-        self.target_motion = self.construct_target(vx=target_vx_enu,vy=target_vy_enu,vz=target_vz_enu,yaw_rate=target_yaw_rate)
+        if self.hover_flag == 0:
+            self.flag = 1
+            target_vx_enu, target_vy_enu = self.flu2enu(msg.linear.x, msg.linear.y)
+            target_vz_enu = msg.linear.z
+            target_yaw_rate = msg.angular.z
+            self.target_motion = self.construct_target(vx=target_vx_enu,vy=target_vy_enu,vz=target_vz_enu,yaw_rate=target_yaw_rate)
  
     def cmd_vel_enu_callback(self, msg):
-        self.flag = 1
-        self.target_motion = self.construct_target(vx=msg.linear.x,vy=msg.linear.y,vz=msg.linear.z,yaw_rate=msg.angular.z)
+        if self.hover_flag == 0:
+            self.flag = 1
+            self.target_motion = self.construct_target(vx=msg.linear.x,vy=msg.linear.y,vz=msg.linear.z,yaw_rate=msg.angular.z)
 
     def cmd_accel_flu_callback(self, msg):
-        target_afx_enu, target_afy_enu = self.flu2enu(msg.x, msg.y)
-        target_afz_enu = msg.z
-        self.target_motion = self.construct_target(afx=target_afx_enu,afy=target_afy_enu,afz=target_afz_enu)
+        if self.hover_flag == 0:
+            self.flag = 2
+            target_afx_enu, target_afy_enu = self.flu2enu(msg.x, msg.y)
+            target_afz_enu = msg.z
+            self.target_motion = self.construct_target(afx=target_afx_enu,afy=target_afy_enu,afz=target_afz_enu)
     def cmd_accel_enu_callback(self, msg):
-        self.flag = 2
-        self.target_motion = self.construct_target(afx=msg.x,afy=msg.y,afz=msg.z)
+        if self.hover_flag == 0:
+            self.flag = 2
+            self.target_motion = self.construct_target(afx=msg.x,afy=msg.y,afz=msg.z)
 
     def cmd_callback(self, msg):
         if msg.data == '':
@@ -214,9 +220,11 @@ class PX4Communication:
 
     def flight_mode_switch(self):
         if self.flight_mode == 'HOVER':
+            self.hover_flag = 1
             self.hover()
             print("UAV"+str(self.id)+": Hover")
         elif self.flightModeService(custom_mode=self.flight_mode):
+            self.hover_flag = 0
             print("UAV"+str(self.id)+": "+self.flight_mode)
             return True
         else:

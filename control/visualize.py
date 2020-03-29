@@ -9,7 +9,7 @@ import sys
 
 uav_num = int(sys.argv[1])
 
-step_time=0.002
+step_time=0.005
 
 pose_puber=[None]*uav_num
 vel_puber=[None]*uav_num

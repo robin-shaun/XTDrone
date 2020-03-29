@@ -20,14 +20,14 @@ class Leader:
         self.followers_info = ["Moving"]*self.follower_num
         self.follower_arrived_num = 0
         self.follower_all_arrived = True
-        self.avoid_vel = Vector3(0,0,0)
+        self.avoid_accel = Vector3(0,0,0)
         self.formation_config = 'waiting'
         self.target_height_recorded = False
         self.f = 200
         self.Kz = 0.5
         self.local_pose_sub = rospy.Subscriber("/uav"+str(self.id)+"/mavros/local_position/pose", PoseStamped , self.local_pose_callback)
         self.cmd_vel_sub = rospy.Subscriber("/xtdrone/leader/cmd_vel", Twist, self.cmd_vel_callback)
-        self.avoid_vel_sub = rospy.Subscriber("/xtdrone/uav"+str(self.id)+"/avoid_vel", Vector3, self.avoid_vel_callback)
+        self.avoid_vel_sub = rospy.Subscriber("/xtdrone/uav"+str(self.id)+"/avoid_accel", Vector3, self.avoid_accel_callback)
         self.formation_switch_sub = rospy.Subscriber("/gcs/formation_switch",String, self.cmd_callback)
         for i in range(self.follower_num):
             rospy.Subscriber('/xtdrone/uav'+str(i+1)+'/info',String,self.followers_info_callback,i)
@@ -50,9 +50,8 @@ class Leader:
             self.formation_config = msg.data
             #print("Switch to Formation"+self.formation_config)
 
-    def avoid_vel_callback(self, msg):
-        self.avoid_vel = msg
-        #print('leader: ', self.avoid_vel)
+    def avoid_accel_callback(self, msg):
+        self.avoid_accel = msg
     
     def followers_info_callback(self, msg, id):
         self.followers_info[id] = msg.data
@@ -75,9 +74,9 @@ class Leader:
                     target_height =  self.local_pose.pose.position.z + 2
                     self.target_height_recorded = True
                 self.cmd_vel_enu.linear.z = self.Kz * (target_height - self.local_pose.pose.position.z)
-            self.cmd_vel_enu.linear.x += self.avoid_vel.x
-            self.cmd_vel_enu.linear.y += self.avoid_vel.y
-            self.cmd_vel_enu.linear.z += self.avoid_vel.z
+            self.cmd_vel_enu.linear.x += self.avoid_accel.x
+            self.cmd_vel_enu.linear.y += self.avoid_accel.y
+            self.cmd_vel_enu.linear.z += self.avoid_accel.z
             self.vel_enu_pub.publish(self.cmd_vel_enu)
             self.local_pose_pub.publish(self.local_pose)
             rate.sleep()

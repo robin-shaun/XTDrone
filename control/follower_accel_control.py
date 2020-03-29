@@ -11,6 +11,7 @@ import numpy
 import sys
 import heapq
 import copy
+import Queue
 
 class Follower:
 
@@ -19,7 +20,11 @@ class Follower:
         self.offboard = "OFFBOARD"
         self.id = uav_id
         self.uav_num = uav_num
+        self.f = 100
         self.local_pose = PoseStamped()
+        self.local_pose_queue = Queue.Queue(self.f/10)
+        for i in range(self.f/10):
+            self.local_pose_queue.put(PoseStamped())
         self.local_velocity = TwistStamped()
         self.cmd_vel_enu = Twist()
         self.cmd_accel_enu = Vector3()
@@ -32,7 +37,6 @@ class Follower:
         self.Kp = 100 #100
         #self.kr = (4/int((self.uav_num-1)/2))**0.5
         self.kr = 1
-        self.f = 100
         self.velxy_max = 1
         self.velz_max = 1
         self.following_local_pose = [PoseStamped() for i in range (self.uav_num)]
@@ -42,7 +46,6 @@ class Follower:
         self.arrive_count = 0
         self.local_pose_sub = rospy.Subscriber("/uav"+str(self.id)+"/mavros/local_position/pose", PoseStamped , self.local_pose_callback)
         self.local_velocity_sub = rospy.Subscriber("/uav"+str(self.id)+"/mavros/local_position/velocity_local", TwistStamped , self.local_velocity_callback)
-        #self.cmd_vel_sub = rospy.Subscriber("/xtdrone/follower/cmd_vel", Twist, self.cmd_vel_callback)
         self.avoid_accel_sub = rospy.Subscriber("/xtdrone/uav"+str(self.id)+"/avoid_accel", Vector3, self.avoid_accel_callback)
         self.formation_switch_sub = rospy.Subscriber("/xtdrone/formation_switch",String, self.formation_switch_callback)
         self.vel_enu_pub =  rospy.Publisher('/xtdrone/uav'+str(self.id)+'/cmd_vel_enu', Twist, queue_size=10)
@@ -52,11 +55,23 @@ class Follower:
 
     def local_pose_callback(self, msg):
         self.local_pose = msg
-        #print(self.arrive_count)
+        pose_comparison = self.local_pose_queue.get()
+        self.local_pose_queue.put(self.local_pose)
+        comparison = (self.local_pose.pose.position.x - pose_comparison.pose.position.x)**2+(self.local_pose.pose.position.y - pose_comparison.pose.position.y)**2+(self.local_pose.pose.position.z - pose_comparison.pose.position.z)**2
+        if self.id == 6:
+            print('comparison1:',comparison)
+            print('comparison2:',float(self.velxy_max**2+self.velxy_max**2+self.velz_max**2)/1e5)
+            print(self.arrive_count)
+        if comparison<float(self.velxy_max**2+self.velxy_max**2+self.velz_max**2)/100:
+            if self.id == 2:
+                print('here')
+            self.arrive_count += 1
+        else:
+            self.arrive_count = 0
 
     def local_velocity_callback(self, msg):
         self.local_velocity = msg
-        #print(self.arrive_count)
+
 
     def following_local_pose_callback(self, msg, id):
         self.following_local_pose[id] = msg 
@@ -82,7 +97,7 @@ class Follower:
         rospy.init_node('follower'+str(self.id-1))
         rate = rospy.Rate(self.f)
         while not rospy.is_shutdown():
-            if self.arrive_count > 100 and self.arrive_print:
+            if self.arrive_count > 300 and self.arrive_print:
                 print("Follower"+str(self.id-1)+":Arrived")
                 self.arrive_print = False
             if self.following_switch:
@@ -125,31 +140,26 @@ class Follower:
                     self.cmd_accel_enu.x -= formation_dict_6[self.formation_config][0, following_id[0]-1]
                     self.cmd_accel_enu.y -= formation_dict_6[self.formation_config][1, following_id[0]-1]
                     self.cmd_accel_enu.z -= formation_dict_6[self.formation_config][2, following_id[0]-1]
-            if self.arrive_count <= 100:
+            if self.arrive_count <= 300:
                 self.cmd_vel_enu.linear.x = self.local_velocity.twist.linear.x + self.Kp * (self.avoid_accel.x + self.cmd_accel_enu.x / self.f)
                 self.cmd_vel_enu.linear.y = self.local_velocity.twist.linear.y + self.Kp * (self.avoid_accel.y + self.cmd_accel_enu.y / self.f)
                 self.cmd_vel_enu.linear.z = self.local_velocity.twist.linear.z + self.Kp * (self.avoid_accel.z + self.cmd_accel_enu.z / self.f)
+                if self.cmd_vel_enu.linear.x > self.velxy_max:
+                    self.cmd_vel_enu.linear.x = self.velxy_max
+                elif self.cmd_vel_enu.linear.x < - self.velxy_max:
+                    self.cmd_vel_enu.linear.x = - self.velxy_max
+                if self.cmd_vel_enu.linear.y > self.velxy_max:
+                    self.cmd_vel_enu.linear.y = self.velxy_max
+                elif self.cmd_vel_enu.linear.y < - self.velxy_max:
+                    self.cmd_vel_enu.linear.y = - self.velxy_max
+                if self.cmd_vel_enu.linear.z > self.velz_max:
+                    self.cmd_vel_enu.linear.z = self.velz_max
+                elif self.cmd_vel_enu.linear.z < - self.velz_max:
+                    self.cmd_vel_enu.linear.z = - self.velz_max
+                if not self.formation_config == 'waiting':
+                    self.vel_enu_pub.publish(self.cmd_vel_enu)
             else:
                 self.cmd_pub.publish(self.hover)
-            if self.cmd_vel_enu.linear.x > self.velxy_max:
-                self.cmd_vel_enu.linear.x = self.velxy_max
-            elif self.cmd_vel_enu.linear.x < - self.velxy_max:
-                self.cmd_vel_enu.linear.x = - self.velxy_max
-            if self.cmd_vel_enu.linear.y > self.velxy_max:
-                self.cmd_vel_enu.linear.y = self.velxy_max
-            elif self.cmd_vel_enu.linear.y < - self.velxy_max:
-                self.cmd_vel_enu.linear.y = - self.velxy_max
-            if self.cmd_vel_enu.linear.z > self.velz_max:
-                self.cmd_vel_enu.linear.z = self.velz_max
-            elif self.cmd_vel_enu.linear.z < - self.velz_max:
-                self.cmd_vel_enu.linear.z = - self.velz_max
-
-            if (self.cmd_vel_enu.linear.x)**2+(self.cmd_vel_enu.linear.y)**2+(self.cmd_vel_enu.linear.z)**2<0.2:
-                self.arrive_count += 1
-            else:
-                self.arrive_count = 0
-            if not self.formation_config == 'waiting':
-                self.vel_enu_pub.publish(self.cmd_vel_enu)
             rate.sleep()
 
     #函数输入为相对leader的位置矩阵和无人机数量，输出为L矩阵

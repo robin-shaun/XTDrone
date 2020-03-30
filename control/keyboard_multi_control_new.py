@@ -33,7 +33,8 @@ i/, : increase/decrease upward velocity (-1~1)
 j/l : increase/decrease angular velocity (-0.1~0.1)
 r   : return home
 t/y : arm/disarm
-v/n : takeoff/land
+v   : mission
+n   : land
 b   : offboard
 s   : hover(offboard mode) and remove the mask of keyboard control
 k   : hover(hover mode) and remove the mask of keyboard control
@@ -58,7 +59,8 @@ i/, : increase/decrease upward velocity (-1~1)
 j/l : increase/decrease angular velocity (-0.1~0.1)
 r   : return home
 t/y : arm/disarm
-v/n : takeoff(disenabled now)/land
+v   : mission
+n   : land
 b   : offboard
 s or k : hover and remove the mask of keyboard control
 0~9 : extendable mission(eg.different formation configuration)
@@ -193,10 +195,9 @@ if __name__=="__main__":
                 print_msg()
                 print('Disarming')
             elif key == 'v':
-                #cmd = 'AUTO.TAKEOFF'
-                cmd = ''
-                print(msg)
-                print('Takeoff mode is disenabled now')
+                cmd = 'AUTO.MiSSION'
+                print_msg()
+                print('Mission')
             elif key == 'b':
                 cmd = 'OFFBOARD'
                 print_msg()
@@ -213,7 +214,7 @@ if __name__=="__main__":
                 cmd_vel_mask = False
                 print_msg()
                 print('Hover')
-            elif key == 's' :
+            elif key == 's':
                 cmd_vel_mask = False
                 target_forward_vel   = 0.0
                 target_leftward_vel   = 0.0

@@ -12,6 +12,7 @@ import sys
 import heapq
 import copy
 import Queue
+from itertools import permutations
 
 class Follower:
 
@@ -37,21 +38,23 @@ class Follower:
         self.Kp = 100 #100
         #self.kr = (4/int((self.uav_num-1)/2))**0.5
         self.kr = 1
-        self.velxy_max = 1
-        self.velz_max = 1
-        self.following_local_pose = [PoseStamped() for i in range (self.uav_num)]
+        self.velxy_max = 2
+        self.velz_max = 2
+        self.following_local_pose = [PoseStamped() for i in range(self.uav_num)]
         self.following_local_pose_sub = [None]*self.uav_num
-        self.following_local_velocity = [TwistStamped() for i in range (self.uav_num)]
+        self.following_local_velocity = [TwistStamped() for i in range(self.uav_num)]
         self.following_local_velocity_sub = [None]*self.uav_num
         self.arrive_count = 0
-        self.local_pose_sub = rospy.Subscriber("/uav"+str(self.id)+"/mavros/local_position/pose", PoseStamped , self.local_pose_callback)
-        self.local_velocity_sub = rospy.Subscriber("/uav"+str(self.id)+"/mavros/local_position/velocity_local", TwistStamped , self.local_velocity_callback)
+        self.local_pose_sub = rospy.Subscriber("/uav"+str(self.id)+"/mavros/local_position/pose", PoseStamped, self.local_pose_callback)
+        self.local_velocity_sub = rospy.Subscriber("/uav"+str(self.id)+"/mavros/local_position/velocity_local", TwistStamped, self.local_velocity_callback)
         self.avoid_accel_sub = rospy.Subscriber("/xtdrone/uav"+str(self.id)+"/avoid_accel", Vector3, self.avoid_accel_callback)
         self.formation_switch_sub = rospy.Subscriber("/xtdrone/formation_switch",String, self.formation_switch_callback)
-        self.vel_enu_pub =  rospy.Publisher('/xtdrone/uav'+str(self.id)+'/cmd_vel_enu', Twist, queue_size=10)
+        self.vel_enu_pub = rospy.Publisher('/xtdrone/uav'+str(self.id)+'/cmd_vel_enu', Twist, queue_size=10)
         self.info_pub = rospy.Publisher('/xtdrone/uav'+str(self.id)+'/info', String, queue_size=10)
         self.cmd_pub = rospy.Publisher('/xtdrone/uav'+str(self.id)+'/cmd',String,queue_size=10)
-        
+        self.first_formation = True
+        self.orig_formation = None
+        self.new_formation = None
 
     def local_pose_callback(self, msg):
         self.local_pose = msg
@@ -60,11 +63,11 @@ class Follower:
         comparison = (self.local_pose.pose.position.x - pose_comparison.pose.position.x)**2+(self.local_pose.pose.position.y - pose_comparison.pose.position.y)**2+(self.local_pose.pose.position.z - pose_comparison.pose.position.z)**2
         if self.id == 6:
             print('comparison1:',comparison)
-            print('comparison2:',float(self.velxy_max**2+self.velxy_max**2+self.velz_max**2)/1e5)
+            print('comparison2:',float(self.velxy_max**2+self.velxy_max**2+self.velz_max**2)/1e3)
             print(self.arrive_count)
-        if comparison<float(self.velxy_max**2+self.velxy_max**2+self.velz_max**2)/100:
-            if self.id == 2:
-                print('here')
+        if comparison < float(self.velxy_max**2+self.velxy_max**2+self.velz_max**2)/1e3:
+            #if self.id == 2:
+                #print('here')
             self.arrive_count += 1
         else:
             self.arrive_count = 0
@@ -97,7 +100,7 @@ class Follower:
         rospy.init_node('follower'+str(self.id-1))
         rate = rospy.Rate(self.f)
         while not rospy.is_shutdown():
-            if self.arrive_count > 300 and self.arrive_print:
+            if self.arrive_count > 500 and self.arrive_print:
                 print("Follower"+str(self.id-1)+":Arrived")
                 self.arrive_print = False
             if self.following_switch:
@@ -108,7 +111,17 @@ class Follower:
                     self.cmd_pub.publish(self.offboard)
                     self.info_pub.publish("Received")
                     print("Follower"+str(self.id-1)+": Switch to Formation "+self.formation_config)
-                    self.L_matrix = self.get_L_matrix(formation_dict_6[self.formation_config])
+                    if self.formation_config=='waiting':
+                        self.L_matrix = self.get_L_matrix(formation_dict_6[self.formation_config])
+                    else:
+                        if self.first_formation:
+                            self.first_formation=False
+                            self.orig_formation=formation_dict_6[self.formation_config]
+                            self.L_matrix = self.get_L_matrix(formation_dict_6[self.formation_config])
+                        else:
+                            self.new_formation=self.get_new_formation(self.orig_formation,formation_dict_6[self.formation_config])
+                            self.L_matrix = self.get_L_matrix(self.new_formation)
+                            self.orig_formation=self.new_formation
                     #print(self.L_matrix)
                     #self.L_matrix = numpy.array([[0,0,0,0,0,0,0,0,0],[1,-1,0,0,0,0,0,0,0],[1,0,-1,0,0,0,0,0,0],[1,0,0,-1,0,0,0,0,0],[1,0,0,0,-1,0,0,0,0],[1,0,0,0,0,-1,0,0,0],[1,0,0,0,0,0,-1,0,0],[1,0,0,0,0,0,0,-1,0],[1,0,0,0,0,0,0,0,-1]])
                     self.following_ids = numpy.argwhere(self.L_matrix[self.id-1,:] == 1)
@@ -140,7 +153,7 @@ class Follower:
                     self.cmd_accel_enu.x -= formation_dict_6[self.formation_config][0, following_id[0]-1]
                     self.cmd_accel_enu.y -= formation_dict_6[self.formation_config][1, following_id[0]-1]
                     self.cmd_accel_enu.z -= formation_dict_6[self.formation_config][2, following_id[0]-1]
-            if self.arrive_count <= 300:
+            if self.arrive_count <= 500:
                 self.cmd_vel_enu.linear.x = self.local_velocity.twist.linear.x + self.Kp * (self.avoid_accel.x + self.cmd_accel_enu.x / self.f)
                 self.cmd_vel_enu.linear.y = self.local_velocity.twist.linear.y + self.Kp * (self.avoid_accel.y + self.cmd_accel_enu.y / self.f)
                 self.cmd_vel_enu.linear.z = self.local_velocity.twist.linear.z + self.Kp * (self.avoid_accel.z + self.cmd_accel_enu.z / self.f)
@@ -162,7 +175,7 @@ class Follower:
                 self.cmd_pub.publish(self.hover)
             rate.sleep()
 
-     def get_new_formation(self,orig_formation,change_formation):
+    def get_new_formation(self,orig_formation,change_formation):
         new_formation=numpy.zeros((3,self.uav_num-1))
         position=numpy.zeros((3,self.uav_num-1))
 
@@ -193,7 +206,7 @@ class Follower:
                 if (j+1)==change_id[i]:
                     new_formation[:,i]=position[:,j]
         return new_formation
-        
+
     #函数输入为相对leader的位置矩阵和无人机数量，输出为L矩阵
     def get_L_matrix(self,rel_posi):
 	

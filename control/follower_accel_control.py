@@ -162,6 +162,38 @@ class Follower:
                 self.cmd_pub.publish(self.hover)
             rate.sleep()
 
+     def get_new_formation(self,orig_formation,change_formation):
+        new_formation=numpy.zeros((3,self.uav_num-1))
+        position=numpy.zeros((3,self.uav_num-1))
+
+        num_array=range(0,self.uav_num-1)
+        num_array_possi=list(permutations(num_array, self.uav_num-1))
+        possi_num=len(num_array_possi)
+
+        distance=[0 for i in range(self.uav_num-1)]
+        distance_max=100   # maybe larger
+        min_num=0
+
+        for k in range(possi_num): 
+            for i in range(self.uav_num-1):       
+                distance[i]=numpy.linalg.norm(orig_formation[:,i]-change_formation[:,num_array_possi[k][i]])
+            distance_mid_max=max(distance)
+            if distance_mid_max<distance_max:
+                distance_max=distance_mid_max
+                min_num=k
+
+        change_id=num_array_possi[min_num]
+        change_id=[i + 1 for i in change_id] 
+        #print (change_id)
+        for i in range(0,self.uav_num-1):
+            position[:,i]=orig_formation[:,i]
+
+        for i in range(0,self.uav_num-1):
+            for j in range(0,self.uav_num-1):
+                if (j+1)==change_id[i]:
+                    new_formation[:,i]=position[:,j]
+        return new_formation
+        
     #函数输入为相对leader的位置矩阵和无人机数量，输出为L矩阵
     def get_L_matrix(self,rel_posi):
 	
@@ -366,6 +398,4 @@ class Follower:
 
 if __name__ == '__main__':
     follower = Follower(int(sys.argv[1]),int(sys.argv[2]))
-  #follower = Follower(int(sys.argv[1]),9)
-    #follower = Follower(9,9)
     follower.loop()   

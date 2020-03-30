@@ -27,7 +27,7 @@ class Follower:
         self.following_ids = []
         self.formation_config = 'waiting'
         self.following_count = 0
-        self.Kp = 20
+        self.kp = 1
         #self.kr = (4/int((self.uav_num-1)/2))**0.5
         self.kr = 0.1
         self.f = 100
@@ -116,9 +116,9 @@ class Follower:
             for following_id in self.following_ids:
                 if self.following_local_pose[following_id[0]] == None and self.following_local_velocity[following_id[0]] == None:
                     print(following_id)     
-                self.cmd_accel_enu.x += self.following_local_pose[following_id[0]].pose.position.x + self.kr * self.following_local_velocity[following_id[0]].twist.linear.x - self.local_pose.pose.position.x - self.kr * self.local_velocity.twist.linear.x + formation_dict_6[self.formation_config][0, self.id-2]
-                self.cmd_accel_enu.y += self.following_local_pose[following_id[0]].pose.position.y + self.kr * self.following_local_velocity[following_id[0]].twist.linear.y - self.local_pose.pose.position.y - self.kr * self.local_velocity.twist.linear.y + formation_dict_6[self.formation_config][1, self.id-2]
-                self.cmd_accel_enu.z += self.following_local_pose[following_id[0]].pose.position.z + self.kr * self.following_local_velocity[following_id[0]].twist.linear.z - self.local_pose.pose.position.z - self.kr * self.local_velocity.twist.linear.z + formation_dict_6[self.formation_config][2, self.id-2]
+                self.cmd_accel_enu.x += self.kp * (self.following_local_pose[following_id[0]].pose.position.x - self.local_pose.pose.position.x + self.kr * (self.following_local_velocity[following_id[0]].twist.linear.x - self.local_velocity.twist.linear.x) + formation_dict_6[self.formation_config][0, self.id-2])
+                self.cmd_accel_enu.y += self.kp * (self.following_local_pose[following_id[0]].pose.position.y - self.local_pose.pose.position.y + self.kr * (self.following_local_velocity[following_id[0]].twist.linear.y - self.local_velocity.twist.linear.y) + formation_dict_6[self.formation_config][1, self.id-2])
+                self.cmd_accel_enu.z += self.kp * (self.following_local_pose[following_id[0]].pose.position.z - self.local_pose.pose.position.z + formation_dict_6[self.formation_config][2, self.id-2]+ self.kr * (self.following_local_velocity[following_id[0]].twist.linear.z - self.local_velocity.twist.linear.z))
             
                 if not following_id[0] == 0:
                     self.cmd_accel_enu.x -= formation_dict_6[self.formation_config][0, following_id[0]-1]

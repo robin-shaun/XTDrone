@@ -46,7 +46,7 @@ class PX4Communication:
         self.cmd_vel_enu_sub = rospy.Subscriber("/xtdrone/"+"uav"+str(self.id)+"/cmd_accel_enu", Vector3, self.cmd_accel_enu_callback)
         self.cmd_sub = rospy.Subscriber("/xtdrone/"+"uav"+str(self.id)+"/cmd",String,self.cmd_callback)
 
-        '''
+        ''' 
         ros publishers
         '''
         self.target_motion_pub = rospy.Publisher("/uav"+str(self.id)+"/mavros/setpoint_raw/local", PositionTarget, queue_size=10)

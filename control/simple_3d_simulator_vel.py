@@ -6,12 +6,13 @@ import rospy
 from geometry_msgs.msg import Twist,Pose,PoseStamped,TwistStamped
 from gazebo_msgs.srv import GetModelState
 import sys
+from formation_dict import formation_dict_6
 
 use_1_8 = 1
 
 
-uav_num = int(sys.argv[1])
-
+#uav_num = int(sys.argv[1])
+uav_num = 6
 step_time=0.01
 
 pose_puber=[None]*uav_num
@@ -22,13 +23,15 @@ plot_y=[0]*(uav_num)
 plot_z=[0]*(uav_num)
 local_vel = [TwistStamped()]*(uav_num)
 
-for i in range(uav_num):
+for i in range(uav_num-1):
     uav_id=i+use_1_8
-    plot_x[i]= i//3
-    plot_y[i]= i%3
+    plot_x[i]= formation_dict_6['diamond'][0][i]
+    plot_y[i]= formation_dict_6['diamond'][1][i]
+    plot_z[i]= formation_dict_6['diamond'][2][i]
     pose_puber[i]=rospy.Publisher('/uav'+str(uav_id)+'/mavros/local_position/pose', PoseStamped, queue_size=10)
     vel_puber[i]=rospy.Publisher('/uav'+str(uav_id)+'/mavros/local_position/velocity_local', TwistStamped, queue_size=10)
-
+pose_puber[uav_num-1]=rospy.Publisher('/uav'+str(uav_id)+'/mavros/local_position/pose', PoseStamped, queue_size=10)
+vel_puber[uav_num-1]=rospy.Publisher('/uav'+str(uav_id)+'/mavros/local_position/velocity_local', TwistStamped, queue_size=10)
 fig = plt.figure()
 plt.ion()
 ax = Axes3D(fig)
@@ -77,7 +80,7 @@ try:
             pose_puber[i].publish(local_pose)
             vel_puber[i].publish(local_vel[i])
         init()
-        ax.scatter(plot_x,plot_y,plot_z,marker="x")
+        ax.scatter(plot_x,plot_y,plot_z,marker="o")
         plt.pause(step_time)
         ax.cla()
         rate.sleep()

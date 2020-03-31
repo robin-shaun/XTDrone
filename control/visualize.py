@@ -56,7 +56,7 @@ for i in range(uav_num):
 try:
     while not rospy.is_shutdown():
         init()
-        ax.scatter(plot_x,plot_y,plot_z,marker="x")
+        ax.scatter(plot_x,plot_y,plot_z,marker="o")
         plt.pause(step_time)
         ax.cla()
         rate.sleep()

@@ -15,7 +15,7 @@ ctrl_leader = False
 uav_num = int(sys.argv[1])
 
 if uav_num == 18:
-    formation_configs = ['cube', 'sphere', 'diamond']
+    formation_configs = ['waiting','cube', 'sphere', 'diamond']
 if uav_num == 9:
     formation_configs = ['waiting', 'cube', 'pyramid', 'triangle']
 if uav_num == 6:

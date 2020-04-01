@@ -4,7 +4,7 @@ import rospy
 from geometry_msgs.msg import Twist, Vector3, PoseStamped, TwistStamped
 from std_msgs.msg import String 
 from pyquaternion import Quaternion
-from formation_dict import formation_dict_6
+from formation_dict import formation_dict_18
 import time
 import math
 import numpy 
@@ -65,7 +65,7 @@ class Follower:
             #print('comparison1:',comparison)
             #print('comparison2:',float(self.velxy_max**2+self.velxy_max**2+self.velz_max**2)/1e3)
             #print(self.arrive_count)
-        if comparison < float(self.velxy_max**2+self.velxy_max**2+self.velz_max**2)/1e3:
+        if comparison < float(self.velxy_max**2+self.velxy_max**2+self.velz_max**2)/1e5:
             #if self.id == 2:
                 #print('here')
             self.arrive_count += 1
@@ -100,7 +100,7 @@ class Follower:
         rospy.init_node('follower'+str(self.id-1))
         rate = rospy.Rate(self.f)
         while not rospy.is_shutdown():
-            if self.arrive_count > 200 and self.arrive_print:
+            if self.arrive_count > 2000 and self.arrive_print:
                 print("Follower"+str(self.id-1)+":Arrived")
                 self.arrive_print = False
             if self.following_switch:
@@ -112,18 +112,30 @@ class Follower:
                     self.info_pub.publish("Received")
                     print("Follower"+str(self.id-1)+": Switch to Formation "+self.formation_config)
                     if self.formation_config=='waiting':
-                        self.L_matrix = self.get_L_matrix(formation_dict_6[self.formation_config])
+                        self.L_matrix = self.get_L_matrix(formation_dict_18[self.formation_config])
                     else:
                         if self.first_formation:
                             self.first_formation=False
-                            self.orig_formation=formation_dict_6[self.formation_config]
-                            self.L_matrix = self.get_L_matrix(formation_dict_6[self.formation_config])
+                            self.orig_formation=formation_dict_18[self.formation_config]
+                            self.L_matrix = self.get_L_matrix(formation_dict_18[self.formation_config])
                         else:
-                            self.new_formation=self.get_new_formation(self.orig_formation,formation_dict_6[self.formation_config])
+                            #self.new_formation=self.get_new_formation(self.orig_formation,formation_dict_18[self.formation_config])
+                            self.adj_matrix = self.build_graph(self.orig_formation,formation_dict_18[self.formation_config])
+                            self.label_left = numpy.max(self.adj_matrix, axis=1)  # init label for the left 
+                            self.label_right = numpy.array([0]*(self.uav_num-1)) # init label for the right set
+
+                            self.match_right = numpy.array([-1] *(self.uav_num-1))
+                            self.visit_left = numpy.array([0]*(self.uav_num-1))
+                            self.visit_right = numpy.array([0]*(self.uav_num-1))
+                            self.slack_right = numpy.array([100]*(self.uav_num-1)) 
+                            self.change_id = self.KM()
+                            self.new_formation=self.get_new_formation(self.change_id,formation_dict_18[self.formation_config])
                             self.L_matrix = self.get_L_matrix(self.new_formation)
                             self.orig_formation=self.new_formation
-                    print self.new_formation
-                    #print(self.L_matrix)
+                    
+                    #self.L_matrix = self.get_L_matrix(formation_dict_18[self.formation_config])
+                    if self.id==2:
+                        print(self.L_matrix)
                     #self.L_matrix = numpy.array([[0,0,0,0,0,0,0,0,0],[1,-1,0,0,0,0,0,0,0],[1,0,-1,0,0,0,0,0,0],[1,0,0,-1,0,0,0,0,0],[1,0,0,0,-1,0,0,0,0],[1,0,0,0,0,-1,0,0,0],[1,0,0,0,0,0,-1,0,0],[1,0,0,0,0,0,0,-1,0],[1,0,0,0,0,0,0,0,-1]])
                     self.following_ids = numpy.argwhere(self.L_matrix[self.id-1,:] == 1)
                     #if self.id == 2:
@@ -146,14 +158,14 @@ class Follower:
             for following_id in self.following_ids:
                 #if self.following_local_pose[following_id[0]] == None and self.following_local_velocity[following_id[0]] == None:
                     #print(following_id)     
-                self.cmd_accel_enu.x += self.following_local_pose[following_id[0]].pose.position.x + self.kr * self.following_local_velocity[following_id[0]].twist.linear.x - self.local_pose.pose.position.x - self.kr * self.local_velocity.twist.linear.x + formation_dict_6[self.formation_config][0, self.id-2]
-                self.cmd_accel_enu.y += self.following_local_pose[following_id[0]].pose.position.y + self.kr * self.following_local_velocity[following_id[0]].twist.linear.y - self.local_pose.pose.position.y - self.kr * self.local_velocity.twist.linear.y + formation_dict_6[self.formation_config][1, self.id-2]
-                self.cmd_accel_enu.z += self.following_local_pose[following_id[0]].pose.position.z + self.kr * self.following_local_velocity[following_id[0]].twist.linear.z - self.local_pose.pose.position.z - self.kr * self.local_velocity.twist.linear.z + formation_dict_6[self.formation_config][2, self.id-2]
+                self.cmd_accel_enu.x += self.following_local_pose[following_id[0]].pose.position.x + self.kr * self.following_local_velocity[following_id[0]].twist.linear.x - self.local_pose.pose.position.x - self.kr * self.local_velocity.twist.linear.x + formation_dict_18[self.formation_config][0, self.id-2]
+                self.cmd_accel_enu.y += self.following_local_pose[following_id[0]].pose.position.y + self.kr * self.following_local_velocity[following_id[0]].twist.linear.y - self.local_pose.pose.position.y - self.kr * self.local_velocity.twist.linear.y + formation_dict_18[self.formation_config][1, self.id-2]
+                self.cmd_accel_enu.z += self.following_local_pose[following_id[0]].pose.position.z + self.kr * self.following_local_velocity[following_id[0]].twist.linear.z - self.local_pose.pose.position.z - self.kr * self.local_velocity.twist.linear.z + formation_dict_18[self.formation_config][2, self.id-2]
             
                 if not following_id[0] == 0:
-                    self.cmd_accel_enu.x -= formation_dict_6[self.formation_config][0, following_id[0]-1]
-                    self.cmd_accel_enu.y -= formation_dict_6[self.formation_config][1, following_id[0]-1]
-                    self.cmd_accel_enu.z -= formation_dict_6[self.formation_config][2, following_id[0]-1]
+                    self.cmd_accel_enu.x -= formation_dict_18[self.formation_config][0, following_id[0]-1]
+                    self.cmd_accel_enu.y -= formation_dict_18[self.formation_config][1, following_id[0]-1]
+                    self.cmd_accel_enu.z -= formation_dict_18[self.formation_config][2, following_id[0]-1]
             if self.arrive_count <= 2000:
                 self.cmd_vel_enu.linear.x = self.local_velocity.twist.linear.x + self.Kp * (self.avoid_accel.x + self.cmd_accel_enu.x / self.f)
                 self.cmd_vel_enu.linear.y = self.local_velocity.twist.linear.y + self.Kp * (self.avoid_accel.y + self.cmd_accel_enu.y / self.f)
@@ -176,10 +188,67 @@ class Follower:
                 self.cmd_pub.publish(self.hover)
             rate.sleep()
 
-    def get_new_formation(self,orig_formation,change_formation):
+    def build_graph(self,orig_formation,change_formation):
+        distance=[[0 for i in range(self.uav_num-1)]for j in range(self.uav_num-1)]
+        for i in range(self.uav_num-1):
+            for j in range(self.uav_num-1):
+                distance[i][j]=numpy.linalg.norm(orig_formation[:,i]-change_formation[:,j])
+                distance[i][j]=int(50-distance[i][j])
+        return distance
+
+    def find_path(self,i):
+        
+        self.visit_left[i] = True
+        for j, match_weight in enumerate(self.adj_matrix[i],start=0): 
+            if self.visit_right[j]: 
+                continue  
+            gap = self.label_left[i] + self.label_right[j] - match_weight 
+            if gap == 0 :            
+                self.visit_right[j] = True   
+                if self.match_right[j]==-1 or self.find_path(self.match_right[j]): 
+                    self.match_right[j] = i     
+                    return True            
+            else:      
+                self.slack_right[j]=min(gap,self.slack_right[j])          
+        #print('1',slack_right)
+        return False 
+
+    def KM(self):  
+
+        for i in range(self.uav_num-1):   
+            #print(i)
+            self.slack_right = numpy.array([100]*(self.uav_num-1))      
+            while True:        
+                self.visit_left = numpy.array([0]*(self.uav_num-1))                
+                self.visit_right = numpy.array([0]*(self.uav_num-1))               
+                if self.find_path(i):    
+                    break       
+                d = numpy.inf
+                #print ('2',slack_right)
+                for j, slack in enumerate(self.slack_right):         
+                    if not self.visit_right[j] :           
+                        d = min(d,slack)
+                        #print(d)  
+                for k in range(self.uav_num-1):          
+                    if self.visit_left[k]: 
+                        self.label_left[k] -= d                 
+                    if self.visit_right[k]: 
+                        self.label_right[k] += d   
+                    else:
+                        self.slack_right[k] -=d 
+        ''' 
+        for j in range(uav_num-1):    
+        if match_right[j] >=0 and match_right[j] < uav_num:  
+                res += adj_matrix[match_right[j]][j]  
+        '''
+        return self.match_right
+    
+    def get_new_formation(self,change_id,change_formation):
+
+        
         new_formation=numpy.zeros((3,self.uav_num-1))
         position=numpy.zeros((3,self.uav_num-1))
-
+        '''
         num_array=range(0,self.uav_num-1)
         num_array_possi=list(permutations(num_array, self.uav_num-1))
         possi_num=len(num_array_possi)
@@ -189,7 +258,7 @@ class Follower:
         distance_min=100
         distance_max=100   # maybe larger
         min_num=0
-        '''
+        
         for k in range(possi_num): 
             for i in range(self.uav_num-1):       
                 distance[i]=numpy.linalg.norm(orig_formation[:,i]-change_formation[:,num_array_possi[k][i]])
@@ -197,7 +266,7 @@ class Follower:
             if distance_mid_max<distance_max:
                 distance_max=distance_mid_max
                 min_num=k
-        '''
+        
         for k in range(possi_num):
             for i in range(self.uav_num-1):
                 distance[i]=numpy.linalg.norm(orig_formation[:,i]-change_formation[:,num_array_possi[k][i]])
@@ -211,6 +280,7 @@ class Follower:
             distance_sum=0
 
         change_id=num_array_possi[min_num]
+        '''
         change_id=[i + 1 for i in change_id] 
         #print (change_id)
         for i in range(0,self.uav_num-1):

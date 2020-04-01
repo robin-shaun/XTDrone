@@ -4,7 +4,7 @@ import sys, select, os
 import tty, termios
 from std_msgs.msg import String
 
-MAX_LIN_VEL = 1
+MAX_LIN_VEL = 5
 MAX_ANG_VEL = 0.1
 LIN_VEL_STEP_SIZE = 0.02
 ANG_VEL_STEP_SIZE = 0.01

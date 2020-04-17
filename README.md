@@ -65,9 +65,12 @@
 
 见[XTDrone使用文档](https://www.yuque.com/xtdrone/manual_cn)
 
-#### 参与贡献
+#### 项目团队
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+- 创立者：肖昆，谭劭昌
+- 开发团队：肖昆，谭劭昌，王冠政，马澜，王齐鹏，陈科研
+
+#### 感谢贡献者们
+
+孙正浩
+何瑶

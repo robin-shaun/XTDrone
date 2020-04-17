@@ -72,5 +72,5 @@ View the tutorial doc [XTDrone](https://www.yuque.com/xtdrone/manual_en)
 
 #### Thanks to Contributers
 
-Zhenghao Sun
+Changhao Sun
 Yao He

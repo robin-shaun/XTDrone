@@ -65,10 +65,12 @@ Developers can quickly verify algorithms with XTDrone, such as:
 
 View the tutorial doc [XTDrone](https://www.yuque.com/xtdrone/manual_en)
 
-#### Contribution
+#### Developing Team
 
+- Founders: Kun Xiao, Shaochang Tan
+- Developers: Kun Xiao, Shaochang Tan, Guanzheng Wang, Lan Ma, Qipeng Wang, Keyan Chen
 
-1.  Fork the repository
-2.  Create Feat_xxx branch
-3.  Commit your code
-4.  Create Pull Request
+#### Thanks to Contributers
+
+Zhenghao Sun
+Yao He

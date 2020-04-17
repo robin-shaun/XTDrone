@@ -5,15 +5,15 @@ import cv2
 import numpy as np
 
 classes = ["human", "car", "fire hydrant", "street sign"]
-img_path = "~/catkin_ws/src/darknet/xtdrone/data/"
-xml_path = "~/catkin_ws/src/darknet/xtdrone/xml/"
+img_path = "data/"
+xml_path = "xml/"
 net_size = (416, 416)
 img_format = 'jpg'
 
 
 def resize_img(img_path):
     img_file_list = glob.glob(os.path.join(img_path, '*.%s' % img_format))
-    img_resize_path = os.path.join(img_path, '..','train)
+    img_resize_path = os.path.join(img_path, '..','train')
     if os.path.exists(img_resize_path):
         shutil.rmtree(img_resize_path)
     os.makedirs(img_resize_path)

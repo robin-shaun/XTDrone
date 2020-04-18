@@ -18,15 +18,14 @@ def darknet_callback(data):
             twist.angular.x = 0.0
             twist.angular.y = 0.0
             twist.angular.z = Kp_angular*math.atan(y_error/x_error)
-            pub.publish(twist)
+
         else:
             twist.linear.x = 0.0
             twist.linear.y = 0.0
             twist.linear.z = 0.0
             twist.angular.x = 0.0
             twist.angular.y = 0.0
-            twist.angular.z = 0.0
-            pub.publish(twist)
+            twist.angular.z = 0.0         
 
 Kp_linear=0.05
 Kp_angular=0.2/math.pi
@@ -38,3 +37,4 @@ pub = rospy.Publisher('/xtdrone/cmd_vel_flu', Twist, queue_size=10)
 rate = rospy.Rate(60) 
 while(True):
     rate.sleep()
+    pub.publish(twist)

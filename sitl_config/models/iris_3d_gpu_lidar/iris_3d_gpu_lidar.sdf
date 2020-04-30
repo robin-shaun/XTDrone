@@ -1,0 +1,48 @@
+ <?xml version="1.0" ?>
+<sdf version='1.5'>
+  <model name='iris_3d_lidar'>
+
+    <include>
+      <uri>model://iris</uri>
+    </include> 
+
+<!-- For Hokuyo Lidar Payload -->
+      <include>
+        <uri>model://3d_gpu_lidar</uri>
+        <pose>0 0 0.2 0 0 0</pose>
+      </include>
+    <joint name="lidar_joint" type="fixed">
+      <child>3d_lidar::link</child>
+      <parent>iris::base_link</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <upper>0</upper>
+          <lower>0</lower>
+        </limit>
+      </axis>
+    </joint>
+<!-- For Stereo Camera Payload -->
+      <include>
+        <uri>model://stereo_cam</uri>
+        <pose>0 0 -0.05 0 0 0</pose>
+      </include>
+
+    <joint name="stereo_joint" type="fixed">
+      <child>stereo_camera::link</child>
+      <parent>iris::base_link</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <upper>0</upper>
+          <lower>0</lower>
+        </limit>
+      </axis>
+    </joint>
+  </model>
+</sdf>
+<!-- vim: set noet fenc=utf-8 ff=unix sts=0 sw=4 ts=4 : -->
+
+
+  
+ 

@@ -47,7 +47,7 @@
       </ray>
       <plugin name='3d_laser' filename='libgazebo_ros_laser.so'>
         <topicName>/3dscan</topicName>
-        <frameName>3d_laser</frameName>
+        <frameName>laser</frameName>
 		<gaussianNoise>0.008</gaussianNoise>
       </plugin>
       <always_on>1</always_on>

@@ -3,6 +3,8 @@ import tf
 from mavros_msgs.msg import GlobalPositionTarget, State, PositionTarget
 from mavros_msgs.srv import CommandBool, CommandTOL, SetMode
 from geometry_msgs.msg import PoseStamped, TwistStamped, Pose, Twist
+from nav_msgs.msg import Odometry
+from gazebo_msgs.srv import GetModelState
 from sensor_msgs.msg import Imu, NavSatFix
 from std_msgs.msg import String
 import time
@@ -20,7 +22,7 @@ class PX4Communication:
         self.takeoff_height = 1
 
         self.target_pose = PoseStamped()
-        self.target_vel=TwistStamped()
+        self.target_vel = TwistStamped()
         self.global_target = None
 
         self.arm_state = False
@@ -38,19 +40,23 @@ class PX4Communication:
         self.cmd_pose_enu_sub = rospy.Subscriber("/xtdrone/cmd_pose_enu", Pose, self.cmd_pose_enu_callback)
         self.cmd_vel_flu_sub = rospy.Subscriber("/xtdrone/cmd_vel_flu", Twist, self.cmd_vel_flu_callback)
         self.cmd_vel_enu_sub = rospy.Subscriber("/xtdrone/cmd_vel_enu", Twist, self.cmd_vel_enu_callback)
-        self.cmd_sub = rospy.Subscriber("/xtdrone/cmd",String,self.cmd_callback)
+        self.cmd_sub = rospy.Subscriber("/xtdrone/cmd", String, self.cmd_callback)
 
         '''
         ros publishers
         '''
         self.pose_target_pub = rospy.Publisher('/mavros/setpoint_position/local', PoseStamped, queue_size=10)
         self.twist_target_pub = rospy.Publisher('/mavros/setpoint_velocity/cmd_vel', TwistStamped, queue_size=10)
-
+        self.odom_groundtruth_pub = rospy.Publisher('/xtdrone/ground_truth/odom', Odometry, queue_size=10)
+        self.imu_groundtruth_pub = rospy.Publisher('/xtdrone/ground_truth/imu', Imu, queue_size=10)
+        self.pose_groundtruth_pub = rospy.Publisher('/xtdrone/ground_truth/pose', PoseStamped, queue_size=10)
+        
         '''
         ros services
         '''
         self.armService = rospy.ServiceProxy('/mavros/cmd/arming', CommandBool)
         self.flightModeService = rospy.ServiceProxy('/mavros/set_mode', SetMode)
+        self.gazeboModelstate = rospy.ServiceProxy('gazebo/get_model_state', GetModelState)
 
 
         print("PX4 Communication Initialized!")
@@ -72,7 +78,22 @@ class PX4Communication:
                 if(self.disarm()):
 
                     self.flight_mode = "DISARMED"
-
+            try:
+                response = self.gazeboModelstate ('iris','ground_plane')
+            except rospy.ServiceException, e:
+                print "Gazebo model state service call failed: %s"%e
+            odom = Odometry()
+            odom.header = response.header
+            odom.pose.pose = response.pose
+            odom.twist.twist = response.twist
+            self.odom_groundtruth_pub.publish(odom)
+            '''
+            imu = Imu()
+            imu.header = response.header
+            imu.orientation = response.pose.orientation
+            imu.angular_velocity = response.twist.angular
+            imu.linear_acceleration = 
+            '''
             rate.sleep()
 
     def local_pose_callback(self, msg):

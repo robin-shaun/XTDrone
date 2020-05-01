@@ -2,3 +2,4 @@ papers
 competition
 *.bag
 *.pyc
+*.pbstream

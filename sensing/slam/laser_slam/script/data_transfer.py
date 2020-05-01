@@ -33,7 +33,6 @@ def laser_scan_matcher():
         local_pose.pose.orientation.y = quaternion[1]
         local_pose.pose.orientation.z = quaternion[2]
         local_pose.pose.orientation.w = quaternion[3]
-        pose_pub.publish(local_pose)
         rate.sleep()
 
 def cartographer2D():
@@ -49,19 +48,37 @@ def cartographer2D():
         local_pose.pose.orientation.z = rotation[3]
         pose_pub.publish(local_pose)
         rate.sleep()
+        
+def cartographer3D():
+    listener = tf.TransformListener()
+    while True:
+        try:
+            translation,rotation = listener.lookupTransform("base_link","odom",rospy.Time())
+        except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
+            continue
+        local_pose.pose.position.x = translation[0]
+        local_pose.pose.position.y = translation[1]
+        local_pose.pose.position.z = translation[2]
+        local_pose.pose.orientation.w = rotation[0]
+        local_pose.pose.orientation.x = rotation[1]
+        local_pose.pose.orientation.y = rotation[2]
+        local_pose.pose.orientation.z = rotation[3]
+        pose_pub.publish(local_pose)
+        rate.sleep()
     
 if __name__ == '__main__':
-    odom_groundtruth_sub = rospy.Subscriber('/xtdrone/ground_truth/odom', Odometry, odm_groundtruth_callback)
     try:
         laser_slam_type = sys.argv[1]
     except:
         print('You should choose from laser_scan_matcher, cartographer2D and cartographer3D.')
     if laser_slam_type == 'laser_scan_matcher':
+        odom_groundtruth_sub = rospy.Subscriber('/xtdrone/ground_truth/odom', Odometry, odm_groundtruth_callback)
         laser_scan_matcher()
     elif laser_slam_type == 'cartographer2D':
+        odom_groundtruth_sub = rospy.Subscriber('/xtdrone/ground_truth/odom', Odometry, odm_groundtruth_callback)
         cartographer2D()
     elif laser_slam_type == 'cartographer3D':
-        print('You should choose from laser_scan_matcher, cartographer2D and cartographer3D.')
+        cartographer3D()
     else:
         print('You should choose from laser_scan_matcher, cartographer2D and cartographer3D.')
         

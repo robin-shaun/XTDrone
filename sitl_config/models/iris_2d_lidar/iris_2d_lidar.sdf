@@ -40,33 +40,22 @@
         </limit>
       </axis>
     </joint>
-<!-- For IMU-->
-    <sensor name="imu_sensor" type="imu">
-      <always_on>true</always_on>
+    <!-- For IMU-->
+    <include>
+      <uri>model://imu_gazebo</uri>
+      <pose>0 0 -0.05 0 0 0</pose>
+    </include>
+    <joint name="imu_gazebo_joint" type="fixed">
+      <child>imu_gazebo::link</child>
       <parent>iris::base_link</parent>
-      <update_rate>500</update_rate>
-      <visualize>true</visualize>
-      <topic>imu_gazebo</topic>
-      <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
-        <topicName>imu_gazebo</topicName>
-        <bodyName>imu_link_stereo</bodyName>
-        <updateRateHZ>500.0</updateRateHZ>
-        <gaussianNoise>0.0</gaussianNoise>
-        <xyzOffset>0 0 0</xyzOffset>
-        <rpyOffset>0 0 0</rpyOffset>
-        <frameName>base_link</frameName>
-
-        <gyroscopeNoiseDensity>0.0006</gyroscopeNoiseDensity>
-        <gyroscopeRandomWalk>0.000003</gyroscopeRandomWalk>        
-        <gyroscopeTurnOnBiasSigma>0.03</gyroscopeTurnOnBiasSigma>
-
-        <accelerometerNoiseDensity>0.002</accelerometerNoiseDensity>
-        <accelerometerRandomWalk>0.00002</accelerometerRandomWalk>
-        <accelerometerTurnOnBiasSigma>0.1</accelerometerTurnOnBiasSigma>
-
-      </plugin>
-      <pose>0 0 0.3 0 0 0</pose>
-    </sensor>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <upper>0</upper>
+          <lower>0</lower>
+        </limit>
+      </axis>
+    </joint>
   </model>
 </sdf>
 <!-- vim: set noet fenc=utf-8 ff=unix sts=0 sw=4 ts=4 : -->

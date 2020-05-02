@@ -1,16 +1,16 @@
- <?xml version="1.0" ?>
+<?xml version="1.0" ?>
 <sdf version='1.5'>
   <model name='iris_3d_lidar'>
 
     <include>
       <uri>model://iris</uri>
-    </include> 
+    </include>
 
-<!-- For Hokuyo Lidar Payload -->
-      <include>
-        <uri>model://3d_gpu_lidar</uri>
-        <pose>0 0 0.2 0 0 0</pose>
-      </include>
+    <!-- For Hokuyo Lidar Payload -->
+    <include>
+      <uri>model://3d_gpu_lidar</uri>
+      <pose>0 0 0.2 0 0 0</pose>
+    </include>
     <joint name="lidar_joint" type="fixed">
       <child>3d_lidar::link</child>
       <parent>iris::base_link</parent>
@@ -22,11 +22,11 @@
         </limit>
       </axis>
     </joint>
-<!-- For Stereo Camera Payload -->
-      <include>
-        <uri>model://stereo_cam</uri>
-        <pose>0 0 -0.05 0 0 0</pose>
-      </include>
+    <!-- For Stereo Camera Payload -->
+    <include>
+      <uri>model://stereo_cam</uri>
+      <pose>0 0 -0.05 0 0 0</pose>
+    </include>
 
     <joint name="stereo_joint" type="fixed">
       <child>stereo_camera::link</child>
@@ -39,33 +39,23 @@
         </limit>
       </axis>
     </joint>
-<!-- For IMU-->
-    <sensor name="imu_sensor" type="imu">
-      <always_on>true</always_on>
+    <!-- For IMU-->
+    <include>
+      <uri>model://imu_gazebo</uri>
+      <pose>0 0 -0.05 0 0 0</pose>
+    </include>
+    <joint name="imu_gazebo_joint" type="fixed">
+      <child>imu_gazebo::link</child>
       <parent>iris::base_link</parent>
-      <update_rate>500</update_rate>
-      <visualize>true</visualize>
-      <topic>imu_gazebo</topic>
-      <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
-        <topicName>imu_gazebo</topicName>
-        <bodyName>imu_link_stereo</bodyName>
-        <updateRateHZ>500.0</updateRateHZ>
-        <gaussianNoise>0.0</gaussianNoise>
-        <xyzOffset>0 0 0</xyzOffset>
-        <rpyOffset>0 0 0</rpyOffset>
-        <frameName>base_link</frameName>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <upper>0</upper>
+          <lower>0</lower>
+        </limit>
+      </axis>
+    </joint>
 
-        <gyroscopeNoiseDensity>0.0006</gyroscopeNoiseDensity>
-        <gyroscopeRandomWalk>0.000003</gyroscopeRandomWalk>        
-        <gyroscopeTurnOnBiasSigma>0.03</gyroscopeTurnOnBiasSigma>
-
-        <accelerometerNoiseDensity>0.002</accelerometerNoiseDensity>
-        <accelerometerRandomWalk>0.00002</accelerometerRandomWalk>
-        <accelerometerTurnOnBiasSigma>0.1</accelerometerTurnOnBiasSigma>
-
-      </plugin>
-      <pose>0 0 0.3 0 0 0</pose>
-    </sensor>
   </model>
 </sdf>
 <!-- vim: set noet fenc=utf-8 ff=unix sts=0 sw=4 ts=4 : -->

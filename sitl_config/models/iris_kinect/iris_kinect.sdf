@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <sdf version='1.5'>
-  <model name='iris_stereo_cam'>
+  <model name='iris_kinect'>
 
     <include>
       <uri>model://iris</uri>
@@ -13,6 +13,23 @@
 
     <joint name="stereo_joint" type="fixed">
       <child>stereo_camera::link</child>
+      <parent>iris::base_link</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <upper>0</upper>
+          <lower>0</lower>
+        </limit>
+      </axis>
+    </joint>
+<!-- For Kinect -->
+      <include>
+        <uri>model://kinect</uri>
+        <pose>0 0 0.05 0 0 0</pose>
+      </include>
+
+    <joint name="kinect_joint" type="fixed">
+      <child>kinect::link</child>
       <parent>iris::base_link</parent>
       <axis>
         <xyz>0 0 1</xyz>

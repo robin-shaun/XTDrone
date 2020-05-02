@@ -61,8 +61,8 @@
       </link>
     </model>
     <physics name='default_physics' default='0' type='ode'>
-      <real_time_update_rate>1000</real_time_update_rate>
-      <max_step_size>0.001</max_step_size>
+      <real_time_update_rate>250</real_time_update_rate>
+      <max_step_size>0.004</max_step_size>
       <real_time_factor>1</real_time_factor>
       <ode>
         <solver>

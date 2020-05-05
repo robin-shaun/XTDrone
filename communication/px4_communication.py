@@ -10,6 +10,7 @@ from std_msgs.msg import String
 import time
 from pyquaternion import Quaternion
 import math
+import sys
 
 class PX4Communication:
 
@@ -25,10 +26,12 @@ class PX4Communication:
         self.target_vel = TwistStamped()
         self.global_target = None
 
+        self.vehicle = sys.argv[1]
         self.arm_state = False
         self.offboard_state = False
         self.flag = 0
         self.flight_mode = None
+        
 
         '''
         ros subscribers
@@ -79,7 +82,7 @@ class PX4Communication:
 
                     self.flight_mode = "DISARMED"
             try:
-                response = self.gazeboModelstate ('iris','ground_plane')
+                response = self.gazeboModelstate (self.vehicle,'ground_plane')
             except rospy.ServiceException, e:
                 print "Gazebo model state service call failed: %s"%e
             odom = Odometry()

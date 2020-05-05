@@ -42,8 +42,8 @@ class PX4Communication:
         self.cmd_pose_enu_sub = rospy.Subscriber("/xtdrone/"+"uav"+str(self.id)+"/cmd_pose_enu", Pose, self.cmd_pose_enu_callback)
         self.cmd_vel_flu_sub = rospy.Subscriber("/xtdrone/"+"uav"+str(self.id)+"/cmd_vel_flu", Twist, self.cmd_vel_flu_callback)
         self.cmd_vel_enu_sub = rospy.Subscriber("/xtdrone/"+"uav"+str(self.id)+"/cmd_vel_enu", Twist, self.cmd_vel_enu_callback)
-        self.cmd_vel_flu_sub = rospy.Subscriber("/xtdrone/"+"uav"+str(self.id)+"/cmd_accel_flu", Vector3, self.cmd_accel_flu_callback)
-        self.cmd_vel_enu_sub = rospy.Subscriber("/xtdrone/"+"uav"+str(self.id)+"/cmd_accel_enu", Vector3, self.cmd_accel_enu_callback)
+        self.cmd_accel_flu_sub = rospy.Subscriber("/xtdrone/"+"uav"+str(self.id)+"/cmd_accel_flu", Vector3, self.cmd_accel_flu_callback)
+        self.cmd_accel_enu_sub = rospy.Subscriber("/xtdrone/"+"uav"+str(self.id)+"/cmd_accel_enu", Vector3, self.cmd_accel_enu_callback)
         self.cmd_sub = rospy.Subscriber("/xtdrone/"+"uav"+str(self.id)+"/cmd",String,self.cmd_callback)
 
         ''' 

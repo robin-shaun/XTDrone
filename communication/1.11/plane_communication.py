@@ -4,6 +4,7 @@ import yaml
 from mavros_msgs.msg import GlobalPositionTarget, PositionTarget
 from mavros_msgs.srv import CommandBool, CommandVtolTransition, SetMode
 from geometry_msgs.msg import PoseStamped, Pose
+from nav_msgs.msg import Odometry
 from gazebo_msgs.srv import GetModelState
 from sensor_msgs.msg import Imu, NavSatFix
 from std_msgs.msg import String
@@ -43,6 +44,7 @@ class Communication:
         ros publishers
         '''
         self.target_motion_pub = rospy.Publisher(self.vehicle_type+self.vehicle_id+"/mavros/setpoint_raw/local", PositionTarget, queue_size=10)
+        self.odom_groundtruth_pub = rospy.Publisher('/xtdrone/'+self.vehicle_type+self.vehicle_id+'ground_truth/odom', Odometry, queue_size=10)
 
         '''
         ros services
@@ -65,6 +67,11 @@ class Communication:
                 response = self.gazeboModelstate (self.vehicle_type+'_'+self.vehicle_id,'ground_plane')
             except rospy.ServiceException, e:
                 print "Gazebo model state service call failed: %s"%e
+            odom = Odometry()
+            odom.header = response.header
+            odom.pose.pose = response.pose
+            odom.twist.twist = response.twist
+            self.odom_groundtruth_pub.publish(odom)
             if (self.flight_mode is "LAND") and (self.local_pose.pose.position.z < 0.15):
                 if(self.disarm()):
                     self.flight_mode = "DISARMED"
@@ -109,9 +116,7 @@ class Communication:
             print(self.vehicle_type+self.vehicle_id+": "+'armed'+str(self.arm_state))
 
         elif msg.data == 'DISARM':
-            disarm_state =self.disarm()
-            if disarm_state:
-                self.arm_state = False
+            self.arm_state = not self.disarm()
             print(self.vehicle_type+self.vehicle_id+": "+'armed'+str(self.arm_state))
 
         elif msg.data == 'takeoff' or msg.data == 'land' or msg.data == 'loiter' or msg.data == 'idle':

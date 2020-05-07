@@ -3,7 +3,8 @@ import tf
 import yaml
 from mavros_msgs.msg import GlobalPositionTarget, State, PositionTarget
 from mavros_msgs.srv import CommandBool, CommandVtolTransition, SetMode
-from geometry_msgs.msg import PoseStamped, Pose, TwistStamped, Twist, Vector3Stamped, Vector3
+from geometry_msgs.msg import PoseStamped, Pose, Twist
+from nav_msgs.msg import Odometry
 from gazebo_msgs.srv import GetModelState
 from sensor_msgs.msg import Imu, NavSatFix
 from std_msgs.msg import String
@@ -28,6 +29,8 @@ class Communication:
         self.motion_type = 0
         self.flight_mode = None
         self.mission = None
+        self.motion_type = 1
+        self.coordinate_frame = 1
             
         '''
         ros subscribers
@@ -45,6 +48,7 @@ class Communication:
         ros publishers
         '''
         self.target_motion_pub = rospy.Publisher(self.vehicle_type+self.vehicle_id+"/mavros/setpoint_raw/local", PositionTarget, queue_size=10)
+        self.odom_groundtruth_pub = rospy.Publisher('/xtdrone/'+self.vehicle_type+self.vehicle_id+'ground_truth/odom', Odometry, queue_size=10)
 
         '''
         ros services
@@ -67,6 +71,11 @@ class Communication:
                 response = self.gazeboModelstate (self.vehicle_type+'_'+self.vehicle_id,'ground_plane')
             except rospy.ServiceException, e:
                 print "Gazebo model state service call failed: %s"%e
+            odom = Odometry()
+            odom.header = response.header
+            odom.pose.pose = response.pose
+            odom.twist.twist = response.twist
+            self.odom_groundtruth_pub.publish(odom)
             if (self.flight_mode is "LAND") and (self.local_pose.pose.position.z < 0.15):
                 if(self.disarm()):
                     self.flight_mode = "DISARMED"
@@ -79,9 +88,9 @@ class Communication:
     def mavros_state_callback(self, msg):
         self.mavros_state = msg.mode
 
-    def construct_target(self, x=0, y=0, z=0, vx=0, vy=0, vz=0, yaw=0, coordinate_frame=1, motion_type=1):
+    def construct_target(self, x=0, y=0, z=0, vx=0, vy=0, vz=0, yaw=0):
         target_raw_pose = PositionTarget()
-        target_raw_pose.coordinate_frame = coordinate_frame 
+        target_raw_pose.coordinate_frame = self.coordinate_frame 
 
         target_raw_pose.position.x = x
         target_raw_pose.position.y = y
@@ -93,10 +102,10 @@ class Communication:
 
         target_raw_pose.yaw = yaw
 
-        if(motion_type == 0):
+        if(self.motion_type == 0):
             target_raw_pose.type_mask = PositionTarget.IGNORE_VX + PositionTarget.IGNORE_VY + PositionTarget.IGNORE_VZ \
                             + PositionTarget.IGNORE_AFX + PositionTarget.IGNORE_AFY + PositionTarget.IGNORE_AFZ + PositionTarget.IGNORE_YAW_RATE
-        if(motion_type == 1):
+        if(self.motion_type == 1):
             target_raw_pose.type_mask = PositionTarget.IGNORE_PX + PositionTarget.IGNORE_PY + PositionTarget.IGNORE_PZ \
                             + PositionTarget.IGNORE_AFX + PositionTarget.IGNORE_AFY + PositionTarget.IGNORE_AFZ \
                             + PositionTarget.IGNORE_YAW_RATE
@@ -104,16 +113,24 @@ class Communication:
         return target_raw_pose
 
     def cmd_pose_flu_callback(self, msg):
-        self.target_motion = self.construct_target(x=msg.position.x,y=msg.position.y,z=msg.position.z,yaw=0,coordinate_frame=9,motion_type=0)
+        self.coordinate_frame=9
+        self.motion_type=0
+        self.target_motion = self.construct_target(x=msg.position.x,y=msg.position.y,z=msg.position.z,yaw=0)
  
     def cmd_pose_enu_callback(self, msg):
-        self.target_motion = self.construct_target(x=msg.position.x,y=msg.position.y,z=msg.position.z,yaw=0,coordinate_frame=1,motion_type=0)
+        self.coordinate_frame=1
+        self.motion_type=0
+        self.target_motion = self.construct_target(x=msg.position.x,y=msg.position.y,z=msg.position.z,yaw=0)
 
     def cmd_vel_flu_callback(self, msg):
-        self.target_motion = self.construct_target(vx=msg.linear.x,vy=msg.linear.y,vz=msg.linear.z,yaw=0,coordinate_frame=8,motion_type=1)
+        self.coordinate_frame=8
+        self.motion_type=1
+        self.target_motion = self.construct_target(vx=msg.linear.x,vy=msg.linear.y,vz=msg.linear.z,yaw=0)
  
     def cmd_vel_enu_callback(self, msg):
-        self.target_motion = self.construct_target(vx=msg.linear.x,vy=msg.linear.y,vz=msg.linear.z,yaw=0,coordinate_frame=1,motion_type=1)
+        self.coordinate_frame=1
+        self.motion_type=1
+        self.target_motion = self.construct_target(vx=msg.linear.x,vy=msg.linear.y,vz=msg.linear.z,yaw=0)
 
     def cmd_callback(self, msg):
         if msg.data == '':
@@ -124,9 +141,7 @@ class Communication:
             print(self.vehicle_type+self.vehicle_id+": "+'armed'+str(self.arm_state))
 
         elif msg.data == 'DISARM':
-            disarm_state =self.disarm()
-            if disarm_state:
-                self.arm_state = False
+            self.arm_state =not self.disarm()
             print(self.vehicle_type+self.vehicle_id+": "+'armed'+str(self.arm_state))
 
         elif msg.data[:-1] == "mission" and not msg.data == self.mission:
@@ -136,12 +151,6 @@ class Communication:
         elif not msg.data == self.flight_mode:
             self.flight_mode = msg.data
             self.flight_mode_switch()
-            
-
-    def flu2enu(self, x_flu, y_flu):
-        x_enu =  x_flu*math.cos(self.current_heading)-y_flu*math.sin(self.current_heading)
-        y_enu =  x_flu*math.sin(self.current_heading)+y_flu*math.cos(self.current_heading)
-        return x_enu, y_enu
 
     def arm(self):
         if self.armService(True):

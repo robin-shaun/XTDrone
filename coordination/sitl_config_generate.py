@@ -1,6 +1,31 @@
 #The number of drones
 import sys
 uav_num=int(sys.argv[1])
+
+welcome_msg = 
+"""
+                      ,----,                                                      
+                    ,/   .`|                                                      
+ ,--,     ,--,    ,`   .'  :   ,---,                                              
+ |'. \   / .`|  ;    ;     / .'  .' `\                                            
+ ; \ `\ /' / ;.'___,/    ,',---.'     \   __  ,-.   ,---.        ,---,            
+ `. \  /  / .'|    :     | |   |  .`\  |,' ,'/ /|  '   ,'\   ,-+-. /  |           
+  \  \/  / ./ ;    |.';  ; :   : |  '  |'  | |' | /   /   | ,--.'|'   |   ,---.   
+   \  \.'  /  `----'  |  | |   ' '  ;  :|  |   ,'.   ; ,. :|   |  ,"' |  /     \  
+    \  ;  ;       '   :  ; '   | ;  .  |'  :  /  '   | |: :|   | /  | | /    /  | 
+   / \  \  \      |   |  ' |   | :  |  '|  | '   '   | .; :|   | |  | |.    ' / | 
+  ;  /\  \  \     '   :  | '   : | /  ; ;  : |   |   :    ||   | |  |/ '   ;   /| 
+./__;  \  ;  \    ;   |.'  |   | '` ,/  |  , ;    \   \  / |   | |--'  '   |  / | 
+|   : / \  \  ;   '---'    ;   :  .'     ---'      `----'  |   |/      |   :    | 
+;   |/   \  ' |            |   ,.'                         '---'        \   \  /  
+`---'     `--`             '---'                                         `----'   
+                                                                                  
+Welcome to use the XTDrone multi-vehicle launch file generator!
+
+
+"""
+
+
 ekf_dir="./ekf2_config/"
 launch_dir="./launch/"
 with open('launch_head','r') as f:
@@ -22,6 +47,14 @@ with open('ekf2_temp','r') as f:
     for line in f.readlines():
         if line!='\n':
          ekf2lines.append(line)
+
+with open('launch_head_1.11','r') as f:
+    launch_head_1_11=[]
+    launch_head_1_11=f.read()
+with open('launch_temp_1.11','r') as f:
+    launch_lines_1_11=[]
+    for line in f.readlines():
+         launch_lines_1_11.append(line)
 
 
 for num in range(1,uav_num+1):
@@ -94,7 +127,7 @@ with open('./launch/multi_uav.launch','w') as f:
     f.write('</launch>')
     print ".launch for 1.8  down"
 
-
+# 生成1.9版本的launch文件
 with open('./launch_1.9/multi_uav.launch','w') as f:
     f.write(launch_head_1_9)
     for num in range(1,uav_num):
@@ -126,6 +159,41 @@ with open('./launch_1.9/multi_uav.launch','w') as f:
             
     f.write('</launch>')
     print ".launch for 1.9 down"      
+
+
+# 生成1.9版本的launch文件
+vehicle_name = []
+with open('./launch_1.9/multi_uav.launch','w') as f:
+    f.write(launch_head_1_11)
+    for num in range(1,uav_num):
+        mavlink_1=34570-1+num*2
+        mavlink_2=mavlink_1+1
+        onboard=14540+num
+        SITL=24560+(num)*2
+        TCP=4560+num
+        for line in launch_lines_1_9:
+            if "<!-- UAV" in line:
+                f.write("     <!-- UAV%d-->\n" %num)
+            elif "<group ns" in line:
+                f.write('''     <group ns="%s_%d">\n''' %(vehicle_name[num],num))
+            elif '''<arg name="ID" value="1"/>''' in line:
+                f.write('''        <arg name="ID" value="%d"/>\n''' %num)
+            elif "udp://:" in line:
+                f.write('''        <arg name="fcu_url" default="udp://:%d@127.0.0.1:%d"/>\n''' %(onboard,mavlink_2))
+            elif "mavlink_udp_port" in line:
+                f.write('''            <arg name="mavlink_udp_port" value="%d"/>\n'''%SITL)
+            elif "mavlink_tcp_port" in line:
+                f.write('''            <arg name="mavlink_tcp_port" value="%d"/>\n'''%TCP)
+            elif '''name="x"''' in line:
+                f.write('''            <arg name="x" value="0"/>\n''')
+            elif '''name="y"''' in line:
+                f.write('''            <arg name="y" value="%d"/>\n''' %( (2*(num%2)-1 )*(num) ) )
+            else:
+                f.write('%s' %line)
+        f.write("\n")
+            
+    f.write('</launch>')
+    print ".launch for 1.9 down"   
 
 
 

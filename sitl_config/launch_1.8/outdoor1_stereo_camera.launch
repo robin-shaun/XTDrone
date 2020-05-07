@@ -10,15 +10,13 @@
     <arg name="P" default="0"/>
     <arg name="Y" default="0"/>
     <!-- vehicle model and world -->
-    <arg name="est" default="ekf2"/>
-    <arg name="vehicle" default="iris"/>
-    <arg name="world" default="$(find mavlink_sitl_gazebo)/worlds/indoor3.world"/>
-    <arg name="sdf" default="$(find mavlink_sitl_gazebo)/models/iris_3d_gpu_lidar/iris_3d_gpu_lidar.sdf"/>
-
+    <arg name="world" default="$(find mavlink_sitl_gazebo)/worlds/outdoor1.world"/>
+    <arg name="sdf" default="$(find mavlink_sitl_gazebo)/models/iris_stereo_camera/iris_stereo_camera.sdf"/>
+    <arg name="rcS" default="$(find px4)/posix-configs/SITL/init/ekf2/iris_gps_mag_available"/>
     <!-- gazebo configs -->
     <arg name="gui" default="true"/>
     <arg name="debug" default="false"/>
-    <arg name="verbose" default="false"/>
+    <arg name="verbose" default="true"/>
     <arg name="paused" default="false"/>
     <arg name="respawn_gazebo" default="false"/>
     <!-- MAVROS configs -->
@@ -35,8 +33,8 @@
         <arg name="P" value="$(arg P)"/>
         <arg name="Y" value="$(arg Y)"/>
         <arg name="world" value="$(arg world)"/>
-        <arg name="vehicle" value="$(arg vehicle)"/>
         <arg name="sdf" value="$(arg sdf)"/>
+        <arg name="rcS" value="$(arg rcS)"/>
         <arg name="gui" value="$(arg gui)"/>
         <arg name="interactive" value="$(arg interactive)"/>
         <arg name="debug" value="$(arg debug)"/>

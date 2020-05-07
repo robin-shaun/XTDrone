@@ -63,6 +63,7 @@
         </ray>
      
  	<plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
+         <robotNamespace></robotNamespace>
          <topicName>/scan</topicName>
          <frameName>laser</frameName>
   </plugin>

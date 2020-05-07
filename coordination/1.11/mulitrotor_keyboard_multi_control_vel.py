@@ -5,7 +5,7 @@ import tty, termios
 from std_msgs.msg import String
 
 
-MAX_LIN_VEL = 20
+MAX_LIN_VEL = 10
 MAX_ANG_VEL = 0.1
 LIN_VEL_STEP_SIZE = 0.1
 ANG_VEL_STEP_SIZE = 0.01
@@ -116,13 +116,14 @@ if __name__=="__main__":
 
     settings = termios.tcgetattr(sys.stdin)
 
-    rover_num = int(sys.argv[1])
-    rospy.init_node('keyboard_control')
-    multi_cmd_vel_flu_pub = [None]*rover_num
-    multi_cmd_pub = [None]*rover_num
-    for i in range(rover_num):
-        multi_cmd_vel_flu_pub[i] = rospy.Publisher('/xtdrone/rover'+str(i)+'/cmd_vel_flu', Twist, queue_size=10)
-        multi_cmd_pub[i] = rospy.Publisher('/xtdrone/rover'+str(i)+'/cmd',String,queue_size=10)
+    multirotor_type = sys.argv[1]
+    multirotor_num = int(sys.argv[2])
+    rospy.init_node('multirotor_keyboard_multi_control')
+    multi_cmd_vel_flu_pub = [None]*multirotor_num
+    multi_cmd_pub = [None]*multirotor_num
+    for i in range(multirotor_num):
+        multi_cmd_vel_flu_pub[i] = rospy.Publisher('/xtdrone/'+multirotor_type+str(i)+'/cmd_vel_flu', Twist, queue_size=10)
+        multi_cmd_pub[i] = rospy.Publisher('/xtdrone/'+multirotor_type+str(i)+'/cmd',String,queue_size=10)
     leader_cmd_vel_pub = rospy.Publisher("/xtdrone/leader/cmd_vel", Twist, queue_size=10)
     leader_cmd_pub = rospy.Publisher("/xtdrone/leader_cmd", String, queue_size=10)
     cmd= String()
@@ -240,7 +241,7 @@ if __name__=="__main__":
             control_angular_vel = makeSimpleProfile(control_angular_vel, target_angular_vel, (ANG_VEL_STEP_SIZE/2.0))
             twist.angular.x = 0.0; twist.angular.y = 0.0;  twist.angular.z = control_angular_vel
 
-            for i in range(rover_num):
+            for i in range(multirotor_num):
                 if ctrl_leader:
                     leader_cmd_vel_pub.publish(twist)
                     leader_cmd_pub.publish(cmd)
@@ -257,7 +258,7 @@ if __name__=="__main__":
         twist.linear.x = 0.0; twist.linear.y = 0.0; twist.linear.z = 0.0
         twist.angular.x = 0.0; twist.angular.y = 0.0; twist.angular.z = 0.0
         cmd = ''
-        for i in range(rover_num):
+        for i in range(multirotor_num):
                 multi_cmd_vel_flu_pub[i].publish(twist)
                 multi_cmd_pub[i].publish(cmd)
 

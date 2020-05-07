@@ -25,7 +25,6 @@ class Communication:
         self.target_motion = PositionTarget()
         self.global_target = None
         self.arm_state = False
-        self.offboard_state = False
         self.motion_type = 0
         self.flight_mode = None
         self.mission = None
@@ -35,7 +34,6 @@ class Communication:
         '''
         self.local_pose_sub = rospy.Subscriber(self.vehicle_type+self.vehicle_id+"/mavros/local_position/pose", PoseStamped, self.local_pose_callback)
         self.mavros_sub = rospy.Subscriber(self.vehicle_type+self.vehicle_id+"/mavros/state", State, self.mavros_state_callback)
-        self.imu_sub = rospy.Subscriber(self.vehicle_type+self.vehicle_id+"/mavros/imu/data", Imu, self.imu_callback)
         self.cmd_pose_flu_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+self.vehicle_id+"/cmd_pose_flu", Pose, self.cmd_pose_flu_callback)
         self.cmd_pose_enu_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+self.vehicle_id+"/cmd_pose_enu", Pose, self.cmd_pose_enu_callback)
         self.cmd_vel_flu_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+self.vehicle_id+"/cmd_vel_flu", Twist, self.cmd_vel_flu_callback)
@@ -81,9 +79,6 @@ class Communication:
     def mavros_state_callback(self, msg):
         self.mavros_state = msg.mode
 
-    def imu_callback(self, msg):
-        self.current_heading = self.q2yaw(msg.orientation)
-
     def construct_target(self, x=0, y=0, z=0, vx=0, vy=0, vz=0, yaw=0, coordinate_frame=1, motion_type=1):
         target_raw_pose = PositionTarget()
         target_raw_pose.coordinate_frame = coordinate_frame 
@@ -100,25 +95,25 @@ class Communication:
 
         if(motion_type == 0):
             target_raw_pose.type_mask = PositionTarget.IGNORE_VX + PositionTarget.IGNORE_VY + PositionTarget.IGNORE_VZ \
-                            + PositionTarget.IGNORE_AFX + PositionTarget.IGNORE_AFY + PositionTarget.IGNORE_AFZ 
+                            + PositionTarget.IGNORE_AFX + PositionTarget.IGNORE_AFY + PositionTarget.IGNORE_AFZ + PositionTarget.IGNORE_YAW_RATE
         if(motion_type == 1):
             target_raw_pose.type_mask = PositionTarget.IGNORE_PX + PositionTarget.IGNORE_PY + PositionTarget.IGNORE_PZ \
                             + PositionTarget.IGNORE_AFX + PositionTarget.IGNORE_AFY + PositionTarget.IGNORE_AFZ \
-                            + IGNORE_YAW_RATE
+                            + PositionTarget.IGNORE_YAW_RATE
 
         return target_raw_pose
 
     def cmd_pose_flu_callback(self, msg):
-        self.target_motion = self.construct_target(x=msg.position.x,y=msg.position.y,z=msg.position.z,yaw=msg.angular.z,coordinate_frame=9,motion_type=0)
+        self.target_motion = self.construct_target(x=msg.position.x,y=msg.position.y,z=msg.position.z,yaw=0,coordinate_frame=9,motion_type=0)
  
     def cmd_pose_enu_callback(self, msg):
-        self.target_motion = self.construct_target(x=msg.position.x,y=msg.position.y,z=msg.position.z,yaw=msg.angular.z,coordinate_frame=1,motion_type=0)
+        self.target_motion = self.construct_target(x=msg.position.x,y=msg.position.y,z=msg.position.z,yaw=0,coordinate_frame=1,motion_type=0)
 
     def cmd_vel_flu_callback(self, msg):
-        self.target_motion = self.construct_target(vx=msg.linear.x,vy=msg.linear.y,vz=msg.linear.z,yaw=msg.angular.z,coordinate_frame=8,motion_type=1)
+        self.target_motion = self.construct_target(vx=msg.linear.x,vy=msg.linear.y,vz=msg.linear.z,yaw=0,coordinate_frame=8,motion_type=1)
  
     def cmd_vel_enu_callback(self, msg):
-        self.target_motion = self.construct_target(vx=msg.linear.x,vy=msg.linear.y,vz=msg.linear.z,yaw=msg.angular.z,coordinate_frame=1,motion_type=1)
+        self.target_motion = self.construct_target(vx=msg.linear.x,vy=msg.linear.y,vz=msg.linear.z,yaw=0,coordinate_frame=1,motion_type=1)
 
     def cmd_callback(self, msg):
         if msg.data == '':
@@ -143,26 +138,10 @@ class Communication:
             self.flight_mode_switch()
             
 
-    def q2yaw(self, q):
-        if isinstance(q, Quaternion):
-            rotate_z_rad = q.yaw_pitch_roll[0]
-        else:
-            q_ = Quaternion(q.w, q.x, q.y, q.z)
-            rotate_z_rad = q_.yaw_pitch_roll[0]
-
-        return rotate_z_rad
-
     def flu2enu(self, x_flu, y_flu):
         x_enu =  x_flu*math.cos(self.current_heading)-y_flu*math.sin(self.current_heading)
         y_enu =  x_flu*math.sin(self.current_heading)+y_flu*math.cos(self.current_heading)
         return x_enu, y_enu
-
-    def cmd_yaw(self, yaw):
-        quaternion = tf.transformations.quaternion_from_euler(0, 0, yaw)
-        self.target_pose.pose.orientation.x = quaternion[0]
-        self.target_pose.pose.orientation.y = quaternion[1]
-        self.target_pose.pose.orientation.z = quaternion[2]
-        self.target_pose.pose.orientation.w = quaternion[3]
 
     def arm(self):
         if self.armService(True):
@@ -180,7 +159,6 @@ class Communication:
 
     def flight_mode_switch(self):
         if self.flightModeService(custom_mode=self.flight_mode):
-            self.hover_flag = 0
             print(self.vehicle_type+self.vehicle_id+": "+self.flight_mode)
             return True
         else:

@@ -15,9 +15,9 @@ import sys
 
 class Communication:
 
-    def __init__(self, vehicle_id):
+    def __init__(self, vehicle_type, vehicle_id):
         
-        self.vehicle_type = 'plane'
+        self.vehicle_type = vehicle_type
         self.vehicle_id = vehicle_id
         self.imu = None
         self.local_pose = None
@@ -143,6 +143,6 @@ class Communication:
             return False
 
 if __name__ == '__main__':
-    communication = Communication(sys.argv[1])
+    communication = Communication(sys.argv[1],sys.argv[2])
     communication.start()
 

@@ -18,7 +18,7 @@ class Communication:
 
     def __init__(self, vehicle_id):
         
-        if vehicle_type == 'iris' or 'typhoon' or 'solo':
+        if vehicle_type == 'iris' or vehicle_type == 'typhoon' or vehicle_type == 'solo':
             self.vehicle_type = vehicle_type
         else:
             print('only support iris, typhoon and solo for multirotors')

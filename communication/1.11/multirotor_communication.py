@@ -3,7 +3,7 @@ import tf
 import yaml
 from mavros_msgs.msg import GlobalPositionTarget, State, PositionTarget
 from mavros_msgs.srv import CommandBool, CommandVtolTransition, SetMode
-from geometry_msgs.msg import PoseStamped, Pose, TwistStamped, Twist, Vector3Stamped, Vector3
+from geometry_msgs.msg import PoseStamped, Pose, Twist
 from gazebo_msgs.srv import GetModelState
 from nav_msgs.msg import Odometry
 from sensor_msgs.msg import Imu, NavSatFix
@@ -16,19 +16,14 @@ import sys
 
 class Communication:
 
-    def __init__(self, vehicle_id):
+    def __init__(self, vehicle_type, vehicle_id):
         
-        if vehicle_type == 'iris' or vehicle_type == 'typhoon' or vehicle_type == 'solo':
-            self.vehicle_type = vehicle_type
-        else:
-            print('only support iris, typhoon and solo for multirotors')
-            sys.exit()
+        self.vehicle_type = vehicle_type
         self.vehicle_id = vehicle_id
         self.imu = None
         self.local_pose = None
         self.current_state = None
-        self.current_heading = None
-        self.takeoff_height = 1
+        self.current_heading = None 
         self.hover_flag = 0
         self.target_motion = PositionTarget()
         self.global_target = None
@@ -51,15 +46,14 @@ class Communication:
         self.cmd_pose_enu_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+str(self.vehicle_id)+"/cmd_pose_enu", Pose, self.cmd_pose_enu_callback)
         self.cmd_vel_flu_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+str(self.vehicle_id)+"/cmd_vel_flu", Twist, self.cmd_vel_flu_callback)
         self.cmd_vel_enu_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+str(self.vehicle_id)+"/cmd_vel_enu", Twist, self.cmd_vel_enu_callback)
-        self.cmd_accel_flu_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+str(self.vehicle_id)+"/cmd_accel_flu", Vector3, self.cmd_accel_flu_callback)
-        self.cmd_accel_enu_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+str(self.vehicle_id)+"/cmd_accel_enu", Vector3, self.cmd_accel_enu_callback)
-        self.odom_groundtruth_pub = rospy.Publisher('/xtdrone/ground_truth/odom', Odometry, queue_size=10)
+        self.cmd_accel_flu_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+str(self.vehicle_id)+"/cmd_accel_flu", Twist, self.cmd_accel_flu_callback)
+        self.cmd_accel_enu_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+str(self.vehicle_id)+"/cmd_accel_enu", Twist, self.cmd_accel_enu_callback)
             
         ''' 
         ros publishers
         '''
         self.target_motion_pub = rospy.Publisher(self.vehicle_type+self.vehicle_id+"/mavros/setpoint_raw/local", PositionTarget, queue_size=10)
-        self.odom_groundtruth_pub = rospy.Publisher('/xtdrone/ground_truth/odom', Odometry, queue_size=10)
+        self.odom_groundtruth_pub = rospy.Publisher('/xtdrone/'+self.vehicle_type+self.vehicle_id+'ground_truth/odom', Odometry, queue_size=10)
 
         '''
         ros services
@@ -67,13 +61,8 @@ class Communication:
         self.armService = rospy.ServiceProxy(self.vehicle_type+self.vehicle_id+"/mavros/cmd/arming", CommandBool)
         self.flightModeService = rospy.ServiceProxy(self.vehicle_type+self.vehicle_id+"/mavros/set_mode", SetMode)
         self.gazeboModelstate = rospy.ServiceProxy('gazebo/get_model_state', GetModelState)
-        if self.vehicle_type == 'tiltrotor' or 'tailsitter' or 'standard_vtol':
-            self.transition = rospy.ServiceProxy('/mavros/cmd/vtol_transition', CommandVtolTransition)
-            self.transition_state = 'multirotor'
-            print(self.transition(state = 3))
 
         print(self.vehicle_type+self.vehicle_id+": "+"communication initialized")
-
 
     def start(self):
         rospy.init_node(self.vehicle_type+self.vehicle_id+"_communication")
@@ -89,7 +78,7 @@ class Communication:
                     self.flight_mode = "DISARMED"
                     
             try:
-                response = self.gazeboModelstate (self.vehicle+self.vehicle_id,'ground_plane')
+                response = self.gazeboModelstate (self.vehicle_type+'_'+self.vehicle_id,'ground_plane')
             except rospy.ServiceException, e:
                 print "Gazebo model state service call failed: %s"%e
             odom = Odometry()
@@ -110,75 +99,70 @@ class Communication:
         self.current_heading = self.q2yaw(msg.orientation)
 
     def construct_target(self, x=0, y=0, z=0, vx=0, vy=0, vz=0, afx=0, afy=0, afz=0, yaw=0, yaw_rate=0):
-        if self.vehicle_type == 'iris' or self.vehicle_type = 'solo' or self.vehicle_type = 'typhoon': 
-            target_raw_pose = PositionTarget()
-            target_raw_pose.coordinate_frame = 1
+        target_raw_pose = PositionTarget()
+        target_raw_pose.coordinate_frame = self.coordinate_frame
 
-            target_raw_pose.position.x = x
-            target_raw_pose.position.y = y
-            target_raw_pose.position.z = z
+        target_raw_pose.position.x = x
+        target_raw_pose.position.y = y
+        target_raw_pose.position.z = z
 
-            target_raw_pose.velocity.x = vx
-            target_raw_pose.velocity.y = vy
-            target_raw_pose.velocity.z = vz
-            
-            target_raw_pose.acceleration_or_force.x = afx
-            target_raw_pose.acceleration_or_force.y = afy
-            target_raw_pose.acceleration_or_force.z = afz
+        target_raw_pose.velocity.x = vx
+        target_raw_pose.velocity.y = vy
+        target_raw_pose.velocity.z = vz
+        
+        target_raw_pose.acceleration_or_force.x = afx
+        target_raw_pose.acceleration_or_force.y = afy
+        target_raw_pose.acceleration_or_force.z = afz
 
-            target_raw_pose.yaw = yaw
-            target_raw_pose.yaw_rate = yaw_rate
+        target_raw_pose.yaw = yaw
+        target_raw_pose.yaw_rate = yaw_rate
 
-            if(self.motion_type == 0):
-                target_raw_pose.type_mask = PositionTarget.IGNORE_VX + PositionTarget.IGNORE_VY + PositionTarget.IGNORE_VZ \
-                                + PositionTarget.IGNORE_AFX + PositionTarget.IGNORE_AFY + PositionTarget.IGNORE_AFZ \
-                                + PositionTarget.IGNORE_YAW
-            if(self.motion_type == 1):
-                target_raw_pose.type_mask = PositionTarget.IGNORE_PX + PositionTarget.IGNORE_PY + PositionTarget.IGNORE_PZ \
-                                + PositionTarget.IGNORE_AFX + PositionTarget.IGNORE_AFY + PositionTarget.IGNORE_AFZ \
-                                + PositionTarget.IGNORE_YAW
-            if(self.motion_type == 2):
-                target_raw_pose.type_mask = PositionTarget.IGNORE_PX + PositionTarget.IGNORE_PY + PositionTarget.IGNORE_PZ \
-                                + PositionTarget.IGNORE_VX + PositionTarget.IGNORE_VY + PositionTarget.IGNORE_VZ \
-                                + PositionTarget.IGNORE_YAW
+        if(self.motion_type == 0):
+            target_raw_pose.type_mask = PositionTarget.IGNORE_VX + PositionTarget.IGNORE_VY + PositionTarget.IGNORE_VZ \
+                            + PositionTarget.IGNORE_AFX + PositionTarget.IGNORE_AFY + PositionTarget.IGNORE_AFZ \
+                            + PositionTarget.IGNORE_YAW
+        if(self.motion_type == 1):
+            target_raw_pose.type_mask = PositionTarget.IGNORE_PX + PositionTarget.IGNORE_PY + PositionTarget.IGNORE_PZ \
+                            + PositionTarget.IGNORE_AFX + PositionTarget.IGNORE_AFY + PositionTarget.IGNORE_AFZ \
+                            + PositionTarget.IGNORE_YAW
+        if(self.motion_type == 2):
+            target_raw_pose.type_mask = PositionTarget.IGNORE_PX + PositionTarget.IGNORE_PY + PositionTarget.IGNORE_PZ \
+                            + PositionTarget.IGNORE_VX + PositionTarget.IGNORE_VY + PositionTarget.IGNORE_VZ \
+                            + PositionTarget.IGNORE_YAW
 
         return target_raw_pose
 
     def cmd_pose_flu_callback(self, msg):
-        self.motion_type = 0
-        target_x_enu, target_y_enu = self.flu2enu(msg.position.x, msg.position.y)
-        target_z_enu = msg.position.z
-        #target_yaw = self.q2yaw(msg.orientation)+self.current_heading
-        self.target_motion = self.construct_target(x=target_x_enu,y=target_y_enu,z=target_z_enu)
+        self.coordinate_frame = 9
+        self.target_motion = self.construct_target(x=msg.position.x,y=msg.position.y,z=msg.position.z)
  
     def cmd_pose_enu_callback(self, msg):
-        self.motion_type = 0
-        #target_yaw = self.q2yaw(msg.orientation)+self.current_heading
+        self.coordinate_frame = 1
         self.target_motion = self.construct_target(x=msg.position.x,y=msg.position.y,z=msg.position.z)
-
+        
     def cmd_vel_flu_callback(self, msg):
         if self.hover_flag == 0:
-            self.motion_type = 1
-            target_vx_enu, target_vy_enu = self.flu2enu(msg.linear.x, msg.linear.y)
-            target_vz_enu = msg.linear.z
-            target_yaw_rate = msg.angular.z
-            self.target_motion = self.construct_target(vx=target_vx_enu,vy=target_vy_enu,vz=target_vz_enu,yaw_rate=target_yaw_rate)
+            self.coordinate_frame = 8
+            self.motion_type = 1     
+            self.target_motion = self.construct_target(vx=msg.linear.x,vy=msg.linear.y,vz=msg.linear.z,yaw_rate=msg.angular.z)       
  
     def cmd_vel_enu_callback(self, msg):
         if self.hover_flag == 0:
+            self.coordinate_frame = 1
             self.motion_type = 1
             self.target_motion = self.construct_target(vx=msg.linear.x,vy=msg.linear.y,vz=msg.linear.z,yaw_rate=msg.angular.z)
 
     def cmd_accel_flu_callback(self, msg):
         if self.hover_flag == 0:
+            self.coordinate_frame = 8
             self.motion_type = 2
-            target_afx_enu, target_afy_enu = self.flu2enu(msg.x, msg.y)
-            target_afz_enu = msg.z
-            self.target_motion = self.construct_target(afx=target_afx_enu,afy=target_afy_enu,afz=target_afz_enu)
+            self.target_motion = self.construct_target(afx=msg.linear.x,afy=msg.linear.y,afz=msg.linear.z,yaw_rate=msg.angular.z)
+            
     def cmd_accel_enu_callback(self, msg):
         if self.hover_flag == 0:
+            self.coordinate_frame = 1 
             self.motion_type = 2
-            self.target_motion = self.construct_target(afx=msg.x,afy=msg.y,afz=msg.z)
+            self.target_motion = self.construct_target(afx=msg.linear.x,afy=msg.linear.x,afz=msg.linear.x,yaw_rate=msg.angular.z)
 
     def cmd_callback(self, msg):
         if msg.data == '':
@@ -189,9 +173,7 @@ class Communication:
             print(self.vehicle_type+self.vehicle_id+": "+'armed'+str(self.arm_state))
 
         elif msg.data == 'DISARM':
-            disarm_state =self.disarm()
-            if disarm_state:
-                self.arm_state = False
+            dself.arm_state = not self.disarm()
             print(self.vehicle_type+self.vehicle_id+": "+'armed'+str(self.arm_state))
 
         elif msg.data[:-1] == "mission" and not msg.data == self.mission:
@@ -211,19 +193,7 @@ class Communication:
             rotate_z_rad = q_.yaw_pitch_roll[0]
 
         return rotate_z_rad
-
-    def flu2enu(self, x_flu, y_flu):
-        x_enu =  x_flu*math.cos(self.current_heading)-y_flu*math.sin(self.current_heading)
-        y_enu =  x_flu*math.sin(self.current_heading)+y_flu*math.cos(self.current_heading)
-        return x_enu, y_enu
-
-    def cmd_yaw(self, yaw):
-        quaternion = tf.transformations.quaternion_from_euler(0, 0, yaw)
-        self.target_pose.pose.orientation.x = quaternion[0]
-        self.target_pose.pose.orientation.y = quaternion[1]
-        self.target_pose.pose.orientation.z = quaternion[2]
-        self.target_pose.pose.orientation.w = quaternion[3]
-
+    
     def arm(self):
         if self.armService(True):
             return True

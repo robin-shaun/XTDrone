@@ -1,5 +1,5 @@
 import rospy
-from geometry_msgs.msg import Pose
+from geometry_msgs.msg import Pose, Twist
 import sys, select, os
 import tty, termios
 from std_msgs.msg import String
@@ -13,6 +13,7 @@ ANG_VEL_STEP_SIZE = 0.01
 
 ctrl_leader = False
 send_flag = False
+transition_state = 'multirotor'
 
 msg2all = """
 Control Your XTDrone!
@@ -36,7 +37,7 @@ k   : idle
 0~9 : extendable mission(eg.different formation configuration)
       this will mask the keyboard control
 g   : control the leader
-o   : send setpoint
+o   : transition
 CTRL-C to quit
 """
 
@@ -61,7 +62,7 @@ s   : loiter
 k   : idle
 0~9 : extendable mission(eg.different formation configuration)
 g   : control all drones
-o   : send setpoint
+o   : transition
 CTRL-C to quit
 """
 
@@ -115,17 +116,30 @@ if __name__=="__main__":
 
     settings = termios.tcgetattr(sys.stdin)
 
-    plane_num = int(sys.argv[1])
-    rospy.init_node('plane_keyboard_multi_control')
-    multi_cmd_vel_flu_pub = [None]*plane_num
-    multi_cmd_pub = [None]*plane_num
-    for i in range(plane_num):
-        multi_cmd_vel_flu_pub[i] = rospy.Publisher('/xtdrone/plane'+str(i)+'/cmd_pose_enu', Pose, queue_size=10)
-        multi_cmd_pub[i] = rospy.Publisher('/xtdrone/plane'+str(i)+'/cmd',String,queue_size=10)
-    leader_cmd_vel_pub = rospy.Publisher("/xtdrone/leader/cmd_pose", Pose, queue_size=10)
+    vehicle_type = sys.argv[1]
+    vehicle_num = int(sys.argv[2])
+    control_type = sys.argv[3]
+    
+    rospy.init_node('vtol_keyboard_multi_control')
+    multi_cmd_pose_enu_pub = [None]*vehicle_num
+    multi_cmd_vel_flu_pub = [None]*vehicle_num
+    multi_cmd_pub = [None]*vehicle_num
+    for i in range(vehicle_num):
+        multi_cmd_pose_enu_pub[i] = rospy.Publisher('/xtdrone/'+vehicle_type+str(i)+'/cmd_pose_enu', Pose, queue_size=10)
+        if control_type == 'vel':
+            multi_cmd_vel_flu_pub[i] = rospy.Publisher('/xtdrone/'+vehicle_type+str(i)+'/cmd_vel_flu', Twist, queue_size=10)
+        else:
+            multi_cmd_accel_flu_pub[i] = rospy.Publisher('/xtdrone/'+multirotor_type+str(i)+'/cmd_accel_flu', Twist, queue_size=10)
+        multi_cmd_pub[i] = rospy.Publisher('/xtdrone/'+vehicle_type+str(i)+'/cmd',String,queue_size=10)
+    leader_cmd_pose_enu_pub = rospy.Publisher("/xtdrone/leader/cmd_pose_enu", Pose, queue_size=10)
+    if control_type == 'vel':
+        leader_cmd_vel_flu_pub = rospy.Publisher("/xtdrone/leader/cmd_vel_flu", Twist, queue_size=10)
+    else:
+        leader_cmd_accel_flu_pub = rospy.Publisher("/xtdrone/leader/cmd_accel_flu", Twist, queue_size=10)
     leader_cmd_pub = rospy.Publisher("/xtdrone/leader_cmd", String, queue_size=10)
     cmd= String()
     pose = Pose()    
+    twist = Twist()
 
 
     target_forward_vel   = 0.0
@@ -210,9 +224,14 @@ if __name__=="__main__":
             print_msg()
             print('idle')
         elif key == 'o':
-            send_flag = True
+            if transition_state == 'multirotor':
+                transition_state = 'plane'
+                cmd = transition_state
+            else:
+                transition_state = 'multirotor'
+                cmd = transition_state
             print_msg()
-            print('send setpoint')
+            print(cmd)
         else:
             for i in range(10):
                 if key == str(i):
@@ -222,22 +241,40 @@ if __name__=="__main__":
             if (key == '\x03'):
                 break
 
+            control_forward_vel = makeSimpleProfile(control_forward_vel, target_forward_vel, (LIN_VEL_STEP_SIZE/2.0))
+            control_leftward_vel = makeSimpleProfile(control_leftward_vel, target_leftward_vel, (LIN_VEL_STEP_SIZE/2.0))
+            control_upward_vel = makeSimpleProfile(control_upward_vel, target_upward_vel, (LIN_VEL_STEP_SIZE/2.0))
+            
+        if transition_state == 'plane':
+            pose.position.x = control_forward_vel; pose.position.y = control_leftward_vel; pose.position.z = control_upward_vel
 
-        control_forward_vel = makeSimpleProfile(control_forward_vel, target_forward_vel, (LIN_VEL_STEP_SIZE/2.0))
-        control_leftward_vel = makeSimpleProfile(control_leftward_vel, target_leftward_vel, (LIN_VEL_STEP_SIZE/2.0))
-        control_upward_vel = makeSimpleProfile(control_upward_vel, target_upward_vel, (LIN_VEL_STEP_SIZE/2.0))
-        pose.position.x = control_forward_vel; pose.position.y = control_leftward_vel; pose.position.z = control_upward_vel
+            control_orientation_vel = makeSimpleProfile(control_orientation_vel, target_orientation_vel, (ANG_VEL_STEP_SIZE/2.0))
+            pose.orientation.x = 0.0; pose.orientation.y = 0.0;  pose.orientation.z = control_orientation_vel   
+            
+        else:
+            twist.linear.x = control_forward_vel; twist.linear.y = control_leftward_vel; twist.linear.z = control_upward_vel
 
-        control_orientation_vel = makeSimpleProfile(control_orientation_vel, target_orientation_vel, (ANG_VEL_STEP_SIZE/2.0))
-        pose.orientation.x = 0.0; pose.orientation.y = 0.0;  pose.orientation.z = control_orientation_vel   
-        for i in range(plane_num):
+            control_orientation_vel = makeSimpleProfile(control_orientation_vel, target_orientation_vel, (ANG_VEL_STEP_SIZE/2.0))
+            twist.angular.x = 0.0; twist.angular.y = 0.0;  twist.angular.z = control_orientation_vel 
+            
+        for i in range(vehicle_num):
             if ctrl_leader:
-                if send_flag:
-                    leader_cmd_vel_pub.publish(pose)
+                if transition_state == 'plane':
+                    leader_cmd_pose_enu_pub.publish(pose)
+                else:
+                    if control_type == 'vel':
+                        leader_cmd_vel_flu_pub.publish(twist)
+                    else:
+                        leader_cmd_aceel_flu_pub.publish(twist)
                 leader_cmd_pub.publish(cmd)
             else:
-                if send_flag:
-                    multi_cmd_vel_flu_pub[i].publish(pose)    
+                if transition_state == 'plane':
+                    multi_cmd_pose_enu_pub[i].publish(pose)  
+                else:
+                    if control_type == 'vel':
+                        multi_cmd_vel_flu_pub[i].publish(twist)    
+                    else:
+                        multi_cmd_accel_flu_pub[i].publish(twist) 
                 multi_cmd_pub[i].publish(cmd)
                 
         cmd = ''

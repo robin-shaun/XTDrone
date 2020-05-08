@@ -1,9 +1,0 @@
-# number of different kinds of vehicles
-rover: 2
-plane: 2
-typhoon: 2
-solo: 3
-iris: 3
-tiltrotor: 2
-tailsitter: 2
-standard_vtol: 2

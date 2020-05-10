@@ -26,15 +26,12 @@
         <xyzOffset>0 0 0</xyzOffset>
         <rpyOffset>0 0 0</rpyOffset>
         <frameName>imu_link_stereo</frameName>
-
         <gyroscopeNoiseDensity>0.0006</gyroscopeNoiseDensity>
         <gyroscopeRandomWalk>0.000003</gyroscopeRandomWalk>        
         <gyroscopeTurnOnBiasSigma>0.03</gyroscopeTurnOnBiasSigma>
-
         <accelerometerNoiseDensity>0.002</accelerometerNoiseDensity>
         <accelerometerRandomWalk>0.00002</accelerometerRandomWalk>
         <accelerometerTurnOnBiasSigma>0.1</accelerometerTurnOnBiasSigma>
-
       </plugin>
       <pose>0 0 0.3 0 0 0</pose>
     </sensor>

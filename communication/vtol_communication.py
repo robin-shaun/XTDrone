@@ -182,11 +182,11 @@ class Communication:
 
         elif msg.data == 'ARM':
             self.arm_state =self.arm()
-            print(self.vehicle_type+'_'+self.vehicle_id+": armed"+str(self.arm_state))
+            print(self.vehicle_type+'_'+self.vehicle_id+": Armed "+str(self.arm_state))
 
         elif msg.data == 'DISARM':
             self.arm_state = not self.disarm()
-            print(self.vehicle_type+'_'+self.vehicle_id+": armed"+str(self.arm_state))
+            print(self.vehicle_type+'_'+self.vehicle_id+": Armed "+str(self.arm_state))
             
         elif  msg.data == 'multirotor':
             self.transition_state = msg.data

@@ -80,36 +80,32 @@ def print_msg():
     if ctrl_leader:
         print(msg2leader)
     else:
-        print(msg2all)      
+        print(msg2all)
+        
+def vels(target_forward_vel, target_leftward_vel, target_upward_vel,target_angular_vel):
+    return "currently:\t forward x %s\t leftward y %s\t upward z %s\t angular %s " % (target_forward_vel, target_leftward_vel, target_upward_vel, target_angular_vel)
+
 
 if __name__=="__main__":
 
     settings = termios.tcgetattr(sys.stdin)
 
-    multirotor_type = sys.argv[1]
-    multirotor_num = int(sys.argv[2])
-    control_type = sys.argv[3]
+    control_type = sys.argv[1]
     
     cmd= String()
     twist = Twist()   
     
-    rospy.init_node('multirotor_keyboard_multi_control')
+    rospy.init_node('multirotor_keyboard_control')
     
     if control_type == 'vel':
-        multi_cmd_vel_flu_pub = [None]*multirotor_num
-        multi_cmd_pub = [None]*multirotor_num
-        for i in range(multirotor_num):
-            multi_cmd_vel_flu_pub[i] = rospy.Publisher('/xtdrone/'+multirotor_type+'_'+str(i)+'/cmd_vel_flu', Twist, queue_size=10)
-            multi_cmd_pub[i] = rospy.Publisher('/xtdrone/'+multirotor_type+'_'+str(i)+'/cmd',String,queue_size=10)
+        cmd_vel_flu_pub = rospy.Publisher('/xtdrone/cmd_vel_flu', Twist, queue_size=10)
+        cmd_pub = rospy.Publisher('/xtdrone/cmd',String,queue_size=10)
         leader_cmd_vel_flu_pub = rospy.Publisher("/xtdrone/leader/cmd_vel_flu", Twist, queue_size=10)
         leader_cmd_pub = rospy.Publisher("/xtdrone/leader_cmd", String, queue_size=10)
  
     else:
-        multi_cmd_accel_flu_pub = [None]*multirotor_num
-        multi_cmd_pub = [None]*multirotor_num
-        for i in range(multirotor_num):
-            multi_cmd_accel_flu_pub[i] = rospy.Publisher('/xtdrone/'+multirotor_type+'_'+str(i)+'/cmd_accel_flu', Twist, queue_size=10)
-            multi_cmd_pub[i] = rospy.Publisher('/xtdrone/'+multirotor_type+'_'+str(i)+'/cmd',String,queue_size=10)
+        cmd_accel_flu_pub[i] = rospy.Publisher('/xtdrone/cmd_accel_flu', Twist, queue_size=10)
+        cmd_pub[i] = rospy.Publisher('/xtdrone/cmd',String,queue_size=10)
         leader_cmd_accel_flu_pub = rospy.Publisher("/xtdrone/leader/cmd_accel_flu", Twist, queue_size=10)
         leader_cmd_pub = rospy.Publisher("/xtdrone/leader_cmd", String, queue_size=10)
 
@@ -253,20 +249,19 @@ if __name__=="__main__":
         twist.linear.x = -leftward; twist.linear.y = forward ; twist.linear.z = upward
         twist.angular.x = 0.0; twist.angular.y = 0.0;  twist.angular.z = angular
 
-        for i in range(multirotor_num):
-            if ctrl_leader:
-                if control_type == 'vel':
-                    leader_cmd_vel_flu_pub.publish(twist)
-                else:
-                    leader_cmd_aceel_flu_pub.publish(twist)
-                leader_cmd_pub.publish(cmd)
+        if ctrl_leader:
+            if control_type == 'vel':
+                leader_cmd_vel_flu_pub.publish(twist)
             else:
-                if not cmd_vel_mask:
-                    if control_type == 'vel':
-                        multi_cmd_vel_flu_pub[i].publish(twist)   
-                    else:
-                        multi_cmd_accel_flu_pub[i].publish(twist)
-                multi_cmd_pub[i].publish(cmd)
+                leader_cmd_aceel_flu_pub.publish(twist)
+            leader_cmd_pub.publish(cmd)
+        else:
+            if not cmd_vel_mask:
+                if control_type == 'vel':
+                    cmd_vel_flu_pub.publish(twist)   
+                else:
+                    cmd_accel_flu_pub.publish(twist)
+            cmd_pub.publish(cmd)
                 
         cmd = ''
 

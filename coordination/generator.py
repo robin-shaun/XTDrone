@@ -35,7 +35,7 @@ Then enter f to generate!
   """
 
 TYPE_ID_DICT = {
-    "rover" : 0,
+    "rover_with_sensors" : 0,
     "plane" : 1,
     "typhoon_h480_stereo" : 2,
     "solo_stereo_camera" : 3,

@@ -1,35 +1,34 @@
 import rospy
-from geometry_msgs.msg import PoseStamped
+from geometry_msgs.msg import PoseStamped, Vector3Stamped
 from nav_msgs.msg import Odometry
-from pyquaternion import Quaternion
 import sys
 import tf
 
-local_pose = PoseStamped()
+vehicle_type = sys.argv[1]
+vehicle_num = int(sys.argv[2])
+multi_pose_pub = [None]*vehicle_num
+multi_speed_pub = [None]*vehicle_num
+multi_local_pose = [PoseStamped() for i in range(vehicle_num)]
+multi_speed = [Vector3Stamped() for i in range(vehicle_num)]
+multi_odom_groundtruth_sub = [None]*vehicle_num
 
-def odm_groundtruth_callback(msg):
-    local_pose.header = msg.header
-    local_pose.pose = msg.pose.pose
+def odm_groundtruth_callback(msg, i):
+    multi_local_pose[i].header = msg.header
+    multi_local_pose[i].header.frame_id = 'map'
+    multi_local_pose[i].pose = msg.pose.pose
+    multi_speed[i].header = msg.header
+    multi_speed[i].vector = msg.twist.linear
 
 if __name__ == '__main__':
-    rospy.init_node('get_pose_groundtruth')
-    odom_groundtruth_sub = rospy.Subscriber('/xtdrone/ground_truth/odom', Odometry, odm_groundtruth_callback)
-    pose_pub = rospy.Publisher("/mavros/vision_pose/pose", PoseStamped, queue_size=2)
-    '''
-    tf transfer should be improved
-    quaternion = tf.transformations.quaternion_from_euler(0, 0, -float(sys.argv[1]))
-    q = Quaternion([quaternion[3],quaternion[0],quaternion[1],quaternion[2]])
-    '''
+    rospy.init_node(vehicle_type+'get_pose_groundtruth')
+    for i in range(vehicle_num):
+        multi_odom_groundtruth_sub[i] = rospy.Subscriber('/xtdrone/'+vehicle_type+'_'+str(i)+'/ground_truth/odom', Odometry, odm_groundtruth_callback, i)
+        multi_pose_pub[i] = rospy.Publisher(vehicle_type+'_'+str(i)+'/mavros/vision_pose/pose', PoseStamped, queue_size=2)
+        multi_speed_pub[i] = rospy.Publisher(vehicle_type+'_'+str(i)+'/mavros/vision_speed/speed', Vector3Stamped, queue_size=2)
     rate = rospy.Rate(100)
     while True:
-        '''
-        q_= Quaternion([local_pose.pose.orientation.w,local_pose.pose.orientation.x,local_pose.pose.orientation.y,local_pose.pose.orientation.z])
-        q_ = q_*q
-        local_pose.pose.orientation.w = q_[0]
-        local_pose.pose.orientation.x = q_[1]
-        local_pose.pose.orientation.y = q_[2]
-        local_pose.pose.orientation.z = q_[3]
-        '''
-        pose_pub.publish(local_pose)
+        for i in range(vehicle_num):
+            multi_pose_pub[i].publish(multi_local_pose[i])
+            multi_speed_pub[i].publish(multi_speed[i])
         rate.sleep()
 

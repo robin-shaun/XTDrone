@@ -72,7 +72,7 @@ class Communication:
         '''
         main ROS thread
         '''
-        while(rospy.is_shutdown):
+        while not rospy.is_shutdown():
             self.target_motion_pub.publish(self.target_motion)
             try:
                 response = self.gazeboModelstate (self.vehicle_type+'_'+self.vehicle_id,'ground_plane')

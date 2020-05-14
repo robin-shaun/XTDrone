@@ -68,7 +68,7 @@ class Communication:
         '''
         main ROS thread
         '''
-        while(rospy.is_shutdown):
+        while not rospy.is_shutdown():
             self.target_motion_pub.publish(self.target_motion)
             
             if (self.flight_mode is "LAND") and (self.local_pose.pose.position.z < 0.15):

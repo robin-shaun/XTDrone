@@ -30,8 +30,7 @@ r   : return home
 t/y : arm/disarm
 v/n : takeoff/land
 b   : offboard
-s   : hover(offboard mode) and remove the mask of keyboard control
-k   : hover(hover mode) and remove the mask of keyboard control
+s/k : hover and remove the mask of keyboard control
 0~9 : extendable mission(eg.different formation configuration)
       this will mask the keyboard control
 g   : control the leader
@@ -55,7 +54,7 @@ r   : return home
 t/y : arm/disarm
 v/n : takeoff(disenabled now)/land
 b   : offboard
-s or k : hover and remove the mask of keyboard control
+s/k : hover and remove the mask of keyboard control
 0~9 : extendable mission(eg.different formation configuration)
       this will mask the keyboard control
 g   : control all drones
@@ -208,12 +207,7 @@ if __name__=="__main__":
         elif key == 'g':
             ctrl_leader = not ctrl_leader
             print_msg()
-        elif key == 'k':
-            cmd = 'HOVER'
-            cmd_vel_mask = False
-            print_msg()
-            print('Hover')
-        elif key == 's' :
+        elif key == 'k' or key == 's':
             cmd_vel_mask = False
             forward   = 0.0
             leftward   = 0.0

@@ -573,7 +573,7 @@
     </plugin>
 <!-- For Stereo Camera Payload -->
       <include>
-        <uri>model://stereo_cam</uri>
+        <uri>model://stereo_camera</uri>
         <pose>0 0 -0.05 0 0 0</pose>
       </include>
 

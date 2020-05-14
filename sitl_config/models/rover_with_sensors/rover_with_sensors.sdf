@@ -448,7 +448,7 @@
     </link>
     <!-- Front cam -->
     <link name="front_cam">
-      <pose>1.3 0 1.2 0 0.4 0</pose>
+      <pose>1 0 2.2 0 0.6 0</pose>
       <inertial>
         <mass>0.001</mass>
         <inertia>
@@ -464,56 +464,55 @@
           </box>
         </geometry>
       </visual>
-      <sensor name="camera" type="multicamera">
+            <sensor name="camera" type="multicamera">
         <always_on>1</always_on>
         <update_rate>30</update_rate>
         <visualize>false</visualize>
         <camera name="left">
-          <pose>0 0.6 0 0 0 0</pose>
-          <horizontal_fov>1.047</horizontal_fov>
+          <pose>0 0.06 0 0 0 0</pose>
+          <horizontal_fov>1.5708</horizontal_fov>
           <image>
             <width>752</width>
             <height>480</height>
-            <format>R8G8B8</format>
+	          <format>R8G8B8</format>
           </image>
           <clip>
             <near>0.1</near>
-            <far>100</far>
+            <far>300</far>
           </clip>
         </camera>
         <camera name="right">
-          <pose>0 -0.6 0 0 0 0</pose>
-          <horizontal_fov>1.047</horizontal_fov>
+          <pose>0 -0.06 0 0 0 0</pose>
+          <horizontal_fov>1.5708</horizontal_fov>
           <image>
             <width>752</width>
             <height>480</height>
-            <format>R8G8B8</format>
+	          <format>R8G8B8</format>
           </image>
           <clip>
             <near>0.1</near>
-            <far>100</far>
+            <far>300</far>
           </clip>
         </camera>
-        <plugin name="front_camera_controller" filename="libgazebo_ros_multicamera.so">
-          <robotNamespace></robotNamespace>
-          <alwaysOn>true</alwaysOn>
-          <updateRate>0.0</updateRate>
-          <cameraName>/front_cam</cameraName>
-          <imageTopicName>image_raw</imageTopicName>
-          <cameraInfoTopicName>camera_info</cameraInfoTopicName>
-          <frameName>left_camera_optical_frame</frameName>
-          <!--<rightFrameName>right_camera_optical_frame</rightFrameName>-->
-          <hackBaseline>0.12</hackBaseline>
-          <Fx>376.0</Fx>
-          <Fy>376.0</Fy>
-          <Cx>376.0</Cx>
-          <Cy>240.0</Cy>
-          <distortionK1>0.0</distortionK1>
-          <distortionK2>0.0</distortionK2>
-          <distortionK3>0.0</distortionK3>
-          <distortionT1>0.0</distortionT1>
-          <distortionT2>0.0</distortionT2>
-        </plugin>
+      <plugin name="front_camera_controller" filename="libgazebo_ros_multicamera.so">
+        <robotNamespace></robotNamespace>
+        <alwaysOn>true</alwaysOn>
+        <updateRate>30</updateRate>
+        <cameraName>/front_cam</cameraName>
+        <imageTopicName>image_raw</imageTopicName>
+        <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+        <frameName>stereo_camera_frame</frameName>
+        <hackBaseline>0.12</hackBaseline>
+        <Fx>376.0</Fx>
+        <Fy>376.0</Fy>
+        <Cx>376.0</Cx>
+        <Cy>240.0</Cy>
+        <distortionK1>-0.2</distortionK1>
+        <distortionK2>0.08</distortionK2>
+        <distortionK3>0.0</distortionK3>
+        <distortionT1>5e-5</distortionT1>
+        <distortionT2>-1e-4</distortionT2>
+      </plugin>
       </sensor>
     </link>
 
@@ -531,7 +530,7 @@
 
     <!-- Back cam -->
     <link name="back_cam">
-      <pose>-1.5 0 1.2 0 0.4 3.14</pose>
+      <pose>-0.5 0 2.2 0 0.4 3.14</pose>
       <inertial>
         <mass>0.001</mass>
         <inertia>
@@ -552,51 +551,50 @@
         <update_rate>30</update_rate>
         <visualize>false</visualize>
         <camera name="left">
-          <pose>0 0.6 0 0 0 0</pose>
-          <horizontal_fov>1.047</horizontal_fov>
+          <pose>0 0.06 0 0 0 0</pose>
+          <horizontal_fov>1.5708</horizontal_fov>
           <image>
             <width>752</width>
             <height>480</height>
-            <format>R8G8B8</format>
+	          <format>R8G8B8</format>
           </image>
           <clip>
             <near>0.1</near>
-            <far>100</far>
+            <far>300</far>
           </clip>
         </camera>
         <camera name="right">
-          <pose>0 -0.6 0 0 0 0</pose>
-          <horizontal_fov>1.047</horizontal_fov>
+          <pose>0 -0.06 0 0 0 0</pose>
+          <horizontal_fov>1.5708</horizontal_fov>
           <image>
             <width>752</width>
             <height>480</height>
-            <format>R8G8B8</format>
+	          <format>R8G8B8</format>
           </image>
           <clip>
             <near>0.1</near>
-            <far>100</far>
+            <far>300</far>
           </clip>
         </camera>
         <plugin name="back_camera_controller" filename="libgazebo_ros_multicamera.so">
-          <robotNamespace></robotNamespace>
-          <alwaysOn>true</alwaysOn>
-          <updateRate>0.0</updateRate>
-          <cameraName>/back_cam</cameraName>
-          <imageTopicName>image_raw</imageTopicName>
-          <cameraInfoTopicName>camera_info</cameraInfoTopicName>
-          <frameName>left_camera_optical_frame</frameName>
-          <!--<rightFrameName>right_camera_optical_frame</rightFrameName>-->
-          <hackBaseline>0.12</hackBaseline>
-          <Fx>376.0</Fx>
-          <Fy>376.0</Fy>
-          <Cx>376.0</Cx>
-          <Cy>240.0</Cy>
-          <distortionK1>0.0</distortionK1>
-          <distortionK2>0.0</distortionK2>
-          <distortionK3>0.0</distortionK3>
-          <distortionT1>0.0</distortionT1>
-          <distortionT2>0.0</distortionT2>
-        </plugin>
+        <robotNamespace></robotNamespace>
+        <alwaysOn>true</alwaysOn>
+        <updateRate>30</updateRate>
+        <cameraName>/back_cam</cameraName>
+        <imageTopicName>image_raw</imageTopicName>
+        <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+        <frameName>stereo_camera_frame</frameName>
+        <hackBaseline>0.12</hackBaseline>
+        <Fx>376.0</Fx>
+        <Fy>376.0</Fy>
+        <Cx>376.0</Cx>
+        <Cy>240.0</Cy>
+        <distortionK1>-0.2</distortionK1>
+        <distortionK2>0.08</distortionK2>
+        <distortionK3>0.0</distortionK3>
+        <distortionT1>5e-5</distortionT1>
+        <distortionT2>-1e-4</distortionT2>
+      </plugin>
       </sensor>
     </link>
 

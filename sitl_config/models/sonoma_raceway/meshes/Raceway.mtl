@@ -1,0 +1,213 @@
+# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
+# File Created: 11.01.2017 21:02:19
+
+newmtl Asphalt
+  Ns 0.0000
+  Ni 1.5000
+  d 1.0000
+  Tr 0.0000
+  Tf 1.0000 1.0000 1.0000
+  illum 2
+  Ka 0.5882 0.5882 0.5882
+  Kd 0.5882 0.5882 0.5882
+  Ks 0.0000 0.0000 0.0000
+  Ke 0.0000 0.0000 0.0000
+  map_Ka ../materials/textures/Asphalt.png
+  map_Kd ../materials/textures/Asphalt.png
+
+newmtl Track
+  Ns 10.0000
+  Ni 1.5000
+  d 1.0000
+  Tr 0.0000
+  Tf 1.0000 1.0000 1.0000
+  illum 2
+  Ka 0.5882 0.5882 0.5882
+  Kd 0.5882 0.5882 0.5882
+  Ks 0.0000 0.0000 0.0000
+  Ke 0.0000 0.0000 0.0000
+  map_Ka ../materials/textures/Track.png
+  map_Kd ../materials/textures/Track.png
+
+newmtl Grass
+  Ns 10.0000
+  Ni 1.5000
+  d 1.0000
+  Tr 0.0000
+  Tf 1.0000 1.0000 1.0000
+  illum 2
+  Ka 0.5882 0.5882 0.5882
+  Kd 0.5882 0.5882 0.5882
+  Ks 0.0000 0.0000 0.0000
+  Ke 0.0000 0.0000 0.0000
+  map_Ka ../materials/textures/Grass.png
+  map_Kd ../materials/textures/Grass.png
+
+newmtl RumbleStrip_Barrier
+  Ns 10.0000
+  Ni 1.5000
+  d 1.0000
+  Tr 0.0000
+  Tf 1.0000 1.0000 1.0000
+  illum 2
+  Ka 0.5882 0.5882 0.5882
+  Kd 0.5882 0.5882 0.5882
+  Ks 0.0000 0.0000 0.0000
+  Ke 0.0000 0.0000 0.0000
+  map_Ka ../materials/textures/RumbleStrip&Barrier.png
+  map_Kd ../materials/textures/RumbleStrip&Barrier.png
+
+newmtl Checker
+  Ns 10.0000
+  Ni 1.5000
+  d 1.0000
+  Tr 0.0000
+  Tf 1.0000 1.0000 1.0000
+  illum 2
+  Ka 0.5882 0.5882 0.5882
+  Kd 0.5882 0.5882 0.5882
+  Ks 0.0000 0.0000 0.0000
+  Ke 0.0000 0.0000 0.0000
+  map_Ka ../materials/textures/Checker.png
+  map_Kd ../materials/textures/Checker.png
+
+newmtl Railing
+  Ns 10.0000
+  Ni 1.5000
+  d 1.0000
+  Tr 0.0000
+  Tf 1.0000 1.0000 1.0000
+  illum 2
+  Ka 0.5882 0.5882 0.5882
+  Kd 0.5882 0.5882 0.5882
+  Ks 0.0000 0.0000 0.0000
+  Ke 0.0000 0.0000 0.0000
+  map_Ka ../materials/textures/Railing.png
+  map_Kd ../materials/textures/Railing.png
+
+newmtl Fence
+  Ns 10.0000
+  Ni 1.5000
+  d 1.0000
+  Tr 0.0000
+  Tf 1.0000 1.0000 1.0000
+  illum 2
+  Ka 0.5882 0.5882 0.5882
+  Kd 0.5882 0.5882 0.5882
+  Ks 0.0000 0.0000 0.0000
+  Ke 0.0000 0.0000 0.0000
+  map_Ka ../materials/textures/Fence.png
+  map_Kd ../materials/textures/Fence.png
+  map_d ../materials/textures/Fence_Opacity.png
+
+newmtl Wall
+  Ns 10.0000
+  Ni 1.5000
+  d 1.0000
+  Tr 0.0000
+  Tf 1.0000 1.0000 1.0000
+  illum 2
+  Ka 0.5882 0.5882 0.5882
+  Kd 0.5882 0.5882 0.5882
+  Ks 0.0000 0.0000 0.0000
+  Ke 0.0000 0.0000 0.0000
+  map_Ka ../materials/textures/Wall.png
+  map_Kd ../materials/textures/Wall.png
+
+newmtl Trim
+  Ns 10.0000
+  Ni 1.5000
+  d 1.0000
+  Tr 0.0000
+  Tf 1.0000 1.0000 1.0000
+  illum 2
+  Ka 0.5882 0.5882 0.5882
+  Kd 0.5882 0.5882 0.5882
+  Ks 0.0000 0.0000 0.0000
+  Ke 0.0000 0.0000 0.0000
+  map_Ka ../materials/textures/Trim.png
+  map_Kd ../materials/textures/Trim.png
+
+newmtl Window
+  Ns 10.0000
+  Ni 1.5000
+  d 1.0000
+  Tr 0.0000
+  Tf 1.0000 1.0000 1.0000
+  illum 2
+  Ka 0.5882 0.5882 0.5882
+  Kd 0.5882 0.5882 0.5882
+  Ks 0.0000 0.0000 0.0000
+  Ke 0.0000 0.0000 0.0000
+  map_Ka ../materials/textures/Window.png
+  map_Kd ../materials/textures/Window.png
+
+newmtl Roof
+  Ns 10.0000
+  Ni 1.5000
+  d 1.0000
+  Tr 0.0000
+  Tf 1.0000 1.0000 1.0000
+  illum 2
+  Ka 0.5882 0.5882 0.5882
+  Kd 0.5882 0.5882 0.5882
+  Ks 0.0000 0.0000 0.0000
+  Ke 0.0000 0.0000 0.0000
+  map_Ka ../materials/textures/Roof.png
+  map_Kd ../materials/textures/Roof.png
+
+newmtl TireStack
+  Ns 10.0000
+  Ni 1.5000
+  d 1.0000
+  Tr 0.0000
+  Tf 1.0000 1.0000 1.0000
+  illum 2
+  Ka 0.5882 0.5882 0.5882
+  Kd 0.5882 0.5882 0.5882
+  Ks 0.0000 0.0000 0.0000
+  Ke 0.0000 0.0000 0.0000
+  map_Ka ../materials/textures/TireStack.png
+  map_Kd ../materials/textures/TireStack.png
+
+newmtl Bridge
+  Ns 10.0000
+  Ni 1.5000
+  d 1.0000
+  Tr 0.0000
+  Tf 1.0000 1.0000 1.0000
+  illum 2
+  Ka 0.5882 0.5882 0.5882
+  Kd 0.5882 0.5882 0.5882
+  Ks 0.0000 0.0000 0.0000
+  Ke 0.0000 0.0000 0.0000
+  map_Ka ../materials/textures/Bridge.png
+  map_Kd ../materials/textures/Bridge.png
+
+newmtl Concrete
+  Ns 10.0000
+  Ni 1.5000
+  d 1.0000
+  Tr 0.0000
+  Tf 1.0000 1.0000 1.0000
+  illum 2
+  Ka 0.5882 0.5882 0.5882
+  Kd 0.5882 0.5882 0.5882
+  Ks 0.0000 0.0000 0.0000
+  Ke 0.0000 0.0000 0.0000
+  map_Ka ../materials/textures/Concrete.png
+  map_Kd ../materials/textures/Concrete.png
+
+newmtl Stands
+  Ns 10.0000
+  Ni 1.5000
+  d 1.0000
+  Tr 0.0000
+  Tf 1.0000 1.0000 1.0000
+  illum 2
+  Ka 0.5882 0.5882 0.5882
+  Kd 0.5882 0.5882 0.5882
+  Ks 0.0000 0.0000 0.0000
+  Ke 0.0000 0.0000 0.0000
+  map_Ka ../materials/textures/Stands.png
+  map_Kd ../materials/textures/Stands.png

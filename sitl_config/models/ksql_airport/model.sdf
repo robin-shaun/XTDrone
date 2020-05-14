@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name="ksql_ground">
+    <pose>0 0 -3.5  0 0 0</pose>
+    <static>true</static>
+    <link name="body">
+      <visual name="visual">
+        <geometry>
+          <mesh><uri>model://ksql_airport/media/SanCarlosAirport_Terrain.DAE</uri></mesh>
+        </geometry>
+      </visual>
+      <collision name="collision">
+        <geometry>
+          <mesh><uri>model://ksql_airport/media/SanCarlosAirport_Terrain.DAE</uri></mesh>
+        </geometry>
+      </collision>
+    </link>
+
+    <link name="buildings">
+      <visual name="visual">
+        <geometry>
+          <mesh><uri>model://ksql_airport/media/SanCarlosAirport_Buildings.DAE</uri></mesh>
+        </geometry>
+      </visual>
+      <collision name="collision">
+        <geometry>
+          <mesh><uri>model://ksql_airport/media/SanCarlosAirport_Buildings.DAE</uri></mesh>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+</sdf>

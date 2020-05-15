@@ -44,31 +44,13 @@ def yellow_dectection(image):
     return result   
 
 def pipeline(image):
-    """
-    An image processing pipeline which will output
-    an image with the lane lines annotated.
-    """
     image = yellow_dectection(image)
     height = image.shape[0]
     width = image.shape[1]
-    '''
-    region_of_interest_vertices = [
-        (0, height),
-        (width / 2, height / 2),
-        (width, height),
-    ]
-    '''
+
     gray_image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
     cannyed_image = cv2.Canny(gray_image, 100, 200)
-    '''
-    cropped_image = region_of_interest(
-        cannyed_image,
-        np.array(
-            [region_of_interest_vertices],
-            np.int32
-        ),
-    )
-    '''
+    
     lines = cv2.HoughLinesP(
         cannyed_image,
         rho=6,
@@ -77,15 +59,7 @@ def pipeline(image):
         lines=np.array([]),
         minLineLength=50,
         maxLineGap=50
-    )
-
-    '''
-    line_image = draw_lines(image, lines) # <---- Add this call.
-    plt.figure()
-    plt.imshow(line_image)
-    plt.show()
-    '''
-    
+    )  
     
     if lines is None:
         img_ros = bridge.cv2_to_imgmsg(image, "rgb8")
@@ -120,11 +94,10 @@ def pipeline(image):
         right_x_end = int(poly_right(min_y))
     if not left_line_x == [] and not right_line_x == []:   
         mid_x_error = (left_x_end+right_x_end)/2.0-width/2
-        #curve_image = cv2.polylines(image, [pts], True, (0,255,255), thickness=5)
         line_image = draw_lines(image,[[[left_x_start, max_y, left_x_end, min_y],[right_x_start, max_y, right_x_end,min_y],]],thickness=5,)
         img_ros = bridge.cv2_to_imgmsg(line_image, "rgb8")
     else:
-        mid_x_error = 0.0
+        mid_x_error = 1000
         img_ros = bridge.cv2_to_imgmsg(image, "rgb8")
 
     return img_ros, mid_x_error 

@@ -448,11 +448,7 @@
     </link>
     <!-- Front cam -->
     <link name="front_cam">
-<<<<<<< HEAD:sitl_config/models/rover_with_sensors/rover_with_sensors.sdf
       <pose>1.3 0 1 0 0.4 0</pose>
-=======
-      <pose>1 0 2.2 0 0.6 0</pose>
->>>>>>> 5794705f9de1cd81f86da87a671b0bfc268a72a9:sitl_config/models/rover_with_lidar_stereo/rover_with_lidar_stereo.sdf
       <inertial>
         <mass>0.001</mass>
         <inertia>

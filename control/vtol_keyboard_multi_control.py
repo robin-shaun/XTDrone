@@ -5,9 +5,9 @@ import tty, termios
 from std_msgs.msg import String
 
 
-MAX_LIN_VEL = 1000
+MAX_LINEAR = 1000
 MAX_ANG_VEL = 0.1
-LIN_VEL_STEP_SIZE = 0.1
+LINEAR_STEP_SIZE = 0.1
 ANG_VEL_STEP_SIZE = 0.01
 
 
@@ -32,8 +32,8 @@ r   : return home
 t/y : arm/disarm
 v/n : takeoff/land
 b   : offboard
-s   : loiter
-k   : idle
+s   : hover(multirotor mode), loiter(plane mode)
+k   : hover(multirotor mode), idle(plane mode)
 0~9 : extendable mission(eg.different formation configuration)
       this will mask the keyboard control
 g   : control the leader
@@ -58,8 +58,8 @@ r   : return home
 t/y : arm/disarm
 v/n : takeoff/land
 b   : offboard
-s   : loiter
-k   : idle
+s   : hover(multirotor mode), loiter(plane mode)
+k   : hover(multirotor mode), idle(plane mode)
 0~9 : extendable mission(eg.different formation configuration)
 g   : control all drones
 o   : transition
@@ -82,36 +82,6 @@ def print_msg():
     else:
         print(msg2all)
         
-def vels(target_forward_vel, target_leftward_vel, target_upward_vel,target_orientation_vel):
-    return "currently:\t forward x %s\t leftward y %s\t upward z %s\t orientation %s " % (target_forward_vel, target_leftward_vel, target_upward_vel, target_orientation_vel)
-
-def makeSimpleProfile(output, input, slop):
-    if input > output:
-        output = min( input, output + slop )
-    elif input < output:
-        output = max( input, output - slop )
-    else:
-        output = input
-    return output
-
-def constrain(input, low, high):
-    if input < low:
-      input = low
-    elif input > high:
-      input = high
-    else:
-      input = input
-
-    return input
-
-def checkpositionLimitVelocity(vel):
-    vel = constrain(vel, -MAX_LIN_VEL, MAX_LIN_VEL)
-    return vel
-
-def checkorientationLimitVelocity(vel):
-    vel = constrain(vel, -MAX_ANG_VEL, MAX_ANG_VEL)
-    return vel
-
 if __name__=="__main__":
 
     settings = termios.tcgetattr(sys.stdin)
@@ -141,53 +111,74 @@ if __name__=="__main__":
     pose = Pose()    
     twist = Twist()
 
-
-    target_forward_vel   = 0.0
-    target_leftward_vel   = 0.0
-    target_upward_vel   = 0.0
-    target_orientation_vel  = 0.0
-    control_forward_vel  = 0.0
-    control_leftward_vel  = 0.0
-    control_upward_vel  = 0.0
-    control_orientation_vel = 0.0
-
-    count = 0
+    forward   = 0.0
+    leftward   = 0.0
+    upward   = 0.0
+    angular  = 0.0
 
     print_msg()
     while(1):
         key = getKey()
+        
         if key == 'w' :
-            target_forward_vel = checkpositionLimitVelocity(target_forward_vel + LIN_VEL_STEP_SIZE)
+            forward = forward + LINEAR_STEP_SIZE
             print_msg()
-            print(vels(target_forward_vel,target_leftward_vel,target_upward_vel,target_orientation_vel))
+            if control_type == 'vel':
+                print("currently:\t forward vel %.2f\t leftward vel %.2f\t upward vel %.2f\t angular %.2f " % (forward, leftward, upward, angular))
+            else:
+                print("currently:\t forward vel %.2f\t leftward vel %.2f\t upward vel %.2f\t angular %.2f " % (forward, leftward, upward, angular))
+
         elif key == 'x' :
-            target_forward_vel = checkpositionLimitVelocity(target_forward_vel - LIN_VEL_STEP_SIZE)
+            forward = forward - LINEAR_STEP_SIZE
             print_msg()
-            print(vels(target_forward_vel,target_leftward_vel,target_upward_vel,target_orientation_vel))
+            if control_type == 'vel':
+                print("currently:\t forward vel %.2f\t leftward vel %.2f\t upward vel %.2f\t angular %.2f " % (forward, leftward, upward, angular))
+            else:
+                print("currently:\t forward vel %.2f\t leftward vel %.2f\t upward vel %.2f\t angular %.2f " % (forward, leftward, upward, angular))
+
         elif key == 'a' :
-            target_leftward_vel = checkpositionLimitVelocity(target_leftward_vel + LIN_VEL_STEP_SIZE)
+
+            leftward = leftward + LINEAR_STEP_SIZE
             print_msg()
-            print(vels(target_forward_vel,target_leftward_vel,target_upward_vel,target_orientation_vel))
+            if control_type == 'vel':
+                print("currently:\t forward vel %.2f\t leftward vel %.2f\t upward vel %.2f\t angular %.2f " % (forward, leftward, upward, angular))
+            else:
+                print("currently:\t forward vel %.2f\t leftward vel %.2f\t upward vel %.2f\t angular %.2f " % (forward, leftward, upward, angular))
+
         elif key == 'd' :
-            target_leftward_vel = checkpositionLimitVelocity(target_leftward_vel - LIN_VEL_STEP_SIZE)
+            leftward = leftward - LINEAR_STEP_SIZE
             print_msg()
-            print(vels(target_forward_vel,target_leftward_vel,target_upward_vel,target_orientation_vel))
+            if control_type == 'vel':
+                print("currently:\t forward vel %.2f\t leftward vel %.2f\t upward vel %.2f\t angular %.2f " % (forward, leftward, upward, angular))
+            else:
+                print("currently:\t forward vel %.2f\t leftward vel %.2f\t upward vel %.2f\t angular %.2f " % (forward, leftward, upward, angular))
+
         elif key == 'i' :
-            target_upward_vel = checkpositionLimitVelocity(target_upward_vel + LIN_VEL_STEP_SIZE)
+            upward = upward + LINEAR_STEP_SIZE
             print_msg()
-            print(vels(target_forward_vel,target_leftward_vel,target_upward_vel,target_orientation_vel))
+            if control_type == 'vel':
+                print("currently:\t forward vel %.2f\t leftward vel %.2f\t upward vel %.2f\t angular %.2f " % (forward, leftward, upward, angular))
+            else:
+                print("currently:\t forward vel %.2f\t leftward vel %.2f\t upward vel %.2f\t angular %.2f " % (forward, leftward, upward, angular))
+
         elif key == ',' :
-            target_upward_vel = checkpositionLimitVelocity(target_upward_vel - LIN_VEL_STEP_SIZE)
+            upward = upward - LINEAR_STEP_SIZE
             print_msg()
-            print(vels(target_forward_vel,target_leftward_vel,target_upward_vel,target_orientation_vel))
+            if control_type == 'vel':
+                print("currently:\t forward vel %.2f\t leftward vel %.2f\t upward vel %.2f\t angular %.2f " % (forward, leftward, upward, angular))
+            else:
+                print("currently:\t forward vel %.2f\t leftward vel %.2f\t upward vel %.2f\t angular %.2f " % (forward, leftward, upward, angular))
+
         elif key == 'j':
-            target_orientation_vel = checkorientationLimitVelocity(target_orientation_vel + ANG_VEL_STEP_SIZE)
+            angular = angular + ANG_VEL_STEP_SIZE
             print_msg()
-            print(vels(target_forward_vel,target_leftward_vel,target_upward_vel,target_orientation_vel))
+            print("currently:\t forward vel %.2f\t leftward vel %.2f\t upward vel %.2f\t angular %.2f " % (forward, leftward, upward, angular))
+
         elif key == 'l':
-            target_orientation_vel = checkorientationLimitVelocity(target_orientation_vel - ANG_VEL_STEP_SIZE)
+            angular = angular - ANG_VEL_STEP_SIZE
             print_msg()
-            print(vels(target_forward_vel,target_leftward_vel,target_upward_vel,target_orientation_vel))
+            print("currently:\t forward vel %.2f\t leftward vel %.2f\t upward vel %.2f\t angular %.2f " % (forward, leftward, upward, angular))
+            
         elif key == 'r':
             cmd = 'AUTO.RTL'
             print_msg()
@@ -216,13 +207,27 @@ if __name__=="__main__":
             ctrl_leader = not ctrl_leader
             print_msg()
         elif key == 's':
-            cmd = 'loiter'
+            if transition_state == 'multirotor':
+                forward  = 0.0
+                leftward  = 0.0
+                upward  = 0.0
+                angular = 0.0
+                cmd = 'HOVER'
+            else:
+                cmd = 'loiter'
             print_msg()
-            print('loiter')
+            print(cmd)
         elif key == 'k' :
-            cmd = 'idle'
+            if transition_state == 'multirotor':
+                forward  = 0.0
+                leftward  = 0.0
+                upward  = 0.0
+                angular = 0.0
+                cmd = 'HOVER'
+            else:
+                cmd = 'idle'
             print_msg()
-            print('idle')
+            print(cmd)
         elif key == 'o':
             if transition_state == 'multirotor':
                 transition_state = 'plane'
@@ -240,22 +245,34 @@ if __name__=="__main__":
                     print(cmd)
             if (key == '\x03'):
                 break
-
-            control_forward_vel = makeSimpleProfile(control_forward_vel, target_forward_vel, (LIN_VEL_STEP_SIZE/2.0))
-            control_leftward_vel = makeSimpleProfile(control_leftward_vel, target_leftward_vel, (LIN_VEL_STEP_SIZE/2.0))
-            control_upward_vel = makeSimpleProfile(control_upward_vel, target_upward_vel, (LIN_VEL_STEP_SIZE/2.0))
+            
+        if forward > MAX_LINEAR:
+            forward = MAX_LINEAR
+        elif forward < -MAX_LINEAR:
+            forward = -MAX_LINEAR
+        if leftward > MAX_LINEAR:
+            leftward = MAX_LINEAR
+        elif leftward < -MAX_LINEAR:
+            leftward = -MAX_LINEAR
+        if upward > MAX_LINEAR:
+            upward = MAX_LINEAR
+        elif upward < -MAX_LINEAR:
+            upward = -MAX_LINEAR
+        if angular > MAX_ANG_VEL:
+            angular = MAX_ANG_VEL
+        elif angular < -MAX_ANG_VEL:
+            angular = - MAX_ANG_VEL
+     
             
         if transition_state == 'plane':
-            pose.position.x = control_forward_vel; pose.position.y = control_leftward_vel; pose.position.z = control_upward_vel
+            pose.position.x = -leftward; pose.position.y = forward; pose.position.z = upward
 
-            control_orientation_vel = makeSimpleProfile(control_orientation_vel, target_orientation_vel, (ANG_VEL_STEP_SIZE/2.0))
-            pose.orientation.x = 0.0; pose.orientation.y = 0.0;  pose.orientation.z = control_orientation_vel   
+            pose.orientation.x = 0.0; pose.orientation.y = 0.0;  pose.orientation.z = angular   
             
         else:
-            twist.linear.x = control_forward_vel; twist.linear.y = control_leftward_vel; twist.linear.z = control_upward_vel
+            twist.linear.x = - leftward; twist.linear.y = forward; twist.linear.z = upward
 
-            control_orientation_vel = makeSimpleProfile(control_orientation_vel, target_orientation_vel, (ANG_VEL_STEP_SIZE/2.0))
-            twist.angular.x = 0.0; twist.angular.y = 0.0;  twist.angular.z = control_orientation_vel 
+            twist.angular.x = 0.0; twist.angular.y = 0.0;  twist.angular.z = angular 
             
         for i in range(vehicle_num):
             if ctrl_leader:

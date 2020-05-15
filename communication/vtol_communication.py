@@ -153,28 +153,36 @@ class Communication:
         self.target_motion = self.construct_target(x=msg.position.x,y=msg.position.y,z=msg.position.z)
         
     def cmd_vel_flu_callback(self, msg):
+        self.hover_state_transition(msg.linear.x, msg.linear.y, msg.linear.z, msg.angular.z)
         if self.hover_flag == 0:
             self.coordinate_frame = 8
             self.motion_type = 1     
             self.target_motion = self.construct_target(vx=msg.linear.x,vy=msg.linear.y,vz=msg.linear.z,yaw_rate=msg.angular.z)       
  
     def cmd_vel_enu_callback(self, msg):
+        self.hover_state_transition(msg.linear.x, msg.linear.y, msg.linear.z, msg.angular.z)
         if self.hover_flag == 0:
             self.coordinate_frame = 1
             self.motion_type = 1
             self.target_motion = self.construct_target(vx=msg.linear.x,vy=msg.linear.y,vz=msg.linear.z,yaw_rate=msg.angular.z)
 
     def cmd_accel_flu_callback(self, msg):
+        self.hover_state_transition(msg.linear.x, msg.linear.y, msg.linear.z, msg.angular.z)
         if self.hover_flag == 0:
             self.coordinate_frame = 8
             self.motion_type = 2
             self.target_motion = self.construct_target(afx=msg.linear.x,afy=msg.linear.y,afz=msg.linear.z,yaw_rate=msg.angular.z)
             
     def cmd_accel_enu_callback(self, msg):
+        self.hover_state_transition(msg.linear.x, msg.linear.y, msg.linear.z, msg.angular.z)
         if self.hover_flag == 0:
             self.coordinate_frame = 1 
             self.motion_type = 2
-            self.target_motion = self.construct_target(afx=msg.linear.x,afy=msg.linear.x,afz=msg.linear.x,yaw_rate=msg.angular.z)
+            self.target_motion = self.construct_target(afx=msg.linear.x,afy=msg.linear.y,afz=msg.linear.z,yaw_rate=msg.angular.z)
+            
+    def hover_state_transition(self,x,y,z,w):
+        if abs(x) > 0.005 or abs(y)  > 0.005 or abs(z)  > 0.005 or abs(w)  > 0.005:
+            self.hover_flag = 0
             
     def cmd_callback(self, msg):
         if msg.data == '':

@@ -6,9 +6,9 @@ from std_msgs.msg import String
 
 
 MAX_LIN_VEL = 20
-MAX_ANG_VEL = 0.1
+MAX_ANGLE = 1
 LIN_VEL_STEP_SIZE = 0.1
-ANG_VEL_STEP_SIZE = 0.01
+ANGLE_STEP_SIZE = 0.1
 
 cmd_vel_mask = False
 ctrl_leader = False
@@ -23,15 +23,14 @@ To all drones  (press g to control the leader)
         x       v    b   n        ,
 
 w/x : increase/decrease forward velocity 
-a/d : increase/decrease leftward velocity
-i/, : increase/decrease upward velocity
-j/l : increase/decrease orientation
+a/d : increase/decrease steering angle
+i/, : no use
+j/l : no use
 r   : return home
 t/y : arm/disarm
-v/n : takeoff/land
+v/n : no use
 b   : offboard
-s   : hover(offboard mode) and remove the mask of keyboard control
-k   : hover(hover mode) and remove the mask of keyboard control
+s/k : no use
 0~9 : extendable mission(eg.different formation configuration)
       this will mask the keyboard control
 g   : control the leader
@@ -47,15 +46,15 @@ To the leader  (press g to control all drones)
    a    s    d       g       j    k    l
         x       v    b   n        ,
 
-w/x : increase/decrease forward velocity
-a/d : increase/decrease leftward velocity
-i/, : increase/decrease upward velocity
-j/l : increase/decrease orientation
+w/x : increase/decrease forward velocity 
+a/d : increase/decrease steering angle
+i/, : no use
+j/l : no use
 r   : return home
 t/y : arm/disarm
-v/n : takeoff(disenabled now)/land
+v/n : no use
 b   : offboard
-s or k : hover and remove the mask of keyboard control
+s/k : no use
 0~9 : extendable mission(eg.different formation configuration)
       this will mask the keyboard control
 g   : control all drones
@@ -95,9 +94,8 @@ if __name__=="__main__":
     twist = Twist()    
 
     forward  = 0.0
-    leftward  = 0.0
-    upward  = 0.0
-    angular = 0.0
+    angle  = 0.0
+
 
 
     print_msg()
@@ -106,35 +104,19 @@ if __name__=="__main__":
         if key == 'w' :
             forward = forward + LIN_VEL_STEP_SIZE
             print_msg()
-            print("currently:\t forward vel %.2f\t leftward vel %.2f\t upward vel %.2f\t angular %.2f " % (forward, leftward, upward, angular))
+            print("currently:\t forward vel %.2f\t steering angle %.2f " % (forward, angle))
         elif key == 'x' :
             forward = forward - LIN_VEL_STEP_SIZE
             print_msg()
-            print("currently:\t forward vel %.2f\t leftward vel %.2f\t upward vel %.2f\t angular %.2f " % (forward, leftward, upward, angular))
+            print("currently:\t forward vel %.2f\t steering angle %.2f " % (forward, angle))
         elif key == 'a' :
-            leftward = leftward + LIN_VEL_STEP_SIZE
+            angle = angle + ANGLE_STEP_SIZE
             print_msg()
-            print("currently:\t forward vel %.2f\t leftward vel %.2f\t upward vel %.2f\t angular %.2f " % (forward, leftward, upward, angular))
+            print("currently:\t forward vel %.2f\t steering angle %.2f " % (forward, angle))
         elif key == 'd' :
-            leftward = leftward - LIN_VEL_STEP_SIZE
+            angle = angle - ANGLE_STEP_SIZE
             print_msg()
-            print("currently:\t forward vel %.2f\t leftward vel %.2f\t upward vel %.2f\t angular %.2f " % (forward, leftward, upward, angular))
-        elif key == 'i' :
-            upward = upward + LIN_VEL_STEP_SIZE
-            print_msg()
-            print("currently:\t forward vel %.2f\t leftward vel %.2f\t upward vel %.2f\t angular %.2f " % (forward, leftward, upward, angular))
-        elif key == ',' :
-            upward = upward - LIN_VEL_STEP_SIZE
-            print_msg()
-            print("currently:\t forward vel %.2f\t leftward vel %.2f\t upward vel %.2f\t angular %.2f " % (forward, leftward, upward, angular))
-        elif key == 'j':
-            angular = angular + ANG_VEL_STEP_SIZE
-            print_msg()
-            print("currently:\t forward vel %.2f\t leftward vel %.2f\t upward vel %.2f\t angular %.2f " % (forward, leftward, upward, angular))
-        elif key == 'l':
-            angular = angular - ANG_VEL_STEP_SIZE
-            print_msg()
-            print("currently:\t forward vel %.2f\t leftward vel %.2f\t upward vel %.2f\t angular %.2f " % (forward, leftward, upward, angular))
+            print("currently:\t forward vel %.2f\t steering angle %.2f " % (forward, angle))
         elif key == 'r':
             cmd = 'AUTO.RTL'
             print_msg()
@@ -147,35 +129,21 @@ if __name__=="__main__":
             cmd = 'DISARM'
             print_msg()
             print('Disarming')
-        elif key == 'v':
-            #cmd = 'AUTO.TAKEOFF'
-            cmd = ''
-            print(msg)
-            print('Takeoff mode is disenabled now')
+
         elif key == 'b':
             cmd = 'OFFBOARD'
             print_msg()
             print('Offboard')
-        elif key == 'n':
-            cmd = 'AUTO.LAND'
-            print_msg()
-            print('Landing')
         elif key == 'g':
             ctrl_leader = not ctrl_leader
             print_msg()
-        elif key == 'k':
-            cmd = 'HOVER'
-            cmd_vel_mask = False
-            print_msg()
-            print('Hover')
+
         elif key == 's' :
             cmd_vel_mask = False
             forward   = 0.0
-            leftward   = 0.0
-            upward   = 0.0
-            angular  = 0.0
+            angle   = 0.0
             print_msg()
-            print("currently:\t forward vel %.2f\t leftward vel %.2f\t upward vel %.2f\t angular %.2f " % (forward, leftward, upward, angular))
+            print("currently:\t forward vel %.2f\t steering angle %.2f " % (forward, angle))
         else:
             for i in range(10):
                 if key == str(i):
@@ -185,10 +153,18 @@ if __name__=="__main__":
                     cmd_vel_mask = True
             if (key == '\x03'):
                 break
+            
+        if forward > MAX_LIN_VEL:
+            forward = MAX_LIN_VEL
+        elif forward < -MAX_LIN_VEL:
+            forward = -MAX_LIN_VEL
+        if angle > MAX_ANGLE:
+            angle = MAX_ANGLE
+        elif angle < -MAX_ANGLE:
+            angle = -MAX_ANGLE
 
-        twist.linear.x = -leftward; twist.linear.y = forward ; twist.linear.z = upward
-        twist.angular.x = 0.0; twist.angular.y = 0.0;  twist.angular.z = angular
-
+        twist.linear.x = -angle; twist.linear.y = forward 
+        
         for i in range(rover_num):
             if ctrl_leader:
                 leader_cmd_vel_pub.publish(twist)

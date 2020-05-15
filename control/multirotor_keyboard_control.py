@@ -5,9 +5,9 @@ import tty, termios
 from std_msgs.msg import String
 
 
-MAX_LIN_VEL = 10
+MAX_LINEAR = 10
 MAX_ANG_VEL = 0.1
-LIN_VEL_STEP_SIZE = 0.01
+LINEAR_STEP_SIZE = 0.01
 ANG_VEL_STEP_SIZE = 0.01
 
 cmd_vel_mask = False
@@ -30,8 +30,7 @@ r   : return home
 t/y : arm/disarm
 v/n : takeoff/land
 b   : offboard
-s   : hover(offboard mode) and remove the mask of keyboard control
-k   : hover(hover mode) and remove the mask of keyboard control
+s/k : hover and remove the mask of keyboard control
 0~9 : extendable mission(eg.different formation configuration)
       this will mask the keyboard control
 g   : control the leader
@@ -55,7 +54,7 @@ r   : return home
 t/y : arm/disarm
 v/n : takeoff(disenabled now)/land
 b   : offboard
-s or k : hover and remove the mask of keyboard control
+s/k : hover and remove the mask of keyboard control
 0~9 : extendable mission(eg.different formation configuration)
       this will mask the keyboard control
 g   : control all drones
@@ -193,10 +192,10 @@ if __name__=="__main__":
             print_msg()
             print('Disarming')
         elif key == 'v':
-            #cmd = 'AUTO.TAKEOFF'
+            cmd = 'AUTO.TAKEOFF'
             cmd = ''
             print(msg)
-            print('Takeoff mode is disenabled now')
+            #print('Takeoff mode is disenabled now')
         elif key == 'b':
             cmd = 'OFFBOARD'
             print_msg()
@@ -208,21 +207,12 @@ if __name__=="__main__":
         elif key == 'g':
             ctrl_leader = not ctrl_leader
             print_msg()
-        elif key == 'k':
-            cmd = 'HOVER'
-            cmd_vel_mask = False
-            print_msg()
-            print('Hover')
-        elif key == 's' :
+        elif key == 'k' or key == 's':
             cmd_vel_mask = False
             forward   = 0.0
             leftward   = 0.0
             upward   = 0.0
             angular  = 0.0
-            forward  = 0.0
-            leftward  = 0.0
-            upward  = 0.0
-            angular = 0.0
             cmd = 'HOVER'
             print_msg()
             print("currently:\t forward vel %.2f\t leftward vel %.2f\t upward vel %.2f\t angular %.2f " % (forward, leftward, upward, angular))
@@ -237,18 +227,22 @@ if __name__=="__main__":
             if (key == '\x03'):
                 break
 
-        if forward > MAX_LIN_VEL:
-            forward = MAX_LIN_VEL
-        elif forward < -MAX_LIN_VEL:
-            forward = -MAX_LIN_VEL
-        if leftward > MAX_LIN_VEL:
-            leftward = MAX_LIN_VEL
-        elif leftward < -MAX_LIN_VEL:
-            leftward = -MAX_LIN_VEL
-        if upward > MAX_LIN_VEL:
-            upward = MAX_LIN_VEL
-        elif upward < -MAX_LIN_VEL:
-            upward = -MAX_LIN_VEL
+        if forward > MAX_LINEAR:
+            forward = MAX_LINEAR
+        elif forward < -MAX_LINEAR:
+            forward = -MAX_LINEAR
+        if leftward > MAX_LINEAR:
+            leftward = MAX_LINEAR
+        elif leftward < -MAX_LINEAR:
+            leftward = -MAX_LINEAR
+        if upward > MAX_LINEAR:
+            upward = MAX_LINEAR
+        elif upward < -MAX_LINEAR:
+            upward = -MAX_LINEAR
+        if angular > MAX_ANG_VEL:
+            angular = MAX_ANG_VEL
+        elif angular < -MAX_ANG_VEL:
+            angular = - MAX_ANG_VEL
             
         twist.linear.x = -leftward; twist.linear.y = forward ; twist.linear.z = upward
         twist.angular.x = 0.0; twist.angular.y = 0.0;  twist.angular.z = angular

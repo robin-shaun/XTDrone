@@ -4,66 +4,60 @@
 
 #### Description
 
-XTdrone is a customizable Multi-Rotor UAVs simulation platform based on PX4 and ROS. Now the simulator of XTDrone is Gazebo, and the connection to Airsim is being developed. 
+XTDrone is a customizable Multi-Rotor UAVs simulation platform based on PX4 and ROS. Now the simulator of XTDrone is Gazebo, and the connection to Airsim is being developed.  XTDrone supports mulitrotors (including quadrotors and hexarotors), fixed wings, VTOLs (including quadplanes, tailsitters and tiltrotors) and rovers.
 
-<img src="./image/architecture.png" width="640" height="480" /> 
+<img src="./image/vehicles.png" width="640"  /> 
+
+Architecture for single vehicle simulation is shown as the below figure.  For more details, see the paper
+
+Xiao, K., Tan, S., Wang, G., An, X., Wang, X., Wang, X.: Xtdrone: A customizable multi-rotor uavs simulation platform. arXiv preprint **[ arXiv:2003.09700](https://arxiv.org/abs/2003.09700)** (2020)
+
+<img src="./image/architecture1.png" width="640" height="480" />  
+
+Architecture for multiple vehicle simulation is shown as the below figure.  For more details, see the paper
+
+Xiao, K., Ma, L., Tan, S., Cong, Y., Wang, X.: Implementation of UAV Coordination Based on a Hierarchical Multi-UAV Simulation Platform. arXiv preprint **[ arXiv:2005.01125](https://arxiv.org/abs/2005.01125)** (2020)
+
+<img src="./image/architecture2.png" width="640" />  
 
 Developers can quickly verify algorithms with XTDrone, such as:
 
 1. Object Detection and Tracking
+
 <img src="./image/human_tracking.gif" width="640" height="368" /> 
 
 2. Visual SLAM
+
 <img src="./image/vslam.gif" width="640" height="368" /> 
 
-3. Laser Slam
-<img src="./image/laser_slam.gif" width="640" height="368" /> 
+3. 2D Laser SLAM
 
-4. VIO 
+<img src="./image/laser_slam_2d.gif" width="640" height="368" /> 
+
+4. 3D Laser SLAM
+
+<img src="./image/laser_slam_3d.gif" width="640" height="368"/>  
+
+5. VIO 
+
 <img src="./image/vio.gif" width="640" height="368" />  
 
-5. Motion Planning
+6. Motion Planning
+
 <img src="./image/motion_planning.gif" width="640" height="368" />  
 
-6. Formation
+7. Formation
+
 <img src="./image/cooperation.gif" width="640" height="368" />  
 
-#### Software Architecture
-- Comunication: The communication between PX4 and ROS is encapsulated in the Python class, and multi-machine communication starts multiple processes
-- Control：Use the keyboard to switch drone flight modes, control unlocking, adjust speed and yaw steering
-- Perception
-  1. Object Detection and Tracking
-       - YOLO
-  2. SLAM：
-     1. VSLAM: 
-         - ORBSLAM2
-     2. Laser_SLAM:
-         - PLICP+gmapping
-     3. VIO
-         - VINS-Mono（pre-flight initialization issues need to be improved）
-  3. Ground true pose acquisition
-  4. Speech Recognition（to be developed）
-- Motion Planning(currently only supports 2D )
-  1. Global planning
-      - A*
-      - Dijkstra
-  2. Local planning
-      - DWA
-- Cooperation：Multi-UAV Formation. Supply simple 3D simulator to speed up algorithm validation.
-- Simulation configuration
-  1. PX4 configuration
-     - Can reject GPS and magnetic compass
-  2. Launch script
-  3. Gazebo models
-     - Stereo Camera、Depth Camera、LiDAR
-  4. Gazebo worlds
-     - 2 outdoor worlds
-     - 3 indoor worlds
+8. Self driving
+
+<img src="./image/self_driving.gif" width="640" height="368" />  
 
 
-#### Installation
+#### User manual
 
-View the tutorial doc [XTDrone](https://www.yuque.com/xtdrone/manual_en)
+ [XTDrone Manual](https://www.yuque.com/xtdrone/manual_en)
 
 #### Developing Team
 

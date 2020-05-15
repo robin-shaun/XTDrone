@@ -5,15 +5,15 @@
     <!-- vehicle pose -->
     <arg name="x" default="0"/>
     <arg name="y" default="0"/>
-    <arg name="z" default="0"/>x
+    <arg name="z" default="0"/>
     <arg name="R" default="0"/>
     <arg name="P" default="0"/>
     <arg name="Y" default="0"/>
     <!-- vehicle model and world -->
     <arg name="est" default="ekf2"/>
-    <arg name="vehicle" default="iris"/>
-    <arg name="world" default="$(find mavlink_sitl_gazebo)/worlds/indoor1.world"/>
-    <arg name="sdf" default="$(find mavlink_sitl_gazebo)/models/iris_kinect/iris_kinect.sdf"/>
+    <arg name="vehicle" default="plane"/>
+    <arg name="world" default="$(find mavlink_sitl_gazebo)/worlds/outdoor2.world"/>
+    <arg name="sdf" default="$(find mavlink_sitl_gazebo)/models/plane/plane.sdf"/>
 
     <!-- gazebo configs -->
     <arg name="gui" default="true"/>
@@ -45,7 +45,7 @@
         <arg name="respawn_gazebo" value="$(arg respawn_gazebo)"/>
     </include>
     <!-- MAVROS -->
-    <group ns="iris_0">
+    <group ns="plane_0">
         <include file="$(find mavros)/launch/px4.launch">
             <!-- GCS link is provided by SITL -->
             <arg name="gcs_url" value=""/>

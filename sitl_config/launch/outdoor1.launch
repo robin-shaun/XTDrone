@@ -11,9 +11,9 @@
     <arg name="Y" default="0"/>
     <!-- vehicle model and world -->
     <arg name="est" default="ekf2"/>
-    <arg name="vehicle" default="standard_vtol"/>
+    <arg name="vehicle" default="iris"/>
     <arg name="world" default="$(find mavlink_sitl_gazebo)/worlds/outdoor1.world"/>
-    <arg name="sdf" default="$(find mavlink_sitl_gazebo)/models/standard_vtol/standard_vtol.sdf"/>
+    <arg name="sdf" default="$(find mavlink_sitl_gazebo)/models/iris_stereo_camera/iris_stereo_camera.sdf"/>
 
     <!-- gazebo configs -->
     <arg name="gui" default="true"/>
@@ -45,10 +45,12 @@
         <arg name="respawn_gazebo" value="$(arg respawn_gazebo)"/>
     </include>
     <!-- MAVROS -->
-    <include file="$(find mavros)/launch/px4.launch">
-        <!-- GCS link is provided by SITL -->
-        <arg name="gcs_url" value=""/>
-        <arg name="fcu_url" value="$(arg fcu_url)"/>
-        <arg name="respawn_mavros" value="$(arg respawn_mavros)"/>
-    </include>
+    <group ns = "rover_0"> 
+        <include file="$(find mavros)/launch/px4.launch">
+            <!-- GCS link is provided by SITL -->
+            <arg name="gcs_url" value=""/>
+            <arg name="fcu_url" value="$(arg fcu_url)"/>
+            <arg name="respawn_mavros" value="$(arg respawn_mavros)"/>
+        </include>
+    </group>
 </launch>

@@ -3,3 +3,5 @@ competition
 *.bag
 *.pyc
 *.pbstream
+.gitee
+.vscode

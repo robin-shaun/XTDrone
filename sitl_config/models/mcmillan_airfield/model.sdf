@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name="heightmap">
+    <static>true</static>
+    <link name="link">
+      <collision name="collision_mcmillan">
+        <geometry>
+          <heightmap>
+            <uri>model://mcmillan_airfield/media/mcmillan_elevation.tif</uri>
+            <pos>0 0 -300</pos>
+          </heightmap>
+        </geometry>
+      </collision>
+      <visual name="visual_mcmillan">
+        <geometry>
+          <heightmap>
+            <texture>
+              <diffuse>model://mcmillan_airfield/media/textures/mcmillan_color.png</diffuse>
+              <normal>file://media/materials/textures/flat_normal.png</normal>
+              <size>5700</size>
+            </texture>
+            <uri>model://mcmillan_airfield/media/mcmillan_elevation.tif</uri>
+            <pos>0 0 -300</pos>
+          </heightmap>
+        </geometry>
+      </visual>
+    </link>
+  </model>
+</sdf>

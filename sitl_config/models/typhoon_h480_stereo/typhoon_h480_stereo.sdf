@@ -1619,7 +1619,7 @@
     </plugin>
 
     <include>
-      <uri>model://stereo_cam</uri>
+      <uri>model://stereo_camera</uri>
       <pose>-0.1 0 0 0 0 0</pose>
     </include>
     <joint name="sonar_joint" type="fixed">

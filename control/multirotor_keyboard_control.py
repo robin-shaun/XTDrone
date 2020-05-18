@@ -121,7 +121,7 @@ if __name__=="__main__":
     while(1):
         key = getKey()
         if key == 'w' :
-            forward = forward + LIN_VEL_STEP_SIZE
+            forward = forward + LINEAR_STEP_SIZE
             print_msg()
             if control_type == 'vel':
                 print("currently:\t forward vel %.2f\t leftward vel %.2f\t upward vel %.2f\t angular %.2f " % (forward, leftward, upward, angular))
@@ -129,7 +129,7 @@ if __name__=="__main__":
                 print("currently:\t forward vel %.2f\t leftward vel %.2f\t upward vel %.2f\t angular %.2f " % (forward, leftward, upward, angular))
 
         elif key == 'x' :
-            forward = forward - LIN_VEL_STEP_SIZE
+            forward = forward - LINEAR_STEP_SIZE
             print_msg()
             if control_type == 'vel':
                 print("currently:\t forward vel %.2f\t leftward vel %.2f\t upward vel %.2f\t angular %.2f " % (forward, leftward, upward, angular))
@@ -138,7 +138,7 @@ if __name__=="__main__":
 
         elif key == 'a' :
 
-            leftward = leftward + LIN_VEL_STEP_SIZE
+            leftward = leftward + LINEAR_STEP_SIZE
             print_msg()
             if control_type == 'vel':
                 print("currently:\t forward vel %.2f\t leftward vel %.2f\t upward vel %.2f\t angular %.2f " % (forward, leftward, upward, angular))
@@ -146,7 +146,7 @@ if __name__=="__main__":
                 print("currently:\t forward vel %.2f\t leftward vel %.2f\t upward vel %.2f\t angular %.2f " % (forward, leftward, upward, angular))
 
         elif key == 'd' :
-            leftward = leftward - LIN_VEL_STEP_SIZE
+            leftward = leftward - LINEAR_STEP_SIZE
             print_msg()
             if control_type == 'vel':
                 print("currently:\t forward vel %.2f\t leftward vel %.2f\t upward vel %.2f\t angular %.2f " % (forward, leftward, upward, angular))
@@ -154,7 +154,7 @@ if __name__=="__main__":
                 print("currently:\t forward vel %.2f\t leftward vel %.2f\t upward vel %.2f\t angular %.2f " % (forward, leftward, upward, angular))
 
         elif key == 'i' :
-            upward = upward + LIN_VEL_STEP_SIZE
+            upward = upward + LINEAR_STEP_SIZE
             print_msg()
             if control_type == 'vel':
                 print("currently:\t forward vel %.2f\t leftward vel %.2f\t upward vel %.2f\t angular %.2f " % (forward, leftward, upward, angular))
@@ -162,7 +162,7 @@ if __name__=="__main__":
                 print("currently:\t forward vel %.2f\t leftward vel %.2f\t upward vel %.2f\t angular %.2f " % (forward, leftward, upward, angular))
 
         elif key == ',' :
-            upward = upward - LIN_VEL_STEP_SIZE
+            upward = upward - LINEAR_STEP_SIZE
             print_msg()
             if control_type == 'vel':
                 print("currently:\t forward vel %.2f\t leftward vel %.2f\t upward vel %.2f\t angular %.2f " % (forward, leftward, upward, angular))
@@ -194,7 +194,7 @@ if __name__=="__main__":
         elif key == 'v':
             cmd = 'AUTO.TAKEOFF'
             cmd = ''
-            print(msg)
+            print_msg()
             #print('Takeoff mode is disenabled now')
         elif key == 'b':
             cmd = 'OFFBOARD'

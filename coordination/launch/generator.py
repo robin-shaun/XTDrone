@@ -1,4 +1,4 @@
-
+#-*-coding：gbk-*-
 import sys
 
 welcome_msg = """
@@ -52,11 +52,13 @@ print(welcome_msg)
 TYPE_ID = 4
 num_of_all = 0
 num_of_type = [0]*8
+row_of_type = [0]*8
 
 while TYPE_ID != 'f':
     TYPE_ID = input(input_msg)
     if TYPE_ID>='0' and  TYPE_ID<='7':
-        num_of_type[int(TYPE_ID)] = int( input("Enter the num of "+ID_TYPE_DICT[int(TYPE_ID)]+" :" ) )
+        num_of_type[int(TYPE_ID)] += int( input("Enter the num of "+ID_TYPE_DICT[int(TYPE_ID)]+" :" ) )
+        row_of_type[int(TYPE_ID)] += int( input("Enter the row num of "+ID_TYPE_DICT[int(TYPE_ID)]+" :" ) )
     elif TYPE_ID == 'f':
         for i in range(7):
             if  num_of_type[i] != 0:
@@ -65,7 +67,7 @@ while TYPE_ID != 'f':
     else:
         print("error!please enter a id_in_allber between 0 to 7!")
 
-num_of_all = sum(num_of_type)    
+sum_of_row = sum(row_of_type)    
 
 
 
@@ -80,11 +82,11 @@ with open('launch_temp_1.11','r') as f:
 
 with open('multi_vehicle.launch','w') as f:
     f.write(launch_head)
-    row_num = 0
+    row_in_all = 0
     id_in_all = 0
     for type_id in range(8):
         type_num = num_of_type[type_id]
-
+        row_in_type = row_of_type[type_id]
         sdf_name = ID_TYPE_DICT[type_id]
         # For example,
         # While "iris_stereo_camera" is the model name,
@@ -96,7 +98,7 @@ with open('multi_vehicle.launch','w') as f:
             type_name = sdf_name.split('_')[0]
 
         if type_num > 0:
-            row_num +=1
+            
             for id_in_type in range(0,type_num):
 
                 mavlink_1=34570-1+id_in_all*2
@@ -124,13 +126,14 @@ with open('multi_vehicle.launch','w') as f:
                     elif '''<arg name="sdf" value=''' in line:
                         f.write('''            <arg name="sdf" value="%s"/>\n'''%sdf_name)    
                     elif '''name="x"''' in line:
-                        f.write('''            <arg name="x" value="%d"/>\n'''%( (row_num-1)*3 )  )
+                        f.write('''            <arg name="x" value="%d"/>\n'''%(row_in_all*3 + ( id_in_type//row_in_type +1)*3 )  )
                     elif '''name="y"''' in line:
-                        f.write('''            <arg name="y" value="%d"/>\n''' %(id_in_type*3)  )
+                        f.write('''            <arg name="y" value="%d"/>\n''' %((id_in_type%row_in_type +1)*3) )
                     else:
                         f.write('%s' %line) 
                 f.write("\n")
                 id_in_all+=1
+            row_in_all += row_in_type    
                 
                 
 

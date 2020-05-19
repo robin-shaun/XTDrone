@@ -206,7 +206,7 @@ class Communication:
             print(self.vehicle_type+'_'+self.vehicle_id+':'+msg.data)
             print(self.transition(state=4))
 
-        elif msg.data == 'loiter' or msg.data == 'idle':
+        elif msg.data in ['loiter', 'idle']:
             self.plane_mission = msg.data   
             print(self.vehicle_type+'_'+self.vehicle_id+':'+self.plane_mission)
             

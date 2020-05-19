@@ -1,9 +1,8 @@
 #!/bin/bash
-python leader.py $1 &
-uav_num=2
-while(( $uav_num<= $1 )) 
+python leader.py $1 $2 &
+uav_num=1
+while(( $uav_num< $2 )) 
 do
-    python follower_accel_control.py $uav_num $1&
-    #echo $uav_num
+    python follower_accel_control.py $1 $uav_num $2&
     let "uav_num++"
 done

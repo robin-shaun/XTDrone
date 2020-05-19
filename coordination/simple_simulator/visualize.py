@@ -7,7 +7,8 @@ from geometry_msgs.msg import Twist,Pose,PoseStamped,TwistStamped
 from gazebo_msgs.srv import GetModelState
 import sys
 
-uav_num = int(sys.argv[1])
+uav_type = sys.argv[1]
+uav_num = int(sys.argv[2])
 
 step_time=0.005
 
@@ -51,7 +52,7 @@ rospy.init_node('visualize')
 rate = rospy.Rate(1/step_time)
 
 for i in range(uav_num):
-    rospy.Subscriber('/uav'+str(i+1)+'/mavros/local_position/pose', PoseStamped, pose_sub_callback,i)  
+    rospy.Subscriber(uav_type+'_'+str(i)+'/mavros/local_position/pose', PoseStamped, pose_sub_callback,i)  
 
 try:
     while not rospy.is_shutdown():

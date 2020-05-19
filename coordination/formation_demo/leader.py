@@ -8,10 +8,14 @@ import time
 import math
 import numpy 
 import sys
+if sys.argv[2] == '6':
+    from formation_dict import formation_dict_6 as formation_dict
+elif sys.argv[2] == '9':
+    from formation_dict import formation_dict_9 as formation_dict
 
 class Leader:
 
-    def __init__(self, leader_id, uav_num):
+    def __init__(self, uav_type, leader_id, uav_num):
         self.hover = True
         self.id = leader_id
         self.local_pose = PoseStamped()
@@ -23,17 +27,20 @@ class Leader:
         self.avoid_accel = Vector3(0,0,0)
         self.formation_config = 'waiting'
         self.target_height_recorded = False
+        self.cmd = String()
         self.f = 200
         self.Kz = 0.5
-        self.local_pose_sub = rospy.Subscriber("/uav"+str(self.id)+"/mavros/local_position/pose", PoseStamped , self.local_pose_callback)
-        self.cmd_vel_sub = rospy.Subscriber("/xtdrone/leader/cmd_vel", Twist, self.cmd_vel_callback)
-        self.avoid_vel_sub = rospy.Subscriber("/xtdrone/uav"+str(self.id)+"/avoid_accel", Vector3, self.avoid_accel_callback)
-        self.formation_switch_sub = rospy.Subscriber("/gcs/formation_switch",String, self.cmd_callback)
+        self.local_pose_sub = rospy.Subscriber(uav_type+'_'+str(self.id)+"/mavros/local_position/pose", PoseStamped , self.local_pose_callback)
+        self.cmd_vel_sub = rospy.Subscriber("/xtdrone/leader/cmd_vel_flu", Twist, self.cmd_vel_callback)
+        self.avoid_vel_sub = rospy.Subscriber("/xtdrone/"+uav_type+'_'+str(self.id)+"/avoid_accel", Vector3, self.avoid_accel_callback)
+        self.leader_cmd_sub = rospy.Subscriber("/xtdrone/leader/cmd",String, self.cmd_callback)
+
         for i in range(self.follower_num):
-            rospy.Subscriber('/xtdrone/uav'+str(i+1)+'/info',String,self.followers_info_callback,i)
+            rospy.Subscriber('/xtdrone/'+uav_type+'_'+str(i+1)+'/info',String,self.followers_info_callback,i)
         self.local_pose_pub = rospy.Publisher("/xtdrone/leader/pose", PoseStamped , queue_size=10)
         self.formation_switch_pub = rospy.Publisher("/xtdrone/formation_switch",String, queue_size=10)
-        self.vel_enu_pub =  rospy.Publisher('/xtdrone/uav'+str(self.id)+'/cmd_vel_enu', Twist, queue_size=10)
+        self.vel_enu_pub =  rospy.Publisher('/xtdrone/'+uav_type+'_'+str(self.id)+'/cmd_vel_enu', Twist, queue_size=10)
+        self.cmd_pub = rospy.Publisher('/xtdrone/'+uav_type+'_'+str(self.id)+'/cmd', String, queue_size=10)
 
     def local_pose_callback(self, msg):
         self.local_pose = msg
@@ -46,9 +53,10 @@ class Leader:
             self.hover = False
 
     def cmd_callback(self, msg):
-        if not msg.data == '': 
+        if msg.data in formation_dict.keys():
             self.formation_config = msg.data
-            #print("Switch to Formation"+self.formation_config)
+        else:
+            self.cmd = msg.data
 
     def avoid_accel_callback(self, msg):
         self.avoid_accel = msg
@@ -79,8 +87,9 @@ class Leader:
             self.cmd_vel_enu.linear.z += self.avoid_accel.z
             self.vel_enu_pub.publish(self.cmd_vel_enu)
             self.local_pose_pub.publish(self.local_pose)
+            self.cmd_pub.publish(self.cmd)
             rate.sleep()
 
 if __name__ == '__main__':
-    leader = Leader(1,int(sys.argv[1]))
+    leader = Leader(sys.argv[1], 0, int(sys.argv[2]))
     leader.loop()   

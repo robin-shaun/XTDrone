@@ -119,7 +119,7 @@ class Communication:
             self.arm_state = not self.disarm()
             print(self.vehicle_type+'_'+self.vehicle_id+": Armed "+str(self.arm_state))
 
-        elif msg.data == 'takeoff' or msg.data == 'land' or msg.data == 'loiter' or msg.data == 'idle':
+        elif msg.data in ['takeoff', 'land', 'loiter', 'idle']:
             self.mission = msg.data   
             print(self.mission)
         else:

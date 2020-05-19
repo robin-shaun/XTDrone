@@ -7,10 +7,8 @@ from geometry_msgs.msg import Twist,Pose,PoseStamped,TwistStamped
 from gazebo_msgs.srv import GetModelState
 import sys
 
-use_1_8 = 1
-
-#uav_num=9
-uav_num = int(sys.argv[1])
+uav_type = sys.argv[1]
+uav_num = int(sys.argv[2])
 
 step_time=0.005
 
@@ -23,11 +21,10 @@ plot_z=[0]*(uav_num)
 local_vel = [TwistStamped() for i in range (uav_num)]
 
 for i in range(uav_num):
-    uav_id=i+use_1_8
     plot_x[i]= i//3
     plot_y[i]= i%3
-    pose_puber[i]=rospy.Publisher('/uav'+str(uav_id)+'/mavros/local_position/pose', PoseStamped, queue_size=10)
-    vel_puber[i]=rospy.Publisher('/uav'+str(uav_id)+'/mavros/local_position/velocity_local', TwistStamped, queue_size=10)
+    pose_puber[i]=rospy.Publisher(uav_type+'_'+str(i)+'/mavros/local_position/pose', PoseStamped, queue_size=2)
+    vel_puber[i]=rospy.Publisher(uav_type+'_'+str(i)+'/mavros/local_position/velocity_local', TwistStamped, queue_size=2)
 
 
 def cmd_vel_callback(msg,id):
@@ -41,9 +38,8 @@ rospy.init_node('simple_3d_simulator')
 rate = rospy.Rate(1/step_time)
 
 for i in range(uav_num):
-    uav_id=i+use_1_8
-    rospy.Subscriber('/xtdrone/uav'+str(uav_id)+'/cmd_vel_flu', Twist, cmd_vel_callback,i) 
-    rospy.Subscriber('/xtdrone/uav'+str(uav_id)+'/cmd_vel_enu', Twist, cmd_vel_callback,i)    
+    rospy.Subscriber('/xtdrone/'+uav_type+'_'+str(i)+'/cmd_vel_flu', Twist, cmd_vel_callback,i) 
+    rospy.Subscriber('/xtdrone/'+uav_type+'_'+str(i)+'/cmd_vel_enu', Twist, cmd_vel_callback,i)    
 
 
 while not rospy.is_shutdown():

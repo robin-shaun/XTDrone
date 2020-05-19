@@ -34,7 +34,7 @@ Then enter f to generate!
   """
 
 TYPE_ID_DICT = {
-    "rover_with_sensors" : 0,
+    "rover_with_lidar_stereo" : 0,
     "plane" : 1,
     "typhoon_h480_stereo" : 2,
     "solo_stereo_camera" : 3,
@@ -82,11 +82,12 @@ with open('launch_temp_1.11','r') as f:
 with open('multi_vehicle.launch','w') as f:
     f.write(launch_head)
     row_in_all = 0
-    id_in_all = 0
+    id_in_all = 1
     for type_id in range(8):
         type_num = num_of_type[type_id]
         row_in_type = row_of_type[type_id]
         sdf_name = ID_TYPE_DICT[type_id]
+
         # For example,
         # While "iris_stereo_camera" is the model name,
         # and we only need the "iris" to publish those topics.
@@ -125,13 +126,14 @@ with open('multi_vehicle.launch','w') as f:
                     elif '''<arg name="sdf" value=''' in line:
                         f.write('''            <arg name="sdf" value="%s"/>\n'''%sdf_name)    
                     elif '''name="x"''' in line:
-                        f.write('''            <arg name="x" value="%d"/>\n'''%(row_in_all*3 + ( id_in_type//row_in_type +1)*3 )  )
+                        f.write('''            <arg name="x" value="%d"/>\n'''%((id_in_type%row_in_type )*3)  )
                     elif '''name="y"''' in line:
-                        f.write('''            <arg name="y" value="%d"/>\n''' %((id_in_type%row_in_type +1)*3) )
+                        f.write('''            <arg name="y" value="%d"/>\n''' %(row_in_all*3 + ( id_in_type//row_in_type +1)*3 ) )
                     else:
                         f.write('%s' %line) 
                 f.write("\n")
                 id_in_all+=1
+
             row_in_all += row_in_type    
                 
                 

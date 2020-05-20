@@ -84,8 +84,8 @@
             <arg name="fcu_url" default="udp://:14543@127.0.0.1:34576"/>
         <!-- PX4 SITL and vehicle spawn -->
         <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
-            <arg name="x" value="0"/>
-            <arg name="y" value="6"/>
+            <arg name="x" value="6"/>
+            <arg name="y" value="3"/>
             <arg name="z" value="0"/>
             <arg name="R" value="0"/>
             <arg name="P" value="0"/>
@@ -105,22 +105,22 @@
             <arg name="tgt_component" value="1"/>
         </include>
     </group>
-     <!-- solo_0 -->
-     <group ns="solo_0">
+     <!-- rover_3 -->
+     <group ns="rover_3">
         <!-- MAVROS and vehicle configs -->
             <arg name="ID" value="4"/>
-            <arg name="ID_in_group" value="0"/>
+            <arg name="ID_in_group" value="3"/>
             <arg name="fcu_url" default="udp://:14544@127.0.0.1:34578"/>
         <!-- PX4 SITL and vehicle spawn -->
         <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
-            <arg name="x" value="0"/>
-            <arg name="y" value="9"/>
+            <arg name="x" value="9"/>
+            <arg name="y" value="3"/>
             <arg name="z" value="0"/>
             <arg name="R" value="0"/>
             <arg name="P" value="0"/>
             <arg name="Y" value="0"/>
-            <arg name="vehicle" value="solo"/>
-            <arg name="sdf" value="solo_stereo_camera"/>
+            <arg name="vehicle" value="rover"/>
+            <arg name="sdf" value="rover_with_lidar_stereo"/>
             <arg name="mavlink_udp_port" value="24568"/>
             <arg name="mavlink_tcp_port" value="4564"/>
             <arg name="ID" value="$(arg ID)"/>
@@ -134,22 +134,22 @@
             <arg name="tgt_component" value="1"/>
         </include>
     </group>
-     <!-- solo_1 -->
-     <group ns="solo_1">
+     <!-- rover_4 -->
+     <group ns="rover_4">
         <!-- MAVROS and vehicle configs -->
             <arg name="ID" value="5"/>
-            <arg name="ID_in_group" value="1"/>
+            <arg name="ID_in_group" value="4"/>
             <arg name="fcu_url" default="udp://:14545@127.0.0.1:34580"/>
         <!-- PX4 SITL and vehicle spawn -->
         <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
-            <arg name="x" value="3"/>
-            <arg name="y" value="9"/>
+            <arg name="x" value="12"/>
+            <arg name="y" value="3"/>
             <arg name="z" value="0"/>
             <arg name="R" value="0"/>
             <arg name="P" value="0"/>
             <arg name="Y" value="0"/>
-            <arg name="vehicle" value="solo"/>
-            <arg name="sdf" value="solo_stereo_camera"/>
+            <arg name="vehicle" value="rover"/>
+            <arg name="sdf" value="rover_with_lidar_stereo"/>
             <arg name="mavlink_udp_port" value="24570"/>
             <arg name="mavlink_tcp_port" value="4565"/>
             <arg name="ID" value="$(arg ID)"/>
@@ -163,24 +163,314 @@
             <arg name="tgt_component" value="1"/>
         </include>
     </group>
-     <!-- solo_2 -->
-     <group ns="solo_2">
+     <!-- typhoon_h480_0 -->
+     <group ns="typhoon_h480_0">
         <!-- MAVROS and vehicle configs -->
             <arg name="ID" value="6"/>
-            <arg name="ID_in_group" value="2"/>
+            <arg name="ID_in_group" value="0"/>
             <arg name="fcu_url" default="udp://:14546@127.0.0.1:34582"/>
         <!-- PX4 SITL and vehicle spawn -->
         <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
-            <arg name="x" value="6"/>
+            <arg name="x" value="15"/>
+            <arg name="y" value="3"/>
+            <arg name="z" value="0"/>
+            <arg name="R" value="0"/>
+            <arg name="P" value="0"/>
+            <arg name="Y" value="0"/>
+            <arg name="vehicle" value="typhoon_h480"/>
+            <arg name="sdf" value="typhoon_h480_stereo"/>
+            <arg name="mavlink_udp_port" value="24572"/>
+            <arg name="mavlink_tcp_port" value="4566"/>
+            <arg name="ID" value="$(arg ID)"/>
+            <arg name="ID_in_group" value="$(arg ID_in_group)"/>
+        </include>
+        <!-- MAVROS -->
+        <include file="$(find mavros)/launch/px4.launch">
+            <arg name="fcu_url" value="$(arg fcu_url)"/>
+            <arg name="gcs_url" value=""/>
+            <arg name="tgt_system" value="$(eval 1 + arg('ID'))"/>
+            <arg name="tgt_component" value="1"/>
+        </include>
+    </group>
+     <!-- typhoon_h480_1 -->
+     <group ns="typhoon_h480_1">
+        <!-- MAVROS and vehicle configs -->
+            <arg name="ID" value="7"/>
+            <arg name="ID_in_group" value="1"/>
+            <arg name="fcu_url" default="udp://:14547@127.0.0.1:34584"/>
+        <!-- PX4 SITL and vehicle spawn -->
+        <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
+            <arg name="x" value="18"/>
+            <arg name="y" value="3"/>
+            <arg name="z" value="0"/>
+            <arg name="R" value="0"/>
+            <arg name="P" value="0"/>
+            <arg name="Y" value="0"/>
+            <arg name="vehicle" value="typhoon_h480"/>
+            <arg name="sdf" value="typhoon_h480_stereo"/>
+            <arg name="mavlink_udp_port" value="24574"/>
+            <arg name="mavlink_tcp_port" value="4567"/>
+            <arg name="ID" value="$(arg ID)"/>
+            <arg name="ID_in_group" value="$(arg ID_in_group)"/>
+        </include>
+        <!-- MAVROS -->
+        <include file="$(find mavros)/launch/px4.launch">
+            <arg name="fcu_url" value="$(arg fcu_url)"/>
+            <arg name="gcs_url" value=""/>
+            <arg name="tgt_system" value="$(eval 1 + arg('ID'))"/>
+            <arg name="tgt_component" value="1"/>
+        </include>
+    </group>
+     <!-- typhoon_h480_2 -->
+     <group ns="typhoon_h480_2">
+        <!-- MAVROS and vehicle configs -->
+            <arg name="ID" value="8"/>
+            <arg name="ID_in_group" value="2"/>
+            <arg name="fcu_url" default="udp://:14548@127.0.0.1:34586"/>
+        <!-- PX4 SITL and vehicle spawn -->
+        <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
+            <arg name="x" value="15"/>
+            <arg name="y" value="6"/>
+            <arg name="z" value="0"/>
+            <arg name="R" value="0"/>
+            <arg name="P" value="0"/>
+            <arg name="Y" value="0"/>
+            <arg name="vehicle" value="typhoon_h480"/>
+            <arg name="sdf" value="typhoon_h480_stereo"/>
+            <arg name="mavlink_udp_port" value="24576"/>
+            <arg name="mavlink_tcp_port" value="4568"/>
+            <arg name="ID" value="$(arg ID)"/>
+            <arg name="ID_in_group" value="$(arg ID_in_group)"/>
+        </include>
+        <!-- MAVROS -->
+        <include file="$(find mavros)/launch/px4.launch">
+            <arg name="fcu_url" value="$(arg fcu_url)"/>
+            <arg name="gcs_url" value=""/>
+            <arg name="tgt_system" value="$(eval 1 + arg('ID'))"/>
+            <arg name="tgt_component" value="1"/>
+        </include>
+    </group>
+     <!-- typhoon_h480_3 -->
+     <group ns="typhoon_h480_3">
+        <!-- MAVROS and vehicle configs -->
+            <arg name="ID" value="9"/>
+            <arg name="ID_in_group" value="3"/>
+            <arg name="fcu_url" default="udp://:14549@127.0.0.1:34588"/>
+        <!-- PX4 SITL and vehicle spawn -->
+        <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
+            <arg name="x" value="18"/>
+            <arg name="y" value="6"/>
+            <arg name="z" value="0"/>
+            <arg name="R" value="0"/>
+            <arg name="P" value="0"/>
+            <arg name="Y" value="0"/>
+            <arg name="vehicle" value="typhoon_h480"/>
+            <arg name="sdf" value="typhoon_h480_stereo"/>
+            <arg name="mavlink_udp_port" value="24578"/>
+            <arg name="mavlink_tcp_port" value="4569"/>
+            <arg name="ID" value="$(arg ID)"/>
+            <arg name="ID_in_group" value="$(arg ID_in_group)"/>
+        </include>
+        <!-- MAVROS -->
+        <include file="$(find mavros)/launch/px4.launch">
+            <arg name="fcu_url" value="$(arg fcu_url)"/>
+            <arg name="gcs_url" value=""/>
+            <arg name="tgt_system" value="$(eval 1 + arg('ID'))"/>
+            <arg name="tgt_component" value="1"/>
+        </include>
+    </group>
+     <!-- iris_0 -->
+     <group ns="iris_0">
+        <!-- MAVROS and vehicle configs -->
+            <arg name="ID" value="10"/>
+            <arg name="ID_in_group" value="0"/>
+            <arg name="fcu_url" default="udp://:14550@127.0.0.1:34590"/>
+        <!-- PX4 SITL and vehicle spawn -->
+        <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
+            <arg name="x" value="21"/>
+            <arg name="y" value="3"/>
+            <arg name="z" value="0"/>
+            <arg name="R" value="0"/>
+            <arg name="P" value="0"/>
+            <arg name="Y" value="0"/>
+            <arg name="vehicle" value="iris"/>
+            <arg name="sdf" value="iris_stereo_camera"/>
+            <arg name="mavlink_udp_port" value="24580"/>
+            <arg name="mavlink_tcp_port" value="4570"/>
+            <arg name="ID" value="$(arg ID)"/>
+            <arg name="ID_in_group" value="$(arg ID_in_group)"/>
+        </include>
+        <!-- MAVROS -->
+        <include file="$(find mavros)/launch/px4.launch">
+            <arg name="fcu_url" value="$(arg fcu_url)"/>
+            <arg name="gcs_url" value=""/>
+            <arg name="tgt_system" value="$(eval 1 + arg('ID'))"/>
+            <arg name="tgt_component" value="1"/>
+        </include>
+    </group>
+     <!-- iris_1 -->
+     <group ns="iris_1">
+        <!-- MAVROS and vehicle configs -->
+            <arg name="ID" value="11"/>
+            <arg name="ID_in_group" value="1"/>
+            <arg name="fcu_url" default="udp://:14551@127.0.0.1:34592"/>
+        <!-- PX4 SITL and vehicle spawn -->
+        <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
+            <arg name="x" value="21"/>
+            <arg name="y" value="6"/>
+            <arg name="z" value="0"/>
+            <arg name="R" value="0"/>
+            <arg name="P" value="0"/>
+            <arg name="Y" value="0"/>
+            <arg name="vehicle" value="iris"/>
+            <arg name="sdf" value="iris_stereo_camera"/>
+            <arg name="mavlink_udp_port" value="24582"/>
+            <arg name="mavlink_tcp_port" value="4571"/>
+            <arg name="ID" value="$(arg ID)"/>
+            <arg name="ID_in_group" value="$(arg ID_in_group)"/>
+        </include>
+        <!-- MAVROS -->
+        <include file="$(find mavros)/launch/px4.launch">
+            <arg name="fcu_url" value="$(arg fcu_url)"/>
+            <arg name="gcs_url" value=""/>
+            <arg name="tgt_system" value="$(eval 1 + arg('ID'))"/>
+            <arg name="tgt_component" value="1"/>
+        </include>
+    </group>
+     <!-- iris_2 -->
+     <group ns="iris_2">
+        <!-- MAVROS and vehicle configs -->
+            <arg name="ID" value="12"/>
+            <arg name="ID_in_group" value="2"/>
+            <arg name="fcu_url" default="udp://:14552@127.0.0.1:34594"/>
+        <!-- PX4 SITL and vehicle spawn -->
+        <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
+            <arg name="x" value="21"/>
             <arg name="y" value="9"/>
             <arg name="z" value="0"/>
             <arg name="R" value="0"/>
             <arg name="P" value="0"/>
             <arg name="Y" value="0"/>
-            <arg name="vehicle" value="solo"/>
-            <arg name="sdf" value="solo_stereo_camera"/>
-            <arg name="mavlink_udp_port" value="24572"/>
-            <arg name="mavlink_tcp_port" value="4566"/>
+            <arg name="vehicle" value="iris"/>
+            <arg name="sdf" value="iris_stereo_camera"/>
+            <arg name="mavlink_udp_port" value="24584"/>
+            <arg name="mavlink_tcp_port" value="4572"/>
+            <arg name="ID" value="$(arg ID)"/>
+            <arg name="ID_in_group" value="$(arg ID_in_group)"/>
+        </include>
+        <!-- MAVROS -->
+        <include file="$(find mavros)/launch/px4.launch">
+            <arg name="fcu_url" value="$(arg fcu_url)"/>
+            <arg name="gcs_url" value=""/>
+            <arg name="tgt_system" value="$(eval 1 + arg('ID'))"/>
+            <arg name="tgt_component" value="1"/>
+        </include>
+    </group>
+     <!-- iris_3 -->
+     <group ns="iris_3">
+        <!-- MAVROS and vehicle configs -->
+            <arg name="ID" value="13"/>
+            <arg name="ID_in_group" value="3"/>
+            <arg name="fcu_url" default="udp://:14553@127.0.0.1:34596"/>
+        <!-- PX4 SITL and vehicle spawn -->
+        <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
+            <arg name="x" value="21"/>
+            <arg name="y" value="12"/>
+            <arg name="z" value="0"/>
+            <arg name="R" value="0"/>
+            <arg name="P" value="0"/>
+            <arg name="Y" value="0"/>
+            <arg name="vehicle" value="iris"/>
+            <arg name="sdf" value="iris_stereo_camera"/>
+            <arg name="mavlink_udp_port" value="24586"/>
+            <arg name="mavlink_tcp_port" value="4573"/>
+            <arg name="ID" value="$(arg ID)"/>
+            <arg name="ID_in_group" value="$(arg ID_in_group)"/>
+        </include>
+        <!-- MAVROS -->
+        <include file="$(find mavros)/launch/px4.launch">
+            <arg name="fcu_url" value="$(arg fcu_url)"/>
+            <arg name="gcs_url" value=""/>
+            <arg name="tgt_system" value="$(eval 1 + arg('ID'))"/>
+            <arg name="tgt_component" value="1"/>
+        </include>
+    </group>
+     <!-- tiltrotor_0 -->
+     <group ns="tiltrotor_0">
+        <!-- MAVROS and vehicle configs -->
+            <arg name="ID" value="14"/>
+            <arg name="ID_in_group" value="0"/>
+            <arg name="fcu_url" default="udp://:14554@127.0.0.1:34598"/>
+        <!-- PX4 SITL and vehicle spawn -->
+        <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
+            <arg name="x" value="24"/>
+            <arg name="y" value="3"/>
+            <arg name="z" value="0"/>
+            <arg name="R" value="0"/>
+            <arg name="P" value="0"/>
+            <arg name="Y" value="0"/>
+            <arg name="vehicle" value="tiltrotor"/>
+            <arg name="sdf" value="tiltrotor"/>
+            <arg name="mavlink_udp_port" value="24588"/>
+            <arg name="mavlink_tcp_port" value="4574"/>
+            <arg name="ID" value="$(arg ID)"/>
+            <arg name="ID_in_group" value="$(arg ID_in_group)"/>
+        </include>
+        <!-- MAVROS -->
+        <include file="$(find mavros)/launch/px4.launch">
+            <arg name="fcu_url" value="$(arg fcu_url)"/>
+            <arg name="gcs_url" value=""/>
+            <arg name="tgt_system" value="$(eval 1 + arg('ID'))"/>
+            <arg name="tgt_component" value="1"/>
+        </include>
+    </group>
+     <!-- tiltrotor_1 -->
+     <group ns="tiltrotor_1">
+        <!-- MAVROS and vehicle configs -->
+            <arg name="ID" value="15"/>
+            <arg name="ID_in_group" value="1"/>
+            <arg name="fcu_url" default="udp://:14555@127.0.0.1:34600"/>
+        <!-- PX4 SITL and vehicle spawn -->
+        <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
+            <arg name="x" value="24"/>
+            <arg name="y" value="6"/>
+            <arg name="z" value="0"/>
+            <arg name="R" value="0"/>
+            <arg name="P" value="0"/>
+            <arg name="Y" value="0"/>
+            <arg name="vehicle" value="tiltrotor"/>
+            <arg name="sdf" value="tiltrotor"/>
+            <arg name="mavlink_udp_port" value="24590"/>
+            <arg name="mavlink_tcp_port" value="4575"/>
+            <arg name="ID" value="$(arg ID)"/>
+            <arg name="ID_in_group" value="$(arg ID_in_group)"/>
+        </include>
+        <!-- MAVROS -->
+        <include file="$(find mavros)/launch/px4.launch">
+            <arg name="fcu_url" value="$(arg fcu_url)"/>
+            <arg name="gcs_url" value=""/>
+            <arg name="tgt_system" value="$(eval 1 + arg('ID'))"/>
+            <arg name="tgt_component" value="1"/>
+        </include>
+    </group>
+     <!-- tiltrotor_2 -->
+     <group ns="tiltrotor_2">
+        <!-- MAVROS and vehicle configs -->
+            <arg name="ID" value="16"/>
+            <arg name="ID_in_group" value="2"/>
+            <arg name="fcu_url" default="udp://:14556@127.0.0.1:34602"/>
+        <!-- PX4 SITL and vehicle spawn -->
+        <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
+            <arg name="x" value="24"/>
+            <arg name="y" value="9"/>
+            <arg name="z" value="0"/>
+            <arg name="R" value="0"/>
+            <arg name="P" value="0"/>
+            <arg name="Y" value="0"/>
+            <arg name="vehicle" value="tiltrotor"/>
+            <arg name="sdf" value="tiltrotor"/>
+            <arg name="mavlink_udp_port" value="24592"/>
+            <arg name="mavlink_tcp_port" value="4576"/>
             <arg name="ID" value="$(arg ID)"/>
             <arg name="ID_in_group" value="$(arg ID_in_group)"/>
         </include>

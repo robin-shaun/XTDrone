@@ -12,10 +12,11 @@ def lane_mid_error_callback(msg):
         twist.linear.y = 0.0
     else:
         if abs(msg.data) > 20:
-            twist.linear.x = Kp * msg.data
+            twist.linear.y = - Kp * msg.data
         else:
-            twist.linear.x = 0.0
-        twist.linear.y = Vx * (1 - twist.linear.x)
+            twist.linear.y = 0.0
+            
+        twist.linear.x = Vx * (1 - twist.linear.x)
 
 
 if __name__ == "__main__":

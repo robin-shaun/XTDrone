@@ -90,7 +90,7 @@ if __name__=="__main__":
     multi_cmd_vel_flu_pub = [None]*plane_num
     multi_cmd_pub = [None]*plane_num
     for i in range(plane_num):
-        multi_cmd_vel_flu_pub[i] = rospy.Publisher('/xtdrone/plane_'+str(i)+'/cmd_pose_enu', Pose, queue_size=10)
+        multi_cmd_vel_flu_pub[i] = rospy.Publisher('/xtdrone/plane_'+str(i)+'/cmd_pose_flu', Pose, queue_size=10)
         multi_cmd_pub[i] = rospy.Publisher('/xtdrone/plane_'+str(i)+'/cmd',String,queue_size=10)
     leader_cmd_vel_pub = rospy.Publisher("/xtdrone/leader/cmd_pose", Pose, queue_size=10)
     leader_cmd_pub = rospy.Publisher("/xtdrone/leader_cmd", String, queue_size=10)
@@ -202,7 +202,7 @@ if __name__=="__main__":
         elif angular < -MAX_ANG_VEL:
             angular = - MAX_ANG_VEL
 
-        pose.position.x = leftward; pose.position.y = forward; pose.position.z = upward
+        pose.position.x = forward; pose.position.y = leftward; pose.position.z = upward
         
         pose.orientation.x = 0.0; pose.orientation.y = 0.0;  pose.orientation.z = angular
            

@@ -249,7 +249,7 @@ if __name__=="__main__":
         elif angular < -MAX_ANG_VEL:
             angular = - MAX_ANG_VEL
             
-        twist.linear.x = -leftward; twist.linear.y = forward ; twist.linear.z = upward
+        twist.linear.x = forward; twist.linear.y = leftward ; twist.linear.z = upward
         twist.angular.x = 0.0; twist.angular.y = 0.0;  twist.angular.z = angular
 
         for i in range(multirotor_num):

@@ -265,12 +265,12 @@ if __name__=="__main__":
      
             
         if transition_state == 'plane':
-            pose.position.x = -leftward; pose.position.y = forward; pose.position.z = upward
+            pose.position.x = forward; pose.position.y = leftward; pose.position.z = upward
 
             pose.orientation.x = 0.0; pose.orientation.y = 0.0;  pose.orientation.z = angular   
             
         else:
-            twist.linear.x = - leftward; twist.linear.y = forward; twist.linear.z = upward
+            twist.linear.x = forward; twist.linear.y = leftward; twist.linear.z = upward
 
             twist.angular.x = 0.0; twist.angular.y = 0.0;  twist.angular.z = angular 
             

@@ -84,11 +84,16 @@ class Communication:
 
     def construct_target(self, x=0, y=0, z=0):
         target_raw_pose = PositionTarget()
-        target_raw_pose.coordinate_frame = 1 
+        target_raw_pose.coordinate_frame = self.coordinate_frame 
 
-        target_raw_pose.position.x = x
-        target_raw_pose.position.y = y
-        target_raw_pose.position.z = z
+        if self.coordinate_frame == 1:
+            target_raw_pose.position.x = x
+            target_raw_pose.position.y = y
+            target_raw_pose.position.z = z
+        else:
+            target_raw_pose.position.x = -y
+            target_raw_pose.position.y = x
+            target_raw_pose.position.z = z
 
         if self.mission == 'takeoff':
             target_raw_pose.type_mask = 4096
@@ -102,9 +107,11 @@ class Communication:
         return target_raw_pose
 
     def cmd_pose_flu_callback(self, msg):
+        self.coordinate_frame = 9
         self.target_motion = self.construct_target(x=msg.position.x,y=msg.position.y,z=msg.position.z)
  
     def cmd_pose_enu_callback(self, msg):
+        self.coordinate_frame = 1
         self.target_motion = self.construct_target(x=msg.position.x,y=msg.position.y,z=msg.position.z)
 
     def cmd_callback(self, msg):

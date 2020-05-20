@@ -56,8 +56,8 @@ row_of_type = [0]*8
 while TYPE_ID != 'f':
     TYPE_ID = input(input_msg)
     if TYPE_ID>='0' and  TYPE_ID<='7':
-        num_of_type[int(TYPE_ID)] += int( input("Enter the num of "+ID_TYPE_DICT[int(TYPE_ID)]+" :" ) )
-        row_of_type[int(TYPE_ID)] += int( input("Enter the row num of "+ID_TYPE_DICT[int(TYPE_ID)]+" :" ) )
+        num_of_type[int(TYPE_ID)] = int( input("Enter the num of "+ID_TYPE_DICT[int(TYPE_ID)]+" :" ) )
+        row_of_type[int(TYPE_ID)] = int( input("Enter the row num of "+ID_TYPE_DICT[int(TYPE_ID)]+" :" ) )
     elif TYPE_ID == 'f':
         for i in range(7):
             if  num_of_type[i] != 0:
@@ -126,9 +126,9 @@ with open('multi_vehicle.launch','w') as f:
                     elif '''<arg name="sdf" value=''' in line:
                         f.write('''            <arg name="sdf" value="%s"/>\n'''%sdf_name)    
                     elif '''name="x"''' in line:
-                        f.write('''            <arg name="x" value="%d"/>\n'''%((id_in_type%row_in_type )*3)  )
+                        f.write('''            <arg name="x" value="%d"/>\n'''%(row_in_all*3 +(id_in_type%row_in_type )*3 ))
                     elif '''name="y"''' in line:
-                        f.write('''            <arg name="y" value="%d"/>\n''' %(row_in_all*3 + ( id_in_type//row_in_type +1)*3 ) )
+                        f.write('''            <arg name="y" value="%d"/>\n'''  %(( id_in_type//row_in_type +1)*3  ) )
                     else:
                         f.write('%s' %line) 
                 f.write("\n")

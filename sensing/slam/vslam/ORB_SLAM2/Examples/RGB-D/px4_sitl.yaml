@@ -5,87 +5,41 @@
 #--------------------------------------------------------------------------------------------
 
 # Camera calibration and distortion parameters (OpenCV) 
-Camera.fx: 376.0
-Camera.fy: 376.0
-Camera.cx: 376.0
-Camera.cy: 240.0
+Camera.fx: 554.254691191187
+Camera.fy: 554.254691191187
+Camera.cx: 320.5
+Camera.cy: 240.5
 
-Camera.k1: -0.01
-Camera.k2: 0.004
-Camera.p1: 5e-5
-Camera.p2: -1e-4
+Camera.k1: 0.00000001
+Camera.k2: 0.00000001
+Camera.p1: 0.00000001
+Camera.p2: 0.00000001
+Camera.k3: 0.00000001
 
-Camera.width: 752
+Camera.width: 640
 Camera.height: 480
 
 # Camera frames per second 
-Camera.fps: 7
+Camera.fps: 20
 
-# stereo baseline times fx
-Camera.bf: 45.12
+# IR projector baseline times fx (aprox.)
+Camera.bf: 111
 
 # Color order of the images (0: BGR, 1: RGB. It is ignored if images are grayscale)
 Camera.RGB: 1
 
 # Close/Far threshold. Baseline times.
-ThDepth: 48
+ThDepth: 2
 
-#--------------------------------------------------------------------------------------------
-# Stereo Rectification. Only if you need to pre-rectify the images.
-# Camera.fx, .fy, etc must be the same as in LEFT.P
-#--------------------------------------------------------------------------------------------
-LEFT.height: 480
-LEFT.width: 752
-LEFT.D: !!opencv-matrix
-   rows: 1
-   cols: 5
-   dt: d
-   data: [-0.01, 0.004, 5e-5, -1e-4, 0.0]
-LEFT.K: !!opencv-matrix
-   rows: 3
-   cols: 3
-   dt: d
-   data: [376.0, 0.0, 376.0, 0.0, 376.0, 240.0, 0.0, 0.0, 1.0]
-LEFT.R:  !!opencv-matrix
-   rows: 3
-   cols: 3
-   dt: d
-   data: [1, 0, 0, 0, 1, 0, 0, 0, 1]
-LEFT.P:  !!opencv-matrix
-   rows: 3
-   cols: 4
-   dt: d
-   data: [376.0, 0, 376.0, 0, 0, 376.0, 240.0, 0,  0, 0, 1, 0]
-
-RIGHT.height: 480
-RIGHT.width: 752
-RIGHT.D: !!opencv-matrix
-   rows: 1
-   cols: 5
-   dt: d
-   data: [-0.01, 0.004, 5e-5, -1e-4, 0.0]
-RIGHT.K: !!opencv-matrix
-   rows: 3
-   cols: 3
-   dt: d
-   data: [376.0, 0.0, 376.0, 0.0, 376.0, 240.0, 0.0, 0.0, 1.0]
-RIGHT.R:  !!opencv-matrix
-   rows: 3
-   cols: 3
-   dt: d
-   data: [1, 0, 0, 0, 1, 0, 0, 0, 1]
-RIGHT.P:  !!opencv-matrix
-   rows: 3
-   cols: 4
-   dt: d
-   data: [376.0, 0, 376.0, 0,  0, 376.0, 240.0, 0,  0, 0, 1, 0]
+# Deptmap values factor 
+DepthMapFactor: 25.5
 
 #--------------------------------------------------------------------------------------------
 # ORB Parameters
 #--------------------------------------------------------------------------------------------
 
 # ORB Extractor: Number of features per image
-ORBextractor.nFeatures: 1200
+ORBextractor.nFeatures: 1000
 
 # ORB Extractor: Scale factor between levels in the scale pyramid 	
 ORBextractor.scaleFactor: 1.2

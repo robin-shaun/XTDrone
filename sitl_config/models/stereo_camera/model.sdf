@@ -61,8 +61,8 @@
         <Fy>376.0</Fy>
         <Cx>376.0</Cx>
         <Cy>240.0</Cy>
-        <distortionK1>-0.2</distortionK1>
-        <distortionK2>0.08</distortionK2>
+        <distortionK1>-0.1</distortionK1>
+        <distortionK2>0.01</distortionK2>
         <distortionK3>0.0</distortionK3>
         <distortionT1>5e-5</distortionT1>
         <distortionT2>-1e-4</distortionT2>

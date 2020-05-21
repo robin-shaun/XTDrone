@@ -574,7 +574,7 @@
 <!-- For Stereo Camera Payload -->
       <include>
         <uri>model://stereo_camera</uri>
-        <pose>0 0 -0.05 0 0 0</pose>
+        <pose>0 0 0.3 0 0 0</pose>
       </include>
 
     <joint name="stereo_joint" type="fixed">
@@ -591,7 +591,7 @@
   <!-- For IMU-->
     <include>
       <uri>model://imu_gazebo</uri>
-      <pose>0 0 -0.05 0 0 0</pose>
+      <pose>0 0 0.3 0 0 0</pose>
     </include>
     <joint name="imu_gazebo_joint" type="fixed">
       <child>imu_gazebo::link</child>

@@ -44,7 +44,7 @@
           </image>
           <clip>
             <near>0.05</near>
-            <far>3</far>
+            <far>10</far>
           </clip>
         </camera>
     <plugin name="kinect_controller" filename="libgazebo_ros_openni_kinect.so">
@@ -52,15 +52,15 @@
       <baseline>0.2</baseline>
       <alwaysOn>true</alwaysOn>
       <updateRate>1.0</updateRate>
-      <cameraName>kinect_ir</cameraName>
-      <imageTopicName>/kinect/color/image_raw</imageTopicName>
-      <cameraInfoTopicName>/kinect/color/camera_info</cameraInfoTopicName>
-      <depthImageTopicName>/kinect/depth/image_raw</depthImageTopicName>
-      <depthImageInfoTopicName>/kinect/depth/camera_info</depthImageInfoTopicName>
-      <pointCloudTopicName>/kinect/depth/points</pointCloudTopicName>
-      <frameName>kinect_base</frameName>
+      <cameraName>camera_ir</cameraName>
+      <imageTopicName>/camera/rgb/image_raw</imageTopicName>
+      <cameraInfoTopicName>/camera/rgb/camera_info</cameraInfoTopicName>
+      <depthImageTopicName>/camera/depth_registered/image_raw</depthImageTopicName>
+      <depthImageCameraInfoTopicName>/camera/depth_registered/camera_info</depthImageCameraInfoTopicName>
+      <pointCloudTopicName>/camera/depth_registered/points</pointCloudTopicName>
+      <frameName>camera_ir_link</frameName>
       <pointCloudCutoff>0.5</pointCloudCutoff>
-      <pointCloudCutoffMax>3.0</pointCloudCutoffMax>
+      <pointCloudCutoffMax>10.0</pointCloudCutoffMax>
       <distortionK1>0.00000001</distortionK1>
       <distortionK2>0.00000001</distortionK2>
       <distortionK3>0.00000001</distortionK3>

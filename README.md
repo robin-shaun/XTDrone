@@ -26,31 +26,35 @@ Xiao, K., Ma, L., Tan, S., Cong, Y., Wang, X.: Implementation of UAV Coordinatio
 
 <img src="./image/human_tracking.gif" width="640" height="368" /> 
 
-2. 视觉SLAM
+2. 双目SLAM
 
 <img src="./image/vslam.gif" width="640" height="368" /> 
 
-3. 2D激光SLAM
+3. RGBD-SLAM
+
+<img src="./image/rgbdslam.gif" width="640" height="368" /> 
+
+4. 2D激光SLAM
 
 <img src="./image/laser_slam_2d.gif" width="640" height="368" /> 
 
-4. 3D激光SLAM
+5. 3D激光SLAM
 
-<img src="./image/laser_slam_3d.gif" width="640" height="368"/>
+<img src="./image/laser_slam_3d.gif" width="640" height="368"/>  
 
-5. 视觉惯性导航
+6. 视觉惯性导航
 
 <img src="./image/vio.gif" width="640" height="368" />  
 
-6. 运动规划
+7. 运动规划
 
 <img src="./image/motion_planning.gif" width="640" height="368" />  
 
-7. 多机协同
+8. 多机协同
 
 <img src="./image/cooperation.gif" width="640" height="368" />  
 
-8. 自动驾驶
+9. 自动驾驶
 
 <img src="./image/self_driving.gif" width="640" height="368" />  
 

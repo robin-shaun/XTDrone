@@ -9,6 +9,8 @@ if sys.argv[3] == '6':
     from formation_dict import formation_dict_6 as formation_dict
 elif sys.argv[3] == '9':
     from formation_dict import formation_dict_9 as formation_dict
+elif sys.argv[3] == '18':
+    from formation_dict import formation_dict_18 as formation_dict
 import time
 import math
 import numpy 
@@ -39,7 +41,7 @@ class Follower:
         self.following_ids = []
         self.formation_config = 'waiting'
         self.following_count = 0
-        self.Kp = 1000 #100
+        self.Kp = 100 #100
         #self.kr = (4/int((self.uav_num-1)/2))**0.5
         self.kr = 1
         self.velxy_max = 2
@@ -120,8 +122,9 @@ class Follower:
                     else:
                         if self.first_formation:
                             self.first_formation=False
+                            self.L_matrix = self.get_L_central_matrix()
                             self.orig_formation=formation_dict[self.formation_config]
-                            self.L_matrix = self.get_L_matrix(formation_dict[self.formation_config])
+                            #self.L_matrix = self.get_L_matrix(formation_dict[self.formation_config])
                         else:
                             #self.new_formation=self.get_new_formation(self.orig_formation,formation_dict[self.formation_config])
                             self.adj_matrix = self.build_graph(self.orig_formation,formation_dict[self.formation_config])
@@ -132,15 +135,15 @@ class Follower:
                             self.visit_left = numpy.array([0]*(self.uav_num-1))
                             self.visit_right = numpy.array([0]*(self.uav_num-1))
                             self.slack_right = numpy.array([100]*(self.uav_num-1)) 
+                            self.L_matrix = self.get_L_central_matrix()
                             self.change_id = self.KM()
                             self.new_formation=self.get_new_formation(self.change_id,formation_dict[self.formation_config])
-                            self.L_matrix = self.get_L_matrix(self.new_formation)
+                            #self.L_matrix = self.get_L_matrix(self.new_formation)
                             self.orig_formation=self.new_formation
                     
                     #self.L_matrix = self.get_L_matrix(formation_dict[self.formation_config])
-                    if self.id==2:
-                        print(self.L_matrix)
-                    #self.L_matrix = numpy.array([[0,0,0,0,0,0,0,0,0],[1,-1,0,0,0,0,0,0,0],[1,0,-1,0,0,0,0,0,0],[1,0,0,-1,0,0,0,0,0],[1,0,0,0,-1,0,0,0,0],[1,0,0,0,0,-1,0,0,0],[1,0,0,0,0,0,-1,0,0],[1,0,0,0,0,0,0,-1,0],[1,0,0,0,0,0,0,0,-1]])
+                    #if self.id==2:
+                        #print(self.L_matrix)
                     self.following_ids = numpy.argwhere(self.L_matrix[self.id,:] == 1)
                     #if self.id == 2:
                         #print(self.following_ids)
@@ -157,9 +160,11 @@ class Follower:
                         self.following_count += 1
 
 
-            self.cmd_accel_enu = Vector3(0, 0, 0)
+            #self.cmd_accel_enu = Vector3(0, 0, 0)
+            self.cmd_vel_enu.linear = Vector3(0, 0, 0)
             #self.cmd_vel_enu.linear = copy.deepcopy(self.avoid_accel)
             for following_id in self.following_ids:
+                '''
                 #if self.following_local_pose[following_id[0]] == None and self.following_local_velocity[following_id[0]] == None:
                     #print(following_id)     
                 self.cmd_accel_enu.x += self.following_local_pose[following_id[0]].pose.position.x + self.kr * self.following_local_velocity[following_id[0]].twist.linear.x - self.local_pose.pose.position.x - self.kr * self.local_velocity.twist.linear.x + formation_dict[self.formation_config][0, self.id-2]
@@ -170,26 +175,42 @@ class Follower:
                     self.cmd_accel_enu.x -= formation_dict[self.formation_config][0, following_id[0]-1]
                     self.cmd_accel_enu.y -= formation_dict[self.formation_config][1, following_id[0]-1]
                     self.cmd_accel_enu.z -= formation_dict[self.formation_config][2, following_id[0]-1]
-            if self.arrive_count <= 2000:
-                self.cmd_vel_enu.linear.x = self.local_velocity.twist.linear.x + self.Kp * (self.avoid_accel.x + self.cmd_accel_enu.x / self.f)
-                self.cmd_vel_enu.linear.y = self.local_velocity.twist.linear.y + self.Kp * (self.avoid_accel.y + self.cmd_accel_enu.y / self.f)
-                self.cmd_vel_enu.linear.z = self.local_velocity.twist.linear.z + self.Kp * (self.avoid_accel.z + self.cmd_accel_enu.z / self.f)
-                if self.cmd_vel_enu.linear.x > self.velxy_max:
-                    self.cmd_vel_enu.linear.x = self.velxy_max
-                elif self.cmd_vel_enu.linear.x < - self.velxy_max:
-                    self.cmd_vel_enu.linear.x = - self.velxy_max
-                if self.cmd_vel_enu.linear.y > self.velxy_max:
-                    self.cmd_vel_enu.linear.y = self.velxy_max
-                elif self.cmd_vel_enu.linear.y < - self.velxy_max:
-                    self.cmd_vel_enu.linear.y = - self.velxy_max
-                if self.cmd_vel_enu.linear.z > self.velz_max:
-                    self.cmd_vel_enu.linear.z = self.velz_max
-                elif self.cmd_vel_enu.linear.z < - self.velz_max:
-                    self.cmd_vel_enu.linear.z = - self.velz_max
-                if not self.formation_config == 'waiting':
-                    self.vel_enu_pub.publish(self.cmd_vel_enu)
+                '''
+                self.cmd_vel_enu.linear.x += self.following_local_pose[following_id[0]].pose.position.x - self.local_pose.pose.position.x + formation_dict[self.formation_config][0, self.id-2]
+                self.cmd_vel_enu.linear.y += self.following_local_pose[following_id[0]].pose.position.y - self.local_pose.pose.position.y + formation_dict[self.formation_config][1, self.id-2]
+                self.cmd_vel_enu.linear.z += self.following_local_pose[following_id[0]].pose.position.z - self.local_pose.pose.position.z + formation_dict[self.formation_config][2, self.id-2]
+                if not following_id[0] == 0:
+                    self.cmd_vel_enu.linear.x -= formation_dict[self.formation_config][0, following_id[0]-1]
+                    self.cmd_vel_enu.linear.y -= formation_dict[self.formation_config][1, following_id[0]-1]
+                    self.cmd_vel_enu.linear.z -= formation_dict[self.formation_config][2, following_id[0]-1]
+                self.cmd_vel_enu.linear.x = self.Kp * self.cmd_vel_enu.linear.x
+                self.cmd_vel_enu.linear.y = self.Kp * self.cmd_vel_enu.linear.y
+                self.cmd_vel_enu.linear.z = self.Kp * self.cmd_vel_enu.linear.z
+            #if self.arrive_count <= 2000:
+                #self.cmd_vel_enu.linear.x = self.local_velocity.twist.linear.x + self.Kp * (self.avoid_accel.x + self.cmd_accel_enu.x / self.f)
+                #self.cmd_vel_enu.linear.y = self.local_velocity.twist.linear.y + self.Kp * (self.avoid_accel.y + self.cmd_accel_enu.y / self.f)
+                #self.cmd_vel_enu.linear.z = self.local_velocity.twist.linear.z + self.Kp * (self.avoid_accel.z + self.cmd_accel_enu.z / self.f)
+            if self.cmd_vel_enu.linear.x > self.velxy_max:
+                self.cmd_vel_enu.linear.x = self.velxy_max
+            elif self.cmd_vel_enu.linear.x < - self.velxy_max:
+                self.cmd_vel_enu.linear.x = - self.velxy_max
+            if self.cmd_vel_enu.linear.y > self.velxy_max:
+                self.cmd_vel_enu.linear.y = self.velxy_max
+            elif self.cmd_vel_enu.linear.y < - self.velxy_max:
+                self.cmd_vel_enu.linear.y = - self.velxy_max
+            if self.cmd_vel_enu.linear.z > self.velz_max:
+                self.cmd_vel_enu.linear.z = self.velz_max
+            elif self.cmd_vel_enu.linear.z < - self.velz_max:
+                self.cmd_vel_enu.linear.z = - self.velz_max
+
+            if not self.formation_config == 'waiting':
+                self.vel_enu_pub.publish(self.cmd_vel_enu)
+            if (self.cmd_vel_enu.linear.x)**2+(self.cmd_vel_enu.linear.y)**2+(self.cmd_vel_enu.linear.z)**2<0.2:
+                self.arrive_count += 1
             else:
-                self.cmd_pub.publish(self.hover)
+                self.arrive_count = 0
+            #else:
+                #self.cmd_pub.publish(self.hover)
             rate.sleep()
 
     def build_graph(self,orig_formation,change_formation):
@@ -296,7 +317,16 @@ class Follower:
                     new_formation[:,i]=position[:,j]
         return new_formation
 
-    #函数输入为相对leader的位置矩阵和无人机数量，输出为L矩阵
+    #central-station control 
+    def get_L_central_matrix(self):
+
+        L=numpy.zeros((self.uav_num,self.uav_num))
+        for i in range(1,self.uav_num):
+            L[i][0]=1
+            L[i][i]=-1
+        return L
+    '''
+    #distributed control 函数输入为相对leader的位置矩阵和无人机数量，输出为L矩阵
     def get_L_matrix(self,rel_posi):
 	
         c_num=int((self.uav_num-1)/2)
@@ -408,7 +438,7 @@ class Follower:
             L[i][i]=-sum(w[i])
 
         return L 
-'''
+
     def get_L_matrix(self, rel_posi):
 
         #假设无论多少UAV，都假设尽可能3层通信（叶子节点除外）
@@ -496,7 +526,7 @@ class Follower:
                     
         #print (L)               
         return L
-'''
+    '''
 
 if __name__ == '__main__':
     follower = Follower(sys.argv[1],int(sys.argv[2]),int(sys.argv[3]))

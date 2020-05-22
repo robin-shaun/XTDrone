@@ -44,8 +44,8 @@ class Follower:
         self.Kp = 100 #100
         #self.kr = (4/int((self.uav_num-1)/2))**0.5
         self.kr = 1
-        self.velxy_max = 2
-        self.velz_max = 2
+        self.velxy_max = 0.5
+        self.velz_max = 0.5
         self.following_local_pose = [PoseStamped() for i in range(self.uav_num)]
         self.following_local_pose_sub = [None]*self.uav_num
         self.following_local_velocity = [TwistStamped() for i in range(self.uav_num)]

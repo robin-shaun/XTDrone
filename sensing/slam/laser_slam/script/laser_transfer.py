@@ -8,7 +8,7 @@ import sys
 vehicle_type = sys.argv[1]
 vehicle_id = sys.argv[2]
 laser_slam_type = sys.argv[3]
-rospy.init_node(vehicle_type+vehicle_id+'_'+laser_slam_type+'_laser_slam_data_transfer')
+rospy.init_node(vehicle_type+vehicle_id+'_'+laser_slam_type+'_laser_transfer')
 pose_pub = rospy.Publisher(vehicle_type+'_'+ vehicle_id+"/mavros/vision_pose/pose", PoseStamped, queue_size=2)
 local_pose = PoseStamped()
 local_pose.header.frame_id = 'map'
@@ -53,10 +53,10 @@ def aloam():
     
 if __name__ == '__main__':
     
-    if laser_slam_type == '2D':
+    if laser_slam_type == '2d':
         odom_groundtruth_sub = rospy.Subscriber('/xtdrone/'+vehicle_type+'_'+ vehicle_id+'/ground_truth/odom', Odometry, odm_groundtruth_callback)
         laser_scan_matcher()
-    elif laser_slam_type == '3D':
+    elif laser_slam_type == '3d':
         odom_aloam_sub = rospy.Subscriber('/laser_odom_to_init', Odometry, odm_aloam_callback)
         aloam()
     else:

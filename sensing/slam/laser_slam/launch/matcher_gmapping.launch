@@ -58,6 +58,8 @@ slam_gmapping
     <param name="llsamplestep" value="0.05"/>
     <param name="lasamplerange" value="0.05"/>
     <param name="lasamplestep" value="0.05"/>
+    <remap from="scan" to="iris_0/scan"/>
+    <remap from="pose2D" to="iris_0/pose2D"/>
   </node>
 
 </launch>

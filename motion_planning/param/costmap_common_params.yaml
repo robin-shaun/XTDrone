@@ -7,5 +7,5 @@ inflation_radius: 1.0
 cost_scaling_factor: 2.0
 
 map_type: costmap
-observation_sources: scan
-scan: {sensor_frame: laser, data_type: LaserScan, topic: scan, marking: true, clearing: true}
+observation_sources: iris_0/scan
+iris_0/scan: {sensor_frame: iris_0/laser_2d, data_type: LaserScan, topic: iris_0/scan, marking: true, clearing: true}

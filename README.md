@@ -52,7 +52,9 @@ Xiao, K., Ma, L., Tan, S., Cong, Y., Wang, X.: Implementation of UAV Coordinatio
 
 8. 多机协同
 
-<img src="./image/cooperation.gif" width="640" height="368" />  
+<img src="./image/formation_1.gif" width="640" height="368" />  
+
+<img src="./image/formation_2.gif" width="640" height="368" />  
 
 9. 自动驾驶
 

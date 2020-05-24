@@ -3,7 +3,6 @@
 import rospy
 from geometry_msgs.msg import Twist, Vector3, PoseStamped, TwistStamped
 from std_msgs.msg import String 
-from pyquaternion import Quaternion
 import sys
 if sys.argv[3] == '6':
     from formation_dict import formation_dict_6 as formation_dict
@@ -11,13 +10,8 @@ elif sys.argv[3] == '9':
     from formation_dict import formation_dict_9 as formation_dict
 elif sys.argv[3] == '18':
     from formation_dict import formation_dict_18 as formation_dict
-import time
-import math
 import numpy 
-import heapq
-import copy
 import Queue
-from itertools import permutations
 
 class Follower:
 
@@ -92,27 +86,8 @@ class Follower:
                     self.cmd_pub.publish(self.offboard)
                     self.info_pub.publish("Received")
                     print("Follower"+str(self.id-1)+": Switch to Formation "+self.formation_config)
-                    if self.formation_config=='waiting':
-                        self.L_matrix = self.get_L_matrix(formation_dict[self.formation_config])
-                    else:
-                        if self.first_formation:
-                            self.first_formation=False
-                            self.L_matrix = self.get_L_central_matrix()
-                            self.orig_formation=formation_dict[self.formation_config]
-                        else:
-                            self.adj_matrix = self.build_graph(self.orig_formation,formation_dict[self.formation_config])
-                            self.label_left = numpy.max(self.adj_matrix, axis=1)  # init label for the left 
-                            self.label_right = numpy.array([0]*(self.uav_num-1)) # init label for the right set
-
-                            self.match_right = numpy.array([-1] *(self.uav_num-1))
-                            self.visit_left = numpy.array([0]*(self.uav_num-1))
-                            self.visit_right = numpy.array([0]*(self.uav_num-1))
-                            self.slack_right = numpy.array([100]*(self.uav_num-1)) 
-                            self.L_matrix = self.get_L_central_matrix()
-                            self.change_id = self.KM()
-                            self.new_formation=self.get_new_formation(self.change_id,formation_dict[self.formation_config])
-                            self.orig_formation=self.new_formation
-
+                    if not self.formation_config=='waiting':
+                        self.L_matrix = self.get_L_central_matrix()
                     self.following_ids = numpy.argwhere(self.L_matrix[self.id,:] == 1)
                     self.following_count = 0
                     for i in range(self.uav_num):
@@ -155,69 +130,6 @@ class Follower:
             else:
                 self.arrive_count = 0
             rate.sleep()
-
-    def build_graph(self,orig_formation,change_formation):
-        distance=[[0 for i in range(self.uav_num-1)]for j in range(self.uav_num-1)]
-        for i in range(self.uav_num-1):
-            for j in range(self.uav_num-1):
-                distance[i][j]=numpy.linalg.norm(orig_formation[:,i]-change_formation[:,j])
-                distance[i][j]=int(50-distance[i][j])
-        return distance
-
-    def find_path(self,i):
-        
-        self.visit_left[i] = True
-        for j, match_weight in enumerate(self.adj_matrix[i],start=0): 
-            if self.visit_right[j]: 
-                continue  
-            gap = self.label_left[i] + self.label_right[j] - match_weight 
-            if gap == 0 :            
-                self.visit_right[j] = True   
-                if self.match_right[j]==-1 or self.find_path(self.match_right[j]): 
-                    self.match_right[j] = i     
-                    return True            
-            else:      
-                self.slack_right[j]=min(gap,self.slack_right[j])          
-        return False 
-
-    def KM(self):  
-
-        for i in range(self.uav_num-1):   
-            self.slack_right = numpy.array([100]*(self.uav_num-1))      
-            while True:        
-                self.visit_left = numpy.array([0]*(self.uav_num-1))                
-                self.visit_right = numpy.array([0]*(self.uav_num-1))               
-                if self.find_path(i):    
-                    break       
-                d = numpy.inf
-                for j, slack in enumerate(self.slack_right):         
-                    if not self.visit_right[j] :           
-                        d = min(d,slack)
-                        #print(d)  
-                for k in range(self.uav_num-1):          
-                    if self.visit_left[k]: 
-                        self.label_left[k] -= d                 
-                    if self.visit_right[k]: 
-                        self.label_right[k] += d   
-                    else:
-                        self.slack_right[k] -=d 
-        return self.match_right
-    
-    def get_new_formation(self,change_id,change_formation):
-
-        
-        new_formation=numpy.zeros((3,self.uav_num-1))
-        position=numpy.zeros((3,self.uav_num-1))
-        change_id=[i + 1 for i in change_id] 
-        #print (change_id)
-        for i in range(0,self.uav_num-1):
-            position[:,i]=change_formation[:,i]
-
-        for i in range(0,self.uav_num-1):
-            for j in range(0,self.uav_num-1):
-                if (j+1)==change_id[i]:
-                    new_formation[:,i]=position[:,j]
-        return new_formation
 
     #central-station control 
     def get_L_central_matrix(self):

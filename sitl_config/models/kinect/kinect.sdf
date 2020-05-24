@@ -3,22 +3,23 @@
   <model name="kinect">
     <pose>0 0 0.036 0 0 0</pose>
     <link name="link">
-      <inertial>      
-	      <mass>0.001</mass>     
-	        <inertia> <!-- inertias are tricky to compute -->
-           <ixx>0.001</ixx>      
-		 <!-- for a box: ixx = 0.083 * mass * (y*y + z*z) -->      
- 		       <ixy>0.0</ixy>      
-   <!-- for a box: ixy = 0 -->     
-		       <ixz>0.0</ixz>        
- <!-- for a box: ixz = 0 -->        
-		       <iyy>0.001</iyy>       
-<!-- for a box: iyy = 0.083 * mass * (x*x + z*z) -->        <iyz>0.0</iyz>        
- 	<!-- for a box: iyz = 0 -->       
-   		     <izz>0.001</izz>      
- <!-- for a box: izz = 0.083 * mass * (x*x + y*y) -->   
-          </inertia>    
- 	    </inertial>
+      <inertial>
+        <mass>0.001</mass>
+        <inertia>          <!-- inertias are tricky to compute -->
+          <ixx>0.001</ixx>
+          <!-- for a box: ixx = 0.083 * mass * (y*y + z*z) -->
+          <ixy>0.0</ixy>
+          <!-- for a box: ixy = 0 -->
+          <ixz>0.0</ixz>
+          <!-- for a box: ixz = 0 -->
+          <iyy>0.001</iyy>
+          <!-- for a box: iyy = 0.083 * mass * (x*x + z*z) -->
+          <iyz>0.0</iyz>
+          <!-- for a box: iyz = 0 -->
+          <izz>0.001</izz>
+          <!-- for a box: izz = 0.083 * mass * (x*x + y*y) -->
+        </inertia>
+      </inertial>
       <collision name="collision">
         <geometry>
           <box>
@@ -47,31 +48,31 @@
             <far>10</far>
           </clip>
         </camera>
-    <plugin name="kinect_controller" filename="libgazebo_ros_openni_kinect.so">
-      <robotNamespace> </robotNamespace>
-      <baseline>0.2</baseline>
-      <alwaysOn>true</alwaysOn>
-      <updateRate>1.0</updateRate>
-      <cameraName>camera_ir</cameraName>
-      <imageTopicName>/camera/rgb/image_raw</imageTopicName>
-      <cameraInfoTopicName>/camera/rgb/camera_info</cameraInfoTopicName>
-      <depthImageTopicName>/camera/depth_registered/image_raw</depthImageTopicName>
-      <depthImageCameraInfoTopicName>/camera/depth_registered/camera_info</depthImageCameraInfoTopicName>
-      <pointCloudTopicName>/camera/depth_registered/points</pointCloudTopicName>
-      <frameName>camera_ir_link</frameName>
-      <pointCloudCutoff>0.5</pointCloudCutoff>
-      <pointCloudCutoffMax>10.0</pointCloudCutoffMax>
-      <distortionK1>0.00000001</distortionK1>
-      <distortionK2>0.00000001</distortionK2>
-      <distortionK3>0.00000001</distortionK3>
-      <distortionT1>0.00000001</distortionT1>
-      <distortionT2>0.00000001</distortionT2>
-      <CxPrime>0</CxPrime>
-      <Cx>0</Cx>
-      <Cy>0</Cy>
-      <focalLength>0</focalLength>
-      <hackBaseline>0</hackBaseline>
-    </plugin>
+        <plugin name="kinect_controller" filename="libgazebo_ros_openni_kinect.so">
+          <robotNamespace></robotNamespace>
+          <baseline>0.2</baseline>
+          <alwaysOn>true</alwaysOn>
+          <updateRate>1.0</updateRate>
+          <cameraName>kinect_ir</cameraName>
+          <imageTopicName>kinect/color/image_raw</imageTopicName>
+          <cameraInfoTopicName>kinect/color/camera_info</cameraInfoTopicName>
+          <depthImageTopicName>kinect/depth/image_raw</depthImageTopicName>
+          <depthImageInfoTopicName>kinect/depth/camera_info</depthImageInfoTopicName>
+          <pointCloudTopicName>kinect/depth/points</pointCloudTopicName>
+          <frameName>kinect_base</frameName>
+          <pointCloudCutoff>0.5</pointCloudCutoff>
+          <pointCloudCutoffMax>3.0</pointCloudCutoffMax>
+          <distortionK1>0.00000001</distortionK1>
+          <distortionK2>0.00000001</distortionK2>
+          <distortionK3>0.00000001</distortionK3>
+          <distortionT1>0.00000001</distortionT1>
+          <distortionT2>0.00000001</distortionT2>
+          <CxPrime>0</CxPrime>
+          <Cx>0</Cx>
+          <Cy>0</Cy>
+          <focalLength>0</focalLength>
+          <hackBaseline>0</hackBaseline>
+        </plugin>
       </sensor>
     </link>
   </model>

@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <model name="vi_camera">
+    <pose frame="">0 0 0.015 0 0 0</pose>
+    <link name="link">
+      <inertial>
+        <mass>0.0615752</mass>
+        <inertia>
+          <ixx>9.108e-05</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>2.51e-06</iyy>
+          <iyz>0</iyz>
+          <izz>8.931e-05</izz>
+        </inertia>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+      </inertial>
+      <self_collide>0</self_collide>
+      <enable_wind>0</enable_wind>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>model://vi_camera/meshes/realsense.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+
+    <sensor name="imu_sensor" type="imu">
+      <always_on>true</always_on>
+      <parent>link</parent>
+      <update_rate>500</update_rate>
+      <visualize>true</visualize>
+      <topic>vi/imu</topic>
+      <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+        <topicName>vi/imu_stereo</topicName>
+        <bodyName>imu_link_stereo</bodyName>
+        <updateRateHZ>500.0</updateRateHZ>
+        <gaussianNoise>0.0</gaussianNoise>
+        <xyzOffset>0 0 0</xyzOffset>
+        <rpyOffset>0 0 0</rpyOffset>
+        <frameName>imu_link_stereo</frameName>
+
+        <gyroscopeNoiseDensity>0.0006</gyroscopeNoiseDensity>
+        <gyroscopeRandomWalk>0.000003</gyroscopeRandomWalk>        
+        <gyroscopeTurnOnBiasSigma>0.03</gyroscopeTurnOnBiasSigma>
+
+        <accelerometerNoiseDensity>0.002</accelerometerNoiseDensity>
+        <accelerometerRandomWalk>0.00002</accelerometerRandomWalk>
+        <accelerometerTurnOnBiasSigma>0.1</accelerometerTurnOnBiasSigma>
+
+      </plugin>
+      <pose>0 0 0 0 0 0</pose>
+    </sensor>
+
+      <sensor name="stereo" type="multicamera">
+        <always_on>1</always_on>
+        <update_rate>30</update_rate>
+        <visualize>false</visualize>
+        <camera name="left">
+          <pose>0 0.06 0 0 0 0</pose>
+          <horizontal_fov>1.5708</horizontal_fov>
+          <image>
+            <width>752</width>
+            <height>480</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.1</near>
+            <far>300</far>
+          </clip>
+        </camera>
+        <camera name="right">
+          <pose>0 -0.06 0 0 0 0</pose>
+          <horizontal_fov>1.5708</horizontal_fov>
+          <image>
+            <width>752</width>
+            <height>480</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.1</near>
+            <far>300</far>
+          </clip>
+        </camera>
+        <plugin name="stereo_camera_controller" filename="libgazebo_ros_multicamera.so">
+          <robotNamespace></robotNamespace>
+          <alwaysOn>true</alwaysOn>
+          <updateRate>30</updateRate>
+          <cameraName>vi/stereo_camera</cameraName>
+          <imageTopicName>image_raw</imageTopicName>
+          <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+          <frameName>stereo_camera_frame</frameName>
+          <hackBaseline>0.12</hackBaseline>
+          <Fx>376.0</Fx>
+          <Fy>376.0</Fy>
+          <Cx>376.0</Cx>
+          <Cy>240.0</Cy>
+          <distortionK1>-0.1</distortionK1>
+          <distortionK2>0.01</distortionK2>
+          <distortionK3>0.0</distortionK3>
+          <distortionT1>5e-5</distortionT1>
+          <distortionT2>-1e-4</distortionT2>
+        </plugin>
+      </sensor>
+
+      <sensor name="depth" type="depth">
+        <update_rate>20</update_rate>
+        <camera>
+          <horizontal_fov>1.047198</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.05</near>
+            <far>3</far>
+          </clip>
+        </camera>
+        <plugin name="kinect_controller" filename="libgazebo_ros_openni_kinect.so">
+          <robotNamespace></robotNamespace>
+          <baseline>0.2</baseline>
+          <alwaysOn>true</alwaysOn>
+          <updateRate>1.0</updateRate>
+          <cameraName>vi/depth_camera</cameraName>
+          <imageTopicName>color/image_raw</imageTopicName>
+          <cameraInfoTopicName>color/camera_info</cameraInfoTopicName>
+          <depthImageTopicName>depth/image_raw</depthImageTopicName>
+          <depthImageInfoTopicName>depth/camera_info</depthImageInfoTopicName>
+          <pointCloudTopicName>depth/points</pointCloudTopicName>
+          <frameName>depth_camera_base</frameName>
+          <pointCloudCutoff>0.5</pointCloudCutoff>
+          <pointCloudCutoffMax>3.0</pointCloudCutoffMax>
+          <distortionK1>0.00000001</distortionK1>
+          <distortionK2>0.00000001</distortionK2>
+          <distortionK3>0.00000001</distortionK3>
+          <distortionT1>0.00000001</distortionT1>
+          <distortionT2>0.00000001</distortionT2>
+          <CxPrime>0</CxPrime>
+          <Cx>0</Cx>
+          <Cy>0</Cy>
+          <focalLength>0</focalLength>
+          <hackBaseline>0</hackBaseline>
+        </plugin>
+      </sensor>
+    </link>
+  </model>
+</sdf>

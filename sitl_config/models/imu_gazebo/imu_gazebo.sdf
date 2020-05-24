@@ -19,7 +19,7 @@
       <visualize>true</visualize>
       <topic>imu_gazebo</topic>
       <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
-        <topicName>imu_stereo</topicName>
+        <topicName>imu_gazebo</topicName>
         <bodyName>imu_link_stereo</bodyName>
         <updateRateHZ>500.0</updateRateHZ>
         <gaussianNoise>0.0</gaussianNoise>

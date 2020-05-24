@@ -10,16 +10,16 @@ Camera.fy: 376.0
 Camera.cx: 376.0
 Camera.cy: 240.0
 
-Camera.k1: 0.0
-Camera.k2: 0.0
-Camera.p1: 0.0
-Camera.p2: 0.0
+Camera.k1: -0.01
+Camera.k2: 0.004
+Camera.p1: 5e-5
+Camera.p2: -1e-4
 
 Camera.width: 752
 Camera.height: 480
 
 # Camera frames per second 
-Camera.fps: 17.0
+Camera.fps: 7
 
 # stereo baseline times fx
 Camera.bf: 45.12
@@ -28,7 +28,7 @@ Camera.bf: 45.12
 Camera.RGB: 1
 
 # Close/Far threshold. Baseline times.
-ThDepth: 35
+ThDepth: 48
 
 #--------------------------------------------------------------------------------------------
 # Stereo Rectification. Only if you need to pre-rectify the images.
@@ -40,7 +40,7 @@ LEFT.D: !!opencv-matrix
    rows: 1
    cols: 5
    dt: d
-   data:[0, 0, 0, 0, 0.0]
+   data: [-0.01, 0.004, 5e-5, -1e-4, 0.0]
 LEFT.K: !!opencv-matrix
    rows: 3
    cols: 3
@@ -55,7 +55,7 @@ LEFT.P:  !!opencv-matrix
    rows: 3
    cols: 4
    dt: d
-   data: [376.0, 0, 376.0, 0,  0, 376.0, 240.0, 0,  0, 0, 1, 0]
+   data: [376.0, 0, 376.0, 0, 0, 376.0, 240.0, 0,  0, 0, 1, 0]
 
 RIGHT.height: 480
 RIGHT.width: 752
@@ -63,7 +63,7 @@ RIGHT.D: !!opencv-matrix
    rows: 1
    cols: 5
    dt: d
-   data:[0, 0, 0, 0, 0.0]
+   data: [-0.01, 0.004, 5e-5, -1e-4, 0.0]
 RIGHT.K: !!opencv-matrix
    rows: 3
    cols: 3

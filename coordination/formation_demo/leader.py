@@ -12,6 +12,8 @@ if sys.argv[2] == '6':
     from formation_dict import formation_dict_6 as formation_dict
 elif sys.argv[2] == '9':
     from formation_dict import formation_dict_9 as formation_dict
+elif sys.argv[2] == '18':
+    from formation_dict import formation_dict_18 as formation_dict
 
 class Leader:
 

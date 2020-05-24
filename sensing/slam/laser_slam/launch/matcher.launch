@@ -21,9 +21,12 @@
   <node pkg="laser_scan_matcher" type="laser_scan_matcher_node"
     name="laser_scan_matcher_node" output="screen">
     <param name="fixed_frame" value = "odom"/>
+    <param name="base_frame" value = "iris_0/base_link"/>
     <param name="max_iterations" value="10"/>
     <param name="use_imu" value="false"/>
     <param name="use_odom" value="false"/>
+    <remap from="scan" to="iris_0/scan"/>
+    <remap from="pose2D" to="iris_0/pose2D"/>
   </node>
 
 </launch>

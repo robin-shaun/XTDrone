@@ -28,7 +28,7 @@
           <image>
             <width>752</width>
             <height>480</height>
-	          <format>R8G8B8</format>
+            <format>R8G8B8</format>
           </image>
           <clip>
             <near>0.1</near>
@@ -41,32 +41,32 @@
           <image>
             <width>752</width>
             <height>480</height>
-	          <format>R8G8B8</format>
+            <format>R8G8B8</format>
           </image>
           <clip>
             <near>0.1</near>
             <far>300</far>
           </clip>
         </camera>
-      <plugin name="stereo_camera_controller" filename="libgazebo_ros_multicamera.so">
-        <robotNamespace> </robotNamespace>
-        <alwaysOn>true</alwaysOn>
-        <updateRate>30</updateRate>
-        <cameraName>/stereo_camera</cameraName>
-        <imageTopicName>image_raw</imageTopicName>
-        <cameraInfoTopicName>camera_info</cameraInfoTopicName>
-        <frameName>stereo_camera_frame</frameName>
-        <hackBaseline>0.12</hackBaseline>
-        <Fx>376.0</Fx>
-        <Fy>376.0</Fy>
-        <Cx>376.0</Cx>
-        <Cy>240.0</Cy>
-        <distortionK1>-0.1</distortionK1>
-        <distortionK2>0.01</distortionK2>
-        <distortionK3>0.0</distortionK3>
-        <distortionT1>5e-5</distortionT1>
-        <distortionT2>-1e-4</distortionT2>
-      </plugin>
+        <plugin name="stereo_camera_controller" filename="libgazebo_ros_multicamera.so">
+          <robotNamespace></robotNamespace>
+          <alwaysOn>true</alwaysOn>
+          <updateRate>30</updateRate>
+          <cameraName>/stereo_camera</cameraName>
+          <imageTopicName>image_raw</imageTopicName>
+          <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+          <frameName>stereo_camera_frame</frameName>
+          <hackBaseline>0.12</hackBaseline>
+          <Fx>376.0</Fx>
+          <Fy>376.0</Fy>
+          <Cx>376.0</Cx>
+          <Cy>240.0</Cy>
+          <distortionK1>-0.1</distortionK1>
+          <distortionK2>0.01</distortionK2>
+          <distortionK3>0.0</distortionK3>
+          <distortionT1>5e-5</distortionT1>
+          <distortionT2>-1e-4</distortionT2>
+        </plugin>
       </sensor>
     </link>
   </model>

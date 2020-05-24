@@ -9,7 +9,7 @@
 <!-- For vi_camera -->
       <include>
         <uri>model://vi_camera</uri>
-        <pose>0 0 -0.05 0 0 0</pose>
+        <pose>0 0 -0.09 0 0 0</pose>
       </include>
 
     <joint name="vi_camera_joint" type="revolute">

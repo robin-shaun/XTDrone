@@ -26,31 +26,35 @@ Developers can quickly verify algorithms with XTDrone, such as:
 
 <img src="./image/human_tracking.gif" width="640" height="368" /> 
 
-2. Visual SLAM
+2. Stereo SLAM
 
 <img src="./image/vslam.gif" width="640" height="368" /> 
 
-3. 2D Laser SLAM
+3. RGBD-SLAM
+
+<img src="./image/rgbdslam.gif" width="640" height="368" /> 
+
+4. 2D Laser SLAM
 
 <img src="./image/laser_slam_2d.gif" width="640" height="368" /> 
 
-4. 3D Laser SLAM
+5. 3D Laser SLAM
 
 <img src="./image/laser_slam_3d.gif" width="640" height="368"/>  
 
-5. VIO 
+6. VIO 
 
 <img src="./image/vio.gif" width="640" height="368" />  
 
-6. Motion Planning
+7. Motion Planning
 
 <img src="./image/motion_planning.gif" width="640" height="368" />  
 
-7. Formation
+8. Formation
 
 <img src="./image/cooperation.gif" width="640" height="368" />  
 
-8. Self driving
+9. Self driving
 
 <img src="./image/self_driving.gif" width="640" height="368" />  
 

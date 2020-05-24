@@ -4,7 +4,9 @@ from nav_msgs.msg import Odometry
 import math
 from pyquaternion import Quaternion
 import tf
+import sys
 
+vehicle_type = sys.argv[1]
 local_pose = PoseStamped()
 local_pose.header.frame_id = 'map'
 quaternion = tf.transformations.quaternion_from_euler(0, -math.pi/2, math.pi/2)
@@ -25,7 +27,7 @@ def vins_callback(data):
     
 rospy.init_node('vins_transfer')
 rospy.Subscriber("/vins_estimator/camera_pose", Odometry, vins_callback)
-position_pub = rospy.Publisher("/mavros/vision_pose/pose", PoseStamped, queue_size=2)
+position_pub = rospy.Publisher(vehicle_type+"_0/mavros/vision_pose/pose", PoseStamped, queue_size=2)
 rate = rospy.Rate(60) 
 
 while True:

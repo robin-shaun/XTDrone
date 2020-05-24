@@ -17,7 +17,7 @@ def odm_groundtruth_callback(msg, i):
     multi_local_pose[i].header.frame_id = 'map'
     multi_local_pose[i].pose = msg.pose.pose
     multi_speed[i].header = msg.header
-    multi_speed[i].vector = msg.twist.linear
+    multi_speed[i].vector = msg.twist.twist.linear
 
 if __name__ == '__main__':
     rospy.init_node(vehicle_type+'get_pose_groundtruth')

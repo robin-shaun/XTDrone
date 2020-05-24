@@ -1,7 +1,7 @@
 subscribers:
 
   camera_reading:
-    topic: /iris_0/stereo/camera/left/image_raw
+    topic: /iris_0/stereo_camera/left/image_raw
     queue_size: 1
 
 actions:

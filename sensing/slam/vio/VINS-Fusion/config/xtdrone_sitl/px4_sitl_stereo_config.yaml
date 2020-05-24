@@ -1,0 +1,57 @@
+%YAML:1.0
+
+#common parameters
+#support: 1 imu 1 cam; 1 imu 2 cam: 2 cam; 
+imu: 0         
+num_of_cam: 2  
+
+imu_topic: "/iris_0/imu_stereo"
+image0_topic: "/iris_0/stereo_camera/left/image_raw"
+image1_topic: "/iris_0/stereo_camera/right/image_raw"
+output_path: "/home/robin/catkin_ws/vins_output"
+
+cam0_calib: "cam0_pinhole_p1.yaml"
+cam1_calib: "cam1_pinhole_p1.yaml"
+image_width: 752
+image_height: 480
+   
+
+# Extrinsic parameter between IMU and Camera.
+estimate_extrinsic: 1   # 0  Have an accurate extrinsic parameters. We will trust the following imu^R_cam, imu^T_cam, don't change it.
+                        # 1  Have an initial guess about extrinsic parameters. We will optimize around your initial guess.
+
+body_T_cam0: !!opencv-matrix
+   rows: 4
+   cols: 4
+   dt: d
+   data:  [0, 0, 1, 0,
+           -1, 0, 0, 0.12,
+           0, -1, 0, -0.3,
+           0, 0, 0, 1.]
+
+
+body_T_cam1: !!opencv-matrix
+   rows: 4
+   cols: 4
+   dt: d
+   data:  [0, 0, 1, 0,
+           -1, 0, 0, 0,
+           0, -1, 0, -0.3,
+           0, 0, 0, 1.]
+
+
+#Multiple thread support
+multiple_thread: 1
+
+#feature traker paprameters
+max_cnt: 150            # max feature number in feature tracking
+min_dist: 30            # min distance between two features 
+freq: 0                # frequence (Hz) of publish tracking result. At least 10Hz for good estimation. If set 0, the frequence will be same as raw image 
+F_threshold: 1.0        # ransac threshold (pixel)
+show_track: 1           # publish tracking image as topic
+flow_back: 1            # perform forward and backward optical flow to improve feature tracking accuracy
+
+#optimization parameters
+max_solver_time: 0.04  # max solver itration time (ms), to guarantee real time
+max_num_iterations: 8   # max solver itrations, to guarantee real time
+keyframe_parallax: 10.0 # keyframe selection threshold (pixel)

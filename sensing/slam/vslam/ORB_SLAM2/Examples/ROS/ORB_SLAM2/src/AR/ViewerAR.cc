@@ -21,7 +21,9 @@
 #include "ViewerAR.h"
 
 #include <opencv2/highgui/highgui.hpp>
-
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <mutex>
 #include <thread>
 #include <cstdlib>

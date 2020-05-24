@@ -89,9 +89,11 @@ if __name__=="__main__":
     multirotor_num = int(sys.argv[2])
     control_type = sys.argv[3]
     
-    if multirotor_num == 9:
+    if multirotor_num == 18:
+        formation_configs = ['waiting', 'cube', 'sphere', 'diamond']
+    elif multirotor_num == 9:
         formation_configs = ['waiting', 'cube', 'pyramid', 'triangle']
-    if multirotor_num == 6:
+    elif multirotor_num == 6:
         formation_configs = ['waiting', 'T', 'diamond', 'triangle']
     
     cmd= String()

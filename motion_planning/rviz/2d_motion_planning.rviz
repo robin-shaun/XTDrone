@@ -90,7 +90,7 @@ Visualization Manager:
       Size (Pixels): 3
       Size (m): 0.1
       Style: Flat Squares
-      Topic: /scan
+      Topic: /iris_0/scan
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true

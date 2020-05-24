@@ -52,7 +52,9 @@ Developers can quickly verify algorithms with XTDrone, such as:
 
 8. Formation
 
-<img src="./image/cooperation.gif" width="640" height="368" />  
+<img src="./image/formation_1.gif" width="640" height="368" />  
+
+<img src="./image/formation_2.gif" width="640" height="368" />  
 
 9. Self driving
 

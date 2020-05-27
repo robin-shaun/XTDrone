@@ -48,7 +48,7 @@
       <plugin name='3d_laser' filename='libgazebo_ros_velodyne_laser.so'>
         <robotNamespace></robotNamespace>
         <topicName>/3dscan</topicName>
-        <frameName>laser</frameName>
+        <frameName>laser_3d</frameName>
 		<gaussianNoise>0.008</gaussianNoise>
       </plugin>
       <always_on>1</always_on>

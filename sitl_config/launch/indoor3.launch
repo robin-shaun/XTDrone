@@ -13,7 +13,7 @@
     <arg name="est" default="ekf2"/>
     <arg name="vehicle" default="iris"/>
     <arg name="world" default="$(find mavlink_sitl_gazebo)/worlds/indoor3.world"/>
-    <arg name="sdf" default="$(find mavlink_sitl_gazebo)/models//iris_2d_lidar/iris_2d_lidar.sdf"/>
+    <arg name="sdf" default="$(find mavlink_sitl_gazebo)/models/iris_3d_gpu_lidar/iris_3d_gpu_lidar.sdf"/>
 
     <!-- gazebo configs -->
     <arg name="gui" default="true"/>
@@ -45,10 +45,12 @@
         <arg name="respawn_gazebo" value="$(arg respawn_gazebo)"/>
     </include>
     <!-- MAVROS -->
-    <include file="$(find mavros)/launch/px4.launch">
-        <!-- GCS link is provided by SITL -->
-        <arg name="gcs_url" value=""/>
-        <arg name="fcu_url" value="$(arg fcu_url)"/>
-        <arg name="respawn_mavros" value="$(arg respawn_mavros)"/>
-    </include>
+    <group ns="iris_0">
+        <include file="$(find mavros)/launch/px4.launch">
+            <!-- GCS link is provided by SITL -->
+            <arg name="gcs_url" value=""/>
+            <arg name="fcu_url" value="$(arg fcu_url)"/>
+            <arg name="respawn_mavros" value="$(arg respawn_mavros)"/>
+        </include>
+    </group>
 </launch>

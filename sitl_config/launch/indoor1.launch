@@ -3,7 +3,7 @@
     <!-- MAVROS posix SITL environment launch script -->
     <!-- launches MAVROS, PX4 SITL, Gazebo environment, and spawns vehicle -->
     <!-- vehicle pose -->
-    <arg name="x" default="-2"/>
+    <arg name="x" default="0"/>
     <arg name="y" default="7.5"/>
     <arg name="z" default="1"/>
     <arg name="R" default="0"/>
@@ -13,7 +13,7 @@
     <arg name="est" default="ekf2"/>
     <arg name="vehicle" default="iris"/>
     <arg name="world" default="$(find mavlink_sitl_gazebo)/worlds/indoor1.world"/>
-    <arg name="sdf" default="$(find mavlink_sitl_gazebo)/models/iris_stereo_camera/iris_stereo_camera.sdf"/>
+    <arg name="sdf" default="$(find mavlink_sitl_gazebo)/models/iris_3d_gpu_lidar/iris_3d_gpu_lidar.sdf"/>
 
     <!-- gazebo configs -->
     <arg name="gui" default="true"/>
@@ -22,7 +22,7 @@
     <arg name="paused" default="false"/>
     <arg name="respawn_gazebo" default="false"/>
     <!-- MAVROS configs -->
-    <arg name="fcu_url" default="udp://:14540@localhost:14557"/>
+    <arg name="fcu_url" default="udp://:14540@127.0.0.1:34594"/>
     <arg name="respawn_mavros" default="false"/>
     <!-- PX4 configs -->
     <arg name="interactive" default="true"/>

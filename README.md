@@ -19,7 +19,6 @@ Xiao, K., Ma, L., Tan, S., Cong, Y., Wang, X.: Implementation of UAV Coordinatio
 
 <img src="./image/architecture2.png" width="640" />
 
-
 在这个平台上，开发者可以快速验证算法。如：
 
 1. 目标检测与追踪

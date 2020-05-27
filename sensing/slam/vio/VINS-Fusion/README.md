@@ -1,8 +1,8 @@
 # VINS-Fusion
 ## An optimization-based multi-sensor state estimator
 
-<img src="https://github.com/HKUST-Aerial-Robotics/VINS-Fusion/blob/master/support_files/image/vins_logo.png" width = 55% height = 55% div align=left />
-<img src="https://github.com/HKUST-Aerial-Robotics/VINS-Fusion/blob/master/support_files/image/kitti.png" width = 34% height = 34% div align=center />
+<img src="support_files/image/vins_logo.png" width = 55% height = 55% div align=left />
+<img src="support_files/image/kitti.png" width = 34% height = 34% div align=center />
 
 VINS-Fusion is an optimization-based multi-sensor state estimator, which achieves accurate self-localization for autonomous applications (drones, cars, and AR/VR). VINS-Fusion is an extension of [VINS-Mono](https://github.com/HKUST-Aerial-Robotics/VINS-Mono), which supports multiple visual-inertial sensor types (mono camera + IMU, stereo cameras + IMU, even stereo cameras only). We also show a toy example of fusing VINS with GPS. 
 **Features:**
@@ -11,7 +11,7 @@ VINS-Fusion is an optimization-based multi-sensor state estimator, which achieve
 - online temporal calibration (time offset between camera and IMU)
 - visual loop closure
 
-<img src="https://github.com/HKUST-Aerial-Robotics/VINS-Fusion/blob/master/support_files/image/kitti_rank.png" width = 80% height = 80% />
+<img src="support_files/image/kitti_rank.png" width = 80% height = 80% />
 
 We are the **top** open-sourced stereo algorithm on [KITTI Odometry Benchmark](http://www.cvlibs.net/datasets/kitti/eval_odometry.php) (12.Jan.2019).
 
@@ -30,7 +30,7 @@ alt="VINS" width="320" height="240" border="10" /></a>
 * **VINS-Mono: A Robust and Versatile Monocular Visual-Inertial State Estimator**, Tong Qin, Peiliang Li, Shaojie Shen, IEEE Transactions on Robotics [pdf](https://ieeexplore.ieee.org/document/8421746/?arnumber=8421746&source=authoralert) 
 
 
-*If you use VINS-Fusion for your academic research, please cite our related papers. [bib](https://github.com/HKUST-Aerial-Robotics/VINS-Fusion/blob/master/support_files/paper_bib.txt)*
+*If you use VINS-Fusion for your academic research, please cite our related papers. [bib](support_files/paper_bib.txt)*
 
 ## 1. Prerequisites
 ### 1.1 **Ubuntu** and **ROS**
@@ -85,7 +85,7 @@ Green path is VIO odometry; red path is odometry under visual loop closure.
     rosbag play YOUR_DATASET_FOLDER/MH_01_easy.bag
 ```
 
-<img src="https://github.com/HKUST-Aerial-Robotics/VINS-Fusion/blob/master/support_files/image/euroc.gif" width = 430 height = 240 />
+<img src="support_files/image/euroc.gif" width = 430 height = 240 />
 
 
 ## 4. KITTI Example
@@ -108,7 +108,7 @@ Green path is VIO odometry; blue path is odometry under GPS global fusion.
     rosrun global_fusion global_fusion_node
 ```
 
-<img src="https://github.com/HKUST-Aerial-Robotics/VINS-Fusion/blob/master/support_files/image/kitti.gif" width = 430 height = 240 />
+<img src="support_files/image/kitti.gif" width = 430 height = 240 />
 
 ## 5. VINS-Fusion on car demonstration
 Download [car bag](https://drive.google.com/open?id=10t9H1u8pMGDOI6Q2w2uezEq5Ib-Z8tLz) to YOUR_DATASET_FOLDER.
@@ -121,7 +121,7 @@ Green path is VIO odometry; red path is odometry under visual loop closure.
     rosbag play YOUR_DATASET_FOLDER/car.bag
 ```
 
-<img src="https://github.com/HKUST-Aerial-Robotics/VINS-Fusion/blob/master/support_files/image/car_gif.gif" width = 430 height = 240  />
+<img src="support_files/image/car_gif.gif" width = 430 height = 240  />
 
 
 ## 6. Run with your devices 

@@ -48,7 +48,7 @@ Download [KITTI Odometry dataset](http://www.cvlibs.net/datasets/kitti/eval_odom
     roslaunch aloam_velodyne aloam_velodyne_HDL_64.launch
     roslaunch aloam_velodyne kitti_helper.launch
 ```
-<img src="https://github.com/HKUST-Aerial-Robotics/A-LOAM/blob/devel/picture/kitti_gif.gif" width = 720 height = 351 />
+<img src="picture/kitti_gif.gif" width = 720 height = 351 />
 
 ## 5. Docker Support
 To further facilitate the building process, we add docker in our code. Docker environment is like a sandbox, thus makes our code environment-independent. To run with docker, first make sure [ros](http://wiki.ros.org/ROS/Installation) and [docker](https://docs.docker.com/install/linux/docker-ce/ubuntu/) are installed on your machine. Then add your account to `docker` group by `sudo usermod -aG docker $YOUR_USER_NAME`. **Relaunch the terminal or logout and re-login if you get `Permission denied` error**, type:

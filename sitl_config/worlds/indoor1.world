@@ -10,7 +10,7 @@
               <size>100 100</size>
             </plane>
           </geometry>
-          sss 
+           
             <friction>
               <ode>
                 <mu>100</mu>
@@ -24,7 +24,7 @@
               <ode/>
             </contact>
             <bounce/>
-          sss 
+           
           <max_contacts>10</max_contacts>
         </collision>
         <visual name='visual'>
@@ -94,7 +94,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -105,7 +105,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <collision name='wall_1'>
           <pose frame=''>-5.03 0.53 1.415 0 -0 0</pose>
@@ -115,7 +115,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -126,7 +126,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <collision name='wall_2'>
           <pose frame=''>4.24 -0.31 1.415 0 -0 0</pose>
@@ -136,7 +136,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -147,7 +147,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
 
         <collision name='wall_4'>
@@ -158,7 +158,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -169,7 +169,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <collision name='wall_5'>
           <pose frame=''>3.155 10.4 1.435 0 -0 0</pose>
@@ -179,7 +179,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -190,7 +190,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <collision name='wall_6'>
           <pose frame=''>0.615 -10.98 1.415 0 -0 0</pose>
@@ -200,7 +200,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -211,7 +211,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <collision name='wall_7'>
           <pose frame=''>-4.62 -10.98 1.415 0 -0 0</pose>
@@ -221,7 +221,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -232,7 +232,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <collision name='wall_8'>
           <pose frame=''>-3.61 -10.98 2.69 0 -0 0</pose>
@@ -242,7 +242,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -253,7 +253,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <collision name='coke'>
           <pose frame=''>-4.385 0.26 0.95 0 -0 0</pose>
@@ -263,7 +263,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -274,7 +274,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <visual name='visual'>
           <geometry>
@@ -319,7 +319,7 @@
           </geometry>
           <pose frame=''>-2.31327 0 1.425 0 -0 0</pose>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -330,7 +330,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <visual name='Wall_0_Visual_1'>
           <pose frame=''>1.18673 0 0.25 0 -0 0</pose>
@@ -358,7 +358,7 @@
           </geometry>
           <pose frame=''>1.18673 0 0.25 0 -0 0</pose>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -369,7 +369,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <visual name='Wall_0_Visual_2'>
           <pose frame=''>2.68673 0 1.675 0 -0 0</pose>
@@ -397,7 +397,7 @@
           </geometry>
           <pose frame=''>2.68673 0 1.675 0 -0 0</pose>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -408,7 +408,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <visual name='Wall_0_Visual_3'>
           <pose frame=''>0.37346 0 2.575 0 -0 0</pose>
@@ -436,7 +436,7 @@
           </geometry>
           <pose frame=''>0.37346 0 2.575 0 -0 0</pose>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -447,7 +447,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
@@ -481,7 +481,7 @@
           </geometry>
           <pose frame=''>-1.53914 0 1.425 0 -0 0</pose>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -492,7 +492,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <visual name='Wall_3_Visual_1'>
           <pose frame=''>1.69286 0 1.425 0 -0 0</pose>
@@ -520,7 +520,7 @@
           </geometry>
           <pose frame=''>1.69286 0 1.425 0 -0 0</pose>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -531,7 +531,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <visual name='Wall_3_Visual_2'>
           <pose frame=''>0.153711 0 0 0 -0 0</pose>
@@ -559,7 +559,7 @@
           </geometry>
           <pose frame=''>0.153711 0 0 0 -0 0</pose>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -570,7 +570,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <visual name='Wall_3_Visual_3'>
           <pose frame=''>0.153711 0 2.425 0 -0 0</pose>
@@ -598,7 +598,7 @@
           </geometry>
           <pose frame=''>0.153711 0 2.425 0 -0 0</pose>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -609,7 +609,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
@@ -805,7 +805,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -816,7 +816,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <collision name='column'>
           <pose frame=''>0 0 0.37 0 -0 0</pose>
@@ -826,7 +826,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -837,7 +837,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <collision name='base'>
           <pose frame=''>0 0 0.02 0 -0 0</pose>
@@ -847,7 +847,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -858,7 +858,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <visual name='visual'>
           <geometry>
@@ -901,7 +901,7 @@
               <size>0.387354 0.387354 0.0254</size>
             </box>
           </geometry>
-          sss 
+           
             <contact>
               <ode>
                 <max_vel>0.1</max_vel>
@@ -918,7 +918,7 @@
               </torsional>
             </friction>
             <bounce/>
-          sss 
+           
           <max_contacts>10</max_contacts>
         </collision>
         <collision name='bottom'>
@@ -928,7 +928,7 @@
               <size>0.387354 0.387354 0.0254</size>
             </box>
           </geometry>
-          sss 
+           
             <contact>
               <ode>
                 <max_vel>0.1</max_vel>
@@ -945,7 +945,7 @@
               </torsional>
             </friction>
             <bounce/>
-          sss 
+           
           <max_contacts>10</max_contacts>
         </collision>
         <collision name='left'>
@@ -955,7 +955,7 @@
               <size>0.387354 0.020643 0.092075</size>
             </box>
           </geometry>
-          sss 
+           
             <contact>
               <ode>
                 <max_vel>0.1</max_vel>
@@ -972,7 +972,7 @@
               </torsional>
             </friction>
             <bounce/>
-          sss 
+           
           <max_contacts>10</max_contacts>
         </collision>
         <collision name='right'>
@@ -982,7 +982,7 @@
               <size>0.387354 0.020643 0.092075</size>
             </box>
           </geometry>
-          sss 
+           
             <contact>
               <ode>
                 <max_vel>0.1</max_vel>
@@ -999,7 +999,7 @@
               </torsional>
             </friction>
             <bounce/>
-          sss 
+           
           <max_contacts>10</max_contacts>
         </collision>
         <collision name='middle'>
@@ -1009,7 +1009,7 @@
               <size>0.387354 0.0254 0.092075</size>
             </box>
           </geometry>
-          sss 
+           
             <contact>
               <ode>
                 <max_vel>0.1</max_vel>
@@ -1026,7 +1026,7 @@
               </torsional>
             </friction>
             <bounce/>
-          sss 
+           
           <max_contacts>10</max_contacts>
         </collision>
         <self_collide>0</self_collide>
@@ -1056,7 +1056,7 @@
               <uri>model://coke_can/meshes/coke_can.dae</uri>
             </mesh>
           </geometry>
-          sss 
+           
             <friction>
               <ode>
                 <mu>1</mu>
@@ -1075,7 +1075,7 @@
               </ode>
             </contact>
             <bounce/>
-          sss 
+           
           <max_contacts>10</max_contacts>
         </collision>
         <visual name='visual'>
@@ -1103,7 +1103,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -1114,7 +1114,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <collision name='column'>
           <pose frame=''>0 0 0.37 0 -0 0</pose>
@@ -1124,7 +1124,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -1135,7 +1135,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <collision name='base'>
           <pose frame=''>0 0 0.02 0 -0 0</pose>
@@ -1145,7 +1145,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -1156,7 +1156,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <visual name='visual'>
           <geometry>
@@ -1193,7 +1193,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -1204,7 +1204,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <collision name='lid_lip_1'>
           <pose frame=''>0 0.20063 0.3048 0 -0 0</pose>
@@ -1214,7 +1214,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -1225,7 +1225,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <collision name='lid_lip_2'>
           <pose frame=''>0 -0.20063 0.3048 0 -0 0</pose>
@@ -1235,7 +1235,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -1246,7 +1246,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <collision name='lid_lip_3'>
           <pose frame=''>0.32585 0 0.3048 0 -0 0</pose>
@@ -1256,7 +1256,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -1267,7 +1267,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <collision name='lid_lip_4'>
           <pose frame=''>-0.32585 0 0.3048 0 -0 0</pose>
@@ -1277,7 +1277,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -1288,7 +1288,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <collision name='side_wall_1'>
           <pose frame=''>0 -0.18 0.14155 0.061147 -0 0</pose>
@@ -1298,7 +1298,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -1309,7 +1309,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <collision name='side_wall_2'>
           <pose frame=''>0 0.18 0.14155 -0.061147 0 0</pose>
@@ -1319,7 +1319,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -1330,7 +1330,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <collision name='side_wall_3'>
           <pose frame=''>0.305 0 0.14155 0 0.061147 0</pose>
@@ -1340,7 +1340,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -1351,7 +1351,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <collision name='side_wall_4'>
           <pose frame=''>-0.305 0 0.14155 0 -0.061147 0</pose>
@@ -1361,7 +1361,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -1372,7 +1372,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <collision name='bottom'>
           <pose frame=''>0 0 0.01 0 -0 0</pose>
@@ -1382,7 +1382,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -1393,7 +1393,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <collision name='corner_1'>
           <pose frame=''>0.30202 -0.175 0.14155 0.061147 0.061147 -0</pose>
@@ -1404,7 +1404,7 @@
             </cylinder>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -1415,7 +1415,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <collision name='corner_2'>
           <pose frame=''>-0.30202 -0.175 0.14155 0.061147 -0.061147 0</pose>
@@ -1426,7 +1426,7 @@
             </cylinder>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -1437,7 +1437,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <collision name='corner_3'>
           <pose frame=''>-0.30202 0.175 0.14155 -0.061147 -0.061147 -0</pose>
@@ -1448,7 +1448,7 @@
             </cylinder>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -1459,7 +1459,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <collision name='corner_4'>
           <pose frame=''>0.30202 0.175 0.14155 -0.061147 0.061147 0</pose>
@@ -1470,7 +1470,7 @@
             </cylinder>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -1481,7 +1481,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <visual name='visual'>
           <geometry>
@@ -1686,7 +1686,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -1697,7 +1697,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <visual name='visual1'>
           <pose frame=''>0 0.005 0.6 0 -0 0</pose>
@@ -1721,7 +1721,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -1732,7 +1732,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <visual name='visual2'>
           <pose frame=''>0.45 -0.195 0.6 0 -0 0</pose>
@@ -1756,7 +1756,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -1767,7 +1767,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <visual name='visual3'>
           <pose frame=''>-0.45 -0.195 0.6 0 -0 0</pose>
@@ -1791,7 +1791,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -1802,7 +1802,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <visual name='visual4'>
           <pose frame=''>0 -0.195 0.03 0 -0 0</pose>
@@ -1826,7 +1826,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -1837,7 +1837,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <visual name='visual5'>
           <pose frame=''>0 -0.195 1.19 0 -0 0</pose>
@@ -1861,7 +1861,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -1872,7 +1872,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <visual name='visual6'>
           <pose frame=''>0 -0.195 0.43 0 -0 0</pose>
@@ -1896,7 +1896,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -1907,7 +1907,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <visual name='visual7'>
           <pose frame=''>0 -0.195 0.8 0 -0 0</pose>
@@ -1943,7 +1943,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -1954,7 +1954,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <visual name='visual1'>
           <pose frame=''>0 0.005 0.6 0 -0 0</pose>
@@ -1978,7 +1978,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -1989,7 +1989,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <visual name='visual2'>
           <pose frame=''>0.45 -0.195 0.6 0 -0 0</pose>
@@ -2013,7 +2013,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -2024,7 +2024,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <visual name='visual3'>
           <pose frame=''>-0.45 -0.195 0.6 0 -0 0</pose>
@@ -2048,7 +2048,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -2059,7 +2059,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <visual name='visual4'>
           <pose frame=''>0 -0.195 0.03 0 -0 0</pose>
@@ -2083,7 +2083,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -2094,7 +2094,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <visual name='visual5'>
           <pose frame=''>0 -0.195 1.19 0 -0 0</pose>
@@ -2118,7 +2118,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -2129,7 +2129,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <visual name='visual6'>
           <pose frame=''>0 -0.195 0.43 0 -0 0</pose>
@@ -2153,7 +2153,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -2164,7 +2164,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <visual name='visual7'>
           <pose frame=''>0 -0.195 0.8 0 -0 0</pose>
@@ -2209,7 +2209,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -2220,7 +2220,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <visual name='cabinet_bottom_plate_geom_visual'>
           <pose frame=''>0 0 0.01 0 -0 0</pose>
@@ -2244,7 +2244,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -2255,7 +2255,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <visual name='cabinet_bottom_plate_geom_cabinet_back_plate_visual'>
           <pose frame=''>0.235 0 0.51 0 -0 0</pose>
@@ -2279,7 +2279,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -2290,7 +2290,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <visual name='cabinet_bottom_plate_geom_cabinet_left_plate_visual'>
           <pose frame=''>0 0.235 0.51 0 -0 0</pose>
@@ -2314,7 +2314,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -2325,7 +2325,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <visual name='cabinet_bottom_plate_geom_cabinet_middle_plate_visual'>
           <pose frame=''>0 0 0.51 0 -0 0</pose>
@@ -2349,7 +2349,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -2360,7 +2360,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <visual name='cabinet_bottom_plate_geom_cabinet_right_plate_visual'>
           <pose frame=''>0 -0.235 0.51 0 -0 0</pose>
@@ -2384,7 +2384,7 @@
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -2395,7 +2395,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <visual name='cabinet_bottom_plate_geom_cabinet_top_plate_visual'>
           <pose frame=''>0 0 1.01 0 -0 0</pose>
@@ -2428,7 +2428,7 @@
           </geometry>
           <pose frame=''>0 0 1.25 0 -0 0</pose>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -2439,7 +2439,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <visual name='Wall_10_Visual'>
           <pose frame=''>0 0 1.25 0 -0 0</pose>
@@ -2473,7 +2473,7 @@
           </geometry>
           <pose frame=''>0 0 1.25 0 -0 0</pose>
           <max_contacts>10</max_contacts>
-          sss 
+           
             <contact>
               <ode/>
             </contact>
@@ -2484,7 +2484,7 @@
               </torsional>
               <ode/>
             </friction>
-          sss 
+           
         </collision>
         <visual name='Wall_4_Visual'>
           <pose frame=''>0 0 1.25 0 -0 0</pose>

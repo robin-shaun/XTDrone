@@ -42,14 +42,14 @@
               <size>5000 5000</size>
             </plane>
           </geometry>
-          sss 
+           
             <friction>
               <ode>
                 <mu>100</mu>
                 <mu2>50</mu2>
               </ode>
             </friction>
-          sss 
+           
         </collision>
 
         <visual name="runway">

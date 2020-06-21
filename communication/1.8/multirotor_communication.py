@@ -69,15 +69,15 @@ class Communication:
         main ROS thread
         '''
         while not rospy.is_shutdown():
-            self.target_motion_pub.publish(self.target_motion)
+            #self.target_motion_pub.publish(self.target_motion)
             
             if (self.flight_mode is "LAND") and (self.local_pose.pose.position.z < 0.15):
                 if(self.disarm()):
                     self.flight_mode = "DISARMED"
                     
             try:
-                response = self.gazeboModelstate ('iris','ground_plane')
-            except rospy.ServiceException, e:
+                response = self.gazeboModelstate ('iris_stereo_cam','ground_plane')
+            except rospy.ServiceException:
                 print "Gazebo model state service call failed: %s"%e
             odom = Odometry()
             odom.header = response.header

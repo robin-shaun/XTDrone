@@ -195,7 +195,7 @@ class Communication:
             self.target_motion = self.construct_target(afx=msg.linear.x,afy=msg.linear.y,afz=msg.linear.z,yaw_rate=msg.angular.z)
             
     def hover_state_transition(self,x,y,z,w):
-        if abs(x) > 0.005 or abs(y)  > 0.005 or abs(z)  > 0.005 or abs(w)  > 0.005:
+        if abs(x) > 0.005 or abs(y) > 0.005 or abs(z) > 0.005 or abs(w) > 0.005:
             self.hover_flag = 0
             
     def cmd_callback(self, msg):

@@ -1,0 +1,3 @@
+BaseGlobalPlanner:
+
+  use_dijkstra : False

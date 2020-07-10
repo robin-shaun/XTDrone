@@ -9,7 +9,7 @@
 <!-- For Hokuyo Lidar Payload -->
       <include>
         <uri>model://hokuyo_lidar</uri>
-        <pose>0 0 0.1 0 0 0</pose>
+        <pose>0 0 0.5 0 0 0</pose>
       </include>
     <joint name="lidar_joint" type="fixed">
       <child>hokuyo_lidar::link</child>

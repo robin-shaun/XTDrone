@@ -1,5 +1,5 @@
 <launch>    
-  <node pkg="tf" type="static_transform_publisher" name="odom_to_amp"
+  <node pkg="tf" type="static_transform_publisher" name="odom_to_map"
   args="0.0 0.0 0 0.0 0.0 0.0 /odom /map 40" />
   <!-- Arguments -->
   <arg name="motion_planning" default="/home/robin/px4/xtdrone/motion_planning"/>
@@ -7,7 +7,7 @@
   <arg name="open_rviz" default="true"/>
 
   <!-- Map server -->
-  <node pkg="map_server" name="map_server" type="map_server" args="$(arg motion_planning)/map//indoor3.yaml"/>
+  <node pkg="map_server" name="map_server" type="map_server" args="$(arg motion_planning)/map/indoor3.yaml"/>
 
   <!-- move_base -->
   <include file="$(arg motion_planning)/launch/move_base.launch">

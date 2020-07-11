@@ -7,7 +7,7 @@
           <geometry>
             <heightmap>
               <uri>model://random_world/media/materials/texture/random_world.png</uri>
-              <size>257 257 5</size>
+              <size>129 129 2.5</size>
               <pos>0 0 0</pos>
             </heightmap>
           </geometry>
@@ -32,15 +32,15 @@
                 <size>1</size>
               </texture>
               <blend>
-                <min_height>2</min_height>
-                <fade_dist>5</fade_dist>
+                <min_height>1</min_height>
+                <fade_dist>2.5</fade_dist>
               </blend>
               <blend>
-                <min_height>4</min_height>
-                <fade_dist>5</fade_dist>
+                <min_height>2</min_height>
+                <fade_dist>2.5</fade_dist>
               </blend>
               <uri>model://random_world/media/materials/texture/random_world.png</uri>
-              <size>257 257 5</size>
+              <size>129 129 2.5</size>
               <pos>0 0 0</pos>
             </heightmap>
           </geometry>

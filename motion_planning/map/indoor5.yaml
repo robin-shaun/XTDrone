@@ -1,5 +1,5 @@
 image: /home/robin/px4/xtdrone/motion_planning/map/indoor5.pgm
-resolution: 0.020000
+resolution: 1
 origin: [-5.300000, -5.3000, 0.000000]
 negate: 0
 occupied_thresh: 0.65

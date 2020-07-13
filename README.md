@@ -67,7 +67,7 @@ Xiao, K., Ma, L., Tan, S., Cong, Y., Wang, X.: Implementation of UAV Coordinatio
 #### 项目团队
 
 - 创立者：肖昆，谭劭昌
-- 开发团队：肖昆，谭劭昌，王冠政，马澜，王齐鹏，陈科研
+- 开发团队：肖昆，谭劭昌，王冠政，马澜，王齐鹏，管若乔，陈科研
 
 #### 感谢贡献者们
 

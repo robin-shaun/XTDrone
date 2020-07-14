@@ -1,5 +1,6 @@
 papers
 competition
+project
 *.bag
 *.pyc
 *.pbstream

@@ -394,15 +394,14 @@
           </image>
           <clip>
             <near>0.05</near>
-            <far>15000</far>
+            <far>300</far>
           </clip>
         </camera>
         <always_on>1</always_on>
-        <update_rate>10</update_rate>
-        <visualize>false</visualize>
+        <update_rate>30</update_rate>
+        <visualize>true</visualize>
         <!-- how to make this work without using urdf?-->
         <plugin name="cgo3_camera_controller" filename="libgazebo_ros_camera.so">
-          <robotNamespace> </robotNamespace>
           <alwaysOn>true</alwaysOn>
           <updateRate>30</updateRate>
           <cameraName>/cgo3_camera</cameraName>
@@ -418,7 +417,7 @@
         </plugin>
         
         <!-- GStreamer camera plugin (needs a lot of CPU! Consider lowering the
-             camera image size) 
+             camera image size) -->
         <plugin name="GstCameraPlugin" filename="libgazebo_gst_camera_plugin.so">
             <robotNamespace></robotNamespace>
             <udpHost>127.0.0.1</udpHost>
@@ -431,7 +430,6 @@
             <height>2160</height>
             <maximum_zoom>8.0</maximum_zoom>
         </plugin>
-        -->
       </sensor>
     </link>
     <joint name='cgo3_camera_joint' type='revolute'>
@@ -1142,7 +1140,7 @@
         </ode>
       </physics>
     </joint>
-<!--
+
     <include>
       <uri>model://sonar</uri>
       <pose>-0.1 0 0 0 0 0</pose>
@@ -1158,7 +1156,7 @@
         </limit>
       </axis>
     </joint>
--->
+
 
     <plugin name='rosbag' filename='libgazebo_multirotor_base_plugin.so'>
       <robotNamespace></robotNamespace>
@@ -1574,14 +1572,14 @@
       <accelerometerTurnOnBiasSigma>0.196</accelerometerTurnOnBiasSigma>
     </plugin>
     <plugin name='gimbal_controller' filename='libgazebo_gimbal_controller_plugin.so'>
-      <joint_yaw>typhoon_h480::cgo3_vertical_arm_joint</joint_yaw>
-      <joint_roll>typhoon_h480::cgo3_horizontal_arm_joint</joint_roll>
-      <joint_pitch>typhoon_h480::cgo3_camera_joint</joint_pitch>
+      <joint_yaw>cgo3_vertical_arm_joint</joint_yaw>
+      <joint_roll>cgo3_horizontal_arm_joint</joint_roll>
+      <joint_pitch>cgo3_camera_joint</joint_pitch>
       <control_gimbal_channels>
         <channel>
           <joint_control_pid>
             <p>0.6</p>
-            <i>0.1</i>
+            <i>0.15</i>
             <d>0.02</d>
             <iMax>0</iMax>
             <iMin>0</iMin>
@@ -1592,9 +1590,9 @@
         </channel>
         <channel>
           <joint_control_pid>
-            <p>0.8</p>
-            <i>0.035</i>
-            <d>0.02</d>
+            <p>20</p>
+            <i>0.1</i>
+            <d>0.1</d>
             <iMax>0</iMax>
             <iMin>0</iMin>
             <cmdMax>0.3</cmdMax>
@@ -1604,9 +1602,9 @@
         </channel>
         <channel>
           <joint_control_pid>
-            <p>2.068</p>
-            <i>0.01245</i>
-            <d>0.01</d>
+            <p>8</p>
+            <i>0.1</i>
+            <d>0.1</d>
             <iMax>0</iMax>
             <iMin>0</iMin>
             <cmdMax>0.3</cmdMax>
@@ -1617,15 +1615,5 @@
       </control_gimbal_channels>
       <gimbal_imu>camera_imu</gimbal_imu>
     </plugin>
-
-    <include>
-      <uri>model://stereo_camera</uri>
-      <pose>-0.1 0 0 0 0 0</pose>
-    </include>
-    <joint name="sonar_joint" type="fixed">
-      <child>stereo_camera::link</child>
-      <parent>base_link</parent>
-    </joint>
-
   </model>
 </sdf>

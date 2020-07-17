@@ -16,7 +16,7 @@ srvheader=std_msgs.msg.Header()
 srvheader.stamp=rospy.Time.now()
 srvheader.frame_id="map"
 
-mountConfig(header=srvheader,mode=2,stabilize_roll=0,stabilize_yaw=1,stabilize_pitch=0)
+mountConfig(header=srvheader,mode=2,stabilize_roll=0,stabilize_yaw=0,stabilize_pitch=0)
 while not rospy.is_shutdown():
     msg = MountControl()
     msg.header.stamp = rospy.Time.now()

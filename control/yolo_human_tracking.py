@@ -1,5 +1,5 @@
 import rospy
-from geometry_msgs.msg import Twist
+from geometry_msgs.msg import Twist, PoseStamped
 from std_msgs.msg import String
 import sys 
 sys.path.append('/home/robin/catkin_ws/devel/lib/python2.7/dist-packages')
@@ -8,35 +8,53 @@ import time
 import math
 
 def darknet_callback(data):
-    global twist, cmd
+    global twist, cmd, target_height_mask, target_height
     find = False
     for target in data.bounding_boxes:
         if(target.id==0):
+            #if not target_height_mask:
+                #target_height = height
+                #target_height_mask = True
             print('find human')
-            x_error=y_center-(target.ymax+target.ymin)/2
-            y_error=x_center-(target.xmax+target.xmin)/2
-            twist.linear.x = Kp_linear*x_error
-            twist.angular.z = Kp_angular*math.atan(y_error/x_error)
+            x_error=(y_center-(target.ymax+target.ymin)/2)*height/fy
+            y_error=(x_center-(target.xmax+target.xmin)/2)*height/fx
+            print(x_error,y_error,height)
+            twist.linear.x = Kp_xy*x_error
+            twist.linear.y = Kp_xy*y_error
+            twist.linear.z = Kp_z*(target_height-height)
+            #twist.angular.z = Kp_angular*math.atan(y_error/x_error)
             cmd = ''
             find = True
     if not find:
+        #target_height_mask = False
         twist.linear.x = 0.0
+        twist.linear.y = 0.0
         twist.angular.z = 0.0
         cmd = 'HOVER'
-                
+        
+def local_pose_callback(data):
+    global height
+    height = data.pose.position.z             
             
-if __name__ == "__main__":  
+if __name__ == "__main__":
+    height = 0  
+    target_height = 7
     twist = Twist()
     cmd = String()
-    Kp_linear=0.006
-    Kp_angular=0.2/math.pi
     x_center=752/2
     y_center=480/2
+    fx = 240
+    fy = 240
+    Kp_xy = 1
+    Kp_z = 1
+    #target_height_mask = False
     vehicle_type = sys.argv[1]
+    vehicle_id = sys.argv[2]
     rospy.init_node('yolo_human_tracking')
     rospy.Subscriber("/darknet_ros/bounding_boxes", BoundingBoxes, darknet_callback)
-    vel_pub = rospy.Publisher('/xtdrone/'+vehicle_type+'_0/cmd_vel_flu', Twist, queue_size=2)
-    cmd_pub = rospy.Publisher('/xtdrone/'+vehicle_type+'_0/cmd', String, queue_size=2)
+    rospy.Subscriber(vehicle_type+'_'+vehicle_id+"/mavros/local_position/pose", PoseStamped, local_pose_callback)
+    vel_pub = rospy.Publisher('/xtdrone/'+vehicle_type+'_'+vehicle_id+'/cmd_vel_flu', Twist, queue_size=2)
+    cmd_pub = rospy.Publisher('/xtdrone/'+vehicle_type+'_'+vehicle_id+'/cmd', String, queue_size=2)
     rate = rospy.Rate(60) 
     while(True):
         rate.sleep()

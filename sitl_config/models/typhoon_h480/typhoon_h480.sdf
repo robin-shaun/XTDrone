@@ -155,12 +155,12 @@
         <pose>-0.041 0 -0.162 0 0 0</pose>
         <mass>0.1</mass>
         <inertia>
-          <ixx>0.001</ixx>
+          <ixx>0.0001</ixx>
           <ixy>0</ixy>
           <ixz>0</ixz>
-          <iyy>0.001</iyy>
+          <iyy>0.0001</iyy>
           <iyz>0</iyz>
-          <izz>0.001</izz>
+          <izz>0.0001</izz>
         </inertia>
       </inertial>
       <visual name='cgo3_mount_visual'>
@@ -209,12 +209,12 @@
         <pose>-0.041 0 -0.162 0 0 0</pose>
         <mass>0.1</mass>
         <inertia>
-          <ixx>0.001</ixx>
+          <ixx>0.0001</ixx>
           <ixy>0</ixy>
           <ixz>0</ixz>
-          <iyy>0.001</iyy>
+          <iyy>0.0001</iyy>
           <iyz>0</iyz>
-          <izz>0.001</izz>
+          <izz>0.0001</izz>
         </inertia>
       </inertial>
       <visual name='cgo3_vertical_arm_visual'>
@@ -271,12 +271,12 @@
         <pose>-0.041 0 -0.081 0 0 0</pose>
         <mass>0.1</mass>
         <inertia>
-          <ixx>0.001</ixx>
+          <ixx>0.0001</ixx>
           <ixy>0</ixy>
           <ixz>0</ixz>
-          <iyy>0.001</iyy>
+          <iyy>0.0001</iyy>
           <iyz>0</iyz>
-          <izz>0.001</izz>
+          <izz>0.0001</izz>
         </inertia>
       </inertial>
       <visual name='cgo3_horizontal_arm_visual'>
@@ -333,12 +333,12 @@
         <pose>-0.041 0 -0.162 0 0 0</pose>
         <mass>0.1</mass>
         <inertia>
-          <ixx>0.001</ixx>
+          <ixx>0.0001</ixx>
           <ixy>0</ixy>
           <ixz>0</ixz>
-          <iyy>0.001</iyy>
+          <iyy>0.0001</iyy>
           <iyz>0</iyz>
-          <izz>0.001</izz>
+          <izz>0.0001</izz>
         </inertia>
       </inertial>
       <collision name='cgo3_camera_collision'>
@@ -424,7 +424,7 @@
             <udpPort>5600</udpPort>
         </plugin>
         <plugin name="GeotaggedImagesPlugin" filename="libgazebo_geotagged_images_plugin.so">
-            <robotNamespace>typhoon_h480</robotNamespace>
+            <robotNamespace>typhoon_h480_0</robotNamespace>
             <interval>1</interval>
             <width>3840</width>
             <height>2160</height>
@@ -674,7 +674,7 @@
       </physics>
     </joint>
 
-    <link name='typhoon_h480/imu_link'>
+    <link name='typhoon_h480_0/imu_link'>
       <pose>0 0 0 0 0 3.1415927</pose>
       <inertial>
         <pose>0 0 0 0 0 0</pose>
@@ -689,8 +689,8 @@
         </inertia>
       </inertial>
     </link>
-    <joint name='typhoon_h480/imu_joint' type='revolute'>
-      <child>typhoon_h480/imu_link</child>
+    <joint name='typhoon_h480_0/imu_joint' type='revolute'>
+      <child>typhoon_h480_0/imu_link</child>
       <parent>base_link</parent>
       <axis>
         <xyz>1 0 0</xyz>
@@ -1147,7 +1147,7 @@
     </include>
     <joint name="sonar_joint" type="revolute">
       <child>sonar::link</child>
-      <parent>typhoon_h480::base_link</parent>
+      <parent>typhoon_h480_0::base_link</parent>
       <axis>
         <xyz>0 0 1</xyz>
         <limit>
@@ -1497,7 +1497,7 @@
           <zero_position_armed>0</zero_position_armed>
           <joint_control_type>position_gztopic</joint_control_type>
           <gztopic>/gimbal_roll_cmd</gztopic>
-          <joint_name>typhoon_h480::cgo3_camera_joint</joint_name>
+          <joint_name>typhoon_h480_0::cgo3_camera_joint</joint_name>
         </channel>
         <channel name="gimbal_pitch">
           <input_index>7</input_index>
@@ -1507,7 +1507,7 @@
           <zero_position_armed>0</zero_position_armed>
           <joint_control_type>position_gztopic</joint_control_type>
           <gztopic>/gimbal_pitch_cmd</gztopic>
-          <joint_name>typhoon_h480::cgo3_camera_joint</joint_name>
+          <joint_name>typhoon_h480_0::cgo3_camera_joint</joint_name>
         </channel>
         <channel name="gimbal_yaw">
           <input_index>8</input_index>
@@ -1517,7 +1517,7 @@
           <zero_position_armed>0</zero_position_armed>
           <joint_control_type>position_gztopic</joint_control_type>
           <gztopic>/gimbal_yaw_cmd</gztopic>
-          <joint_name>typhoon_h480::cgo3_vertical_arm_joint</joint_name>
+          <joint_name>typhoon_h480_0::cgo3_vertical_arm_joint</joint_name>
         </channel>
         <channel name="left_leg">
           <input_index>9</input_index>
@@ -1560,7 +1560,7 @@
     <static>0</static>
     <plugin name='gazebo_imu_plugin' filename='libgazebo_imu_plugin.so'>
       <robotNamespace></robotNamespace>
-      <linkName>typhoon_h480/imu_link</linkName>
+      <linkName>typhoon_h480_0/imu_link</linkName>
       <imuTopic>/imu</imuTopic>
       <gyroscopeNoiseDensity>0.0003394</gyroscopeNoiseDensity>
       <gyroscopeRandomWalk>3.8785e-05</gyroscopeRandomWalk>

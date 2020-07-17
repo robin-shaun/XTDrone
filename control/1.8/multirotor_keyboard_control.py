@@ -6,7 +6,7 @@ from std_msgs.msg import String
 
 
 MAX_LIN_VEL = 10
-MAX_ANG_VEL = 0.1
+MAX_ANG_VEL = 0.5
 LIN_VEL_STEP_SIZE = 0.01
 ANG_VEL_STEP_SIZE = 0.01
 

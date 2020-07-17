@@ -9,6 +9,7 @@ import math
 
 def darknet_callback(data):
     global twist, cmd
+    find = False
     for target in data.bounding_boxes:
         if(target.id==0):
             print('find human')
@@ -17,17 +18,17 @@ def darknet_callback(data):
             twist.linear.x = Kp_linear*x_error
             twist.angular.z = Kp_angular*math.atan(y_error/x_error)
             cmd = ''
-
-        else:
-            twist.linear.x = 0.0
-            twist.angular.z = 0.0
-            cmd = 'HOVER'
+            find = True
+    if not find:
+        twist.linear.x = 0.0
+        twist.angular.z = 0.0
+        cmd = 'HOVER'
                 
             
 if __name__ == "__main__":  
     twist = Twist()
     cmd = String()
-    Kp_linear=0.05
+    Kp_linear=0.006
     Kp_angular=0.2/math.pi
     x_center=752/2
     y_center=480/2

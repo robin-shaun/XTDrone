@@ -12,12 +12,10 @@ def darknet_callback(data):
     find = False
     for target in data.bounding_boxes:
         if(target.id==0):
-            #if not target_height_mask:
-                #target_height = height
-                #target_height_mask = True
             print('find human')
-            x_error=(y_center-(target.ymax+target.ymin)/2)*height/fy
-            y_error=(x_center-(target.xmax+target.xmin)/2)*height/fx
+            z = height / math.cos(math.radians(45))
+            y_error=(x_center-(target.xmax+target.xmin)/2)*z/(fx+x_center)
+            x_error=(y_center-(target.ymax+target.ymin)/2-y_center*y_error/z)*z/fy
             print(x_error,y_error,height)
             twist.linear.x = Kp_xy*x_error
             twist.linear.y = Kp_xy*y_error
@@ -38,14 +36,14 @@ def local_pose_callback(data):
             
 if __name__ == "__main__":
     height = 0  
-    target_height = 7
+    target_height = 5
     twist = Twist()
     cmd = String()
     x_center=752/2
     y_center=480/2
     fx = 240
     fy = 240
-    Kp_xy = 1
+    Kp_xy = 0.8
     Kp_z = 1
     #target_height_mask = False
     vehicle_type = sys.argv[1]

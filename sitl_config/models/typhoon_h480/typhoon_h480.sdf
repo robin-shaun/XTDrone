@@ -389,8 +389,8 @@
           <horizontal_fov>2.0</horizontal_fov>
           <image>
             <format>R8G8B8</format>
-            <width>640</width>
-            <height>360</height>
+            <width>752</width>
+            <height>480</height>
           </image>
           <clip>
             <near>0.05</near>
@@ -399,7 +399,7 @@
         </camera>
         <always_on>1</always_on>
         <update_rate>30</update_rate>
-        <visualize>true</visualize>
+        <visualize>false</visualize>
         <!-- how to make this work without using urdf?-->
         <plugin name="cgo3_camera_controller" filename="libgazebo_ros_camera.so">
           <alwaysOn>true</alwaysOn>
@@ -415,7 +415,7 @@
           <distortionT1>0.0</distortionT1>
           <distortionT2>0.0</distortionT2>
         </plugin>
-        
+
         <!-- GStreamer camera plugin (needs a lot of CPU! Consider lowering the
              camera image size) -->
         <plugin name="GstCameraPlugin" filename="libgazebo_gst_camera_plugin.so">

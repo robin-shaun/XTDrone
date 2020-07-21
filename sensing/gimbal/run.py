@@ -1,15 +1,17 @@
 import rospy
 from mavros_msgs.msg import MountControl
 from mavros_msgs.srv import MountConfigure
-
+import sys
 import std_msgs.msg
+
 # Single vehicle Mount Command
+vehicle_type = sys.argv[1]
+vehicle_id = sys.argv[2]
 rospy.init_node('gimbal_control')
-mountCnt = rospy.Publisher('/typhoon_h480_0/mavros/mount_control/command', MountControl, queue_size=10)
-mountConfig = rospy.ServiceProxy("/typhoon_h480_0/mavros/mount_control/configure", MountConfigure)
-i=0
+mountCnt = rospy.Publisher(vehicle_type+'_'+vehicle_id+'/mavros/mount_control/command', MountControl, queue_size=10)
+mountConfig = rospy.ServiceProxy(vehicle_type+'_'+vehicle_id+'/mavros/mount_control/configure', MountConfigure)
 rate=rospy.Rate(100)
-gimbal_pitch_ = -90
+gimbal_pitch_ = -45
 gimbal_yaw_ = 0.0
 gimbal_roll_ = 0.0
 srvheader=std_msgs.msg.Header()
@@ -22,12 +24,8 @@ while not rospy.is_shutdown():
     msg.header.stamp = rospy.Time.now()
     msg.header.frame_id = "map"
     msg.mode = 2
-    if i%20 == 0:
-    	gimbal_yaw_ += 0
-    	print("yaw increased to", gimbal_yaw_)
     msg.pitch = gimbal_pitch_
     msg.roll = gimbal_roll_
     msg.yaw = gimbal_yaw_
     mountCnt.publish(msg)
-    i+=1
     rate.sleep()

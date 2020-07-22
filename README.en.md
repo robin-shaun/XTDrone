@@ -56,15 +56,15 @@ Developers can quickly verify algorithms with XTDrone, such as:
 
 <img src="./image/formation_2.gif" width="640" height="368" />  
 
-8. Fixed wing
+9. Fixed wing
 
 <img src="./image/planes.gif" width="640" height="368" />  
 
-9. VTOLs
+10. VTOLs
 
 <img src="./image/vtols.gif" width="640" height="368" />  
 
-10. Self driving
+11. Self driving
 
 <img src="./image/self_driving.gif" width="640" height="368" />  
 

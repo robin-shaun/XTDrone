@@ -55,16 +55,16 @@ Xiao, K., Ma, L., Tan, S., Cong, Y., Wang, X.: Implementation of UAV Coordinatio
 
 <img src="./image/formation_2.gif" width="640" height="368" />  
 
-8. 固定翼
+9. 固定翼
 
 <img src="./image/planes.gif" width="640" height="368" />  
 
-9. VTOL
+10. VTOL
 
 <img src="./image/vtols.gif" width="640" height="368" />  
 
 
-10. 自动驾驶
+11. 自动驾驶
 
 <img src="./image/self_driving.gif" width="640" height="368" />  
 

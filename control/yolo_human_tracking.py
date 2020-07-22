@@ -16,27 +16,28 @@ def darknet_callback(data):
             z = height / math.cos(math.radians(45))
             y_error=(x_center-(target.xmax+target.xmin)/2)*z/(fx+x_center)
             x_error=(y_center-(target.ymax+target.ymin)/2-y_center*y_error/z)*z/fy
-            print(x_error,y_error,height)
+            #print(x_error,y_error,height)
             twist.linear.x = Kp_xy*x_error
             twist.linear.y = Kp_xy*y_error
             twist.linear.z = Kp_z*(target_height-height)
-            #twist.angular.z = Kp_angular*math.atan(y_error/x_error)
             cmd = ''
             find = True
     if not find:
-        #target_height_mask = False
         twist.linear.x = 0.0
         twist.linear.y = 0.0
-        twist.angular.z = 0.0
         cmd = 'HOVER'
         
 def local_pose_callback(data):
-    global height
-    height = data.pose.position.z             
+    global height, target_height, target_set
+    height = data.pose.position.z    
+    if not target_set:
+        target_height = height     
+        target_set = True    
             
 if __name__ == "__main__":
     height = 0  
-    target_height = 5
+    target_height = 0
+    target_set = False
     twist = Twist()
     cmd = String()
     x_center=752/2
@@ -45,7 +46,6 @@ if __name__ == "__main__":
     fy = 240
     Kp_xy = 0.8
     Kp_z = 1
-    #target_height_mask = False
     vehicle_type = sys.argv[1]
     vehicle_id = sys.argv[2]
     rospy.init_node('yolo_human_tracking')

@@ -14,11 +14,21 @@ def darknet_callback(data):
         if(target.id==0):
             print('find human')
             z = height / math.cos(math.radians(45))
+            '''
             y_error=(x_center-(target.xmax+target.xmin)/2)*z/(fx+x_center)
             x_error=(y_center-(target.ymax+target.ymin)/2-y_center*y_error/z)*z/fy
+            '''
+            u = (target.xmax+target.xmin)/2
+            v = (target.ymax+target.ymin)/2
+            u_ = u-u_center
+            v_ = v-v_center
+            u_velocity = -Kp_xy*u_
+            v_velocity = -Kp_xy*v_
+            x_velocity = v_velocity*z/(-v_*math.sin(theta)+fy*math.cos(theta))
+            y_velocity = (u_*math.sin(theta)*x_velocity+z*u_velocity)/fx
             #print(x_error,y_error,height)
-            twist.linear.x = Kp_xy*x_error
-            twist.linear.y = Kp_xy*y_error
+            twist.linear.x = x_velocity
+            twist.linear.y = y_velocity
             twist.linear.z = Kp_z*(target_height-height)
             cmd = ''
             find = True
@@ -40,8 +50,9 @@ if __name__ == "__main__":
     target_set = False
     twist = Twist()
     cmd = String()
-    x_center=752/2
-    y_center=480/2
+    theta = -math.pi/4
+    u_center=752/2
+    v_center=480/2
     fx = 240
     fy = 240
     Kp_xy = 0.8

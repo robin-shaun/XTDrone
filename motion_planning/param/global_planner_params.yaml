@@ -1,6 +1,5 @@
 GlobalPlanner:
 
-  use_dijkstra: False
-  use_grid_path: True
-  use_quadratic: False
-  lethal_cost: 500
+  use_dijkstra: True
+  use_grid_path: False
+  use_quadratic: True

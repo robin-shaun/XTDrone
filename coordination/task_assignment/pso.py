@@ -1,289 +1,387 @@
 # coding: utf-8
 import numpy as np
 import random
-import matplotlib.pyplot as plt
 import math
 import cmath
-from environment import Env
-# ----------------------优化方案----------------------------------
-# 发现粒子群算法优化结果不好，收敛没有到全局最优
-# 优化思路：1. 增加收敛因子k；2. 动态改变惯性因子w
+import time
+import os
+# ----------------------Optimization scheme----------------------------------
+# Optimization ideas：
+# 1. Increase the convergence factor k；
+# 2. Dynamic change of inertia factor W；
+# 3. Using PSO local search algorithm(Ring method)
+# 4. The probability of position variation is added
+# ----------------------Set PSO Parameter---------------------------------
 
-# ----------------------PSO参数设置---------------------------------
+
 class PSO():
-    def __init__(self, pN, dim, max_iter,uav_num,Distance,
-    v,Value,test_num,time_all):
+    def __init__(self, uav_num, target_num, targets, vehicles_speed, time_lim):
+        self.uav_num = uav_num
+        self.dim = target_num
+        self.targets = targets
+        self.vehicles_speed = vehicles_speed
+        self.time_all = time_lim
+        self.pN = 2*(self.uav_num+self.dim)  # Number of particles
+        self.max_iter = 0  # Number of iterations
+        # Target distance list (dim+1）*（dim+1)
+        self.Distance = np.zeros((target_num+1, target_num+1))
+        self.Value = np.zeros(target_num+1)   # Value list of targets 1*dim+1
+        self.Stay_time = []
+        # UAV flight speed matrix
         self.w = 0.8
         self.c1 = 2
         self.c2 = 2
         self.r1 = 0.6
         self.r2 = 0.3
-        self.pN = pN  # 方案数量
-        self.dim = dim  # 方案维度
-        self.max_iter = max_iter  # 迭代次数
-        self.X = np.zeros((self.pN, self.dim))  # 所有粒子的位置
-        self.V = np.zeros((self.pN, self.dim))  # 所有粒子的速度
-        self.pbest = np.zeros((self.pN, self.dim))  # 个体经历的最佳位置
-        self.gbest = np.zeros((1, self.dim))   # 个体经历的全局最佳位置
-        self.p_fit = np.zeros(self.pN)  # 每个个体的历史最佳适应值
-        self.fit = 0 # 全局最佳适应值
-        self.uav_num=uav_num
-        self.time_all=time_all
-        self.Distance=Distance   # Distance是(dim+1）*（dim+1)的对称矩阵
-        self.v=v   # 无人机真正飞行速度 m/s
-        self.Value=Value   # 目标位置的价值数组 1*dim
-        self.TEST=[]
-        self.test_num=test_num
-        self.dim1=dim
-        self.add_num=0
-        self.time_all=time_all
-        self.k=0   # 收敛因子
-        self.wini=0.9
-        self.wend=0.4
-    # --------------------取整---------------------------------
-    def fun_Ceil(self):
-        num1=self.dim/self.uav_num
-        num1=math.ceil(num1)
-        dim1=num1*self.uav_num
-        num1=dim1-self.dim
-        self.add_num=num1
-        self.dim1=dim1
-    # -------------------排序式转排列式--------------------------
-    def position(self,X):
-        Position_All=list(range(1,self.dim+1))
-        X2=[]
+        self.k = 0   # Convergence factor
+        self.wini = 0.9
+        self.wend = 0.4
+
+        self.X = np.zeros((self.pN, self.dim+self.uav_num-1)
+                          )  # Position of all particles
+        self.V = np.zeros((self.pN, self.dim+self.uav_num-1)
+                          )  # Velocity of all particles
+        # The historical optimal position of each individual
+        self.pbest = np.zeros((self.pN, self.dim+self.uav_num-1))
+        self.gbest = np.zeros((1, self.dim+self.uav_num-1))
+        # Global optimal position
+        self.gbest_ring = np.zeros((self.pN, self.dim+self.uav_num-1))
+        # Historical optimal fitness of each individual
+        self.p_fit = np.zeros(self.pN)
+        self.fit = 0  # Global optimal fitness
+        self.ring = []
+        self.ring_fit = np.zeros(self.pN)
+        # variation parameter
+        self.p1 = 0.4  # Probability of mutation
+        self.p2 = 0.5  # Proportion of individuals with variation in population
+        self.p3 = 0.5  # Proportion of locations where variation occurs
+        self.TEST = []
+        self.test_num = 0
+        self.uav_best = []
+
+        self.time_out = np.zeros(self.uav_num)
+        
+        self.cal_time = 0
+    # ------------------Get Initial parameter------------------
+
+    def fun_get_initial_parameter(self):
+        # self.max_iter=1000
+        self.max_iter = 40*(self.uav_num+self.dim)
+        if self.max_iter > 4100:
+            self.max_iter = 4100
+
+        # self.test_num=10000
+        # Get Stay_time Arrary & Distance Arrary & Value Arrary
+        Targets = self.targets
+        self.Stay_time = Targets[:, 3]
+        self.Distance = np.zeros((self.dim+1, self.dim+1))
+        self.Value = np.zeros(self.dim+1)
+        for i in range(self.dim+1):
+            self.Value[i] = Targets[i, 2]
+            for j in range(i):
+                self.Distance[i][j] = (
+                    Targets[i, 0]-Targets[j, 0])*(Targets[i, 0]-Targets[j, 0])
+                self.Distance[i][j] = self.Distance[i][j] + \
+                    (Targets[i, 1]-Targets[j, 1])*(Targets[i, 1]-Targets[j, 1])
+                self.Distance[i][j] = math.sqrt(self.Distance[i][j])
+                self.Distance[j][i] = self.Distance[i][j]
+    # ------------------Transfer_Function---------------------
+
+    def fun_Transfer(self, X):
+        # Converting continuous sequence X into discrete sequence X_path
+        X1 = X[0:self.dim]
+        X_path = []
+        l1 = len(X1)
+        for i in range(l1):
+            m = X1[i]*(self.dim-i)
+            m = math.floor(m)
+            X_path.append(m)
+        # Converting the continuous interpolation sequence X into discrete interpolation sequence X_rank
+        X2 = X[self.dim:]
+        l1 = len(X2)
+        X_rank = []
+        for i in range(l1):
+
+            m = X2[i]*(self.dim+1)
+
+            m1 = math.floor(m)
+            X_rank.append(m1)
+        # Rank and Complement
+        c = sorted(X_rank)
+        l1 = len(c)
+        Rank = []
+        Rank.append(0)
+        for i in range(l1):
+            Rank.append(c[i])
+        Rank.append(self.dim)
+        # Get Separate_Arrary
+        Sep = []
+        for i in range(l1+1):
+            sep = Rank[i+1]-Rank[i]
+            Sep.append(sep)
+        return X_path, Sep
+
+    # -------------------Obtain the Real Flight Path Sequence of Particles--------------------------
+    def position(self, X):
+        Position_All = list(range(1, self.dim+1))
+        X2 = []
         for i in range(self.dim):
-            m1=X[i]
-            m1=int(m1)
-            X2.append(Position_All[m1-1])
-            del Position_All[m1-1]
+            m1 = X[i]
+            m1 = int(m1)
+            X2.append(Position_All[m1])
+            del Position_All[m1]
         return X2
+    # ---------------------Fitness_Computing Function-----------------------------
 
-
-    
-    
-    
-    
-    
-    
-    # ---------------------目标函数-----------------------------
     def function(self, X):
-    # X 是一个方案，x[i]
-        # 由无人机排序式转为排列式
-        X=self.position(X)
-        # 把X扩充到可以整除的数组
-        for i in range(self.add_num):
-            X.append(i+self.dim+1)
-        # 由方案导出五个无人机各自搜索路径
-        UAV=[]
-        k=0
+        X_path, Sep = self.fun_Transfer(X)
+
+        # Obtain the Real Flight Path Sequence of Particles
+        X = self.position(X_path)
+        # Get the search sequence of each UAV
+        UAV = []
+        l = 0
         for i in range(self.uav_num):
             UAV.append([])
-            for j in range(self.dim1//self.uav_num):
-                UAV[i].append(X[k])
-                k=k+1
-        # 计算某一个方案的目标函数值
-        l1=len(UAV[0])
-        value=0
+            k = Sep[i]
+            for j in range(k):
+                UAV[i].append(X[l])
+                l = l+1
+
+        # Calculate Fitness
+        fitness = 0
         for i in range(self.uav_num):
-            t=self.Distance[0][UAV[i][0]]/self.v
-            for j in range(l1-1):
-                if t<=self.time_all:
-                    d1=UAV[i][j]
-                    d2=UAV[i][j+1]
-                    if d2<=self.dim:
-                        distance=self.Distance[d1][d2]
-                        t=t+distance/self.v
-                        value=value+self.Value[UAV[i][j]-1]
-        return value
+            k = Sep[i]
+            t = 0
+            for j in range(k):
+                m1 = UAV[i][j]
 
+                if j == 0:
+                    t = t+self.Distance[0, m1] / \
+                        self.vehicles_speed[i]+self.Stay_time[m1]
+                else:
+                    m1 = UAV[i][j]
+                    m2 = UAV[i][j-1]
+                    t = t+self.Distance[m1][m2] / \
+                        self.vehicles_speed[i]+self.Stay_time[m1]
+                if t <= self.time_all:
+                    fitness = fitness+self.Value[m1]
+        return fitness
+    # ----------------------------variation-------------------------------------------
 
+    def variation_fun(self):
+        p1 = np.random.uniform(0, 1)  # Probability of mutation
+        if p1 < self.p1:
+            for i in range(self.pN):
+                # Proportion of individuals with variation in population
+                p2 = np.random.uniform(0, 1)
+                if p2 < self.p2:
+                    # Numbers of locations where variation occurs
+                    m = int(self.p3*(self.dim+self.uav_num-1))
+                    for j in range(m):
+                        replace_position = math.floor(
+                            np.random.uniform(0, 1)*(self.dim+self.uav_num-1))
+                        replace_value = np.random.uniform(0, 1)
+                        self.X[i][replace_position] = replace_value
+            # Update pbest & gbest
+            for i in range(self.pN):
+                temp = self.function(self.X[i])
+                self.ring_fit[i] = temp
+                if temp > self.p_fit[i]:
+                    self.p_fit[i] = temp
+                    self.pbest[i] = self.X[i]
+                    # Update gbest
+                    if self.p_fit[i] > self.fit:
+                        self.gbest = self.X[i]
+                        self.fit = self.p_fit[i]
 
+    # ---------------------Population Initialization----------------------------------
 
-
-
-    # ---------------------初始化种群----------------------------------
     def init_Population(self):
-        # 取整
-        self.fun_Ceil()
-        # 初始化位置和历史最优、全局最优
+        # Initialization of position(X), speed(V), history optimal(pbest) and global optimal(gbest)
         for i in range(self.pN):
-            for j in range(self.dim):
-                self.X[i][j] = int(random.randint(1,self.dim-j))
-                #self.V[i][j] = random.uniform(0, 1)
+            x = np.random.uniform(0, 1, self.dim+self.uav_num-1)
+            self.X[i, :] = x
+            v = np.random.uniform(0, 0.4, self.dim+self.uav_num-1)
+            self.V[i, :] = v
             self.pbest[i] = self.X[i]
+
             tmp = self.function(self.X[i])
             self.p_fit[i] = tmp
             if tmp > self.fit:
                 self.fit = tmp
                 self.gbest = self.X[i]
-        # 初始化速度
+        # Calculate the convergence factor k
+        phi = self.c1+self.c2
+        k = abs(phi*phi-4*phi)
+        k = cmath.sqrt(k)
+        k = abs(2-phi-k)
+        k = 2/k
+        self.k = k
+        # Initialize ring_matrix
         for i in range(self.pN):
-            for j in range(self.dim):
-               self.V[i][j] =random.uniform(-0.3*(self.dim-j),0.3*(self.dim-j))
-               self.V[i][j]=int(self.V[i][j])
-        # 计算收敛因子k
-        phi=self.c1+self.c2
-        k=abs(phi*phi-4*phi)
-        k=cmath.sqrt(k)
-        k=abs(2-phi-k)
-        k=2/k
-        self.k=k
-       # 初始化测试集
+            self.ring.append([])
+            self.ring[i].append(i)
+        # Initialize test_set
+        self.TEST = np.zeros((self.test_num, self.dim+self.uav_num-1))
         for i in range(self.test_num):
-            self.TEST.append([])
-            for j in range(self.dim):
-                self.TEST[i].append(int(random.randint(1,self.dim-j))) 
+            test = np.random.uniform(0, 1, self.dim+self.uav_num-1)
+            self.TEST[i, :] = test
 
-                #self.V[i][j] = random.uniform(0, 1)
-        
-        
-    # ----------------------更新粒子位置----------------------------------
+    # ----------------------Update Particle Position----------------------------------
 
     def iterator(self):
         fitness = []
+        fitness_old = 0
+        k = 0
         for t in range(self.max_iter):
-            # 更新惯性因子w
-            w=(self.wini-self.wend)*(self.max_iter-t)/self.max_iter+self.wend   # w的变化规律是线性递减的
-            self.w=w   # 用计算出的w更新属性
-            for i in range(self.pN):  # 更新gbest\pbest
+            w = (self.wini-self.wend)*(self.max_iter-t)/self.max_iter+self.wend
+            self.w = w
+            # Variation
+            self.variation_fun()
+            l1 = len(self.ring[0])
+            # Local PSO algorithm
+            # Update ring_arrary
+            if l1 < self.pN:
+                if not(t % 2):
+                    k = k+1
+                    for i in range(self.pN):
+                        m1 = i-k
+                        if m1 < 0:
+                            m1 = self.pN+m1
+                        m2 = i+k
+                        if m2 > self.pN-1:
+                            m2 = m2-self.pN
+                        self.ring[i].append(m1)
+                        self.ring[i].append(m2)
+                # Update gbest_ring
+                l_ring = len(self.ring[0])
+                for i in range(self.pN):
+                    fitness1 = 0
+                    for j in range(l_ring):
+                        m1 = self.ring[i][j]
+                        fitness2 = self.ring_fit[m1]
+                        if fitness2 > fitness1:
+                            self.gbest_ring[i] = self.X[m1]
+                            fitness1 = fitness2
+                # Update velocity
+                for i in range(self.pN):
+                    self.V[i] = self.k*(self.w * self.V[i] + self.c1 * self.r1 * (self.pbest[i] - self.X[i])) + \
+                        self.c2 * self.r2 * (self.gbest_ring[i] - self.X[i])
+                # Update position
+                    self.X[i] = self.X[i] + self.V[i]
+
+            # Global PSO algorithm
+            else:
+                # Update velocity
+                for i in range(self.pN):
+                    self.V[i] = self.k*(self.w * self.V[i] + self.c1 * self.r1 * (self.pbest[i] - self.X[i])) + \
+                        self.c2 * self.r2 * (self.gbest - self.X[i])
+                # Update position
+                    self.X[i] = self.X[i] + self.V[i]
+
+            # Set position boundary
+            for i in range(self.pN):
+                for j in range(self.dim+self.uav_num-1):
+                    if self.X[i][j] >= 1:
+                        self.X[i][j] = 0.999
+                    if self.X[i][j] < 0:
+                        self.X[i][j] = 0
+            # Update pbest & gbest
+            for i in range(self.pN):
                 temp = self.function(self.X[i])
-                if temp > self.p_fit[i]:  # 更新个体最优
+                self.ring_fit[i] = temp
+                if temp > self.p_fit[i]:
                     self.p_fit[i] = temp
                     self.pbest[i] = self.X[i]
-                    if self.p_fit[i] > self.fit:  # 更新全局最优
+                    # Update gbest
+                    if self.p_fit[i] > self.fit:
                         self.gbest = self.X[i]
                         self.fit = self.p_fit[i]
-               
-            for i in range(self.pN):
-                # 速度更新
-                self.V[i] = self.k*(self.w * self.V[i] + self.c1 * self.r1 * (self.pbest[i] - self.X[i])) + \
-                            self.c2 * self.r2 * (self.gbest - self.X[i])
-                # 设置速度边界
-                for j in range(self.dim):
-                    v_max=int(0.3*(self.dim-j))
-                    v_min=-v_max
-                    self.V[i][j]=int(self.V[i][j])
-                    if self.V[i][j] > v_max:
-                        self.V[i][j] = v_max
-                    if self.V[i][j] < v_min:
-                        self.V[i][j] = v_min
-                    
-                # 位置更新
-                self.X[i] = self.X[i] + self.V[i]
-                # 设置位置边界
-                for j in range(self.dim):
-                    self.X[i][j]=int(self.X[i][j])
-                    if self.X[i][j] > self.dim-j:
-                        self.X[i][j] = self.dim-j
-                    if self.X[i][j] < 1:
-                        self.X[i][j] = 1
+                        self.uav_best = self.fun_Data()
 
-            
+            # print
             fitness.append(self.fit)
-            '''
-            print(self.X[0], end=" ")
-            print(self.fit)  # 输出最优值
-            '''
-        self.gbest=self.position(self.gbest)
+            if self.fit == fitness_old:
+                continue
+            else:
+                fitness_old = self.fit
         return fitness
-    # ---------------------数据处理---------------------------
+
+    # ---------------------Data_Processing Function---------------------------
     def fun_Data(self):
-        for i in range(self.add_num):
-            self.gbest.append(i+self.dim+1)
-        UAV=[]
-        k=0
+        X_path, Sep = self.fun_Transfer(self.gbest)
+        # Obtain the Real Flight Path Sequence of Particles
+        X = self.position(X_path)
+        # Get the search sequence of each UAV
+        UAV = []
+        l = 0
         for i in range(self.uav_num):
             UAV.append([])
-            for j in range(self.dim1//self.uav_num):
-                UAV[i].append(self.gbest[k])
-                k=k+1
-        l1=len(UAV[0])
-        best=[]
+            k = Sep[i]
+            for j in range(k):
+                UAV[i].append(X[l])
+                l = l+1
+        # Calculate UAV_Out
+        UAV_Out = []
         for i in range(self.uav_num):
-            t=self.Distance[0][UAV[i][0]]/self.v
-            best.append([])
-            for j in range(l1-1):
-                if t<=self.time_all:
-                    best[i].append(UAV[i][j])
-                    d1=UAV[i][j]
-                    d2=UAV[i][j+1]
-                    if d2<=self.dim:
-                        distance=self.Distance[d1][d2]
-                        t=t+distance/self.v
-        for i in range(self.uav_num):
-            l1=len(best[i])
-            k=0
-            for j in range(l1):
-                if best[i][k]>self.dim:
-                    del best[i][k]
-                    k=k-1
-                k=k+1
-        return best
-    
-    
-    # ---------------------测试------------------------------
+            k = Sep[i]
+            t = 0
+            UAV_Out.append([])
+            for j in range(k):
+                m1 = UAV[i][j]
+                if j == 0:
+                    t = t+self.Distance[0, m1] / \
+                        self.vehicles_speed[i]+self.Stay_time[m1]
+                else:
+                    m2 = UAV[i][j-1]
+                    t = t+self.Distance[m2][m1] / \
+                        self.vehicles_speed[i]+self.Stay_time[m1]
+                if t <= self.time_all:
+                    UAV_Out[i].append(m1)
+                    self.time_out[i] = t
+        return UAV_Out
+    # ---------------------TEST Function------------------------------
+
     def fun_TEST(self):
-        Test_Value=[]
+        Test_Value = []
         for i in range(self.test_num):
             Test_Value.append(self.function(self.TEST[i]))
         return Test_Value
-# ----------------------程序执行-----------------------
-# --------------------定义初始参数---------------------
-uav_num = 10
-target_num = 45
-env = Env(uav_num,target_num,100,1000)
-env.targets
-env.vehicles_speed
-# 定义总搜索时间
-time_all=np.random.randint(0.6*10*dim,0.8*10*dim)
-Value=[]
-for i in range(dim):
-    Value.append(np.random.randint(0,200))
-Distance=np.zeros((dim+1,dim+1))
-for i in range(dim+1):
-    for j in range(i+1,dim+1):
-        Distance[i][j]=np.random.uniform(200,400)
-        Distance[j][i]=Distance[i][j]
-# -----------------------PSO优化----------------------
-my_pso = PSO(pN, dim, max_iter,uav_num,Distance,
-    v,Value,test_num,time_all)
-my_pso.init_Population()
-fitness = my_pso.iterator()
-best=my_pso.fun_Data()
-# --------------------------测试---------------------
+    # ---------------------Main----------------------------------------
 
-print("fitness is",fitness)
-for i in range(uav_num):
-    print("第",i+1,"架无人机的搜索路径为:",best[i])
-Test_Value=my_pso.fun_TEST()
-l1=len(fitness)
-k=0
-Test_Value_out=[]
-for i in range(test_num):
-    if Test_Value[i]>fitness[l1-1]:
-        k=k+1
-        Test_Value_out.append(Test_Value[i])
-print("测试结果超过优化后的目标值的个数是：",k,"个")
-if k > 0:
-    print("这些测试结果分别是：",Test_Value_out)
-#print("测试的适应值是",Test_Value)
-
-# ------------------测试---------------------
+    def run(self):
+        print("PSO start, pid: %s" % os.getpid())
+        start_time = time.time()
+        self.fun_get_initial_parameter()
+        self.init_Population()
+        fitness = self.iterator()
+        end_time = time.time()
+        #self.cal_time  = end_time - start_time
+        #self.task_assignment = self.uav_best
+        print("PSO result:", self.uav_best)
+        print("PSO time:", end_time - start_time)
+        return self.uav_best, end_time - start_time
+        
 
 
-
-
-
-
-# -------------------画图--------------------
-'''
-plt.figure(1)
-plt.title("Figure1")
-plt.xlabel("iterators", size=14)
-plt.ylabel("fitness", size=14)
-t = np.array([t for t in range(0, 100)])
-fitness = np.array(fitness)
-plt.plot(t, fitness, color='b', linewidth=3)
-plt.show()
-'''
+        # -------------Result-------------------------
+if __name__ == '__main__':
+    # ----------------------------------TEST--------------------------------
+    '''
+    Test_Value=my_pso.fun_TEST()
+    l1=len(fitness)
+    k=0
+    Test_Value_out=[]
+    for i in range(test_num):
+        if Test_Value[i]>fitness[l1-1]:
+            k=k+1
+            Test_Value_out.append(Test_Value[i])
+    print("测试结果超过优化后的目标值的个数是：",k,"个")
+    if k > 0:
+        print("这些测试结果分别是：",Test_Value_out)
+    #print("测试的适应值是",Test_Value)
+    env.run(my_pso.uav_best,'pso')
+    print(env.vehicles_time)
+    print('time_limit:',env.time_lim)
+    '''

@@ -3,6 +3,11 @@ import matplotlib.pyplot as plt
 import random
 import time
 import pandas as pd
+import copy
+from multiprocessing import Pool
+from ga import GA
+from aco import ACO
+from pso import PSO
 
 class Env():
     def __init__(self, vehicle_num, target_num, map_size, visualized=True, time_cost=None, repeat_cost=None):
@@ -12,7 +17,7 @@ class Env():
         self.map_size = map_size
         self.speed_range = [10, 15, 30]
         #self.time_lim = 1e6
-        self.time_lim = self.map_size / self.speed_range[1] * 2
+        self.time_lim = self.map_size / self.speed_range[1]
         self.vehicles_lefttime = np.ones(vehicle_num,dtype=np.float32) * self.time_lim
         self.distant_mat = np.zeros((target_num+1,target_num+1),dtype=np.float32)
         self.total_reward = 0
@@ -21,7 +26,7 @@ class Env():
         self.time = 0
         self.time_cost = time_cost
         self.repeat_cost = repeat_cost
-        self.done = False
+        self.end = False
         self.assignment = [[] for i in range(vehicle_num)]
         self.task_generator()
         
@@ -37,29 +42,30 @@ class Env():
         for i in range(self.targets.shape[0]):
             for j in range(self.targets.shape[0]):
                 self.distant_mat[i,j] = np.linalg.norm(self.targets[i,:2]-self.targets[j,:2])
-    
+        self.targets_value = copy.deepcopy((self.targets[:,2]))
+        
     def step(self, action):
         count = 0
-        for j in range(len(self.action)):
-            k = self.action[j]
+        for j in range(len(action)):
+            k = action[j]
             delta_time = self.distant_mat[self.vehicles_position[j],k] / self.vehicles_speed[j] + self.targets[k,3]
             self.vehicles_lefttime[j] = self.vehicles_lefttime[j] - delta_time
-            if self.vehicles_lefttime < 0:
+            if self.vehicles_lefttime[j] < 0:
                 count = count + 1
                 continue
             else:
                 if k == 0:
                     self.reward = - self.repeat_cost
                 else:
-                    self.reward = self.targets[k,2] - delta_time * self.time_cost
+                    self.reward = self.targets[k,2] - delta_time * self.time_cost + self.targets[k,2]
                     if self.targets[k,2] == 0:
-                        self.total_reward = self.total_reward - self.repeat_cost
+                        self.reward = self.reward - self.repeat_cost
                     self.vehicles_position[j] = k
                     self.targets[k,2] = 0
-                self.total_reward = self.total_reward + self.rewards 
+                self.total_reward = self.total_reward + self.reward
             self.assignment[j].append(action)
-        if count == len(self.action):
-            self.done = True
+        if count == len(action):
+            self.end = True
         
     def run(self, assignment, algorithm):
         self.assignment = assignment
@@ -67,20 +73,30 @@ class Env():
         self.get_total_reward()
         if self.visualized:
             self.visualize()        
-        
+            
+    def reset(self):
+        self.vehicles_position = np.zeros(self.vehicles_position.shape[0],dtype=np.int32)
+        self.vehicles_lefttime = np.ones(self.vehicles_position.shape[0],dtype=np.float32) * self.time_lim
+        self.targets[:,2] = self.targets_value
+        self.total_reward = 0
+        self.reward = 0
+        self.end = False
         
     def get_total_reward(self):
         for i in range(len(self.assignment)):
             speed = self.vehicles_speed[i]
             for j in range(len(self.assignment[i])):
-                k = self.assignment[i][j]
-                self.total_reward = self.total_reward + self.targets[k,2]
-                self.vehicles_lefttime[i] = self.vehicles_lefttime[i] - self.distant_mat[self.vehicles_position[i],k] / speed - self.targets[k,3]
-                if self.vehicles_lefttime[i] < 0:
-                    self.done = True
+                position = self.targets[self.assignment[i][j],:4]
+                self.total_reward = self.total_reward + position[2]
+                if j == 0:
+                    self.vehicles_lefttime[i] = self.vehicles_lefttime[i] - np.linalg.norm(position[:2]) / speed - position[3]
+                else:
+                    self.vehicles_lefttime[i] = self.vehicles_lefttime[i] - np.linalg.norm(position[:2]-position_last[:2]) / speed - position[3]
+                position_last = position
+                if self.vehicles_lefttime[i] > self.time_lim:
+                    self.end = True
                     break
-                self.vehicles_position[i] = k
-            if self.done:
+            if self.end:
                 self.total_reward = 0
                 break
             
@@ -104,6 +120,76 @@ class Env():
             plt.show() 
             
 if __name__=='__main__':
+    # Test 1
+    p = Pool(2)
+    vehicle_num = 5
+    target_num = 30
+    map_size = 5e3
+    env = Env(vehicle_num,target_num,map_size,visualized=True)
+    ga = GA(vehicle_num,env.vehicles_speed,target_num,env.targets,env.time_lim)
+    aco = ACO(vehicle_num,target_num,env.vehicles_speed,env.targets,env.time_lim)
+    pso = PSO(vehicle_num,target_num ,env.targets,env.vehicles_speed,env.time_lim)
+    ga_result = p.apply_async(ga.run)
+    #aco_result = p.apply_async(aco.run)
+    pso_result = p.apply_async(pso.run)
+    p.close()
+    p.join()
+    ga_task_assignmet = ga_result.get()[0]
+    env.run(ga_task_assignmet,'GA')
+    #env.reset()
+    #aco_task_assignmet = aco_result.get()[0]
+    #env.run(aco_task_assignmet,'ACO')
+    env.reset()
+    pso_task_assignmet = pso_result.get()[0]
+    env.run(pso_task_assignmet,'PSO')
+
+    # Test 2
+    p = Pool(2)
+    vehicle_num = 10
+    target_num = 60
+    map_size = 1e4
+    env = Env(vehicle_num,target_num,map_size,visualized=True)
+    ga = GA(vehicle_num,env.vehicles_speed,target_num,env.targets,env.time_lim)
+    #aco = ACO(vehicle_num,target_num,env.vehicles_speed,env.targets,env.time_lim)
+    pso = PSO(vehicle_num,target_num ,env.targets,env.vehicles_speed,env.time_lim)
+    ga_result = p.apply_async(ga.run)
+    #aco_result = p.apply_async(aco.run)
+    pso_result = p.apply_async(pso.run)
+    p.close()
+    p.join()
+    ga_task_assignmet = ga_result.get()[0]
+    env.run(ga_task_assignmet,'GA')
+    #env.reset()
+    #aco_task_assignmet = ga_result.get()[0]
+    #env.run(aco_task_assignmet,'ACO')
+    env.reset()
+    pso_task_assignmet = pso_result.get()[0]
+    env.run(pso_task_assignmet,'PSO')
+        
+    # Test 3
+    p = Pool(2)
+    vehicle_num = 15
+    target_num = 90
+    map_size = 1.5e4
+    env = Env(vehicle_num,target_num,map_size,visualized=True)
+    ga = GA(vehicle_num,env.vehicles_speed,target_num,env.targets,env.time_lim)
+    #aco = ACO(vehicle_num,target_num,env.vehicles_speed,env.targets,env.time_lim)
+    pso = PSO(vehicle_num,target_num ,env.targets,env.vehicles_speed,env.time_lim)
+    ga_result = p.apply_async(ga.run)
+    #aco_result = p.apply_async(aco.run)
+    pso_result = p.apply_async(pso.run)
+    p.close()
+    p.join()
+    ga_task_assignmet = ga_result.get()[0]
+    env.run(ga_task_assignmet,'GA')
+    #env.reset()
+    #aco_task_assignmet = ga_result.get()[0]
+    #env.run(aco_task_assignmet,'ACO')
+    env.reset()
+    pso_task_assignmet = pso_result.get()[0]
+    env.run(pso_task_assignmet,'PSO')
+       
+    '''
     time_record = []
     reward_record = []
     for i in range(100):
@@ -120,3 +206,4 @@ if __name__=='__main__':
         reward_record.append(env.total_reward)
     dataframe = pd.DataFrame({'time':time_record,'reward':reward_record})
     dataframe.to_csv(algorithm+'.csv',sep=',')
+    '''

@@ -1,0 +1,3 @@
+[submodule "coordination/task_assignment"]
+	path = coordination/task_assignment
+	url = https://gitee.com/robin_shaun/multi-uav-task-assignment-benchmark

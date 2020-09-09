@@ -100,7 +100,6 @@
       <plugin name="actor_plugin" filename="libActorPlugin.so">
       </plugin>
     </actor>
-
     <actor name="actor2">
       <skin>
         <filename>/home/XXXX/PX4_Firmware/Tools/sitl_gazebo/models/walker/walk_2.dae</filename>
@@ -114,7 +113,6 @@
       <plugin name="actor_plugin2" filename="libActorPlugin2.so">
       </plugin>
     </actor>
-
     <actor name="actor3">
       <skin>
         <filename>/home/XXXX/PX4_Firmware/Tools/sitl_gazebo/models/walker/walk_3.dae</filename>
@@ -128,7 +126,6 @@
       <plugin name="actor_plugin3" filename="libActorPlugin3.so">
       </plugin>
     </actor>
-
     <actor name="actor4">
       <skin>
         <filename>/home/XXXX/PX4_Firmware/Tools/sitl_gazebo/models/walker/walk_4.dae</filename>
@@ -142,7 +139,6 @@
       <plugin name="actor_plugin4" filename="libActorPlugin4.so">
       </plugin>
     </actor>
-
     <actor name="actor5">
       <skin>
         <filename>/home/XXXX/PX4_Firmware/Tools/sitl_gazebo/models/walker/walk_5.dae</filename>

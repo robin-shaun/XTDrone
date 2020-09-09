@@ -1,0 +1,67 @@
+green:
+            <ambient>
+              <color sid="ambient">0.09837106 0.254824 0.07500499 1</color>
+            </ambient>
+            <diffuse>
+              <color sid="diffuse">0.09837106 0.254824 0.07500499 1</color>
+            </diffuse>
+            <specular>
+              <color sid="specular">0.05319149 0.05319149 0.05319149 1</color>
+            </specular>
+
+white:
+            <ambient>
+              <color sid="ambient">0.6220113 0.6209189 0.64 1</color>
+            </ambient>
+            <diffuse>
+              <color sid="diffuse">0.6220113 0.6209189 0.64 1</color>
+            </diffuse>
+            <specular>
+              <color sid="specular">1 1 1 1</color>
+            </specular>
+brown:
+            <ambient>
+              <color sid="ambient">0.1969495 0.07701492 0.03641987 1</color>
+            </ambient>
+            <diffuse>
+              <color sid="diffuse">0.1969495 0.07701492 0.03641987 1</color>
+            </diffuse>
+            <specular>
+              <color sid="specular">0.7712766 0.7712766 0.7712766 1</color>
+            </specular>
+mat:
+            <ambient>
+              <color sid="ambient">0.8 0.5508701 0.3938254 1</color>
+            </ambient>
+            <diffuse>
+              <color sid="diffuse">0.8 0.5508701 0.3938254 1</color>
+            </diffuse>
+            <specular>
+              <color sid="specular">0.106383 0.106383 0.106383 1</color>
+blue:
+            <ambient>
+              <color sid="ambient">0.05706184 0.09248417 0.3508265 1</color>
+            </ambient>
+            <diffuse>
+              <color sid="diffuse">0.05706184 0.09248417 0.3508265 1</color>
+            </diffuse>
+            <specular>
+              <color sid="specular">0.1329787 0.1329787 0.1329787 1</color>
+            </specular>
+black:
+            <ambient>
+              <color sid="ambient">0 0 0 1</color>
+            </ambient>
+            <diffuse>
+              <color sid="diffuse">0 0 0 1</color>
+            </diffuse>
+red:
+            <ambient>
+              <color sid="ambient">0.53706184 0.01248417 0.0108265 1</color>
+            </ambient>
+            <diffuse>
+              <color sid="diffuse">0.53706184 0.01248417 0.0108265 1</color>
+            </diffuse>
+            <specular>
+              <color sid="specular">0.7329787 0.7329787 0.7329787 1</color>
+            </specular>

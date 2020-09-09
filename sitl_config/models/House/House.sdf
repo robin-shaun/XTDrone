@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <model name="House">
+	<static>1</static> 
+    <pose>0 0 0.036 0 0 0</pose>
+    <link name="link">
+      <inertial>      
+	      <mass>1000</mass>     
+	        <inertia> <!-- inertias are tricky to compute -->
+           <ixx>1000</ixx>      
+		 <!-- for a box: ixx = 0.083 * mass * (y*y + z*z) -->      
+ 		       <ixy>0.0</ixy>      
+   <!-- for a box: ixy = 0 -->     
+		       <ixz>0.0</ixz>        
+ <!-- for a box: ixz = 0 -->        
+		       <iyy>1000</iyy>       
+<!-- for a box: iyy = 0.083 * mass * (x*x + z*z) -->       
+			 <iyz>0.0</iyz>        
+ 	<!-- for a box: iyz = 0 -->       
+   		     <izz>1000</izz>      
+ <!-- for a box: izz = 0.083 * mass * (x*x + y*y) -->   
+          </inertia>    
+ 	    </inertial>
+      <collision name="collision">
+        <geometry>
+          <mesh>
+            <uri>model://House/meshes/indoor3.dae</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>model://House/meshes/indoor3.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+  </model>
+</sdf>

@@ -431,6 +431,7 @@
         <visualize>false</visualize>
         <!-- how to make this work without using urdf?-->
         <plugin name="cgo3_camera_controller" filename="libgazebo_ros_camera.so">
+          <robotNamespace> </robotNamespace>
           <alwaysOn>true</alwaysOn>
           <updateRate>30</updateRate>
           <cameraName>/cgo3_camera</cameraName>

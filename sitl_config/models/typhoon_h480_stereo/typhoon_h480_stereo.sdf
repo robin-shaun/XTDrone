@@ -405,7 +405,7 @@
           <robotNamespace> </robotNamespace>
           <alwaysOn>true</alwaysOn>
           <updateRate>30</updateRate>
-          <cameraName>/cgo3_camera</cameraName>
+          <cameraName>cgo3_camera</cameraName>
           <imageTopicName>image_raw</imageTopicName>
           <cameraInfoTopicName>camera_info</cameraInfoTopicName>
           <frameName>cgo3_camera_optical_frame</frameName>

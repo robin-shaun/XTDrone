@@ -1,0 +1,3 @@
+[submodule "coordination/task_assignment"]
+	path = coordination/task_assignment
+	url = https://github.com/robin-shaun/Multi-UAV-Task-Assignment-Benchmark

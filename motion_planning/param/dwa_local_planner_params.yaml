@@ -26,7 +26,7 @@ DWAPlannerROS:
 # Forward Simulation Parameters
   sim_time: 2.0
   vx_samples: 20
-  vy_samples: 0
+  vy_samples: 20
   vth_samples: 40
   controller_frequency: 10.0
 

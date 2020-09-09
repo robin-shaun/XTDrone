@@ -87,12 +87,13 @@ class Follower:
                     self.info_pub.publish("Received")
                     print("Follower"+str(self.id-1)+": Switch to Formation "+self.formation_config)
                     if self.formation_config=='waiting':
-                        self.L_matrix = self.get_L_central_matrix()
+                        self.L_matrix = self.get_L_matrix(formation_dict[self.formation_config])   #self.get_L_central_matrix()
                     else:
                         if self.first_formation:
                             self.first_formation=False
                             self.orig_formation=formation_dict[self.formation_config]
-                            self.L_matrix = self.get_L_central_matrix()
+                            self.L_matrix = self.get_L_matrix(formation_dict[self.formation_config])
+                            #self.L_matrix = self.get_L_central_matrix()
                         else:
                             self.adj_matrix = self.build_graph(self.orig_formation,formation_dict[self.formation_config])
                             self.label_left = numpy.max(self.adj_matrix, axis=1)  # init label for the left 
@@ -104,7 +105,8 @@ class Follower:
                             self.slack_right = numpy.array([100]*(self.uav_num-1)) 
                             self.change_id = self.KM()
                             self.new_formation=self.get_new_formation(self.change_id,formation_dict[self.formation_config])
-                            self.L_matrix = self.get_L_central_matrix()
+                            self.L_matrix = self.get_L_matrix(self.new_formation)
+                            #self.L_matrix = self.get_L_central_matrix()
                             self.orig_formation=self.new_formation
                     if self.id == 3:
                         print(self.L_matrix)
@@ -218,14 +220,124 @@ class Follower:
                     new_formation[:,i]=position[:,j]
         return new_formation
 
+    #函数输入为相对leader的位置矩阵和无人机数量，输出为L矩阵
+    def get_L_matrix(self,rel_posi):
+	
+        c_num=int((self.uav_num-1)/2)
+        min_num_index_list = [0]*c_num
+        
+        comm=[[]for i in range (self.uav_num)]
+        w=numpy.ones((self.uav_num,self.uav_num))*0 
+        nodes_next=[]
+        node_flag = [self.uav_num-1]
+        node_mid_flag=[]
+
+        rel_d=[0]*(self.uav_num-1)
+
+        
+        for i in range(0,self.uav_num-1):
+
+            rel_d[i]=pow(rel_posi[0][i],2)+pow(rel_posi[1][i],2)+pow(rel_posi[2][i],2)
+
+        c=numpy.copy(rel_d)
+        c.sort()
+        count=0
+
+        for j in range(0,c_num):
+            for i in range(0,self.uav_num-1):
+                if rel_d[i]==c[j]:
+	            if not i in node_mid_flag:
+                        min_num_index_list[count]=i
+	                node_mid_flag.append(i)
+ 	                count=count+1
+                        if count==c_num:
+		            break
+            if count==c_num:
+                break
+
+
+        for j in range(0,c_num):
+            nodes_next.append(min_num_index_list[j])
+                        
+            comm[self.uav_num-1].append(min_num_index_list[j])  
+
+        size_=len(node_flag)
+
+        while (nodes_next!=[]) and (size_<(self.uav_num-1)):
+
+            next_node= nodes_next[0]
+            nodes_next=nodes_next[1:]
+            min_num_index_list = [0]*c_num
+            node_mid_flag=[]
+            rel_d=[0]*(self.uav_num-1)
+            for i in range(0,self.uav_num-1):
+                    
+                if i==next_node or i in node_flag:
+                        
+                    rel_d[i]=2000   
+                else:
+
+                    rel_d[i]=pow((rel_posi[0][i]-rel_posi[0][next_node]),2)+pow((rel_posi[1][i]-rel_posi[1][next_node]),2)+pow((rel_posi[2][i]-rel_posi[2][next_node]),2)
+
+            c=numpy.copy(rel_d)
+    	    c.sort()
+            count=0
+
+            for j in range(0,c_num):
+                for i in range(0,self.uav_num-1):
+                    if rel_d[i]==c[j]:
+	                if not i in node_mid_flag:
+                            min_num_index_list[count]=i
+	                    node_mid_flag.append(i)
+			    count=count+1
+                            if count==c_num:
+		                break
+                if count==c_num:
+                    break
+            node_flag.append(next_node)
+
+            size_=len(node_flag)                    
+
+            for j in range(0,c_num):
+
+                if min_num_index_list[j] in node_flag:
+                                
+                    nodes_next=nodes_next
+
+                else:
+                    if min_num_index_list[j] in nodes_next:
+                        nodes_next=nodes_next
+                    else:
+                        nodes_next.append(min_num_index_list[j])
+                        
+                    comm[next_node].append(min_num_index_list[j])
+
+        for i in range (0,self.uav_num):
+            for j in range(0,self.uav_num-1):
+
+                if i==0:
+                    if j in comm[self.uav_num-1]:
+                        w[j+1][i]=1
+                    else:
+                        w[j+1][i]=0
+                else:
+                    if j in comm[i-1]:
+                        w[j+1][i]=1
+                    else:
+                        w[j+1][i]=0
+                        
+        L=w  
+        for i in range (0,self.uav_num):
+
+            L[i][i]=-sum(w[i])
+
+        return L 
     #central-station control 
     def get_L_central_matrix(self):
-        
         L=numpy.zeros((self.uav_num,self.uav_num))
         for i in range(1,self.uav_num):
             L[i][0]=1
             L[i][i]=-1
-        
         #L=numpy.array([[-0. ,0. , 0.,  0.,  0.,  0.],[ 1. ,-1. , 0. , 0. , 0. , 0.],[ 0.,  1. ,-1. , 0. , 0. , 0.],[ 0.,  0.,  1. ,-1. , 0. , 0.],[ 0. , 0. , 0. , 1. ,-1. , 0.],[ 0. , 0. , 0. , 0. , 1. ,-1.]])
         return L
 

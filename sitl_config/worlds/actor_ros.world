@@ -24,7 +24,7 @@
         <scale>1.000000</scale>
         <interpolate_x>true</interpolate_x>
       </animation>
-      <plugin name="actor1_plugin" filename="libros_actor_cmd_vel_plugin.so">
+      <plugin name="actor1_plugin" filename="libros_actor_cmd_pose_plugin.so">
         <animation_factor>5.1</animation_factor>
       </plugin>
     </actor>

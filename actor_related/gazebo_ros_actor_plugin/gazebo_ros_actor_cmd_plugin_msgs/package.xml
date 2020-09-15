@@ -1,0 +1,21 @@
+<package>
+   <name>ros_actor_cmd_vel_plugin_msgs</name>
+   <version>1.0.0</version>
+   <description>
+      This package defines messages used in ros_actor_cmd_vel_plugin.
+   </description>
+   <author>Thorben Markmann</author>
+   <maintainer email="dlein@techfak.uni-bielefeld.de">David Leins</maintainer>
+
+   <license>Apache License, Version 2.0</license>
+   <url type="website">https://github.com/DavidPL1/gazebo_ros_actor_cmd_plugin</url>
+
+   <buildtool_depend>catkin</buildtool_depend>
+
+   <build_depend>message_generation</build_depend>
+   <build_depend>std_msgs</build_depend>
+
+   <run_depend>message_runtime</run_depend>
+   <run_depend>std_msgs</run_depend>
+
+</package>

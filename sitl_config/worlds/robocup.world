@@ -90,71 +90,76 @@
 
     <actor name="actor1">
       <skin>
-        <filename>/home/XXXX/PX4_Firmware/Tools/sitl_gazebo/models/walker/walk_1.dae</filename>
+        <filename>model://walker/walk_1.dae</filename>
         <scale>1.0</scale>
       </skin>
       <animation name="walking1">
-        <filename>/home/XXXX/PX4_Firmware/Tools/sitl_gazebo/models/walker/walk_1.dae</filename>
+        <filename>model://walker/walk_1.dae</filename>
         <scale>1.000000</scale>
         <interpolate_x>true</interpolate_x>
       </animation>
-      <plugin name="actor_plugin1" filename="libActorPlugin1.so">
+      <plugin name="actor1_plugin" filename="libros_actor_cmd_pose_plugin.so">
+        <animation_factor>5.1</animation_factor>
       </plugin>
     </actor>
 
     <actor name="actor2">
       <skin>
-        <filename>/home/XXXX/PX4_Firmware/Tools/sitl_gazebo/models/walker/walk_2.dae</filename>
+        <filename>model://walker/walk_2.dae</filename>
         <scale>1.0</scale>
       </skin>
       <animation name="walking2">
-        <filename>/home/XXXX/PX4_Firmware/Tools/sitl_gazebo/models/walker/walk_2.dae</filename>
+        <filename>model://walker/walk_2.dae</filename>
         <scale>1.000000</scale>
         <interpolate_x>true</interpolate_x>
       </animation>
-      <plugin name="actor_plugin2" filename="libActorPlugin2.so">
+      <plugin name="actor2_plugin" filename="libros_actor_cmd_pose_plugin.so">
+        <animation_factor>5.1</animation_factor>
       </plugin>
     </actor>
 
     <actor name="actor3">
       <skin>
-        <filename>/home/XXXX/PX4_Firmware/Tools/sitl_gazebo/models/walker/walk_3.dae</filename>
+        <filename>model://walker/walk_3.dae</filename>
         <scale>1.0</scale>
       </skin>
       <animation name="walking3">
-        <filename>/home/XXXX/PX4_Firmware/Tools/sitl_gazebo/models/walker/walk_3.dae</filename>
+        <filename>model://walker/walk_3.dae</filename>
         <scale>1.000000</scale>
         <interpolate_x>true</interpolate_x>
       </animation>
-      <plugin name="actor_plugin3" filename="libActorPlugin3.so">
+      <plugin name="actor3_plugin" filename="libros_actor_cmd_pose_plugin.so">
+        <animation_factor>5.1</animation_factor>
       </plugin>
     </actor>
 
     <actor name="actor4">
       <skin>
-        <filename>/home/XXXX/PX4_Firmware/Tools/sitl_gazebo/models/walker/walk_4.dae</filename>
+        <filename>model://walker/walk_4.dae</filename>
         <scale>1.0</scale>
       </skin>
       <animation name="walking4">
-        <filename>/home/XXXX/PX4_Firmware/Tools/sitl_gazebo/models/walker/walk_4.dae</filename>
+        <filename>model://walker/walk_4.dae</filename>
         <scale>1.000000</scale>
         <interpolate_x>true</interpolate_x>
       </animation>
-      <plugin name="actor_plugin4" filename="libActorPlugin4.so">
+      <plugin name="actor4_plugin" filename="libros_actor_cmd_pose_plugin.so">
+        <animation_factor>5.1</animation_factor>
       </plugin>
     </actor>
 
     <actor name="actor5">
       <skin>
-        <filename>/home/XXXX/PX4_Firmware/Tools/sitl_gazebo/models/walker/walk_5.dae</filename>
+        <filename>model://walker/walk_5.dae</filename>
         <scale>1.0</scale>
       </skin>
       <animation name="walking5">
-        <filename>/home/XXXX/PX4_Firmware/Tools/sitl_gazebo/models/walker/walk_5.dae</filename>
+        <filename>model://walker/walk_5.dae</filename>
         <scale>1.000000</scale>
         <interpolate_x>true</interpolate_x>
       </animation>
-      <plugin name="actor_plugin5" filename="libActorPlugin5.so">
+      <plugin name="actor5_plugin" filename="libros_actor_cmd_pose_plugin.so">
+        <animation_factor>5.1</animation_factor>
       </plugin>
     </actor>
 

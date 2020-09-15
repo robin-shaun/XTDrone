@@ -30,6 +30,10 @@ GZ_REGISTER_MODEL_PLUGIN(ActorPlugin2)
 #define WALKING_ANIMATION "walking2"
 int flag2 = 0;
 int count_flag2 = 0;
+int suitable_point2 = 1;
+double x_2;
+double y_2;
+double black_box[13][2][2]={{{-32,-21},{18,32}},{{7,18},{12,26}},{{55,66},{15,29}},{{72,82},{10,18}},{{88,100},{12,16}},{{79,94},{23,34}},{{54,69},{-34,-27}},{{-4,4},{-33,-22}},{{14,38},{-18,-10}},{{-5,6},{-19,-11}},{{-27,-24},{-14,-29}},{{-35,-32},{-25,-14}},{{-36,-24},{-34,-31}}};
 /////////////////////////////////////////////////
 ActorPlugin2::~ActorPlugin2()
 {
@@ -137,6 +141,7 @@ void ActorPlugin2::OnUpdate(const common::UpdateInfo &_info)
 
   ignition::math::Pose3d pose = this->actor->WorldPose();
   ignition::math::Vector3d pos = this->target - pose.Pos();
+  ignition::math::Vector3d pos_last = pos;
   ignition::math::Vector3d rpy = pose.Rot().Euler();
 
   double distance = pos.Length();
@@ -169,18 +174,57 @@ void ActorPlugin2::OnUpdate(const common::UpdateInfo &_info)
   }
   else
   {
+    pos_last = pose.Pos();
     pose.Pos() += pos * this->velocity * dt;
+    for (int i=0;i<13;i++)
+    {
+      if ((pose.Pos().X()>black_box[i][0][0])&&(pose.Pos().X()<black_box[i][0][1]))
+      {
+        if ((pose.Pos().Y()>black_box[i][1][0])&&(pose.Pos().Y()<black_box[i][1][1]))
+        {
+          pose.Pos() = pos_last;
+          flag2 = 2;
+        }
+      }
+    }
     pose.Rot() = ignition::math::Quaterniond(1.5707, 0, rpy.Z()+yaw.Radian());
   }
 
   if (flag2 == 0)
   {
-    pose.Pos().X(-30);
-    pose.Pos().Y(-30);
+    while (suitable_point2)
+    {
+      x_2 = rand()%150;
+      y_2 = rand()%100;
+      x_2 = x_2-50;
+      y_2 = y_2-50;
+      for (int i=0;i<13;i++)
+      {
+        if ((x_2>black_box[i][0][0])&&(x_2<black_box[i][0][1]))
+        {
+          if ((y_2>black_box[i][1][0])&&(y_2<black_box[i][1][1]))
+          {
+            suitable_point2 = 1;
+          }
+          else
+          {
+            suitable_point2 = 0;
+          }
+        }
+        else
+          {
+            suitable_point2 = 0;
+          }
+      }
+    }
+    target[0] = x_2;
+    target[1] = y_2;
+    pose.Pos().X(x_2);
+    pose.Pos().Y(y_2);
     pose.Pos().Z(1.0191);
-    cmd_pose_msg.set_cmd_actor_pose_x(-30);
-    cmd_pose_msg.set_cmd_actor_pose_y(-30);
-    count_flag2 = 0;
+    cmd_pose_msg.set_cmd_actor_pose_x(x_2);
+    cmd_pose_msg.set_cmd_actor_pose_y(y_2);
+    flag2 = 1;
   }
   else
   {
@@ -208,45 +252,16 @@ void ActorPlugin2::OnUpdate(const common::UpdateInfo &_info)
   pose_msg.set_allocated_actor_pose(actor_pose);
   actor_pose_pub_2->Publish(pose_msg);
 
-  if ((abs(target[0]-pose.Pos().X())<0.1)&&(abs(target[1]-pose.Pos().Y())<0.1))
+  if (((abs(target[0]-pose.Pos().X())<0.1)&&(abs(target[1]-pose.Pos().Y())<0.1))||(flag2==2))
   {
-    if (count_flag2 == 0)
-    {
-      flag2 ++;
-    }
-    count_flag2 = 1;
-    if (flag2 ==5)
-      flag2 = 1;
+    x_2 = rand()%150;
+    y_2 = rand()%100;
+    x_2 = x_2-50;
+    y_2 = y_2-50;
+    flag2 = 1;
   }
-
-  if (flag2 == 1)
-  {
-    cmd_pose_msg.set_cmd_actor_pose_x(-45);
-    cmd_pose_msg.set_cmd_actor_pose_y(-45);
-    count_flag2 = 0;
-  }
-
-  if (flag2 == 2)
-  {
-    cmd_pose_msg.set_cmd_actor_pose_x(-45);
-    cmd_pose_msg.set_cmd_actor_pose_y(-15);
-    count_flag2 = 0;
-  }
-
-  if (flag2 == 3)
-  {
-    cmd_pose_msg.set_cmd_actor_pose_x(-15);
-    cmd_pose_msg.set_cmd_actor_pose_y(-15);
-    count_flag2 = 0;
-  }
-
-  if (flag2 == 4)
-  {
-    cmd_pose_msg.set_cmd_actor_pose_x(-15);
-    cmd_pose_msg.set_cmd_actor_pose_y(-45);
-    count_flag2 = 0;
-  }
-
+  cmd_pose_msg.set_cmd_actor_pose_x(x_2);
+  cmd_pose_msg.set_cmd_actor_pose_y(y_2);
   cmd_pose_msg.set_cmd_actor_pose_z(1.0191);
   cmd_pose_pub_2->Publish(cmd_pose_msg);
 

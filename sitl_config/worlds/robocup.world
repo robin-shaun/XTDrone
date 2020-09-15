@@ -88,17 +88,17 @@
     </model>
 
 
-    <actor name="actor">
+    <actor name="actor1">
       <skin>
-        <filename>/home/XXXX/PX4_Firmware/Tools/sitl_gazebo/models/walker/walk.dae</filename>
+        <filename>/home/XXXX/PX4_Firmware/Tools/sitl_gazebo/models/walker/walk_1.dae</filename>
         <scale>1.0</scale>
       </skin>
-      <animation name="walking">
-        <filename>/home/XXXX/PX4_Firmware/Tools/sitl_gazebo/models/walker/walk.dae</filename>
+      <animation name="walking1">
+        <filename>/home/XXXX/PX4_Firmware/Tools/sitl_gazebo/models/walker/walk_1.dae</filename>
         <scale>1.000000</scale>
         <interpolate_x>true</interpolate_x>
       </animation>
-      <plugin name="actor_plugin" filename="libActorPlugin.so">
+      <plugin name="actor_plugin1" filename="libActorPlugin1.so">
       </plugin>
     </actor>
 

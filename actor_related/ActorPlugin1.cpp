@@ -19,57 +19,65 @@
 
 #include <ignition/math.hh>
 #include "gazebo/physics/physics.hh"
-#include "ActorPlugin.h"
+#include "ActorPlugin1.h"
 #include "common.h"
+
 
 using namespace gazebo;
 using namespace std;
 
-GZ_REGISTER_MODEL_PLUGIN(ActorPlugin)
+GZ_REGISTER_MODEL_PLUGIN(ActorPlugin1)
 
-#define WALKING_ANIMATION "walking"
+#define WALKING_ANIMATION "walking1"
 int flag1 = 0;
 int count_flag1 = 0;
+int suitable_point1 = 1;
+double x_1;
+double y_1;
+// shapes of houses
+double black_box[13][2][2]={{{-32,-21},{18,32}},{{7,18},{12,26}},{{55,66},{15,29}},{{72,82},{10,18}},{{88,100},{12,16}},{{79,94},{23,34}},{{54,69},{-34,-27}},{{-4,4},{-33,-22}},{{14,38},{-18,-10}},{{-5,6},{-19,-11}},{{-27,-24},{-14,-29}},{{-35,-32},{-25,-14}},{{-36,-24},{-34,-31}}};
 /////////////////////////////////////////////////
-ActorPlugin::~ActorPlugin()
+ActorPlugin1::~ActorPlugin1()
 {
   update_connection_->~Connection();
 }
 
 /////////////////////////////////////////////////
-void ActorPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
+void ActorPlugin1::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
 {
   this->sdf = _sdf;
+  //this->iris0_imu = this->iris0->GetLink("base_link");
   this->actor = boost::dynamic_pointer_cast<physics::Actor>(_model);
   this->world = this->actor->GetWorld();
+  //this->iris0 = this->world->ActorByName("lamp_post_197");
   this->connections.push_back(event::Events::ConnectWorldUpdateBegin(
-          std::bind(&ActorPlugin::OnUpdate, this, std::placeholders::_1)));
+          std::bind(&ActorPlugin1::OnUpdate, this, std::placeholders::_1)));
 
   this->Reset();
 
   if (_sdf->HasElement("robotNamespace"))
     namespace_ = _sdf->GetElement("robotNamespace")->Get<std::string>();
   else
-    gzerr << "[ActorPlugin] Please specify a robotNamespace.\n";
+    gzerr << "[ActorPlugin1] Please specify a robotNamespace.\n";
   node_handle_ = transport::NodePtr(new transport::Node());
   node_handle_->Init(namespace_);
 
   // Listen to the update event. This event is broadcast every
   // simulation iteration.
-  update_connection_ = event::Events::ConnectWorldUpdateBegin(boost::bind(&ActorPlugin::OnUpdate, this, _1));
+  update_connection_ = event::Events::ConnectWorldUpdateBegin(boost::bind(&ActorPlugin1::OnUpdate, this, _1));
 
   //Subscribe the command actor pose
-  cmd_pose_sub_ = node_handle_->Subscribe<mav_msgs::msgs::CmdActor>("cmd_actor_pose", &ActorPlugin::CmdPoseCallback, this);
+  cmd_pose_sub_1 = node_handle_->Subscribe<mav_msgs::msgs::CmdActor>("cmd_actor_pose1", &ActorPlugin1::CmdPoseCallback, this);
 
   //Publish the command actor pose
-  cmd_pose_pub_ = node_handle_->Advertise<mav_msgs::msgs::CmdActor>("cmd_actor_pose", 1);
+  cmd_pose_pub_1 = node_handle_->Advertise<mav_msgs::msgs::CmdActor>("cmd_actor_pose1", 1);
 
   // FIXME: Commented out to prevent warnings about queue limit reached.
-  actor_pose_pub_ = node_handle_->Advertise<mav_msgs::msgs::Actor>("actor_pose", 1);
+  actor_pose_pub_1 = node_handle_->Advertise<mav_msgs::msgs::Actor>("actor_pose1", 1);
 
 }
 
-void ActorPlugin::CmdPoseCallback(CmdActorPtr &cmd_msg) 
+void ActorPlugin1::CmdPoseCallback(CmdActorPtr &cmd_msg)
 {
   target[0] = cmd_msg->cmd_actor_pose_x();
   target[1] = cmd_msg->cmd_actor_pose_y();
@@ -79,7 +87,7 @@ void ActorPlugin::CmdPoseCallback(CmdActorPtr &cmd_msg)
 }
 
 /////////////////////////////////////////////////
-void ActorPlugin::Reset()
+void ActorPlugin1::Reset()
 {
   this->lastUpdate = 0;
 /*
@@ -106,7 +114,7 @@ void ActorPlugin::Reset()
 }
 
 /////////////////////////////////////////////////
-void ActorPlugin::ChooseNewTarget()
+void ActorPlugin1::ChooseNewTarget()
 {
   ignition::math::Vector3d newTarget(this->target);
   while ((newTarget - this->target).Length() < 2.0)
@@ -129,15 +137,16 @@ void ActorPlugin::ChooseNewTarget()
 }
 
 /////////////////////////////////////////////////
-void ActorPlugin::OnUpdate(const common::UpdateInfo &_info)
+void ActorPlugin1::OnUpdate(const common::UpdateInfo &_info)
 {
-  this->velocity = 0.8;
+  this->velocity = 2.0;     //0.8;
   // Time delta
   double dt = (_info.simTime - this->lastUpdate).Double();
-
   ignition::math::Pose3d pose = this->actor->WorldPose();
   ignition::math::Vector3d pos = this->target - pose.Pos();
+  ignition::math::Vector3d pos_last = pos;
   ignition::math::Vector3d rpy = pose.Rot().Euler();
+  //ignition::math::Vector3d iris0_position = this->iris0->WorldPose().Pos();
 
   double distance = pos.Length();
 
@@ -169,17 +178,60 @@ void ActorPlugin::OnUpdate(const common::UpdateInfo &_info)
   }
   else
   {
+    pos_last = pose.Pos();
     pose.Pos() += pos * this->velocity * dt;
+
+    // charge if the next step is "in the house". yes: stop moving and get a new target; no: turn to the next step.
+    for (int i=0;i<13;i++)
+    {
+      if ((pose.Pos().X()>black_box[i][0][0])&&(pose.Pos().X()<black_box[i][0][1]))
+      {
+        if ((pose.Pos().Y()>black_box[i][1][0])&&(pose.Pos().Y()<black_box[i][1][1]))
+        {
+          pose.Pos() = pos_last;
+          flag1 = 2;
+        }
+      }
+    }
     pose.Rot() = ignition::math::Quaterniond(1.5707, 0, rpy.Z()+yaw.Radian());
   }
+
+// initialize the random position
   if (flag1 == 0)
   {
-    pose.Pos().X(0);
-    pose.Pos().Y(0);
+    while (suitable_point1)
+    {
+      x_1 = rand()%150;
+      y_1 = rand()%100;
+      x_1 = x_1-50;
+      y_1 = y_1-50;
+      for (int i=0;i<13;i++)
+      {
+        if ((x_1>black_box[i][0][0])&&(x_1<black_box[i][0][1]))
+        {
+          if ((y_1>black_box[i][1][0])&&(y_1<black_box[i][1][1]))
+          {
+            suitable_point1 = 1;
+          }
+          else
+          {
+            suitable_point1 = 0;
+          }
+        }
+        else
+          {
+            suitable_point1 = 0;
+          }
+      }
+    }
+    target[0] = x_1;
+    target[1] = y_1;
+    pose.Pos().X(x_1);
+    pose.Pos().Y(y_1);
     pose.Pos().Z(1.0191);
-    cmd_pose_msg.set_cmd_actor_pose_x(0);
-    cmd_pose_msg.set_cmd_actor_pose_y(0);
-    count_flag1 = 0;
+    cmd_pose_msg.set_cmd_actor_pose_x(x_1);
+    cmd_pose_msg.set_cmd_actor_pose_y(y_1);
+    flag1 = 1;
   }
   else
   {
@@ -188,16 +240,15 @@ void ActorPlugin::OnUpdate(const common::UpdateInfo &_info)
     pose.Pos().Y(std::max(-50.0, std::min(50.0, pose.Pos().Y())));
     pose.Pos().Z(1.0191);
   }
+
   // Distance traveled is used to coordinate motion with the walking
   // animation
-  double distanceTraveled = (pose.Pos() -
-      this->actor->WorldPose().Pos()).Length();
-
+  double distanceTraveled = (pose.Pos() -this->actor->WorldPose().Pos()).Length();
+  //std::cout << "this->actor->WorldPose().Pos():" << this->actor->WorldPose().Pos().X() << ";" << this->actor->WorldPose().Pos().Y();
   this->actor->SetWorldPose(pose, false, false);
-  this->actor->SetScriptTime(this->actor->ScriptTime() +
-    (distanceTraveled * 5.0));
+  this->actor->SetScriptTime(this->actor->ScriptTime() + (distanceTraveled * 5.0));
   this->lastUpdate = _info.simTime;
-  
+
   gazebo::msgs::Vector3d* actor_pose = new gazebo::msgs::Vector3d();
   actor_pose->set_x(pose.Pos().X());
   actor_pose->set_y(pose.Pos().Y());
@@ -205,52 +256,23 @@ void ActorPlugin::OnUpdate(const common::UpdateInfo &_info)
 
   // FIXME: Commented out to prevent warnings about queue limit reached.
   pose_msg.set_allocated_actor_pose(actor_pose);
-  actor_pose_pub_->Publish(pose_msg);
-
-
-  if ((abs(target[0]-pose.Pos().X())<0.1)&&(abs(target[1]-pose.Pos().Y())<0.1))
+  actor_pose_pub_1->Publish(pose_msg);
+  // get the new random target.
+  if (((abs(target[0]-pose.Pos().X())<0.1)&&(abs(target[1]-pose.Pos().Y())<0.1))||(flag1==2))
   {
-    if (count_flag1 == 0)
-    {
-      flag1 ++;
-    }
-    count_flag1 = 1;
-    if (flag1 ==5)
-      flag1 = 1;
+    x_1 = rand()%150;
+    y_1 = rand()%100;
+    x_1 = x_1-50;
+    y_1 = y_1-50;
+    flag1 = 1;
   }
-
-  if (flag1 == 1)
-  {
-    cmd_pose_msg.set_cmd_actor_pose_x(10);
-    cmd_pose_msg.set_cmd_actor_pose_y(15);
-    count_flag1 = 0;
-  }
-
-  if (flag1 == 2)
-  {
-    cmd_pose_msg.set_cmd_actor_pose_x(10);
-    cmd_pose_msg.set_cmd_actor_pose_y(-15);
-    count_flag1 = 0;
-  }
-
-  if (flag1 == 3)
-  {
-    cmd_pose_msg.set_cmd_actor_pose_x(-10);
-    cmd_pose_msg.set_cmd_actor_pose_y(-15);
-    count_flag1 = 0;
-  }
-
-  if (flag1 == 4)
-  {
-    cmd_pose_msg.set_cmd_actor_pose_x(-10);
-    cmd_pose_msg.set_cmd_actor_pose_y(15);
-    count_flag1 = 0;
-  }
-
+  cmd_pose_msg.set_cmd_actor_pose_x(x_1);
+  cmd_pose_msg.set_cmd_actor_pose_y(y_1);
   cmd_pose_msg.set_cmd_actor_pose_z(1.0191);
-  cmd_pose_pub_->Publish(cmd_pose_msg);
+  cmd_pose_pub_1->Publish(cmd_pose_msg);
+  //std::cout << "Iris0_Position1:  " << dec << iris0_position.X() << "," << iris0_position.Y() << "," << iris0_position.Z() << endl;
+  std::cout << "[XTDrone_Actor_Plugin1]: Publish topic actor_pose_pub1"<< std::endl;
+  std::cout << "Target_Position1:  " << target[0] << "," << target[1] << "," << target[1] << endl;
+  std::cout << "Actor_Position1:  " << dec << pose.Pos().X() << "," << pose.Pos().Y() << "," << pose.Pos().Z() << endl;
 
-  //std::cout << "[XTDrone_Actor_Plugin]: Publish topic actor_pose_pub"<< std::endl;
-  //std::cout << "Target_Position:  " << target[0] << "," << target[1] << "," << target[2] << endl;
-  //std::cout << "Actor_Position:  " << dec << pose.Pos().X() << "," << pose.Pos().Y() << "," << pose.Pos().Z() << endl;
 }

@@ -15,8 +15,8 @@
  *
 */
 
-#ifndef GAZEBO_PLUGINS_ACTORPLUGIN_HH_
-#define GAZEBO_PLUGINS_ACTORPLUGIN_HH_
+#ifndef GAZEBO_PLUGINS_ACTORPLUGIN1_HH_
+#define GAZEBO_PLUGINS_ACTORPLUGIN1_HH_
 
 #include <string>
 #include <vector>
@@ -40,17 +40,17 @@ static const std::string kDefaultLinkName = "base_link";
 
 typedef const boost::shared_ptr<const mav_msgs::msgs::CmdActor> CmdActorPtr;
 
-  class GZ_PLUGIN_VISIBLE ActorPlugin : public ModelPlugin
+  class GZ_PLUGIN_VISIBLE ActorPlugin1 : public ModelPlugin
   {
     /// \brief Constructor
-    public: ActorPlugin()
+    public: ActorPlugin1()
       : ModelPlugin(),
         namespace_(kDefaultNamespace),
         frame_id_(kDefaultFrameId),
         link_name_(kDefaultLinkName),
         node_handle_(NULL) {}
 
-    virtual ~ActorPlugin();
+    virtual ~ActorPlugin1();
 
     /// \brief Load the actor plugin.
     /// \param[in] _model Pointer to the parent model.
@@ -85,9 +85,9 @@ typedef const boost::shared_ptr<const mav_msgs::msgs::CmdActor> CmdActorPtr;
     std::string link_name_;
 
     transport::NodePtr node_handle_;
-    transport::PublisherPtr actor_pose_pub_;
-    transport::SubscriberPtr cmd_pose_sub_;
-    transport::PublisherPtr cmd_pose_pub_;
+    transport::PublisherPtr actor_pose_pub_1;
+    transport::SubscriberPtr cmd_pose_sub_1;
+    transport::PublisherPtr cmd_pose_pub_1;
 
     mav_msgs::msgs::Actor pose_msg;
     mav_msgs::msgs::CmdActor cmd_pose_msg;
@@ -97,6 +97,8 @@ typedef const boost::shared_ptr<const mav_msgs::msgs::CmdActor> CmdActorPtr;
 
     /// \brief Pointer to the parent actor.
     private: physics::ActorPtr actor;
+
+    private: physics::ActorPtr iris0;
 
     /// \brief Pointer to the world, for convenience.
     private: physics::WorldPtr world;
@@ -112,6 +114,8 @@ typedef const boost::shared_ptr<const mav_msgs::msgs::CmdActor> CmdActorPtr;
 
     /// \brief Current target location
     private: ignition::math::Vector3d target;
+
+    private: ignition::math::Vector3d iris0_update;
 
     /// \brief Target location weight (used for vector field)
     //private: double targetWeight = 1.0;

@@ -30,6 +30,11 @@ GZ_REGISTER_MODEL_PLUGIN(ActorPlugin5)
 #define WALKING_ANIMATION "walking5"
 int flag5 = 0;
 int count_flag5 = 0;
+int suitable_point5 = 1;
+double x_5;
+double y_5;
+double black_box[13][2][2]={{{-32,-21},{18,32}},{{7,18},{12,26}},{{55,66},{15,29}},{{72,82},{10,18}},{{88,100},{12,16}},{{79,94},{23,34}},{{54,69},{-34,-27}},{{-4,4},{-33,-22}},{{14,38},{-18,-10}},{{-5,6},{-19,-11}},{{-27,-24},{-14,-29}},{{-35,-32},{-25,-14}},{{-36,-24},{-34,-31}}};
+
 /////////////////////////////////////////////////
 ActorPlugin5::~ActorPlugin5()
 {
@@ -137,6 +142,7 @@ void ActorPlugin5::OnUpdate(const common::UpdateInfo &_info)
 
   ignition::math::Pose3d pose = this->actor->WorldPose();
   ignition::math::Vector3d pos = this->target - pose.Pos();
+  ignition::math::Vector3d pos_last = pos;
   ignition::math::Vector3d rpy = pose.Rot().Euler();
 
   double distance = pos.Length();
@@ -169,17 +175,61 @@ void ActorPlugin5::OnUpdate(const common::UpdateInfo &_info)
   }
   else
   {
+    pos_last = pose.Pos();
     pose.Pos() += pos * this->velocity * dt;
+    for (int i=0;i<13;i++)
+    {
+      if ((pose.Pos().X()>black_box[i][0][0])&&(pose.Pos().X()<black_box[i][0][1]))
+      {
+        if ((pose.Pos().Y()>black_box[i][1][0])&&(pose.Pos().Y()<black_box[i][1][1]))
+        {
+          pose.Pos() = pos_last;
+          flag5 = 2;
+        }
+      }
+    }
     pose.Rot() = ignition::math::Quaterniond(1.5707, 0, rpy.Z()+yaw.Radian());
   }
+
   if (flag5 == 0)
   {
-    pose.Pos().X(80);
-    pose.Pos().Y(30);
+  /*
+    while (suitable_point5)
+    {
+      x_5 = rand()%150;
+      y_5 = rand()%100;
+      x_5 = x_5-50;
+      y_5 = y_5-50;
+      for (int i=0;i<13;i++)
+      {
+        if ((x_5>black_box[i][0][0])&&(x_5<black_box[i][0][1]))
+        {
+          if ((y_5>black_box[i][1][0])&&(y_5<black_box[i][1][1]))
+          {
+            suitable_point5 = 1;
+          }
+          else
+          {
+            suitable_point5 = 0;
+          }
+        }
+        else
+          {
+            suitable_point5 = 0;
+          }
+      }
+    }
+    */
+    x_5 = -50;
+    y_5 = 50;
+    target[0] = x_5;
+    target[1] = y_5;
+    pose.Pos().X(x_5);
+    pose.Pos().Y(y_5);
     pose.Pos().Z(1.0191);
-    cmd_pose_msg.set_cmd_actor_pose_x(80);
-    cmd_pose_msg.set_cmd_actor_pose_y(30);
-    count_flag5 = 0;
+    cmd_pose_msg.set_cmd_actor_pose_x(x_5);
+    cmd_pose_msg.set_cmd_actor_pose_y(y_5);
+    flag5 = 1;
   }
   else
   {
@@ -207,50 +257,21 @@ void ActorPlugin5::OnUpdate(const common::UpdateInfo &_info)
   pose_msg.set_allocated_actor_pose(actor_pose);
   actor_pose_pub_5->Publish(pose_msg);
 
-  if ((abs(target[0]-pose.Pos().X())<0.1)&&(abs(target[1]-pose.Pos().Y())<0.1))
+  if (((abs(target[0]-pose.Pos().X())<0.1)&&(abs(target[1]-pose.Pos().Y())<0.1))||(flag5==2))
   {
-    if (count_flag5 == 0)
-    {
-      flag5 ++;
-    }
-    count_flag5 = 1;
-    if (flag5 ==5)
-      flag5 = 1;
+    x_5 = rand()%150;
+    y_5 = rand()%100;
+    x_5 = x_5-50;
+    y_5 = y_5-50;
+    flag5 = 1;
   }
-
-  if (flag5 == 1)
-  {
-    cmd_pose_msg.set_cmd_actor_pose_x(95);
-    cmd_pose_msg.set_cmd_actor_pose_y(15);
-    count_flag5 = 0;
-  }
-
-  if (flag5 == 2)
-  {
-    cmd_pose_msg.set_cmd_actor_pose_x(95);
-    cmd_pose_msg.set_cmd_actor_pose_y(45);
-    count_flag5 = 0;
-  }
-
-  if (flag5 == 3)
-  {
-    cmd_pose_msg.set_cmd_actor_pose_x(65);
-    cmd_pose_msg.set_cmd_actor_pose_y(45);
-    count_flag5 = 0;
-  }
-
-  if (flag5 == 4)
-  {
-    cmd_pose_msg.set_cmd_actor_pose_x(65);
-    cmd_pose_msg.set_cmd_actor_pose_y(15);
-    count_flag5 = 0;
-  }
-
+  cmd_pose_msg.set_cmd_actor_pose_x(x_5);
+  cmd_pose_msg.set_cmd_actor_pose_y(y_5);
   cmd_pose_msg.set_cmd_actor_pose_z(1.0191);
   cmd_pose_pub_5->Publish(cmd_pose_msg);
 
   //std::cout << "[XTDrone_Actor_Plugin5]: Publish topic actor_pose_pub5"<< std::endl;
-  //std::cout << "Target_Position5:  " << target[0] << "," << target[1] << "," << target[2] << endl;
+ // std::cout << "Target_Position5:  " << target[0] << "," << target[1] << "," << target[2] << endl;
   //std::cout << "Actor_Position5:  " << dec << pose.Pos().X() << "," << pose.Pos().Y() << "," << pose.Pos().Z() << endl;
 
 }

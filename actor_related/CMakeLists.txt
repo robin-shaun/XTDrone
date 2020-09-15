@@ -334,7 +334,7 @@ add_library(gazebo_barometer_plugin SHARED src/gazebo_barometer_plugin.cpp)
 add_library(gazebo_catapult_plugin SHARED src/gazebo_catapult_plugin.cpp)
 add_library(gazebo_usv_dynamics_plugin SHARED src/gazebo_usv_dynamics_plugin.cpp)
 add_library(gazebo_parachute_plugin SHARED src/gazebo_parachute_plugin.cpp)
-add_library(ActorPlugin SHARED src/ActorPlugin.cpp)
+add_library(ActorPlugin1 SHARED src/ActorPlugin1.cpp)
 add_library(ActorPlugin2 SHARED src/ActorPlugin2.cpp)
 add_library(ActorPlugin3 SHARED src/ActorPlugin3.cpp)
 add_library(ActorPlugin4 SHARED src/ActorPlugin4.cpp)
@@ -362,7 +362,7 @@ set(plugins
   gazebo_catapult_plugin
   gazebo_usv_dynamics_plugin
   gazebo_parachute_plugin
-  ActorPlugin
+  ActorPlugin1
   ActorPlugin2
   ActorPlugin3
   ActorPlugin4

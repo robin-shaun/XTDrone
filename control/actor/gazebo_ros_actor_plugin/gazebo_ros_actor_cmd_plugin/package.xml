@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>ros_actor_cmd_pose_plugin</name>
+  <version>1.0.0</version>
+  <description>The ros_actor_cmd_pose_plugin package</description>
+
+   <author>Shaochang Tan</author>
+   <maintainer email="478710209@qq.com">Process</maintainer>
+
+   <license>Apache License, Version 2.0</license>
+   <url type="website">https://gitee.com/robin_shaun/XTDrone/tree/master/actor_related/gazebo_ros_actor_plugin</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>gazebo_ros</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>gazebo_plugins</build_depend>
+  <build_depend>ros_actor_cmd_pose_plugin_msgs</build_depend>
+  <build_export_depend>gazebo_ros</build_export_depend>
+  <build_export_depend>roscpp</build_export_depend>
+  <exec_depend>gazebo_ros</exec_depend>
+  <exec_depend>roscpp</exec_depend>
+  <exec_depend>gazebo_plugins</exec_depend>
+
+  <export>
+    <gazebo_ros plugin_path="${prefix}/lib" gazebo_media_path="${prefix}" />
+  </export>
+</package>

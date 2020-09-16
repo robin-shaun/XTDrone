@@ -89,7 +89,7 @@
 
     <actor name="actor_1">
       <skin>
-        <filename>/home/malan/PX4_Firmware/Tools/sitl_gazebo/models/walker/walk_1.dae</filename>
+        <filename>models://walker/walk_1.dae</filename>
         <scale>1.0</scale>
       </skin>
       <animation name="walking">
@@ -106,7 +106,7 @@
 
     <actor name="actor_2">
       <skin>
-        <filename>/home/malan/PX4_Firmware/Tools/sitl_gazebo/models/walker/walk_2.dae</filename>
+        <filename>models://walker/walk_2.dae</filename>
         <scale>1.0</scale>
       </skin>
       <animation name="walking">
@@ -123,7 +123,7 @@
      <actor name="actor_3">
       <pose>30 15 1.25 0 0 0</pose>
       <skin>
-        <filename>/home/malan/PX4_Firmware/Tools/sitl_gazebo/models/walker/walk_3.dae</filename>
+        <filename>models://walker/walk_3.dae</filename>
         <scale>1.0</scale>
       </skin>
       <animation name="walking">
@@ -140,7 +140,7 @@
      <actor name="actor_4">
       <pose>-30 -15 1.25 0 0 0</pose>
       <skin>
-        <filename>/home/malan/PX4_Firmware/Tools/sitl_gazebo/models/walker/walk_4.dae</filename>
+        <filename>models://walker/walk_4.dae</filename>
         <scale>1.0</scale>
       </skin>
       <animation name="walking">
@@ -157,7 +157,7 @@
     <actor name="actor_5">
       <pose>5 5 0 1.57 -0 0</pose>
       <skin>
-        <filename>/home/malan/PX4_Firmware/Tools/sitl_gazebo/models/walker/walk_5.dae</filename>
+        <filename>models://walker/walk_5.dae</filename>
         <scale>1.0</scale>
       </skin>
       <animation name="walking">

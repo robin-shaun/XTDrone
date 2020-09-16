@@ -1,9 +1,0 @@
-syntax = "proto2";
-package mav_msgs.msgs;
-import "vector3d.proto";
-
-message Actor
-{
-  required gazebo.msgs.Vector3d actor_pose = 1;
-}
-

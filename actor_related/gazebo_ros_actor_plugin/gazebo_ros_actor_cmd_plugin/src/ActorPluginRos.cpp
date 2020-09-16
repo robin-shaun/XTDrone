@@ -143,7 +143,7 @@ void ActorPluginRos::CmdPoseCallback(const geometry_msgs::Point::ConstPtr &cmd_m
 // }
 
 /////////////////////////////////////////////////
-bool ActorPluginRos::ToggleWaveAnimation(ros_actor_cmd_vel_plugin_msgs::ToggleActorWaving::Request &req, ros_actor_cmd_vel_plugin_msgs::ToggleActorWaving::Response &res)
+bool ActorPluginRos::ToggleWaveAnimation(ros_actor_cmd_pose_plugin_msgs::ToggleActorWaving::Request &req, ros_actor_cmd_pose_plugin_msgs::ToggleActorWaving::Response &res)
 {
   ROS_INFO("request: toggle waving animation");
 

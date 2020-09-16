@@ -18,13 +18,13 @@
  *  \desc Gazebo ros plugin to steer an actor with twist messages over ros. Based on actor_plugin. 
  */
 
-#ifndef GAZEBO_ROS_ACTOR_VEL_PLUGIN_HH
-#define GAZEBO_ROS_ACTOR_VEL_PLUGIN_HH
+#ifndef GAZEBO_ROS_ACTOR_POSE_PLUGIN_HH
+#define GAZEBO_ROS_ACTOR_POSE_PLUGIN_HH
 
 // Ros
 #include <ros/ros.h>
 #include <geometry_msgs/Point.h>
-#include <ros_actor_cmd_vel_plugin_msgs/ToggleActorWaving.h>
+#include <ros_actor_cmd_pose_plugin_msgs/ToggleActorWaving.h>
 
 // Ignition
 #include <ignition/math.hh>
@@ -72,7 +72,7 @@ namespace gazebo
       private: void ChooseNewTarget();
 
       /// \brief Service to toggle the waving animation
-      private: bool ToggleWaveAnimation(ros_actor_cmd_vel_plugin_msgs::ToggleActorWaving::Request &req, ros_actor_cmd_vel_plugin_msgs::ToggleActorWaving::Response &res);
+      private: bool ToggleWaveAnimation(ros_actor_cmd_pose_plugin_msgs::ToggleActorWaving::Request &req, ros_actor_cmd_pose_plugin_msgs::ToggleActorWaving::Response &res);
 
       /// \brief Pointer to the parent actor.
       private: physics::ActorPtr actor;

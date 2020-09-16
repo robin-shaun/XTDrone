@@ -20,9 +20,10 @@ Example actor tag in a .world file:
       </animation>
       <plugin name="actor1_plugin" filename="libros_actor_cmd_pose_plugin.so">
         <animation_factor>5.1</animation_factor>
+        <init_pose>2 3 1.1 1.57 0 0 <init_pose>
       </plugin>
     </actor>
 ```
 
-The actor will listen for twist messages on the ros topic `/actor1/cmd_pose`.
+The actor will listen for point messages on the ros topic `/actor1/cmd_pose`.
 

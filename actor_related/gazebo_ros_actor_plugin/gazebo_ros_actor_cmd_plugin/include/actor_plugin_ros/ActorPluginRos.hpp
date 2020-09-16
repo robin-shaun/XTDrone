@@ -79,7 +79,8 @@ namespace gazebo
 
       /// \brief Pointer to the world, for convenience.
       private: physics::WorldPtr world;
-
+      /// \brief flag to detect the topic.
+      private: bool GET_CMD_FLAG = false;
       /// \brief Pointer to the sdf element.
       private: sdf::ElementPtr sdf;
 
@@ -91,6 +92,9 @@ namespace gazebo
 
       /// \brief Current target location
       private: ignition::math::Vector3d target;
+
+      /// \brief initial postion
+      private: ignition::math::Pose3d init_pose;
 
       /// \brief Last received linear vel command.
       private: ignition::math::Vector3d last_linear;

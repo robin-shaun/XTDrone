@@ -70,6 +70,27 @@ void ActorPluginRos::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
     this->animationFactor = _sdf->Get<double>("animation_factor");
   else
     this->animationFactor = 4.5;
+
+  if (_sdf->HasElement("init_pose"))
+    this->init_pose = _sdf->Get<ignition::math::Pose3d>("init_pose");
+  else
+    this->init_pose = ignition::math::Pose3d(0, 0, 1.0191, 1.57, 0, 0);
+
+  // this->velocity =20;
+  // Make sure the actor stays within bounds
+  this->init_pose.Pos().X(std::max(-50.0, std::min(100.0, this->init_pose.Pos().X())));
+  this->init_pose.Pos().Y(std::max(-50.0, std::min(50.0, this->init_pose.Pos().Y())));
+  this->init_pose.Pos().Z(1.0191);
+
+  // Distance traveled is used to coordinate motion with the walking
+  // animation
+  double distanceTraveled = (this->init_pose.Pos() -
+                             this->actor->WorldPose().Pos())
+                                .Length();
+
+  this->actor->SetWorldPose(this->init_pose, false, false);
+  // this->actor->SetScriptTime(this->actor->ScriptTime() +
+  //                            (distanceTraveled * 5.0));
 }
 
 /////////////////////////////////////////////////
@@ -78,7 +99,8 @@ void ActorPluginRos::Reset()
   this->velocity = 0.8;
   this->lastUpdate = 0;
 
-  this->target = ignition::math::Vector3d(0, 0, 1.2138);
+  // this->target = ignition::math::Vector3d(0, 0, 1.2138);
+  this->target = this->init_pose.Pos();
 
   auto skelAnims = this->actor->SkeletonAnimations();
   if (skelAnims.find(WALKING_ANIMATION) == skelAnims.end())
@@ -123,7 +145,7 @@ void ActorPluginRos::ChooseNewTarget()
 /////////////////////////////////////////////////
 void ActorPluginRos::CmdPoseCallback(const geometry_msgs::Point::ConstPtr &cmd_msg)
 {
-
+  GET_CMD_FLAG = true;
   target[0] = cmd_msg->x;
   target[1] = cmd_msg->y;
   target[2] = cmd_msg->z;
@@ -242,8 +264,15 @@ void ActorPluginRos::OnUpdate(const common::UpdateInfo &_info)
     double distanceTraveled = (pose.Pos() -
                                this->actor->WorldPose().Pos())
                                   .Length();
-
-    this->actor->SetWorldPose(pose, false, false);
+    if (GET_CMD_FLAG == false)
+    {
+      this->actor->SetWorldPose(this->init_pose, false, false);
+    }
+    else
+    {
+      this->actor->SetWorldPose(pose, false, false);
+    }
+     
     this->actor->SetScriptTime(this->actor->ScriptTime() +
                                (distanceTraveled * 5.0));
     this->lastUpdate = _info.simTime;
@@ -251,6 +280,6 @@ void ActorPluginRos::OnUpdate(const common::UpdateInfo &_info)
     std::cout << "[XTDrone_Actor_Plugin]: Publish topic actor_pose_pub" << std::endl;
     std::cout << "Target_Position:  " << target[0] << "," << target[1] << "," << target[2] << std::endl;
     std::cout << "Actor_Position:  " << std::dec << pose.Pos().X() << "," << pose.Pos().Y() << "," << pose.Pos().Z() << std::endl;
-    std::cout << "dt:  " << std::dec << dt << "vel: " << this->velocity << std::endl;
+    std::cout << "init_pose:  " << std::dec << init_pose << "vel: " << this->velocity << std::endl;
   }
 }

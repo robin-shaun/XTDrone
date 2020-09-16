@@ -1,14 +1,14 @@
 <package>
-   <name>ros_actor_cmd_vel_plugin_msgs</name>
+   <name>ros_actor_cmd_pose_plugin_msgs</name>
    <version>1.0.0</version>
    <description>
-      This package defines messages used in ros_actor_cmd_vel_plugin.
+      This package defines messages used in ros_actor_cmd_pose_plugin.
    </description>
-   <author>Thorben Markmann</author>
-   <maintainer email="dlein@techfak.uni-bielefeld.de">David Leins</maintainer>
+   <author>Shaochang Tan</author>
+   <maintainer email="478710209@qq.com">Process</maintainer>
 
    <license>Apache License, Version 2.0</license>
-   <url type="website">https://github.com/DavidPL1/gazebo_ros_actor_cmd_plugin</url>
+   <url type="website">https://gitee.com/robin_shaun/XTDrone/tree/master/actor_related/gazebo_ros_actor_plugin</url>
 
    <buildtool_depend>catkin</buildtool_depend>
 

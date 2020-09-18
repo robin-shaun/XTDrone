@@ -116,7 +116,7 @@ with open('multi_vehicle.launch','w') as f:
                     elif '''<arg name="ID_in_group" value="0"/>''' in line:
                         f.write('''            <arg name="ID_in_group" value="%d"/>\n''' %id_in_type)
                     elif "udp://:" in line:
-                        f.write('''            <arg name="fcu_url" default="udp://:%d@127.0.0.1:%d"/>\n''' %(onboard,mavlink_2))
+                        f.write('''            <arg name="fcu_url" default="udp://:%d@localhost:%d"/>\n''' %(onboard,mavlink_2))
                     elif "mavlink_udp_port" in line:
                         f.write('''            <arg name="mavlink_udp_port" value="%d"/>\n'''%SITL)
                     elif "mavlink_tcp_port" in line:

@@ -21,7 +21,7 @@
     <arg name="paused" default="false"/>
     <arg name="respawn_gazebo" default="false"/>
     <!-- MAVROS configs -->
-    <arg name="fcu_url" default="udp://:14540@127.0.0.1:34594"/>
+    <arg name="fcu_url" default="udp://:14540@localhost:34594"/>
     <arg name="respawn_mavros" default="false"/>
     <!-- PX4 configs -->
     <arg name="interactive" default="true"/>

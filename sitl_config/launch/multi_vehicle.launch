@@ -23,7 +23,7 @@
         <!-- MAVROS and vehicle configs -->
             <arg name="ID" value="1"/>
             <arg name="ID_in_group" value="0"/>
-            <arg name="fcu_url" default="udp://:14541@127.0.0.1:34572"/>
+            <arg name="fcu_url" default="udp://:14541@localhost:34572"/>
         <!-- PX4 SITL and vehicle spawn -->
         <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
             <arg name="x" value="0"/>
@@ -52,7 +52,7 @@
         <!-- MAVROS and vehicle configs -->
             <arg name="ID" value="2"/>
             <arg name="ID_in_group" value="1"/>
-            <arg name="fcu_url" default="udp://:14542@127.0.0.1:34574"/>
+            <arg name="fcu_url" default="udp://:14542@localhost:34574"/>
         <!-- PX4 SITL and vehicle spawn -->
         <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
             <arg name="x" value="3"/>
@@ -81,7 +81,7 @@
         <!-- MAVROS and vehicle configs -->
             <arg name="ID" value="3"/>
             <arg name="ID_in_group" value="2"/>
-            <arg name="fcu_url" default="udp://:14543@127.0.0.1:34576"/>
+            <arg name="fcu_url" default="udp://:14543@localhost:34576"/>
         <!-- PX4 SITL and vehicle spawn -->
         <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
             <arg name="x" value="6"/>
@@ -110,7 +110,7 @@
         <!-- MAVROS and vehicle configs -->
             <arg name="ID" value="4"/>
             <arg name="ID_in_group" value="3"/>
-            <arg name="fcu_url" default="udp://:14544@127.0.0.1:34578"/>
+            <arg name="fcu_url" default="udp://:14544@localhost:34578"/>
         <!-- PX4 SITL and vehicle spawn -->
         <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
             <arg name="x" value="0"/>
@@ -139,7 +139,7 @@
         <!-- MAVROS and vehicle configs -->
             <arg name="ID" value="5"/>
             <arg name="ID_in_group" value="4"/>
-            <arg name="fcu_url" default="udp://:14545@127.0.0.1:34580"/>
+            <arg name="fcu_url" default="udp://:14545@localhost:34580"/>
         <!-- PX4 SITL and vehicle spawn -->
         <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
             <arg name="x" value="3"/>
@@ -168,7 +168,7 @@
         <!-- MAVROS and vehicle configs -->
             <arg name="ID" value="6"/>
             <arg name="ID_in_group" value="5"/>
-            <arg name="fcu_url" default="udp://:14546@127.0.0.1:34582"/>
+            <arg name="fcu_url" default="udp://:14546@localhost:34582"/>
         <!-- PX4 SITL and vehicle spawn -->
         <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
             <arg name="x" value="6"/>
@@ -197,7 +197,7 @@
         <!-- MAVROS and vehicle configs -->
             <arg name="ID" value="7"/>
             <arg name="ID_in_group" value="6"/>
-            <arg name="fcu_url" default="udp://:14547@127.0.0.1:34584"/>
+            <arg name="fcu_url" default="udp://:14547@localhost:34584"/>
         <!-- PX4 SITL and vehicle spawn -->
         <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
             <arg name="x" value="0"/>
@@ -226,7 +226,7 @@
         <!-- MAVROS and vehicle configs -->
             <arg name="ID" value="8"/>
             <arg name="ID_in_group" value="7"/>
-            <arg name="fcu_url" default="udp://:14548@127.0.0.1:34586"/>
+            <arg name="fcu_url" default="udp://:14548@localhost:34586"/>
         <!-- PX4 SITL and vehicle spawn -->
         <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
             <arg name="x" value="3"/>
@@ -255,7 +255,7 @@
         <!-- MAVROS and vehicle configs -->
             <arg name="ID" value="9"/>
             <arg name="ID_in_group" value="8"/>
-            <arg name="fcu_url" default="udp://:14549@127.0.0.1:34588"/>
+            <arg name="fcu_url" default="udp://:14549@localhost:34588"/>
         <!-- PX4 SITL and vehicle spawn -->
         <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
             <arg name="x" value="6"/>

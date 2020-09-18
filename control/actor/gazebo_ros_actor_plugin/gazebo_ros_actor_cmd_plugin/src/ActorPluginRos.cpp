@@ -277,9 +277,9 @@ void ActorPluginRos::OnUpdate(const common::UpdateInfo &_info)
                                (distanceTraveled * 5.0));
     this->lastUpdate = _info.simTime;
 
-    std::cout << "[XTDrone_Actor_Plugin]: Publish topic actor_pose_pub" << std::endl;
-    std::cout << "Target_Position:  " << target[0] << "," << target[1] << "," << target[2] << std::endl;
-    std::cout << "Actor_Position:  " << std::dec << pose.Pos().X() << "," << pose.Pos().Y() << "," << pose.Pos().Z() << std::endl;
-    std::cout << "init_pose:  " << std::dec << init_pose << "vel: " << this->velocity << std::endl;
+    //std::cout << "[XTDrone_Actor_Plugin]: Publish topic actor_pose_pub" << std::endl;
+    //std::cout << "Target_Position:  " << target[0] << "," << target[1] << "," << target[2] << std::endl;
+    //std::cout << "Actor_Position:  " << std::dec << pose.Pos().X() << "," << pose.Pos().Y() << "," << pose.Pos().Z() << std::endl;
+    //std::cout << "init_pose:  " << std::dec << init_pose << "vel: " << this->velocity << std::endl;
   }
 }

@@ -98,7 +98,7 @@
         <interpolate_x>true</interpolate_x>
       </animation>
       <plugin name="actor1_plugin" filename="libros_actor_cmd_pose_plugin.so">
-        <init_pose>1 1 1.1 1.57 0 0</init_pose>
+        <init_pose>0 0 1.25 1.57 0 0</init_pose>
         <animation_factor>5.1</animation_factor>
       </plugin>
     </actor>
@@ -115,7 +115,7 @@
         <interpolate_x>true</interpolate_x>
       </animation>
       <plugin name="actor2_plugin" filename="libros_actor_cmd_pose_plugin.so">
-        <init_pose>1 5 1.1 1.57 0 0</init_pose>
+        <init_pose>2 2 1.25 1.57 0 0</init_pose>
         <animation_factor>5.1</animation_factor>
       </plugin>
     </actor>
@@ -132,7 +132,7 @@
         <interpolate_x>true</interpolate_x>
       </animation>
       <plugin name="actor3_plugin" filename="libros_actor_cmd_pose_plugin.so">
-        <init_pose>3 1 1.1 1.57 0 0</init_pose>
+        <init_pose>2 -2 1.25 1.57 0 0</init_pose>
         <animation_factor>5.1</animation_factor>
       </plugin>
     </actor>
@@ -149,7 +149,7 @@
         <interpolate_x>true</interpolate_x>
       </animation>
       <plugin name="actor4_plugin" filename="libros_actor_cmd_pose_plugin.so">
-        <init_pose>2 1 1.1 1.57 0 0</init_pose>
+        <init_pose>-2 2 1.25 1.57 0 0</init_pose>
         <animation_factor>5.1</animation_factor>
       </plugin>
     </actor>
@@ -166,7 +166,7 @@
         <interpolate_x>true</interpolate_x>
       </animation>
       <plugin name="actor5_plugin" filename="libros_actor_cmd_pose_plugin.so">
-        <init_pose>1 4 1.1 1.57 0 0</init_pose>
+        <init_pose>-2 -2 1.25 1.57 0 0</init_pose>
         <animation_factor>5.1</animation_factor>
       </plugin>
     </actor>

@@ -10,7 +10,7 @@ class ControlActor:
     def __init__(self, actor_id):
         self.count = 0
         self.die_count = 0
-        self.uav_num = 6
+        self.uav_num = 1
         self.vehicle_type = 'iris'
         self.f = 100
         self.flag = True
@@ -46,16 +46,16 @@ class ControlActor:
         self.gazeboModelstate = rospy.ServiceProxy('gazebo/get_model_state', GetModelState)
         print('actor_' + self.id + ": " + "communication initialized")
         self.state_uav0_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+"_0/ground_truth/odom", Odometry, self.cmd_uav0_pose_callback)
-        self.state_uav1_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+"_1/ground_truth/odom", Odometry, self.cmd_uav1_pose_callback)
-        self.state_uav2_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+"_2/ground_truth/odom", Odometry, self.cmd_uav2_pose_callback)
-        self.state_uav3_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+"_3/ground_truth/odom", Odometry, self.cmd_uav3_pose_callback)
-        self.state_uav4_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+"_4/ground_truth/odom", Odometry, self.cmd_uav4_pose_callback)
-        self.state_uav5_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+"_5/ground_truth/odom", Odometry, self.cmd_uav5_pose_callback)
+        #self.state_uav1_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+"_1/ground_truth/odom", Odometry, self.cmd_uav1_pose_callback)
+        #self.state_uav2_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+"_2/ground_truth/odom", Odometry, self.cmd_uav2_pose_callback)
+        #self.state_uav3_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+"_3/ground_truth/odom", Odometry, self.cmd_uav3_pose_callback)
+        #self.state_uav4_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+"_4/ground_truth/odom", Odometry, self.cmd_uav4_pose_callback)
+        #self.state_uav5_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+"_5/ground_truth/odom", Odometry, self.cmd_uav5_pose_callback)
     
     def cmd_uav0_pose_callback(self, msg):
         self.gazebo_uav_pose[0] = msg.pose.pose.position
         self.gazebo_uav_twist[0] = msg.twist.twist.linear
-
+    '''
     def cmd_uav1_pose_callback(self, msg):
         self.gazebo_uav_pose[1] = msg.pose.pose.position
         self.gazebo_uav_twist[1] = msg.twist.twist.linear
@@ -75,7 +75,7 @@ class ControlActor:
     def cmd_uav5_pose_callback(self, msg):
         self.gazebo_uav_pose[5] = msg.pose.pose.position
         self.gazebo_uav_twist[5] = msg.twist.twist.linear
-
+    '''
     def loop(self):
         rospy.init_node('actor_' + str(self.id))
         rate = rospy.Rate(self.f)

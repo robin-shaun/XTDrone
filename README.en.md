@@ -76,7 +76,7 @@ Developers can quickly verify algorithms with XTDrone, such as:
 #### Developing Team
 
 - Founders: Kun Xiao, Shaochang Tan
-- Developers: Kun Xiao, Shaochang Tan, Guanzheng Wang, Lan Ma, Qipeng Wang, Ruoqiao Guan, Keyan Chen
+- Developers: Kun Xiao, Shaochang Tan, Guanzheng Wang, Lan Ma, Qipeng Wang, Ruoqiao Guan, Keyan Chen, Gao Chen
 
 #### Thanks to Contributers
 

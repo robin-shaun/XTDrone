@@ -3469,26 +3469,6 @@
       <real_time>1519 904767261</real_time>
       <wall_time>1581412925 146493851</wall_time>
       <iterations>287494</iterations>
-      <model name='Big box 2'>
-        <pose frame=''>8.48839 32.9364 0.749498 0 -0.000831 -1.7e-05</pose>
-        <scale>1 1 1</scale>
-        <link name='link'>
-          <pose frame=''>8.48839 32.9364 0.749498 0 -0.000831 -1.7e-05</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>-0.00269 0.194101 -0.000901 -0.258758 -0.003587 -0.000129</acceleration>
-          <wrench>-0.10762 7.76405 -0.036028 0 -0 0</wrench>
-        </link>
-      </model>
-      <model name='Big box 4'>
-        <pose frame=''>1.63474 29.107 0.624499 0 0.000832 -1.2e-05</pose>
-        <scale>1 1 1</scale>
-        <link name='link'>
-          <pose frame=''>1.63474 29.107 0.624499 0 0.000832 -1.2e-05</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>-0.020436 -0.144197 0.006579 0.230646 -0.032691 -0.000103</acceleration>
-          <wrench>-0.817458 -5.76786 0.263155 0 -0 0</wrench>
-        </link>
-      </model>
       <model name='EuroPallet'>
         <pose frame=''>14.2768 34.2177 0.063476 -0 -3.9e-05 0.003402</pose>
         <scale>1 1 1</scale>
@@ -4525,16 +4505,6 @@
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
-      <model name='unit_cylinder'>
-        <pose frame=''>20.6722 33.4177 0.49998 0 -0 0</pose>
-        <scale>1 1 1</scale>
-        <link name='link'>
-          <pose frame=''>20.6722 33.4177 0.49998 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 -9.8 -0 -0 -0</acceleration>
-          <wrench>0 0 -9.8 0 -0 0</wrench>
-        </link>
-      </model>
       <light name='sun'>
         <pose frame=''>0 0 1000 0 -0 0</pose>
       </light>
@@ -4678,108 +4648,6 @@
         <kinematic>0</kinematic>
       </link>
       <pose frame=''>-26.902 13.6572 0 0 -0 0</pose>
-    </model>
-    <model name='Big box 4'>
-      <pose frame=''>1.63426 29.107 0.625 0 -0 0</pose>
-      <static>0</static>
-      <link name='link'>
-        <inertial>
-          <mass>40</mass>
-          <inertia>
-            <ixx>1</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>1</iyy>
-            <iyz>0</iyz>
-            <izz>1</izz>
-          </inertia>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-        </inertial>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>1.2 0.8 1.25</size>
-            </box>
-          </geometry>
-
-            <contact>
-              <ode>
-                <max_vel>0.1</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://big_box4/meshes/big_box.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-    </model>
-    <model name='Big box 2'>
-      <pose frame=''>8.48888 32.9364 0.75 0 -0 0</pose>
-      <static>0</static>
-      <link name='link'>
-        <inertial>
-          <mass>40</mass>
-          <inertia>
-            <ixx>1</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>1</iyy>
-            <iyz>0</iyz>
-            <izz>1</izz>
-          </inertia>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-        </inertial>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>1.2 0.8 1.5</size>
-            </box>
-          </geometry>
-
-            <contact>
-              <ode>
-                <max_vel>0.1</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://big_box2/meshes/big_box.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
     </model>
     <model name='EuroPallet'>
       <pose frame=''>14.2768 34.2121 0.0635 0 -0 0</pose>
@@ -5076,61 +4944,6 @@
               <uri>model://europallet/meshes/europallet.dae</uri>
             </mesh>
           </geometry>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-    </model>
-    <model name='unit_cylinder'>
-      <pose frame=''>20.6722 33.4177 0.5 0 -0 0</pose>
-      <link name='link'>
-        <inertial>
-          <mass>1</mass>
-          <inertia>
-            <ixx>0.145833</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.145833</iyy>
-            <iyz>0</iyz>
-            <izz>0.125</izz>
-          </inertia>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-        </inertial>
-        <collision name='collision'>
-          <geometry>
-            <cylinder>
-              <radius>0.5</radius>
-              <length>1</length>
-            </cylinder>
-          </geometry>
-          <max_contacts>10</max_contacts>
-
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <cylinder>
-              <radius>0.5</radius>
-              <length>1</length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <name>Gazebo/Grey</name>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-            </script>
-          </material>
         </visual>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>

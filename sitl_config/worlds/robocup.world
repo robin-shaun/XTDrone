@@ -87,7 +87,7 @@
       </link>
     </model>
 
-    <actor name="actor1">
+    <actor name="actor_1">
       <skin>
         <filename>model://walker/walk_1.dae</filename>
         <scale>1.0</scale>
@@ -104,7 +104,7 @@
     </actor>
 
 
-    <actor name="actor2">
+    <actor name="actor_2">
       <skin>
         <filename>model://walker/walk_2.dae</filename>
         <scale>1.0</scale>
@@ -120,7 +120,7 @@
       </plugin>
     </actor>
 
-    <actor name="actor3">
+    <actor name="actor_3">
       <skin>
         <filename>model://walker/walk_3.dae</filename>
         <scale>1.0</scale>
@@ -136,7 +136,7 @@
       </plugin>
     </actor>
 
-    <actor name="actor4">
+    <actor name="actor_4">
       <skin>
         <filename>model://walker/walk_4.dae</filename>
         <scale>1.0</scale>
@@ -152,7 +152,7 @@
       </plugin>
     </actor>
 
-    <actor name="actor5">
+    <actor name="actor_5">
       <pose>5 5 0 1.57 -0 0</pose>
       <skin>
         <filename>model://walker/walk_5.dae</filename>
@@ -7800,21 +7800,21 @@
           </geometry>
         </visual>
       </link>
-    </model>   
-    
+    </model>
+
     <model name="car_beetle_0">
       <pose>-20 -45 0 0 0 -1.57</pose>
       <static>true</static>
       <link name="link">
         <inertial>
           <mass>1.0</mass>
-          <inertia> 
-            <ixx>0.083</ixx>      
-            <ixy>0.0</ixy>         
-            <ixz>0.0</ixz>         
-            <iyy>0.083</iyy>      
-            <iyz>0.0</iyz>         
-            <izz>0.083</izz>      
+          <inertia>
+            <ixx>0.083</ixx>
+            <ixy>0.0</ixy>
+            <ixz>0.0</ixz>
+            <iyy>0.083</iyy>
+            <iyz>0.0</iyz>
+            <izz>0.083</izz>
           </inertia>
         </inertial>
         <collision name="collision">
@@ -7840,13 +7840,13 @@
       <link name="link">
         <inertial>
           <mass>1.0</mass>
-          <inertia> 
-            <ixx>0.083</ixx>      
-            <ixy>0.0</ixy>         
-            <ixz>0.0</ixz>         
-            <iyy>0.083</iyy>      
-            <iyz>0.0</iyz>         
-            <izz>0.083</izz>      
+          <inertia>
+            <ixx>0.083</ixx>
+            <ixy>0.0</ixy>
+            <ixz>0.0</ixz>
+            <iyy>0.083</iyy>
+            <iyz>0.0</iyz>
+            <izz>0.083</izz>
           </inertia>
         </inertial>
         <collision name="collision">
@@ -7898,7 +7898,7 @@
           </geometry>
         </visual>
       </link>
-    </model> 
+    </model>
 
     <model name="car_beetle_1">
       <pose>20 45 0 0 0 -1.57</pose>
@@ -7906,13 +7906,13 @@
       <link name="link">
         <inertial>
           <mass>1.0</mass>
-          <inertia> 
-            <ixx>0.083</ixx>      
-            <ixy>0.0</ixy>         
-            <ixz>0.0</ixz>         
-            <iyy>0.083</iyy>      
-            <iyz>0.0</iyz>         
-            <izz>0.083</izz>      
+          <inertia>
+            <ixx>0.083</ixx>
+            <ixy>0.0</ixy>
+            <ixz>0.0</ixz>
+            <iyy>0.083</iyy>
+            <iyz>0.0</iyz>
+            <izz>0.083</izz>
           </inertia>
         </inertial>
         <collision name="collision">
@@ -7938,13 +7938,13 @@
       <link name="link">
         <inertial>
           <mass>1.0</mass>
-          <inertia> 
-            <ixx>0.083</ixx>     
-            <ixy>0.0</ixy>        
-            <ixz>0.0</ixz>        
-            <iyy>0.083</iyy>       
-            <iyz>0.0</iyz>        
-            <izz>0.083</izz>      
+          <inertia>
+            <ixx>0.083</ixx>
+            <ixy>0.0</ixy>
+            <ixz>0.0</ixz>
+            <iyy>0.083</iyy>
+            <iyz>0.0</iyz>
+            <izz>0.083</izz>
           </inertia>
         </inertial>
         <collision name="collision">

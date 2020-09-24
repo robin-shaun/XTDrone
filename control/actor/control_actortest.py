@@ -9,7 +9,7 @@ from nav_msgs.msg import Odometry
 class ControlActor:
     def __init__(self, actor_id):
         self.count = 0
-        self.die_count = 0
+        self.shooting_count = 0
         self.uav_num = 6
         self.vehicle_type = 'iris'
         self.f = 100
@@ -144,13 +144,13 @@ class ControlActor:
                         self.catching_flag = 1
                         self.tracking_flag[i] = 0
                         self.catching_uav_num = i
-                        print('catch you!', self.id)
-                        print('catch you!', self.id)
-                        print('catch you!', self.id)
-                        print('catch you!', self.id)
-                        print('catch you!', self.id)
-                        print('catch you!', self.id)
-                        print('catch you!', self.id)
+                        print('catch', self.id)
+                        print('catch', self.id)
+                        print('catch', self.id)
+                        print('catch', self.id)
+                        print('catch', self.id)
+                        print('catch', self.id)
+                        print('catch', self.id)
                         break
             # escaping
             if self.catching_flag == 1:
@@ -178,25 +178,25 @@ class ControlActor:
                         self.y = random.uniform(self.y_min, self.y_max)
                         self.target_pose.x = self.x
                         self.target_pose.y = self.y
-            # check if the actor is died:
+            # check if the actor is shot:
             if self.get_moving:
                 distance_change = (self.last_pose.x - self.current_pose.x)**2 + (self.last_pose.y - self.current_pose.y)**2
                 if distance_change < 0.00001:
-                    self.die_count = self.die_count+1
-                    if self.die_count > 100:
-                        print('you are died')
-                        print('you are died')
-                        print('you are died')
-                        print('you are died')
-                        print('you are died')
-                        print('you are died')
+                    self.shooting_count = self.shooting_count+1
+                    if self.shooting_count > 100:
+                        print('shot')
+                        print('shot')
+                        print('shot')
+                        print('shot')
+                        print('shot')
+                        print('shot')
                         self.x = random.uniform(self.x_min, self.x_max)
                         self.y = random.uniform(self.y_min, self.y_max)
                         self.target_pose.x = self.x
                         self.target_pose.y = self.y
-                        self.die_count = 0
+                        self.shooting_count = 0
                 else:
-                    self.die_count = 0
+                    self.shooting_count = 0
             rate.sleep()
 
 

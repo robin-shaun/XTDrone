@@ -149,6 +149,7 @@ void ActorPluginRos::CmdPoseCallback(const geometry_msgs::Point::ConstPtr &cmd_m
   target[0] = cmd_msg->x;
   target[1] = cmd_msg->y;
   target[2] = cmd_msg->z;
+  //target[2] is cmd_vel
   //target = ignition::math::Vector3d(10, 10, 1.0191);
   //std::cout << "I'm here!" << endl;
 }
@@ -202,7 +203,7 @@ bool ActorPluginRos::ToggleWaveAnimation(ros_actor_cmd_pose_plugin_msgs::ToggleA
 /////////////////////////////////////////////////
 void ActorPluginRos::OnUpdate(const common::UpdateInfo &_info)
 {
-  this->velocity = 0.8;
+  this->velocity = target[2];
   // Time delta
   double dt = (_info.simTime - this->lastUpdate).Double();
 
@@ -277,9 +278,9 @@ void ActorPluginRos::OnUpdate(const common::UpdateInfo &_info)
                                (distanceTraveled * 5.0));
     this->lastUpdate = _info.simTime;
 
-    //std::cout << "[XTDrone_Actor_Plugin]: Publish topic actor_pose_pub" << std::endl;
-    //std::cout << "Target_Position:  " << target[0] << "," << target[1] << "," << target[2] << std::endl;
-    //std::cout << "Actor_Position:  " << std::dec << pose.Pos().X() << "," << pose.Pos().Y() << "," << pose.Pos().Z() << std::endl;
-    //std::cout << "init_pose:  " << std::dec << init_pose << "vel: " << this->velocity << std::endl;
+    gzdbg << "[XTDrone_Actor_Plugin]: Publish topic actor_pose_pub" << std::endl;
+    gzdbg << "Target:  x:" << target[0] << ", y:" << target[1] << ",vel:" << target[2] << std::endl;
+    gzdbg << "Actor_Position:  " << std::dec << pose.Pos().X() << "," << pose.Pos().Y() << "," << pose.Pos().Z() << std::endl;
+    gzdbg << "init_pose:  " << std::dec << init_pose << "vel: " << this->velocity << std::endl;
   }
 }

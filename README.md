@@ -2,7 +2,7 @@
 
 <div id="sidebar"><a href="./README.en.md" target="_blank"><font color=#0000FF size=5px >[ENGLISH]<font></center><a></div>
 
-#### 介绍
+### 介绍
 这是基于PX4和ROS的无人机仿真平台(目前模拟器使用Gazebo，与Airsim的连接正在开发中)。目前支持多旋翼飞行器（包含四轴和六轴）、固定翼飞行器、可垂直起降固定翼飞行器（包含quadplane，tailsitter和tiltrotor）和无人车。在XTDrone上验证过的算法，可以方便地部署到真实无人机上。
 
 <img src="./image/vehicles.png" width="640"  />
@@ -69,16 +69,19 @@ Xiao, K., Ma, L., Tan, S., Cong, Y., Wang, X.: Implementation of UAV Coordinatio
 <img src="./image/self_driving.gif" width="640" height="368" />  
 
 
-#### 教程
+### 教程
 
 见[XTDrone使用文档](https://www.yuque.com/xtdrone/manual_cn)
 
-#### 项目团队
+### 空中机器人大赛
+
+2020中国机器人大赛暨RoboCup机器人世界杯中国赛中国机器人大赛正在报名中，详细可参见[大赛官网](http://crc.drct-caa.org.cn/index.php/)，XTDrone作为无人机仿真组的仿真平台，将第一次正式登上舞台，详细比赛规则可参见[附件](http://crc.drct-caa.org.cn/index.php/)。
+
+### 项目团队
 
 - 创立者：肖昆，谭劭昌
 - 开发团队：肖昆，谭劭昌，王冠政，马澜，王齐鹏，管若乔，陈科研，陈皋
 
-#### 感谢贡献者们
+### 感谢贡献者们
 
-孙长浩
-何瑶
+孙长浩 何瑶

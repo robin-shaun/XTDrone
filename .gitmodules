@@ -1,3 +1,6 @@
 [submodule "coordination/task_assignment"]
 	path = coordination/task_assignment
 	url = https://github.com/robin-shaun/Multi-UAV-Task-Assignment-Benchmark
+[submodule "sensing/object_detection_and_tracking/darknet_ros"]
+	path = sensing/object_detection_and_tracking/darknet_ros
+	url = https://gitee.com/robin_shaun/darknet_ros_yolov4

@@ -86,7 +86,7 @@
         <kinematic>0</kinematic>
       </link>
     </model>
-
+    
     <actor name="actor_1">
       <skin>
         <filename>model://walker/walk_1.dae</filename>
@@ -115,7 +115,7 @@
         <interpolate_x>true</interpolate_x>
       </animation>
       <plugin name="actor2_plugin" filename="libros_actor_cmd_pose_plugin.so">
-        <init_pose>2 2 1.25 1.57 0 0</init_pose>
+        <init_pose>70 22 1.25 1.57 0 0</init_pose>
         <animation_factor>5.1</animation_factor>
       </plugin>
     </actor>
@@ -131,7 +131,7 @@
         <interpolate_x>true</interpolate_x>
       </animation>
       <plugin name="actor3_plugin" filename="libros_actor_cmd_pose_plugin.so">
-        <init_pose>2 -2 1.25 1.57 0 0</init_pose>
+        <init_pose>18 -18 1.25 1.57 0 0</init_pose>
         <animation_factor>5.1</animation_factor>
       </plugin>
     </actor>
@@ -147,13 +147,12 @@
         <interpolate_x>true</interpolate_x>
       </animation>
       <plugin name="actor4_plugin" filename="libros_actor_cmd_pose_plugin.so">
-        <init_pose>-2 2 1.25 1.57 0 0</init_pose>
+        <init_pose>72 32 1.25 1.57 0 0</init_pose>
         <animation_factor>5.1</animation_factor>
       </plugin>
     </actor>
 
     <actor name="actor_5">
-      <pose>5 5 0 1.57 -0 0</pose>
       <skin>
         <filename>model://walker/walk_5.dae</filename>
         <scale>1.0</scale>
@@ -164,15 +163,29 @@
         <interpolate_x>true</interpolate_x>
       </animation>
       <plugin name="actor5_plugin" filename="libros_actor_cmd_pose_plugin.so">
-        <init_pose>-2 -2 1.25 1.57 0 0</init_pose>
+        <init_pose>-32 -27 1.25 1.57 0 0</init_pose>
         <animation_factor>5.1</animation_factor>
       </plugin>
     </actor>
 
+    <actor name="actor_6">
+      <skin>
+        <filename>model://walker/walk_6.dae</filename>
+        <scale>1.0</scale>
+      </skin>
+      <animation name="walking">
+        <filename>model://walker/walk_6.dae</filename>
+        <scale>1.000000</scale>
+        <interpolate_x>true</interpolate_x>
+      </animation>
+      <plugin name="actor6_plugin" filename="libros_actor_cmd_pose_plugin.so">
+        <init_pose>-35 -28 1.25 1.57 0 0</init_pose>
+        <animation_factor>5.1</animation_factor>
+      </plugin>
+    </actor>
+   
 
-
-
-
+    
     <model name='city_terrain_1'>
       <static>1</static>
       <link name='link'>
@@ -2196,8 +2209,30 @@
     </model>
     <model name='gas_station_73'>
       <static>1</static>
-      <pose frame=''>61.88 -30.82 0 0 -0 3.14</pose>
       <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <mesh>
+              <uri>model://gas_station/meshes/gas_station.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+
+        </collision>
+      <pose frame=''>61.88 -30.82 0 0 -0 3.14</pose>
+
         <visual name='visual'>
           <geometry>
             <mesh>
@@ -3530,69 +3565,6 @@
         </link>
       </model>
 
-    <actor name='actor1'>
-      <skin>
-        <filename>walk.dae</filename>
-        <scale>1.0</scale>
-      </skin>
-      <animation name='walking'>
-        <filename>walk.dae</filename>
-        <scale>1.0</scale>
-        <interpolate_x>1</interpolate_x>
-      </animation>
-      <plugin name="actor_plugin" filename="libActorPlugin.so">
-      </plugin>
-    </actor>
-
-    <actor name='actor2'>
-      <skin>
-        <filename>walk.dae</filename>
-        <scale>1.0</scale>
-      </skin>
-      <animation name='walking'>
-        <filename>walk.dae</filename>
-        <scale>1.0</scale>
-        <interpolate_x>1</interpolate_x>
-      </animation>
-    </actor>
-    <actor name='actor3'>
-      <skin>
-        <filename>moonwalk.dae</filename>
-        <scale>1.0</scale>
-      </skin>
-      <animation name='running'>
-        <filename>run.dae</filename>
-        <scale>1.0</scale>
-        <interpolate_x>1</interpolate_x>
-      </animation>
-    </actor>
-    <actor name='actor4'>
-      <skin>
-        <filename>moonwalk.dae</filename>
-        <scale>1.0</scale>
-      </skin>
-      <animation name='standing up'>
-        <filename>stand.dae</filename>
-        <scale>1.0</scale>
-        <interpolate_x>1</interpolate_x>
-      </animation>
-    </actor>
-    <actor name='actor5'>
-      <skin>
-        <filename>moonwalk.dae</filename>
-        <scale>1.0</scale>
-      </skin>
-      <animation name='sitting down'>
-        <filename>sitting.dae</filename>
-        <scale>1.0</scale>
-        <interpolate_x>1</interpolate_x>
-      </animation>
-    </actor>
-
-
-
-
-
       <!--
       <model name='arrow_red'>
         <pose frame=''>4.01686 -1.03557 7 -1.6 0 2e-06</pose>
@@ -4065,6 +4037,10 @@
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
+<<<<<<< HEAD
+=======
+
+>>>>>>> f5abb49c166678aab83abf9f9a2d0649e4f4eead
       <model name='sidewalk_10'>
         <pose frame=''>0 0 0 0 -0 0</pose>
         <scale>1 1 1</scale>
@@ -4505,6 +4481,7 @@
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
+
       <light name='sun'>
         <pose frame=''>0 0 1000 0 -0 0</pose>
       </light>
@@ -4563,6 +4540,7 @@
       </link>
       <pose frame=''>12.9955 19.0454 0 0 0 -1.57</pose>
     </model>
+<!--
     <model name='House'>
       <static>1</static>
       <pose frame=''>29.9646 19.6954 0.036 0 -0 0</pose>
@@ -4610,7 +4588,7 @@
         <kinematic>0</kinematic>
       </link>
     </model>
-
+-->
     <model name='casual_female'>
       <static>1</static>
       <link name='link'>
@@ -4950,6 +4928,7 @@
         <kinematic>0</kinematic>
       </link>
     </model>
+
     <model name='Shelves high'>
       <static>1</static>
       <link name='link'>
@@ -4987,1634 +4966,6 @@
         <kinematic>0</kinematic>
       </link>
       <pose frame=''>5.58824 35.6933 0 0 -0 0</pose>
-    </model>
-    <model name='pallet full'>
-      <pose frame=''>83.3215 -12.384 1 0 -0 0</pose>
-      <static>0</static>
-      <self_collide>1</self_collide>
-      <allow_auto_disable>1</allow_auto_disable>
-      <static>0</static>
-      <link name='pallet::link'>
-        <inertial>
-          <mass>25</mass>
-          <inertia>
-            <ixx>1</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>1</iyy>
-            <iyz>0</iyz>
-            <izz>1</izz>
-          </inertia>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-        </inertial>
-        <collision name='top'>
-          <pose frame=''>0 0 0.0625 0 -0 0</pose>
-          <geometry>
-            <box>
-              <size>1.2 0.8 0.042</size>
-            </box>
-          </geometry>
-          <max_contacts>10</max_contacts>
-
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-        </collision>
-        <collision name='colum_1'>
-          <pose frame=''>0.5275 -0.35 0 0 -0 0</pose>
-          <geometry>
-            <box>
-              <size>0.145 0.1 0.085</size>
-            </box>
-          </geometry>
-          <max_contacts>10</max_contacts>
-
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-        </collision>
-        <collision name='colum_2'>
-          <pose frame=''>0.5275 0 0 0 -0 0</pose>
-          <geometry>
-            <box>
-              <size>0.145 0.145 0.085</size>
-            </box>
-          </geometry>
-          <max_contacts>10</max_contacts>
-
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-        </collision>
-        <collision name='colum_3'>
-          <pose frame=''>0.5275 0.35 0 0 -0 0</pose>
-          <geometry>
-            <box>
-              <size>0.145 0.1 0.085</size>
-            </box>
-          </geometry>
-          <max_contacts>10</max_contacts>
-
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-        </collision>
-        <collision name='colum_4'>
-          <pose frame=''>0 -0.35 0 0 -0 0</pose>
-          <geometry>
-            <box>
-              <size>0.145 0.1 0.085</size>
-            </box>
-          </geometry>
-          <max_contacts>10</max_contacts>
-
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-        </collision>
-        <collision name='colum_5'>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-          <geometry>
-            <box>
-              <size>0.145 0.145 0.085</size>
-            </box>
-          </geometry>
-          <max_contacts>10</max_contacts>
-
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-        </collision>
-        <collision name='colum_6'>
-          <pose frame=''>0 0.35 0 0 -0 0</pose>
-          <geometry>
-            <box>
-              <size>0.145 0.1 0.085</size>
-            </box>
-          </geometry>
-          <max_contacts>10</max_contacts>
-
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-        </collision>
-        <collision name='colum_7'>
-          <pose frame=''>-0.5275 -0.35 0 0 -0 0</pose>
-          <geometry>
-            <box>
-              <size>0.145 0.1 0.085</size>
-            </box>
-          </geometry>
-          <max_contacts>10</max_contacts>
-
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-        </collision>
-        <collision name='colum_8'>
-          <pose frame=''>-0.5275 0 0 0 -0 0</pose>
-          <geometry>
-            <box>
-              <size>0.145 0.145 0.085</size>
-            </box>
-          </geometry>
-          <max_contacts>10</max_contacts>
-
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-        </collision>
-        <collision name='colum_9'>
-          <pose frame=''>-0.5275 0.35 0 0 -0 0</pose>
-          <geometry>
-            <box>
-              <size>0.145 0.1 0.085</size>
-            </box>
-          </geometry>
-          <max_contacts>10</max_contacts>
-
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-        </collision>
-        <collision name='bottom_1'>
-          <pose frame=''>0 -0.35 -0.053 0 -0 0</pose>
-          <geometry>
-            <box>
-              <size>1.2 0.1 0.021</size>
-            </box>
-          </geometry>
-          <max_contacts>10</max_contacts>
-
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-        </collision>
-        <collision name='bottom_2'>
-          <pose frame=''>0 0 -0.053 0 -0 0</pose>
-          <geometry>
-            <box>
-              <size>1.2 0.145 0.021</size>
-            </box>
-          </geometry>
-          <max_contacts>10</max_contacts>
-
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-        </collision>
-        <collision name='bottom_3'>
-          <pose frame=''>0 0.35 -0.053 0 -0 0</pose>
-          <geometry>
-            <box>
-              <size>1.2 0.1 0.021</size>
-            </box>
-          </geometry>
-          <max_contacts>10</max_contacts>
-
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://europallet/meshes/europallet.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <pose frame=''>0 0 0 0 -0 0</pose>
-        <self_collide>1</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <static>1</static>
-      <link name='small_box_1_lvl_1::link'>
-        <inertial>
-          <mass>2</mass>
-          <inertia>
-            <ixx>0.000861167</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.000861167</iyy>
-            <iyz>0</iyz>
-            <izz>0.000861167</izz>
-          </inertia>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-        </inertial>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>0.4 0.23 0.18</size>
-            </box>
-          </geometry>
-
-            <contact>
-              <ode>
-                <max_vel>0.1</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://small_box/meshes/small_box.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <pose frame=''>0.4 -0.24 0.172 0 -0 0</pose>
-        <self_collide>1</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <static>1</static>
-      <link name='small_box_2_lvl_1::link'>
-        <inertial>
-          <mass>2</mass>
-          <inertia>
-            <ixx>0.000861167</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.000861167</iyy>
-            <iyz>0</iyz>
-            <izz>0.000861167</izz>
-          </inertia>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-        </inertial>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>0.4 0.23 0.18</size>
-            </box>
-          </geometry>
-
-            <contact>
-              <ode>
-                <max_vel>0.1</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://small_box/meshes/small_box.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <pose frame=''>0.4 0 0.172 0 -0 0</pose>
-        <self_collide>1</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <static>0</static>
-      <link name='small_box_3_lvl_1::link'>
-        <inertial>
-          <mass>2</mass>
-          <inertia>
-            <ixx>0.000861167</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.000861167</iyy>
-            <iyz>0</iyz>
-            <izz>0.000861167</izz>
-          </inertia>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-        </inertial>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>0.4 0.23 0.18</size>
-            </box>
-          </geometry>
-
-            <contact>
-              <ode>
-                <max_vel>0.1</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://small_box/meshes/small_box.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <pose frame=''>0.4 0.24 0.172 0 -0 0</pose>
-        <self_collide>1</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <static>0</static>
-      <link name='small_box_4_lvl_1::link'>
-        <inertial>
-          <mass>2</mass>
-          <inertia>
-            <ixx>0.000861167</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.000861167</iyy>
-            <iyz>0</iyz>
-            <izz>0.000861167</izz>
-          </inertia>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-        </inertial>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>0.4 0.23 0.18</size>
-            </box>
-          </geometry>
-
-            <contact>
-              <ode>
-                <max_vel>0.1</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://small_box/meshes/small_box.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <pose frame=''>0 -0.24 0.172 0 -0 0</pose>
-        <self_collide>1</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <static>0</static>
-      <link name='small_box_5_lvl_1::link'>
-        <inertial>
-          <mass>2</mass>
-          <inertia>
-            <ixx>0.000861167</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.000861167</iyy>
-            <iyz>0</iyz>
-            <izz>0.000861167</izz>
-          </inertia>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-        </inertial>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>0.4 0.23 0.18</size>
-            </box>
-          </geometry>
-
-            <contact>
-              <ode>
-                <max_vel>0.1</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://small_box/meshes/small_box.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <pose frame=''>0 0 0.172 0 -0 0</pose>
-        <self_collide>1</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <static>0</static>
-      <link name='small_box_6_lvl_1::link'>
-        <inertial>
-          <mass>2</mass>
-          <inertia>
-            <ixx>0.000861167</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.000861167</iyy>
-            <iyz>0</iyz>
-            <izz>0.000861167</izz>
-          </inertia>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-        </inertial>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>0.4 0.23 0.18</size>
-            </box>
-          </geometry>
-
-            <contact>
-              <ode>
-                <max_vel>0.1</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://small_box/meshes/small_box.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <pose frame=''>0 0.24 0.172 0 -0 0</pose>
-        <self_collide>1</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <static>0</static>
-      <link name='small_box_7_lvl_1::link'>
-        <inertial>
-          <mass>2</mass>
-          <inertia>
-            <ixx>0.000861167</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.000861167</iyy>
-            <iyz>0</iyz>
-            <izz>0.000861167</izz>
-          </inertia>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-        </inertial>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>0.4 0.23 0.18</size>
-            </box>
-          </geometry>
-
-            <contact>
-              <ode>
-                <max_vel>0.1</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://small_box/meshes/small_box.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <pose frame=''>-0.4 -0.24 0.172 0 -0 0</pose>
-        <self_collide>1</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <static>0</static>
-      <link name='small_box_8_lvl_1::link'>
-        <inertial>
-          <mass>2</mass>
-          <inertia>
-            <ixx>0.000861167</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.000861167</iyy>
-            <iyz>0</iyz>
-            <izz>0.000861167</izz>
-          </inertia>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-        </inertial>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>0.4 0.23 0.18</size>
-            </box>
-          </geometry>
-
-            <contact>
-              <ode>
-                <max_vel>0.1</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://small_box/meshes/small_box.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <pose frame=''>-0.4 0 0.172 0 -0 0</pose>
-        <self_collide>1</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <static>0</static>
-      <link name='small_box_9_lvl_1::link'>
-        <inertial>
-          <mass>2</mass>
-          <inertia>
-            <ixx>0.000861167</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.000861167</iyy>
-            <iyz>0</iyz>
-            <izz>0.000861167</izz>
-          </inertia>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-        </inertial>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>0.4 0.23 0.18</size>
-            </box>
-          </geometry>
-
-            <contact>
-              <ode>
-                <max_vel>0.1</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://small_box/meshes/small_box.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <pose frame=''>-0.4 0.24 0.172 0 -0 0</pose>
-        <self_collide>1</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <static>0</static>
-      <link name='small_box_1_lvl_2::link'>
-        <inertial>
-          <mass>2</mass>
-          <inertia>
-            <ixx>0.000861167</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.000861167</iyy>
-            <iyz>0</iyz>
-            <izz>0.000861167</izz>
-          </inertia>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-        </inertial>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>0.4 0.23 0.18</size>
-            </box>
-          </geometry>
-
-            <contact>
-              <ode>
-                <max_vel>0.1</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://small_box/meshes/small_box.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <pose frame=''>0.4 -0.24 0.353 0 -0 0</pose>
-        <self_collide>1</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <static>0</static>
-      <link name='small_box_2_lvl_2::link'>
-        <inertial>
-          <mass>2</mass>
-          <inertia>
-            <ixx>0.000861167</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.000861167</iyy>
-            <iyz>0</iyz>
-            <izz>0.000861167</izz>
-          </inertia>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-        </inertial>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>0.4 0.23 0.18</size>
-            </box>
-          </geometry>
-
-            <contact>
-              <ode>
-                <max_vel>0.1</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://small_box/meshes/small_box.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <pose frame=''>0.4 0 0.353 0 -0 0</pose>
-        <self_collide>1</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <static>0</static>
-      <link name='small_box_3_lvl_2::link'>
-        <inertial>
-          <mass>2</mass>
-          <inertia>
-            <ixx>0.000861167</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.000861167</iyy>
-            <iyz>0</iyz>
-            <izz>0.000861167</izz>
-          </inertia>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-        </inertial>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>0.4 0.23 0.18</size>
-            </box>
-          </geometry>
-
-            <contact>
-              <ode>
-                <max_vel>0.1</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://small_box/meshes/small_box.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <pose frame=''>0.4 0.24 0.353 0 -0 0</pose>
-        <self_collide>1</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <static>0</static>
-      <link name='small_box_4_lvl_2::link'>
-        <inertial>
-          <mass>2</mass>
-          <inertia>
-            <ixx>0.000861167</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.000861167</iyy>
-            <iyz>0</iyz>
-            <izz>0.000861167</izz>
-          </inertia>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-        </inertial>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>0.4 0.23 0.18</size>
-            </box>
-          </geometry>
-
-            <contact>
-              <ode>
-                <max_vel>0.1</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://small_box/meshes/small_box.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <pose frame=''>0 -0.24 0.353 0 -0 0</pose>
-        <self_collide>1</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <static>0</static>
-      <link name='small_box_5_lvl_2::link'>
-        <inertial>
-          <mass>2</mass>
-          <inertia>
-            <ixx>0.000861167</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.000861167</iyy>
-            <iyz>0</iyz>
-            <izz>0.000861167</izz>
-          </inertia>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-        </inertial>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>0.4 0.23 0.18</size>
-            </box>
-          </geometry>
-
-            <contact>
-              <ode>
-                <max_vel>0.1</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://small_box/meshes/small_box.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <pose frame=''>0 0 0.353 0 -0 0</pose>
-        <self_collide>1</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <static>0</static>
-      <link name='small_box_6_lvl_2::link'>
-        <inertial>
-          <mass>2</mass>
-          <inertia>
-            <ixx>0.000861167</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.000861167</iyy>
-            <iyz>0</iyz>
-            <izz>0.000861167</izz>
-          </inertia>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-        </inertial>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>0.4 0.23 0.18</size>
-            </box>
-          </geometry>
-
-            <contact>
-              <ode>
-                <max_vel>0.1</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://small_box/meshes/small_box.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <pose frame=''>0 0.24 0.353 0 -0 0</pose>
-        <self_collide>1</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <static>0</static>
-      <link name='small_box_7_lvl_2::link'>
-        <inertial>
-          <mass>2</mass>
-          <inertia>
-            <ixx>0.000861167</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.000861167</iyy>
-            <iyz>0</iyz>
-            <izz>0.000861167</izz>
-          </inertia>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-        </inertial>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>0.4 0.23 0.18</size>
-            </box>
-          </geometry>
-
-            <contact>
-              <ode>
-                <max_vel>0.1</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://small_box/meshes/small_box.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <pose frame=''>-0.4 -0.24 0.353 0 -0 0</pose>
-        <self_collide>1</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <static>0</static>
-      <link name='small_box_8_lvl_2::link'>
-        <inertial>
-          <mass>2</mass>
-          <inertia>
-            <ixx>0.000861167</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.000861167</iyy>
-            <iyz>0</iyz>
-            <izz>0.000861167</izz>
-          </inertia>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-        </inertial>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>0.4 0.23 0.18</size>
-            </box>
-          </geometry>
-
-            <contact>
-              <ode>
-                <max_vel>0.1</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://small_box/meshes/small_box.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <pose frame=''>-0.4 0 0.353 0 -0 0</pose>
-        <self_collide>1</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <static>0</static>
-      <link name='small_box_9_lvl_2::link'>
-        <inertial>
-          <mass>2</mass>
-          <inertia>
-            <ixx>0.000861167</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.000861167</iyy>
-            <iyz>0</iyz>
-            <izz>0.000861167</izz>
-          </inertia>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-        </inertial>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>0.4 0.23 0.18</size>
-            </box>
-          </geometry>
-
-            <contact>
-              <ode>
-                <max_vel>0.1</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://small_box/meshes/small_box.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <pose frame=''>-0.4 0.24 0.353 0 -0 0</pose>
-        <self_collide>1</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <static>0</static>
-      <link name='small_box_1_lvl_3::link'>
-        <inertial>
-          <mass>2</mass>
-          <inertia>
-            <ixx>0.000861167</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.000861167</iyy>
-            <iyz>0</iyz>
-            <izz>0.000861167</izz>
-          </inertia>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-        </inertial>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>0.4 0.23 0.18</size>
-            </box>
-          </geometry>
-
-            <contact>
-              <ode>
-                <max_vel>0.1</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://small_box/meshes/small_box.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <pose frame=''>0.4 -0.24 0.534 0 -0 0</pose>
-        <self_collide>1</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <static>0</static>
-      <link name='small_box_2_lvl_3::link'>
-        <inertial>
-          <mass>2</mass>
-          <inertia>
-            <ixx>0.000861167</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.000861167</iyy>
-            <iyz>0</iyz>
-            <izz>0.000861167</izz>
-          </inertia>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-        </inertial>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>0.4 0.23 0.18</size>
-            </box>
-          </geometry>
-
-            <contact>
-              <ode>
-                <max_vel>0.1</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://small_box/meshes/small_box.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <pose frame=''>0.4 0 0.534 0 -0 0</pose>
-        <self_collide>1</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <static>0</static>
-      <link name='small_box_3_lvl_3::link'>
-        <inertial>
-          <mass>2</mass>
-          <inertia>
-            <ixx>0.000861167</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.000861167</iyy>
-            <iyz>0</iyz>
-            <izz>0.000861167</izz>
-          </inertia>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-        </inertial>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>0.4 0.23 0.18</size>
-            </box>
-          </geometry>
-
-            <contact>
-              <ode>
-                <max_vel>0.1</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://small_box/meshes/small_box.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <pose frame=''>0.4 0.24 0.534 0 -0 0</pose>
-        <self_collide>1</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <static>0</static>
-      <link name='small_box_4_lvl_3::link'>
-        <inertial>
-          <mass>2</mass>
-          <inertia>
-            <ixx>0.000861167</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.000861167</iyy>
-            <iyz>0</iyz>
-            <izz>0.000861167</izz>
-          </inertia>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-        </inertial>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>0.4 0.23 0.18</size>
-            </box>
-          </geometry>
-
-            <contact>
-              <ode>
-                <max_vel>0.1</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://small_box/meshes/small_box.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <pose frame=''>0 -0.24 0.534 0 -0 0</pose>
-        <self_collide>1</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <static>0</static>
-      <link name='small_box_5_lvl_3::link'>
-        <inertial>
-          <mass>2</mass>
-          <inertia>
-            <ixx>0.000861167</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.000861167</iyy>
-            <iyz>0</iyz>
-            <izz>0.000861167</izz>
-          </inertia>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-        </inertial>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>0.4 0.23 0.18</size>
-            </box>
-          </geometry>
-
-            <contact>
-              <ode>
-                <max_vel>0.1</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://small_box/meshes/small_box.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <pose frame=''>0 0 0.534 0 -0 0</pose>
-        <self_collide>1</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <static>0</static>
-      <link name='small_box_6_lvl_3::link'>
-        <inertial>
-          <mass>2</mass>
-          <inertia>
-            <ixx>0.000861167</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.000861167</iyy>
-            <iyz>0</iyz>
-            <izz>0.000861167</izz>
-          </inertia>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-        </inertial>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>0.4 0.23 0.18</size>
-            </box>
-          </geometry>
-
-            <contact>
-              <ode>
-                <max_vel>0.1</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://small_box/meshes/small_box.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <pose frame=''>0 0.24 0.534 0 -0 0</pose>
-        <self_collide>1</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <static>0</static>
-      <link name='small_box_7_lvl_3::link'>
-        <inertial>
-          <mass>2</mass>
-          <inertia>
-            <ixx>0.000861167</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.000861167</iyy>
-            <iyz>0</iyz>
-            <izz>0.000861167</izz>
-          </inertia>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-        </inertial>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>0.4 0.23 0.18</size>
-            </box>
-          </geometry>
-
-            <contact>
-              <ode>
-                <max_vel>0.1</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://small_box/meshes/small_box.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <pose frame=''>-0.4 -0.24 0.534 0 -0 0</pose>
-        <self_collide>1</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <static>0</static>
-      <link name='small_box_8_lvl_3::link'>
-        <inertial>
-          <mass>2</mass>
-          <inertia>
-            <ixx>0.000861167</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.000861167</iyy>
-            <iyz>0</iyz>
-            <izz>0.000861167</izz>
-          </inertia>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-        </inertial>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>0.4 0.23 0.18</size>
-            </box>
-          </geometry>
-
-            <contact>
-              <ode>
-                <max_vel>0.1</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://small_box/meshes/small_box.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <pose frame=''>-0.4 0 0.534 0 -0 0</pose>
-        <self_collide>1</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <static>1</static>
-      <link name='small_box_9_lvl_3::link'>
-        <inertial>
-          <mass>2</mass>
-          <inertia>
-            <ixx>0.000861167</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.000861167</iyy>
-            <iyz>0</iyz>
-            <izz>0.000861167</izz>
-          </inertia>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-        </inertial>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>0.4 0.23 0.18</size>
-            </box>
-          </geometry>
-
-            <contact>
-              <ode>
-                <max_vel>0.1</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://small_box/meshes/small_box.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <pose frame=''>-0.4 0.24 0.534 0 -0 0</pose>
-        <self_collide>1</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
     </model>
     <model name='Shelves high 2'>
       <static>1</static>
@@ -7800,21 +6151,21 @@
           </geometry>
         </visual>
       </link>
-    </model>
-
+    </model>   
+    
     <model name="car_beetle_0">
       <pose>-20 -45 0 0 0 -1.57</pose>
       <static>true</static>
       <link name="link">
         <inertial>
           <mass>1.0</mass>
-          <inertia>
-            <ixx>0.083</ixx>
-            <ixy>0.0</ixy>
-            <ixz>0.0</ixz>
-            <iyy>0.083</iyy>
-            <iyz>0.0</iyz>
-            <izz>0.083</izz>
+          <inertia> 
+            <ixx>0.083</ixx>      
+            <ixy>0.0</ixy>         
+            <ixz>0.0</ixz>         
+            <iyy>0.083</iyy>      
+            <iyz>0.0</iyz>         
+            <izz>0.083</izz>      
           </inertia>
         </inertial>
         <collision name="collision">
@@ -7840,13 +6191,13 @@
       <link name="link">
         <inertial>
           <mass>1.0</mass>
-          <inertia>
-            <ixx>0.083</ixx>
-            <ixy>0.0</ixy>
-            <ixz>0.0</ixz>
-            <iyy>0.083</iyy>
-            <iyz>0.0</iyz>
-            <izz>0.083</izz>
+          <inertia> 
+            <ixx>0.083</ixx>      
+            <ixy>0.0</ixy>         
+            <ixz>0.0</ixz>         
+            <iyy>0.083</iyy>      
+            <iyz>0.0</iyz>         
+            <izz>0.083</izz>      
           </inertia>
         </inertial>
         <collision name="collision">
@@ -7898,7 +6249,7 @@
           </geometry>
         </visual>
       </link>
-    </model>
+    </model> 
 
     <model name="car_beetle_1">
       <pose>20 45 0 0 0 -1.57</pose>
@@ -7906,13 +6257,13 @@
       <link name="link">
         <inertial>
           <mass>1.0</mass>
-          <inertia>
-            <ixx>0.083</ixx>
-            <ixy>0.0</ixy>
-            <ixz>0.0</ixz>
-            <iyy>0.083</iyy>
-            <iyz>0.0</iyz>
-            <izz>0.083</izz>
+          <inertia> 
+            <ixx>0.083</ixx>      
+            <ixy>0.0</ixy>         
+            <ixz>0.0</ixz>         
+            <iyy>0.083</iyy>      
+            <iyz>0.0</iyz>         
+            <izz>0.083</izz>      
           </inertia>
         </inertial>
         <collision name="collision">
@@ -7938,13 +6289,13 @@
       <link name="link">
         <inertial>
           <mass>1.0</mass>
-          <inertia>
-            <ixx>0.083</ixx>
-            <ixy>0.0</ixy>
-            <ixz>0.0</ixz>
-            <iyy>0.083</iyy>
-            <iyz>0.0</iyz>
-            <izz>0.083</izz>
+          <inertia> 
+            <ixx>0.083</ixx>     
+            <ixy>0.0</ixy>        
+            <ixz>0.0</ixz>        
+            <iyy>0.083</iyy>       
+            <iyz>0.0</iyz>        
+            <izz>0.083</izz>      
           </inertia>
         </inertial>
         <collision name="collision">

@@ -82,7 +82,7 @@ with open('launch_temp_1.11','r') as f:
 with open('multi_vehicle.launch','w') as f:
     f.write(launch_head)
     row_in_all = 0
-    id_in_all = 0
+    id_in_all = 1
     for type_id in range(8):
         type_num = num_of_type[type_id]
         row_in_type = row_of_type[type_id]
@@ -100,9 +100,11 @@ with open('multi_vehicle.launch','w') as f:
         if type_num > 0:
             
             for id_in_type in range(0,type_num):
-                offboard_local=34580+id_in_all
-                offboard_remote=24540+id_in_all
-                SITL=18570+id_in_all
+
+                mavlink_1=34570-1+id_in_all*2
+                mavlink_2=mavlink_1+1
+                onboard=14540+id_in_all
+                SITL=24560+(id_in_all)*2
                 TCP=4560+id_in_all
                 for line in launch_lines:
                     if "<!-- UAV" in line:
@@ -114,7 +116,7 @@ with open('multi_vehicle.launch','w') as f:
                     elif '''<arg name="ID_in_group" value="0"/>''' in line:
                         f.write('''            <arg name="ID_in_group" value="%d"/>\n''' %id_in_type)
                     elif "udp://:" in line:
-                        f.write('''            <arg name="fcu_url" default="udp://:%d@localhost:%d"/>\n''' %(offboard_remote,offboard_local))
+                        f.write('''            <arg name="fcu_url" default="udp://:%d@localhost:%d"/>\n''' %(onboard,mavlink_2))
                     elif "mavlink_udp_port" in line:
                         f.write('''            <arg name="mavlink_udp_port" value="%d"/>\n'''%SITL)
                     elif "mavlink_tcp_port" in line:

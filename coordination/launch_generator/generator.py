@@ -36,7 +36,7 @@ Then enter f to generate!
 TYPE_ID_DICT = {
     "rover_with_lidar_stereo" : 0,
     "plane" : 1,
-    "typhoon_h480_stereo" : 2,
+    "typhoon_h480" : 2,
     "solo_stereo_camera" : 3,
     "iris_stereo_camera" : 4,
     "tiltrotor" : 5,
@@ -82,7 +82,7 @@ with open('launch_temp_1.11','r') as f:
 with open('multi_vehicle.launch','w') as f:
     f.write(launch_head)
     row_in_all = 0
-    id_in_all = 1
+    id_in_all = 0
     for type_id in range(8):
         type_num = num_of_type[type_id]
         row_in_type = row_of_type[type_id]
@@ -101,10 +101,9 @@ with open('multi_vehicle.launch','w') as f:
             
             for id_in_type in range(0,type_num):
 
-                mavlink_1=34570-1+id_in_all*2
-                mavlink_2=mavlink_1+1
-                onboard=14540+id_in_all
-                SITL=24560+(id_in_all)*2
+                offboard_local=34580+id_in_all
+                offboard_remote=24540+id_in_all
+                SITL=18570+id_in_all
                 TCP=4560+id_in_all
                 for line in launch_lines:
                     if "<!-- UAV" in line:
@@ -116,7 +115,7 @@ with open('multi_vehicle.launch','w') as f:
                     elif '''<arg name="ID_in_group" value="0"/>''' in line:
                         f.write('''            <arg name="ID_in_group" value="%d"/>\n''' %id_in_type)
                     elif "udp://:" in line:
-                        f.write('''            <arg name="fcu_url" default="udp://:%d@localhost:%d"/>\n''' %(onboard,mavlink_2))
+                        f.write('''            <arg name="fcu_url" default="udp://:%d@localhost:%d"/>\n''' %(offboard_remote,offboard_local))
                     elif "mavlink_udp_port" in line:
                         f.write('''            <arg name="mavlink_udp_port" value="%d"/>\n'''%SITL)
                     elif "mavlink_tcp_port" in line:

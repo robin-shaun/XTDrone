@@ -33,7 +33,7 @@
             <arg name="P" value="0"/>
             <arg name="Y" value="0"/>
             <arg name="vehicle" value="typhoon_h480"/>
-            <arg name="sdf" value="typhoon_h480_stereo"/>
+            <arg name="sdf" value="typhoon_h480"/>
             <arg name="mavlink_udp_port" value="18570"/>
             <arg name="mavlink_tcp_port" value="4560"/>
             <arg name="ID" value="$(arg ID)"/>
@@ -62,9 +62,125 @@
             <arg name="P" value="0"/>
             <arg name="Y" value="0"/>
             <arg name="vehicle" value="typhoon_h480"/>
-            <arg name="sdf" value="typhoon_h480_stereo"/>
+            <arg name="sdf" value="typhoon_h480"/>
             <arg name="mavlink_udp_port" value="18571"/>
             <arg name="mavlink_tcp_port" value="4561"/>
+            <arg name="ID" value="$(arg ID)"/>
+            <arg name="ID_in_group" value="$(arg ID_in_group)"/>
+        </include>
+        <!-- MAVROS -->
+        <include file="$(find mavros)/launch/px4.launch">
+            <arg name="fcu_url" value="$(arg fcu_url)"/>
+            <arg name="gcs_url" value=""/>
+            <arg name="tgt_system" value="$(eval 1 + arg('ID'))"/>
+            <arg name="tgt_component" value="1"/>
+        </include>
+    </group>
+     <!-- typhoon_h480_2 -->
+     <group ns="typhoon_h480_2">
+        <!-- MAVROS and vehicle configs -->
+            <arg name="ID" value="2"/>
+            <arg name="ID_in_group" value="2"/>
+            <arg name="fcu_url" default="udp://:24542@localhost:34582"/>
+        <!-- PX4 SITL and vehicle spawn -->
+        <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
+            <arg name="x" value="0"/>
+            <arg name="y" value="6"/>
+            <arg name="z" value="0"/>
+            <arg name="R" value="0"/>
+            <arg name="P" value="0"/>
+            <arg name="Y" value="0"/>
+            <arg name="vehicle" value="typhoon_h480"/>
+            <arg name="sdf" value="typhoon_h480"/>
+            <arg name="mavlink_udp_port" value="18572"/>
+            <arg name="mavlink_tcp_port" value="4562"/>
+            <arg name="ID" value="$(arg ID)"/>
+            <arg name="ID_in_group" value="$(arg ID_in_group)"/>
+        </include>
+        <!-- MAVROS -->
+        <include file="$(find mavros)/launch/px4.launch">
+            <arg name="fcu_url" value="$(arg fcu_url)"/>
+            <arg name="gcs_url" value=""/>
+            <arg name="tgt_system" value="$(eval 1 + arg('ID'))"/>
+            <arg name="tgt_component" value="1"/>
+        </include>
+    </group>
+     <!-- typhoon_h480_3 -->
+     <group ns="typhoon_h480_3">
+        <!-- MAVROS and vehicle configs -->
+            <arg name="ID" value="3"/>
+            <arg name="ID_in_group" value="3"/>
+            <arg name="fcu_url" default="udp://:24543@localhost:34583"/>
+        <!-- PX4 SITL and vehicle spawn -->
+        <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
+            <arg name="x" value="3"/>
+            <arg name="y" value="6"/>
+            <arg name="z" value="0"/>
+            <arg name="R" value="0"/>
+            <arg name="P" value="0"/>
+            <arg name="Y" value="0"/>
+            <arg name="vehicle" value="typhoon_h480"/>
+            <arg name="sdf" value="typhoon_h480"/>
+            <arg name="mavlink_udp_port" value="18573"/>
+            <arg name="mavlink_tcp_port" value="4563"/>
+            <arg name="ID" value="$(arg ID)"/>
+            <arg name="ID_in_group" value="$(arg ID_in_group)"/>
+        </include>
+        <!-- MAVROS -->
+        <include file="$(find mavros)/launch/px4.launch">
+            <arg name="fcu_url" value="$(arg fcu_url)"/>
+            <arg name="gcs_url" value=""/>
+            <arg name="tgt_system" value="$(eval 1 + arg('ID'))"/>
+            <arg name="tgt_component" value="1"/>
+        </include>
+    </group>
+     <!-- typhoon_h480_4 -->
+     <group ns="typhoon_h480_4">
+        <!-- MAVROS and vehicle configs -->
+            <arg name="ID" value="4"/>
+            <arg name="ID_in_group" value="4"/>
+            <arg name="fcu_url" default="udp://:24544@localhost:34584"/>
+        <!-- PX4 SITL and vehicle spawn -->
+        <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
+            <arg name="x" value="0"/>
+            <arg name="y" value="9"/>
+            <arg name="z" value="0"/>
+            <arg name="R" value="0"/>
+            <arg name="P" value="0"/>
+            <arg name="Y" value="0"/>
+            <arg name="vehicle" value="typhoon_h480"/>
+            <arg name="sdf" value="typhoon_h480"/>
+            <arg name="mavlink_udp_port" value="18574"/>
+            <arg name="mavlink_tcp_port" value="4564"/>
+            <arg name="ID" value="$(arg ID)"/>
+            <arg name="ID_in_group" value="$(arg ID_in_group)"/>
+        </include>
+        <!-- MAVROS -->
+        <include file="$(find mavros)/launch/px4.launch">
+            <arg name="fcu_url" value="$(arg fcu_url)"/>
+            <arg name="gcs_url" value=""/>
+            <arg name="tgt_system" value="$(eval 1 + arg('ID'))"/>
+            <arg name="tgt_component" value="1"/>
+        </include>
+    </group>
+     <!-- typhoon_h480_5 -->
+     <group ns="typhoon_h480_5">
+        <!-- MAVROS and vehicle configs -->
+            <arg name="ID" value="5"/>
+            <arg name="ID_in_group" value="5"/>
+            <arg name="fcu_url" default="udp://:24545@localhost:34585"/>
+        <!-- PX4 SITL and vehicle spawn -->
+        <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
+            <arg name="x" value="3"/>
+            <arg name="y" value="9"/>
+            <arg name="z" value="0"/>
+            <arg name="R" value="0"/>
+            <arg name="P" value="0"/>
+            <arg name="Y" value="0"/>
+            <arg name="vehicle" value="typhoon_h480"/>
+            <arg name="sdf" value="typhoon_h480"/>
+            <arg name="mavlink_udp_port" value="18575"/>
+            <arg name="mavlink_tcp_port" value="4565"/>
             <arg name="ID" value="$(arg ID)"/>
             <arg name="ID_in_group" value="$(arg ID_in_group)"/>
         </include>

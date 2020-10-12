@@ -5,15 +5,15 @@
     <!-- vehicle pose -->
     <arg name="x" default="0"/>
     <arg name="y" default="0"/>
-    <arg name="z" default="1"/>
+    <arg name="z" default="0"/>
     <arg name="R" default="0"/>
     <arg name="P" default="0"/>
-    <arg name="Y" default="-0.6"/>
+    <arg name="Y" default="0"/>
     <!-- vehicle model and world -->
     <arg name="est" default="ekf2"/>
-    <arg name="vehicle" default="rover"/>
-    <arg name="world" default="$(find mavlink_sitl_gazebo)/worlds/outdoor3.world"/>
-    <arg name="sdf" default="$(find mavlink_sitl_gazebo)/models/rover_with_lidar_stereo/rover_with_lidar_stereo.sdf"/>
+    <arg name="vehicle" default="typhoon_h480"/>
+    <arg name="world" default="$(find mavlink_sitl_gazebo)/worlds/outdoor1.world"/>
+    <arg name="sdf" default="$(find mavlink_sitl_gazebo)/models/$(arg vehicle)/$(arg vehicle).sdf"/>
 
     <!-- gazebo configs -->
     <arg name="gui" default="true"/>
@@ -45,12 +45,10 @@
         <arg name="respawn_gazebo" value="$(arg respawn_gazebo)"/>
     </include>
     <!-- MAVROS -->
-    <group ns = "rover_0"> 
-        <include file="$(find mavros)/launch/px4.launch">
-            <!-- GCS link is provided by SITL -->
-            <arg name="gcs_url" value=""/>
-            <arg name="fcu_url" value="$(arg fcu_url)"/>
-            <arg name="respawn_mavros" value="$(arg respawn_mavros)"/>
-        </include>
-    </group>
+    <include file="$(find mavros)/launch/px4.launch">
+        <!-- GCS link is provided by SITL -->
+        <arg name="gcs_url" value=""/>
+        <arg name="fcu_url" value="$(arg fcu_url)"/>
+        <arg name="respawn_mavros" value="$(arg respawn_mavros)"/>
+    </include>
 </launch>

@@ -23,7 +23,7 @@
     <group ns="uav0">
         <!-- MAVROS and vehicle configs -->
         <arg name="ID" value="0"/>
-        <arg name="fcu_url" default="udp://:14540@localhost:14580"/>
+        <arg name="fcu_url" default="udp://:24540@localhost:34580"/>
         <!-- PX4 SITL and vehicle spawn -->
         <include file="$(find px4)/launch/single_vehicle_spawn_sdf.launch">
             <arg name="x" value="0"/>
@@ -33,7 +33,7 @@
             <arg name="P" value="0"/>
             <arg name="Y" value="0"/>
             <arg name="vehicle" value="$(arg vehicle)"/>
-            <arg name="mavlink_udp_port" value="14560"/>
+            <arg name="mavlink_udp_port" value="18570"/>
             <arg name="mavlink_tcp_port" value="4560"/>
             <arg name="ID" value="$(arg ID)"/>
         </include>
@@ -49,7 +49,7 @@
     <group ns="uav1">
         <!-- MAVROS and vehicle configs -->
         <arg name="ID" value="1"/>
-        <arg name="fcu_url" default="udp://:14541@localhost:14581"/>
+        <arg name="fcu_url" default="udp://:24541@localhost:34581"/>
         <!-- PX4 SITL and vehicle spawn -->
         <include file="$(find px4)/launch/single_vehicle_spawn_sdf.launch">
             <arg name="x" value="1"/>
@@ -59,7 +59,7 @@
             <arg name="P" value="0"/>
             <arg name="Y" value="0"/>
             <arg name="vehicle" value="$(arg vehicle)"/>
-            <arg name="mavlink_udp_port" value="14561"/>
+            <arg name="mavlink_udp_port" value="18571"/>
             <arg name="mavlink_tcp_port" value="4561"/>
             <arg name="ID" value="$(arg ID)"/>
         </include>
@@ -75,7 +75,7 @@
     <group ns="uav2">
         <!-- MAVROS and vehicle configs -->
         <arg name="ID" value="2"/>
-        <arg name="fcu_url" default="udp://:14542@localhost:14582"/>
+        <arg name="fcu_url" default="udp://:24542@localhost:34582"/>
         <!-- PX4 SITL and vehicle spawn -->
         <include file="$(find px4)/launch/single_vehicle_spawn_sdf.launch">
             <arg name="x" value="0"/>
@@ -85,7 +85,7 @@
             <arg name="P" value="0"/>
             <arg name="Y" value="0"/>
             <arg name="vehicle" value="$(arg vehicle)"/>
-            <arg name="mavlink_udp_port" value="14562"/>
+            <arg name="mavlink_udp_port" value="18572"/>
             <arg name="mavlink_tcp_port" value="4562"/>
             <arg name="ID" value="$(arg ID)"/>
         </include>

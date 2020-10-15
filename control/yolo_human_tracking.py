@@ -46,10 +46,10 @@ if __name__ == "__main__":
     twist = Twist()
     cmd = String()
     theta = -math.pi/4
-    u_center=752/2
-    v_center=480/2
-    fx = 240
-    fy = 240
+    u_center=640/2 
+    v_center=360/2
+    fx = 205.46963709898583
+    fy = 205.46963709898583
     Kp_xy = 0.8
     Kp_z = 1
     vehicle_type = sys.argv[1]

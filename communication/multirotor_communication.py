@@ -13,6 +13,8 @@ from pyquaternion import Quaternion
 import math
 from multiprocessing import Process
 import sys
+import platform
+
 
 class Communication:
 
@@ -34,6 +36,8 @@ class Communication:
         self.mission = None
         self.transition_state = None
         self.transition = None
+        
+        self.platform = platform.platform()
             
         '''
         ros subscribers
@@ -102,7 +106,34 @@ class Communication:
         target_raw_pose = PositionTarget()
         target_raw_pose.coordinate_frame = self.coordinate_frame
 
-        if self.coordinate_frame == 1:
+        if self.platform.split('-')[-2] == '16.04':
+            if self.coordinate_frame == 1:
+                target_raw_pose.position.x = x
+                target_raw_pose.position.y = y
+                target_raw_pose.position.z = z
+
+                target_raw_pose.velocity.x = vx
+                target_raw_pose.velocity.y = vy
+                target_raw_pose.velocity.z = vz
+                
+                target_raw_pose.acceleration_or_force.x = afx
+                target_raw_pose.acceleration_or_force.y = afy
+                target_raw_pose.acceleration_or_force.z = afz
+                
+            else:
+                target_raw_pose.position.x = -y
+                target_raw_pose.position.y = x
+                target_raw_pose.position.z = z
+
+                target_raw_pose.velocity.x = -vy
+                target_raw_pose.velocity.y = vx
+                target_raw_pose.velocity.z = vz
+                
+                target_raw_pose.acceleration_or_force.x = afx
+                target_raw_pose.acceleration_or_force.y = afy
+                target_raw_pose.acceleration_or_force.z = afz
+                
+        elif self.platform.split('-')[-2] == '18.04':
             target_raw_pose.position.x = x
             target_raw_pose.position.y = y
             target_raw_pose.position.z = z
@@ -116,17 +147,9 @@ class Communication:
             target_raw_pose.acceleration_or_force.z = afz
             
         else:
-            target_raw_pose.position.x = -y
-            target_raw_pose.position.y = x
-            target_raw_pose.position.z = z
+            print('XTDrone only supports Ubuntu16.04 and Ubuntu18.04 now.')
+            sys.exit(0)
 
-            target_raw_pose.velocity.x = -vy
-            target_raw_pose.velocity.y = vx
-            target_raw_pose.velocity.z = vz
-            
-            target_raw_pose.acceleration_or_force.x = afx
-            target_raw_pose.acceleration_or_force.y = afy
-            target_raw_pose.acceleration_or_force.z = afz
 
         target_raw_pose.yaw = yaw
         target_raw_pose.yaw_rate = yaw_rate

@@ -5,8 +5,8 @@ import tty, termios
 from std_msgs.msg import String
 
 
-MAX_LINEAR = 10
-MAX_ANG_VEL = 0.5
+MAX_LINEAR = 20
+MAX_ANG_VEL = 3
 LINEAR_STEP_SIZE = 0.01
 ANG_VEL_STEP_SIZE = 0.01
 

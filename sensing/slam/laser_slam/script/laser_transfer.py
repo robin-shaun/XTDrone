@@ -24,13 +24,13 @@ def odm_aloam_callback(msg):
     local_pose.header.stamp = msg.header.stamp
     local_pose.pose = msg.pose.pose
 
-def callback(data):
+def laser_scan_matcher_callback(data):
     global laser_scan
     laser_scan = data
     
 def laser_scan_matcher():
     global local_pose
-    pose2d_sub = rospy.Subscriber(vehicle_type+'_'+ vehicle_id+"/pose2D", Pose2D, callback)
+    pose2d_sub = rospy.Subscriber(vehicle_type+'_'+ vehicle_id+"/pose2D", Pose2D, laser_scan_matcher_callback)
     rate = rospy.Rate(100)
     while True:
         local_pose.header.stamp = rospy.Time.now()

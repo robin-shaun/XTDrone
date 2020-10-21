@@ -12,9 +12,7 @@ local_pose.header.frame_id = 'map'
 quaternion = tf.transformations.quaternion_from_euler(0, -math.pi/2, math.pi/2)
 q = Quaternion([quaternion[3],quaternion[0],quaternion[1],quaternion[2]])
 
-def vins_callback(data):
-    #rospy.loginfo(str(data.pose.position.x)+','+str(data.pose.position.y)+','+str(data.pose.position.z))
-    
+def vins_callback(data):    
     local_pose.pose.position.x = data.pose.pose.position.x
     local_pose.pose.position.y = data.pose.pose.position.y
     local_pose.pose.position.z = data.pose.pose.position.z

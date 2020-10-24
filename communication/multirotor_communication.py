@@ -105,51 +105,18 @@ class Communication:
     def construct_target(self, x=0, y=0, z=0, vx=0, vy=0, vz=0, afx=0, afy=0, afz=0, yaw=0, yaw_rate=0):
         target_raw_pose = PositionTarget()
         target_raw_pose.coordinate_frame = self.coordinate_frame
+        
+        target_raw_pose.position.x = x
+        target_raw_pose.position.y = y
+        target_raw_pose.position.z = z
 
-        if self.platform.split('-')[-2] == '16.04':
-            if self.coordinate_frame == 1:
-                target_raw_pose.position.x = x
-                target_raw_pose.position.y = y
-                target_raw_pose.position.z = z
-
-                target_raw_pose.velocity.x = vx
-                target_raw_pose.velocity.y = vy
-                target_raw_pose.velocity.z = vz
-                
-                target_raw_pose.acceleration_or_force.x = afx
-                target_raw_pose.acceleration_or_force.y = afy
-                target_raw_pose.acceleration_or_force.z = afz
-                
-            else:
-                target_raw_pose.position.x = -y
-                target_raw_pose.position.y = x
-                target_raw_pose.position.z = z
-
-                target_raw_pose.velocity.x = -vy
-                target_raw_pose.velocity.y = vx
-                target_raw_pose.velocity.z = vz
-                
-                target_raw_pose.acceleration_or_force.x = afx
-                target_raw_pose.acceleration_or_force.y = afy
-                target_raw_pose.acceleration_or_force.z = afz
-                
-        elif self.platform.split('-')[-2] == '18.04':
-            target_raw_pose.position.x = x
-            target_raw_pose.position.y = y
-            target_raw_pose.position.z = z
-
-            target_raw_pose.velocity.x = vx
-            target_raw_pose.velocity.y = vy
-            target_raw_pose.velocity.z = vz
-            
-            target_raw_pose.acceleration_or_force.x = afx
-            target_raw_pose.acceleration_or_force.y = afy
-            target_raw_pose.acceleration_or_force.z = afz
-            
-        else:
-            print('XTDrone only supports Ubuntu16.04 and Ubuntu18.04 now.')
-            sys.exit(0)
-
+        target_raw_pose.velocity.x = vx
+        target_raw_pose.velocity.y = vy
+        target_raw_pose.velocity.z = vz
+        
+        target_raw_pose.acceleration_or_force.x = afx
+        target_raw_pose.acceleration_or_force.y = afy
+        target_raw_pose.acceleration_or_force.z = afz
 
         target_raw_pose.yaw = yaw
         target_raw_pose.yaw_rate = yaw_rate

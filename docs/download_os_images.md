@@ -5,6 +5,7 @@ At now, we store these files in Baidu Netdisk, all users can access these resour
 
 #### 2.Baidu Netdisk's Downloading Link(Waiting to be uploaded.)
 1.Ubuntu 18.04 LTS with ROS Melodic, PX4, Cuda, **XTDrone** and so on.
+The password is 123456.
 - iso file
 ```
 ubuntu18.04_xtdrone_px4_cuda.iso

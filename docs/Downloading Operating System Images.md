@@ -8,13 +8,15 @@ At now, we store these files in Baidu Netdisk, all users can access these resour
 - iso file
 ```
 ubuntu18.04_xtdrone_px4_cuda.iso
-Link：https://pan.baidu.com/s/1QxYuxWlm7mjkOTHTh9WX9w 
-Code：wsao 
+Link: https://pan.baidu.com/s/1QxYuxWlm7mjkOTHTh9WX9w 
+Code: wsao 
 ```
 
 - sblive file
 ```
-
+ubuntu18.04_xtdrone_px4_cuda.sblive
+Link: https://pan.baidu.com/s/1P8QHO_ge-XQ_6b24GW1AQw 
+Code: lxdu 
 ```
 
 

@@ -30,6 +30,7 @@ def darknet_callback(data):
     if not find:
         twist.linear.x = 0.0
         twist.linear.y = 0.0
+        twist.linear.z = 0.0
         cmd = 'HOVER'
         
 def local_pose_callback(data):

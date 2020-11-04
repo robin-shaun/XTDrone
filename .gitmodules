@@ -1,6 +1,8 @@
 [submodule "coordination/task_assignment"]
 	path = coordination/task_assignment
 	url = https://gitee.com/robin_shaun/multi-uav-task-assignment-benchmark
+	branch = master
 [submodule "sensing/object_detection_and_tracking/darknet_ros"]
 	path = sensing/object_detection_and_tracking/darknet_ros
 	url = https://gitee.com/robin_shaun/darknet_ros_yolov4
+	branch = master

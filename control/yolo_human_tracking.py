@@ -3,12 +3,13 @@ from geometry_msgs.msg import Twist, PoseStamped
 from std_msgs.msg import String
 import sys 
 sys.path.append('/home/robin/catkin_ws/devel/lib/python2.7/dist-packages')
+from pyquaternion import Quaternion
 from darknet_ros_msgs.msg import BoundingBoxes
 import time
 import math
 
 def darknet_callback(data):
-    global twist, cmd, target_height_mask, target_height
+    global twist, cmd, target_height_mask, target_height,theta
     find = False
     for target in data.bounding_boxes:
         if(target.id==0):
@@ -39,6 +40,11 @@ def local_pose_callback(data):
     if not target_set:
         target_height = height     
         target_set = True    
+
+def cam_pose_callback(data):
+    global theta
+    q = Quaternion(data.pose.orientation.w, data.pose.orientation.x, data.pose.orientation.y, data.pose.orientation.z)
+    theta = q.yaw_pitch_roll[1]
             
 if __name__ == "__main__":
     height = 0  
@@ -58,6 +64,7 @@ if __name__ == "__main__":
     rospy.init_node('yolo_human_tracking')
     rospy.Subscriber("/darknet_ros/bounding_boxes", BoundingBoxes, darknet_callback)
     rospy.Subscriber(vehicle_type+'_'+vehicle_id+"/mavros/local_position/pose", PoseStamped, local_pose_callback)
+    rospy.Subscriber('/xtdrone/'+vehicle_type+'_'+vehicle_id+'/cam_pose', PoseStamped, cam_pose_callback)
     vel_pub = rospy.Publisher('/xtdrone/'+vehicle_type+'_'+vehicle_id+'/cmd_vel_flu', Twist, queue_size=2)
     cmd_pub = rospy.Publisher('/xtdrone/'+vehicle_type+'_'+vehicle_id+'/cmd', String, queue_size=2)
     rate = rospy.Rate(60) 

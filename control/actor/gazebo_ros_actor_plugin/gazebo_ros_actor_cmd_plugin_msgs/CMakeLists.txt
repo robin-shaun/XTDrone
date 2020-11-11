@@ -7,6 +7,11 @@ find_package(catkin REQUIRED
     message_generation
 )
 
+add_message_files(
+  FILES
+  ActorMotion.msg
+)
+
 add_service_files(
   FILES
    ToggleActorWaving.srv

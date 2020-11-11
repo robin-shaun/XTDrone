@@ -87,6 +87,23 @@
       </link>
     </model>
 
+    <actor name="actor_0">
+      <skin>
+        <filename>model://walker/walk_0.dae</filename>
+        <scale>1.0</scale>
+      </skin>
+      <animation name="walking">
+        <filename>model://walker/walk_0.dae</filename>
+        <scale>1.000000</scale>
+        <interpolate_x>true</interpolate_x>
+      </animation>
+      <plugin name="actor1_plugin" filename="libros_actor_cmd_pose_plugin.so">
+        <init_pose>0 0 1.25 1.57 0 0</init_pose>
+        <animation_factor>5.1</animation_factor>
+      </plugin>
+    </actor>
+
+
     <actor name="actor_1">
       <skin>
         <filename>model://walker/walk_1.dae</filename>
@@ -97,12 +114,11 @@
         <scale>1.000000</scale>
         <interpolate_x>true</interpolate_x>
       </animation>
-      <plugin name="actor1_plugin" filename="libros_actor_cmd_pose_plugin.so">
-        <init_pose>0 0 1.25 1.57 0 0</init_pose>
+      <plugin name="actor2_plugin" filename="libros_actor_cmd_pose_plugin.so">
+        <init_pose>70 22 1.25 1.57 0 0</init_pose>
         <animation_factor>5.1</animation_factor>
       </plugin>
     </actor>
-
 
     <actor name="actor_2">
       <skin>
@@ -115,7 +131,7 @@
         <interpolate_x>true</interpolate_x>
       </animation>
       <plugin name="actor2_plugin" filename="libros_actor_cmd_pose_plugin.so">
-        <init_pose>70 22 1.25 1.57 0 0</init_pose>
+        <init_pose>18 -18 1.25 1.57 0 0</init_pose>
         <animation_factor>5.1</animation_factor>
       </plugin>
     </actor>
@@ -131,7 +147,7 @@
         <interpolate_x>true</interpolate_x>
       </animation>
       <plugin name="actor3_plugin" filename="libros_actor_cmd_pose_plugin.so">
-        <init_pose>18 -18 1.25 1.57 0 0</init_pose>
+        <init_pose>72 32 1.25 1.57 0 0</init_pose>
         <animation_factor>5.1</animation_factor>
       </plugin>
     </actor>
@@ -147,7 +163,7 @@
         <interpolate_x>true</interpolate_x>
       </animation>
       <plugin name="actor4_plugin" filename="libros_actor_cmd_pose_plugin.so">
-        <init_pose>72 32 1.25 1.57 0 0</init_pose>
+        <init_pose>-32 -27 1.25 1.57 0 0</init_pose>
         <animation_factor>5.1</animation_factor>
       </plugin>
     </actor>
@@ -163,22 +179,6 @@
         <interpolate_x>true</interpolate_x>
       </animation>
       <plugin name="actor5_plugin" filename="libros_actor_cmd_pose_plugin.so">
-        <init_pose>-32 -27 1.25 1.57 0 0</init_pose>
-        <animation_factor>5.1</animation_factor>
-      </plugin>
-    </actor>
-
-    <actor name="actor_6">
-      <skin>
-        <filename>model://walker/walk_6.dae</filename>
-        <scale>1.0</scale>
-      </skin>
-      <animation name="walking">
-        <filename>model://walker/walk_6.dae</filename>
-        <scale>1.000000</scale>
-        <interpolate_x>true</interpolate_x>
-      </animation>
-      <plugin name="actor6_plugin" filename="libros_actor_cmd_pose_plugin.so">
         <init_pose>-35 -28 1.25 1.57 0 0</init_pose>
         <animation_factor>5.1</animation_factor>
       </plugin>

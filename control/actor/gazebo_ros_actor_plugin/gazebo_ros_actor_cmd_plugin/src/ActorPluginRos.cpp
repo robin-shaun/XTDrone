@@ -49,7 +49,7 @@ void ActorPluginRos::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   // cmd_vel_subscriber_ = gazebo_ros_->node()->subscribe("cmd_vel", 1, &ActorPluginRos::NewVelCmdCallback, this);
   // ROS_INFO_NAMED("ActorRos", "%s: Subscribe to %s", gazebo_ros_->info(), cmd_vel_subscriber_.getTopic().c_str());
 
-  cmd_pose_subscriber_ = gazebo_ros_->node()->subscribe("cmd_pose", 1, &ActorPluginRos::CmdPoseCallback, this);
+  cmd_pose_subscriber_ = gazebo_ros_->node()->subscribe("cmd_motion", 1, &ActorPluginRos::CmdPoseCallback, this);
   ROS_INFO_NAMED("ActorRos", "%s: Subscribe to %s", gazebo_ros_->info(), cmd_pose_subscriber_.getTopic().c_str());
 
   wave_toggle_service_ = gazebo_ros_->node()->advertiseService("actor_toggle_wave", &ActorPluginRos::ToggleWaveAnimation, this);

@@ -78,7 +78,7 @@ void ActorPluginRos::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
 
   // this->velocity =20;
   // Make sure the actor stays within bounds
-  this->init_pose.Pos().X(std::max(-50.0, std::min(100.0, this->init_pose.Pos().X())));
+  this->init_pose.Pos().X(std::max(-50.0, std::min(150.0, this->init_pose.Pos().X())));
   this->init_pose.Pos().Y(std::max(-50.0, std::min(50.0, this->init_pose.Pos().Y())));
   this->init_pose.Pos().Z(1.0191);
 
@@ -126,7 +126,7 @@ void ActorPluginRos::ChooseNewTarget()
   ignition::math::Vector3d newTarget(this->target);
   while ((newTarget - this->target).Length() < 2.0)
   {
-    newTarget.X(ignition::math::Rand::DblUniform(-50, 100));
+    newTarget.X(ignition::math::Rand::DblUniform(-50, 150));
     newTarget.Y(ignition::math::Rand::DblUniform(-50, 50));
 
     for (unsigned int i = 0; i < this->world->ModelCount(); ++i)
@@ -256,7 +256,7 @@ void ActorPluginRos::OnUpdate(const common::UpdateInfo &_info)
     }
 
     // Make sure the actor stays within bounds
-    pose.Pos().X(std::max(-50.0, std::min(100.0, pose.Pos().X())));
+    pose.Pos().X(std::max(-50.0, std::min(150.0, pose.Pos().X())));
     pose.Pos().Y(std::max(-50.0, std::min(50.0, pose.Pos().Y())));
     pose.Pos().Z(1.0191);
 

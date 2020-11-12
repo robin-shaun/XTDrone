@@ -46,9 +46,12 @@ if __name__ == "__main__":
 
     score_pub = rospy.Publisher("score",Int16,queue_size=2)  
     left_actors_pub = rospy.Publisher("left_actors",String,queue_size=2)
-    actor_info_sub = [None] * actor_num
-    for actor_id in range(actor_num):
-        actor_info_sub = rospy.Subscriber("/actor_"+str(actor_id)+"_info",ActorInfo,actor_info_callback)
+    actor_blue_sub = rospy.Subscriber("/actor_blue_info",ActorInfo,actor_info_callback)
+    actor_green_sub = rospy.Subscriber("/actor_green_info",ActorInfo,actor_info_callback)
+    actor_white_sub = rospy.Subscriber("/actor_white_info",ActorInfo,actor_info_callback)
+    actor_brown_sub = rospy.Subscriber("/actor_brown_info",ActorInfo,actor_info_callback)
+    actor_red1_sub = rospy.Subscriber("/actor_red1_info",ActorInfo,actor_info_callback)
+    actor_red2_sub = rospy.Subscriber("/actor_red2_info",ActorInfo,actor_info_callback)
 
     # sensor cost
     mono_cam = 1

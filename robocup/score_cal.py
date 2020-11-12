@@ -4,37 +4,40 @@ from std_msgs.msg import String,Int16
 from ros_actor_cmd_pose_plugin_msgs.msg import ActorInfo
 from gazebo_msgs.srv import DeleteModel,GetModelState
 
+actor_num = 6
 err_threshold = 1
 coordx_bias = 3
 coordy_bias = 9
+actor_id_dict = {'green':[0], 'blue':[1], 'brown':[2], 'white':[3], 'red':[4,5]}
 
 def actor_info_callback(msg):
     global target_finish, start_time, time_usage, score, count_flag
-    actor_pos = get_model_state('actor_' + str(msg.id), 'ground_plane').pose.position
-    if (msg.x-actor_pos.x+coordx_bias)**2+(msg.y-actor_pos.y+coordy_bias)**2<err_threshold**2:
-        if not count_flag[msg.id]:
-            count_flag[msg.id] = True
-            find_time = rospy.Time.now().secs
-        elif rospy.Time.now().secs - find_time >= 15:
-            target_finish += 1
-            del_model('actor_'+str(msg.id))
-            time_usage = rospy.Time.now().secs - start_time
-            print('actor_'+str(msg.id)+'is OK')
-            print('Time usage:', time_usage)
+    actor_id = actor_id_dict[msg.cls]
+    for i in actor_id:
+        actor_pos = get_model_state('actor_' + str(actor_id), 'ground_plane').pose.position
+        if (msg.x-actor_pos.x+coordx_bias)**2+(msg.y-actor_pos.y+coordy_bias)**2<err_threshold**2:
+            if not count_flag[msg.id]:
+                count_flag[msg.id] = True
+                find_time = rospy.Time.now().secs
+            elif rospy.Time.now().secs - find_time >= 15:
+                target_finish += 1
+                del_model('actor_'+str(msg.id))
+                time_usage = rospy.Time.now().secs - start_time
+                print('actor_'+str(msg.id)+'is OK')
+                print('Time usage:', time_usage)
 
-            # calculate score
-            if target_finish == 6:
-                score = (800 - time_usage) - sensor_cost * 3e-3
-                print("Mission finished")
-                sys.exit()
-            else:
-                score = (1 + target_finish) * 2e2 - sensor_cost * 3e-3
-            print('score:',score)
-    else:
-        count_flag[msg.id] = False
+                # calculate score
+                if target_finish == 6:
+                    score = (800 - time_usage) - sensor_cost * 3e-3
+                    print("Mission finished")
+                    sys.exit()
+                else:
+                    score = (1 + target_finish) * 2e2 - sensor_cost * 3e-3
+                print('score:',score)
+        else:
+            count_flag[msg.id] = False
 
 if __name__ == "__main__":
-    actor_num = 6
     left_actors = range(actor_num)
     count_flag = [False] * actor_num
     rospy.init_node('score_cal')

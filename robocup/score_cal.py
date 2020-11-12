@@ -14,16 +14,16 @@ def actor_info_callback(msg):
     global target_finish, start_time, time_usage, score, count_flag
     actor_id = actor_id_dict[msg.cls]
     for i in actor_id:
-        actor_pos = get_model_state('actor_' + str(actor_id), 'ground_plane').pose.position
+        actor_pos = get_model_state('actor_' + str(i), 'ground_plane').pose.position
         if (msg.x-actor_pos.x+coordx_bias)**2+(msg.y-actor_pos.y+coordy_bias)**2<err_threshold**2:
-            if not count_flag[msg.id]:
-                count_flag[msg.id] = True
+            if not count_flag[i]:
+                count_flag[i] = True
                 find_time = rospy.Time.now().secs
             elif rospy.Time.now().secs - find_time >= 15:
                 target_finish += 1
-                del_model('actor_'+str(msg.id))
+                del_model('actor_'+str(i))
                 time_usage = rospy.Time.now().secs - start_time
-                print('actor_'+str(msg.id)+'is OK')
+                print('actor_'+str(i)+'is OK')
                 print('Time usage:', time_usage)
 
                 # calculate score
@@ -35,7 +35,7 @@ def actor_info_callback(msg):
                     score = (1 + target_finish) * 2e2 - sensor_cost * 3e-3
                 print('score:',score)
         else:
-            count_flag[msg.id] = False
+            count_flag[i] = False
 
 if __name__ == "__main__":
     left_actors = range(actor_num)

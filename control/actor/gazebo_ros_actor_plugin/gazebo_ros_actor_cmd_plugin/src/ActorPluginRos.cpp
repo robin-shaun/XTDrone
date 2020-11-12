@@ -143,12 +143,12 @@ void ActorPluginRos::ChooseNewTarget()
 }
 
 /////////////////////////////////////////////////
-void ActorPluginRos::CmdPoseCallback(const geometry_msgs::Point::ConstPtr &cmd_msg)
+void ActorPluginRos::CmdPoseCallback(const ros_actor_cmd_pose_plugin_msgs::ActorMotion::ConstPtr &cmd_msg)
 {
   GET_CMD_FLAG = true;
   target[0] = cmd_msg->x;
   target[1] = cmd_msg->y;
-  target[2] = cmd_msg->z;
+  target[2] = cmd_msg->v;
   //target[2] is cmd_vel
   //target = ignition::math::Vector3d(10, 10, 1.0191);
   //std::cout << "I'm here!" << endl;

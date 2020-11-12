@@ -1,6 +1,7 @@
 import rospy
 import random
-from geometry_msgs.msg import Point, Twist
+from ros_actor_cmd_pose_plugin_msgs.msg import ActorMotion
+from geometry_msgs.msg import Point
 from gazebo_msgs.srv import GetModelState
 import sys
 import numpy
@@ -30,8 +31,8 @@ class ControlActor:
         self.velocity = 1.5
         self.last_pose = Point()
         self.current_pose = Point()
-        self.target_pose = Point()
-        self.target_pose.z = 1.25
+        self.target_motion = ActorMotion()
+        self.target_motion.v = 2
         # obstacle avoidance:
         self.Obstacleavoid = ObstacleAviod()  #ji wu 
         self.avoid_finish_flag = True
@@ -56,7 +57,7 @@ class ControlActor:
         [[19.0, 38.5], [-22.0, -6.0]], [[-4.7, 4.4], [-33.4, -21.6]], [[-27.8, -23.5], [-27.5, -15]], [[-36, -24], [-35, -31]], \
         [[-35.5, -31.3], [-25.5, -13]], [[3.0,8.2],[34.3,35.7]],[[14,17.5],[-15.7,-12.4]]]
         self.box_num = len(self.black_box)
-        self.cmd_pub = rospy.Publisher('/actor_' + str(self.id) + '/cmd_pose', Point, queue_size=10)
+        self.cmd_pub = rospy.Publisher('/actor_' + str(self.id) + '/cmd_motion', ActorMotion, queue_size=10)
         #self.black_box = numpy.array(
         #    [[[-32, -21], [18, 32]], [[7, 18], [12, 26]], [[55, 66], [15, 29]], [[72, 82], [10, 18]],
         #     [[88, 100], [12, 16]], [[79, 94], [24, 33]], [[54, 69], [-34, -27]], [[-4, 4], [-33, -22]],
@@ -100,7 +101,7 @@ class ControlActor:
         rate = rospy.Rate(self.f)
         
         while not rospy.is_shutdown():
-            self.target_pose.z = 2.0
+            self.target_motion.v = 2.0
             self.count = self.count + 1
             # get the pose of uav and actor
             try:
@@ -113,8 +114,8 @@ class ControlActor:
                 self.current_pose.x = 0.0
                 self.current_pose.y = 0.0
                 self.current_pose.z = 1.25
-            distance = (self.current_pose.x - self.target_pose.x) ** 2 + (
-                            self.current_pose.y - self.target_pose.y) ** 2
+            distance = (self.current_pose.x - self.target_motion.x) ** 2 + (
+                            self.current_pose.y - self.target_motion.y) ** 2
                 # collosion: if the actor is in the black box, then go backward and update a new target position
             # update new random target position
             if (self.avoid_finish_flag and self.distance_flag):
@@ -130,30 +131,30 @@ class ControlActor:
                                 while_time = while_time+1
                                 print str(self.id) + 'while time :  ', while_time
                                 break
-                self.target_pose.x = self.x
-                self.target_pose.y = self.y
+                self.target_motion.x = self.x
+                self.target_motion.y = self.y
                 self.flag = False
                 self.distance_flag = False
                 self.suitable_point = True
                 self.escape_suce_flag = False
 
-                if self.target_pose.x < self.x_min:
-                    self.target_pose.x = self.x_min
-                elif self.target_pose.x > self.x_max:
-                    self.target_pose.x = self.x_max
-                if self.target_pose.y < self.y_min:
-                    self.target_pose.y = self.y_min
-                elif self.target_pose.y > self.y_max:
-                    self.target_pose.y = self.y_max
+                if self.target_motion.x < self.x_min:
+                    self.target_motion.x = self.x_min
+                elif self.target_motion.x > self.x_max:
+                    self.target_motion.x = self.x_max
+                if self.target_motion.y < self.y_min:
+                    self.target_motion.y = self.y_min
+                elif self.target_motion.y > self.y_max:
+                    self.target_motion.y = self.y_max
                 
                 try:
                     print str(self.id)+'general change position'
-                    self.subtarget_pos = self.Obstacleavoid.GetPointList(self.current_pose, self.target_pose, 1) # current pose, target pose, safe distance
+                    self.subtarget_pos = self.Obstacleavoid.GetPointList(self.current_pose, self.target_motion, 1) # current pose, target pose, safe distance
                     self.subtarget_length = len(self.subtarget_pos)
                     middd_pos = [Point() for k in range(self.subtarget_length)]
                     middd_pos = copy.deepcopy(self.subtarget_pos)
-                    self.target_pose.x = copy.deepcopy(middd_pos[0].x)
-                    self.target_pose.y = copy.deepcopy(middd_pos[0].y)
+                    self.target_motion.x = copy.deepcopy(middd_pos[0].x)
+                    self.target_motion.y = copy.deepcopy(middd_pos[0].y)
                     #self.avoid_start_flag = True
                     # print 'current_position:   ' + str(self.id)+'      ', self.current_pose
                     # print 'middd_pos:     '+ str(self.id)+'      ', middd_pos
@@ -170,22 +171,22 @@ class ControlActor:
                                 dis_min = dis_list.index(min(dis_list))
                                 self.subtarget_length = 1
                                 if dis_min == 0:
-                                    self.target_pose.x = self.black_box[i][0][1] + 1.0
-                                    self.target_pose.y = self.current_pose.y
+                                    self.target_motion.x = self.black_box[i][0][1] + 1.0
+                                    self.target_motion.y = self.current_pose.y
                                 elif dis_min == 1:
-                                    self.target_pose.x = self.black_box[i][0][0] - 1.0
-                                    self.target_pose.y = self.current_pose.y
+                                    self.target_motion.x = self.black_box[i][0][0] - 1.0
+                                    self.target_motion.y = self.current_pose.y
                                 elif dis_min == 2:
-                                    self.target_pose.y = self.black_box[i][1][1] + 1.0
-                                    self.target_pose.x = self.current_pose.x
+                                    self.target_motion.y = self.black_box[i][1][1] + 1.0
+                                    self.target_motion.x = self.current_pose.x
                                 else:
-                                    self.target_pose.y = self.black_box[i][1][0] - 1.0
-                                    self.target_pose.x = self.current_pose.x
+                                    self.target_motion.y = self.black_box[i][1][0] - 1.0
+                                    self.target_motion.x = self.current_pose.x
                                 break
                 self.avoid_finish_flag = False
 
-            distance = (self.current_pose.x - self.target_pose.x) ** 2 + (
-                            self.current_pose.y - self.target_pose.y) ** 2
+            distance = (self.current_pose.x - self.target_motion.x) ** 2 + (
+                            self.current_pose.y - self.target_motion.y) ** 2
             if distance < 0.01:
                 self.arrive_count += 1
                 if self.arrive_count > 5:
@@ -235,56 +236,56 @@ class ControlActor:
                 if (tar_angle < 0) and (flag_k == 0):
                     y = k*(self.x_max-self.gazebo_uav_pose[self.catching_uav_num].x)+self.gazebo_uav_pose[self.catching_uav_num].y
                     if y < self.y_min:
-                        self.target_pose.y = self.y_min
-                        self.target_pose.x = (self.y_min - self.gazebo_uav_pose[self.catching_uav_num].y) / k + self.gazebo_uav_pose[self.catching_uav_num].x
+                        self.target_motion.y = self.y_min
+                        self.target_motion.x = (self.y_min - self.gazebo_uav_pose[self.catching_uav_num].y) / k + self.gazebo_uav_pose[self.catching_uav_num].x
                     else:
-                        self.target_pose.y = y
-                        self.target_pose.x = self.x_max
+                        self.target_motion.y = y
+                        self.target_motion.x = self.x_max
                 elif (tar_angle > 0) and (tar_angle < math.pi/2) and (flag_k == 0):
                     y = k*(self.x_max-self.gazebo_uav_pose[self.catching_uav_num].x)+self.gazebo_uav_pose[self.catching_uav_num].y
                     if y > self.y_max:
-                        self.target_pose.y = self.y_max
-                        self.target_pose.x = (self.y_max - self.gazebo_uav_pose[self.catching_uav_num].y) / k + self.gazebo_uav_pose[self.catching_uav_num].x
+                        self.target_motion.y = self.y_max
+                        self.target_motion.x = (self.y_max - self.gazebo_uav_pose[self.catching_uav_num].y) / k + self.gazebo_uav_pose[self.catching_uav_num].x
                     else:
-                        self.target_pose.y = y
-                        self.target_pose.x = self.x_max
+                        self.target_motion.y = y
+                        self.target_motion.x = self.x_max
                 elif (tar_angle < math.pi) and (tar_angle > math.pi/2) and (flag_k == 0):
                     y = k*(self.x_min-self.gazebo_uav_pose[self.catching_uav_num].x)+self.gazebo_uav_pose[self.catching_uav_num].y
                     if y > self.y_max:
-                        self.target_pose.y = self.y_max
-                        self.target_pose.x = (self.y_max - self.gazebo_uav_pose[self.catching_uav_num].y) / k + self.gazebo_uav_pose[self.catching_uav_num].x
+                        self.target_motion.y = self.y_max
+                        self.target_motion.x = (self.y_max - self.gazebo_uav_pose[self.catching_uav_num].y) / k + self.gazebo_uav_pose[self.catching_uav_num].x
                     else:
-                        self.target_pose.y = y
-                        self.target_pose.x = self.x_min
+                        self.target_motion.y = y
+                        self.target_motion.x = self.x_min
                 elif (tar_angle > math.pi) and (tar_angle < 3*math.pi/2) and (flag_k == 0):
                     y = k*(self.x_min-self.gazebo_uav_pose[self.catching_uav_num].x)+self.gazebo_uav_pose[self.catching_uav_num].y
                     if y < self.y_min:
-                        self.target_pose.y = self.y_min
-                        self.target_pose.x = (self.y_min - self.gazebo_uav_pose[self.catching_uav_num].y) / k + self.gazebo_uav_pose[self.catching_uav_num].x
+                        self.target_motion.y = self.y_min
+                        self.target_motion.x = (self.y_min - self.gazebo_uav_pose[self.catching_uav_num].y) / k + self.gazebo_uav_pose[self.catching_uav_num].x
                     else:
-                        self.target_pose.y = y
-                        self.target_pose.x = self.x_min
+                        self.target_motion.y = y
+                        self.target_motion.x = self.x_min
                 elif flag_k == 1:
-                    self.target_pose.x = self.gazebo_uav_pose[self.catching_uav_num].x
-                    self.target_pose.y = self.y_max
+                    self.target_motion.x = self.gazebo_uav_pose[self.catching_uav_num].x
+                    self.target_motion.y = self.y_max
                 elif flag_k == 2:
-                    self.target_pose.x = self.gazebo_uav_pose[self.catching_uav_num].x
-                    self.target_pose.y = self.y_min
+                    self.target_motion.x = self.gazebo_uav_pose[self.catching_uav_num].x
+                    self.target_motion.y = self.y_min
                 print str(self.id) + '   self.curr_pose:', self.gazebo_uav_pose[self.catching_uav_num]
-                print str(self.id) + '   self.target_pose:', self.target_pose
+                print str(self.id) + '   self.target_motion:', self.target_motion
                 print 'escaping change position'
                 try:
                     print str(self.id)+'general change position'
-                    self.subtarget_pos = self.Obstacleavoid.GetPointList(self.current_pose, self.target_pose, 1) # current pose, target pose, safe distance
+                    self.subtarget_pos = self.Obstacleavoid.GetPointList(self.current_pose, self.target_motion, 1) # current pose, target pose, safe distance
                     self.subtarget_length = 1
                     # middd_pos = [Point() for k in range(self.subtarget_length)]
                     # middd_pos = copy.deepcopy(self.subtarget_pos)
-                    self.target_pose.x = self.subtarget_pos[0].x
-                    self.target_pose.y = self.subtarget_pos[0].y
+                    self.target_motion.x = self.subtarget_pos[0].x
+                    self.target_motion.y = self.subtarget_pos[0].y
                     self.catching_flag = 2
                 except:
-                    self.target_pose.x = self.target_pose.x
-                    self.target_pose.y = self.target_pose.y
+                    self.target_motion.x = self.target_motion.x
+                    self.target_motion.y = self.target_motion.y
                     self.catching_flag = 1
 
 
@@ -314,16 +315,16 @@ class ControlActor:
                         self.avoid_finish_flag = True
                         self.subtarget_count = 0
                     else:
-                        self.target_pose.x = middd_pos[self.subtarget_count].x
-                        self.target_pose.y = middd_pos[self.subtarget_count].y
+                        self.target_motion.x = middd_pos[self.subtarget_count].x
+                        self.target_motion.y = middd_pos[self.subtarget_count].y
 
             if self.catching_flag == 1 or self.catching_flag == 2:
-                self.target_pose.z = 3
+                self.target_motion.v = 3
             else:
-                self.target_pose.z = 2
+                self.target_motion.v = 2
             if self.count % 200 == 0:
-                print str(self.id) + '   vel:', self.target_pose.z
-            self.cmd_pub.publish(self.target_pose)
+                print str(self.id) + '   vel:', self.target_motion.v
+            self.cmd_pub.publish(self.target_motion)
             rate.sleep()
 
     def pos2ang(self, deltax, deltay):   #([xb,yb] to [xa, ya])

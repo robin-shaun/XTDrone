@@ -42,7 +42,7 @@ class ObstacleAviod:
             else:
                 self.flag = False
         subTargList.append(tempTargePos)
-        print subTargList
+        #print subTargList
         return subTargList
 
     def GetSubTarget(self, startPos, targetPos, safeDis):
@@ -133,10 +133,7 @@ class ObstacleAviod:
             elif sign_side == -1:
                 angle = minAlpha
                 obstIndex = minAlphaIndex
-            try:
-                resu = self.VectNorm(self.obstList[G[obstIndex]], startPos) / lengthCurToTarget
-            except:
-                resu = 
+            resu = self.VectNorm(self.obstList[G[obstIndex]], startPos) / lengthCurToTarget
             self.subTarg.y = startPos.y + (curposToTarget.y * math.cos(angle) + math.sin(angle) * curposToTarget.x) * resu
             self.subTarg.x = startPos.x + (curposToTarget.x * math.cos(angle) - math.sin(angle) * curposToTarget.y) * resu
             self.useOriginalCurPos = False
@@ -176,15 +173,15 @@ class ObstacleAviod:
         norm = math.sqrt(pow(Pt1.x - Pt2.x, 2) + pow(Pt1.y - Pt2.y, 2))
         return norm
 
-# if __name__ == "__main__":
-#     curr = Point()
-#     curr.x = float(sys.argv[1])
-#     curr.y = float(sys.argv[2])
-#     targ = Point()
-#     targ.x = float(sys.argv[3])
-#     targ.y = float(sys.argv[4])
-#     avoid = ObstacleAviod()
-#     tar = avoid.GetPointList(curr, targ, 1)
+if __name__ == "__main__":
+    curr = Point()
+    curr.x = float(sys.argv[1])
+    curr.y = float(sys.argv[2])
+    targ = Point()
+    targ.x = float(sys.argv[3])
+    targ.y = float(sys.argv[4])
+    avoid = ObstacleAviod()
+    tar = avoid.GetPointList(curr, targ, 1)
 
 
     

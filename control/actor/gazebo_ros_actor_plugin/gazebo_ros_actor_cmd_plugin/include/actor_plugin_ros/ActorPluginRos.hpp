@@ -23,7 +23,7 @@
 
 // Ros
 #include <ros/ros.h>
-#include <geometry_msgs/Point.h>
+#include <ros_actor_cmd_pose_plugin_msgs/ActorMotion.h>
 #include <ros_actor_cmd_pose_plugin_msgs/ToggleActorWaving.h>
 
 // Ignition
@@ -66,7 +66,7 @@ namespace gazebo
       // private: void NewVelCmdCallback(const geometry_msgs::Twist::ConstPtr& cmd_msg);
 
       /// \brief Callback for newly received pose command
-      private: void CmdPoseCallback(const geometry_msgs::Point::ConstPtr& cmd_msg);
+      private: void CmdPoseCallback(const ros_actor_cmd_pose_plugin_msgs::ActorMotion::ConstPtr& cmd_msg);
 
       /// \brief Choose New Target
       private: void ChooseNewTarget();

@@ -3,6 +3,7 @@ import sys
 from std_msgs.msg import String,Int16
 from ros_actor_cmd_pose_plugin_msgs.msg import ActorInfo
 from gazebo_msgs.srv import DeleteModel,GetModelState
+import time
 
 actor_num = 6
 err_threshold = 1
@@ -11,36 +12,41 @@ coordy_bias = 9
 actor_id_dict = {'green':[0], 'blue':[1], 'brown':[2], 'white':[3], 'red':[4,5]}
 
 def actor_info_callback(msg):
-    global target_finish, start_time, time_usage, score, count_flag, left_actors, actors_pos
+    global target_finish, start_time, score, count_flag, left_actors, actors_pos, find_time
     actor_id = actor_id_dict[msg.cls]
     for i in actor_id:
-        if (msg.x-actors_pos[i].x+coordx_bias)**2+(msg.y-actors_pos[i].y+coordy_bias)**2<err_threshold**2:
+        if i not in left_actors:
+            break
+        if (msg.x-actors_pos[i].x)**2+(msg.y-actors_pos[i].y)**2<err_threshold**2:
             if not count_flag[i]:
                 count_flag[i] = True
-                find_time = rospy.Time.now().secs
-            elif rospy.Time.now().secs - find_time >= 15:
+                find_time[i] = time.time()
+                print("find actor_"+str(i))
+            elif time.time() - find_time[i] >= 15:
                 target_finish += 1
                 del_model('actor_'+str(i))
-                del left_actors[i]
-                time_usage = rospy.Time.now().secs - start_time
+                left_actors.remove(i)
+                time_usage = time.time() - start_time
                 print('actor_'+str(i)+'is OK')
                 print('Time usage:', time_usage)
 
                 # calculate score
-                if target_finish == 6:
+                if target_finish == 5:
                     score = (800 - time_usage) - sensor_cost * 3e-3
+                    print('score:',score)
                     print("Mission finished")
-                    sys.exit()
+                    sys.exit(-1)
                 else:
                     score = (1 + target_finish) * 2e2 - sensor_cost * 3e-3
-                print('score:',score)
+                    print('score:',score)              
         else:
             count_flag[i] = False
 
 if __name__ == "__main__":
     left_actors = range(actor_num)
-    actors_pos = [None]*actor_num
+    actors_pos = [None] * actor_num
     count_flag = [False] * actor_num
+    find_time = [0.0] * actor_num
     rospy.init_node('score_cal')
     del_model = rospy.ServiceProxy("/gazebo/delete_model",DeleteModel)
     get_model_state = rospy.ServiceProxy("/gazebo/get_model_state",GetModelState) 
@@ -64,11 +70,11 @@ if __name__ == "__main__":
     sensor_cost = mono_cam * 5e2 + stereo_cam * 1e3 + laser1d * 2e2+ laser2d * 5e3 + laser3d * 2e4 + gimbal * 2e2
     
     target_finish = 0
-    time_usage = 10
     score = (1 + target_finish) * 2e2 - sensor_cost * 3e-3
 
     rate = rospy.Rate(10)
-    start_time = rospy.Time.now().secs
+    start_time = time.time()
+
 
     while not rospy.is_shutdown():
         for i in left_actors:

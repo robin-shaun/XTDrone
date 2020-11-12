@@ -9,6 +9,7 @@ find_package(catkin REQUIRED
 
 add_message_files(
   FILES
+  ActorInfo.msg
   ActorMotion.msg
 )
 

@@ -107,7 +107,6 @@ class ControlActor:
                 get_actor_state = self.gazeboModelstate('actor_' + self.id, 'ground_plane')
                 self.last_pose = self.current_pose
                 self.gazebo_actor_pose = get_actor_state.pose.position
-                self.current_vel = get_actor_state.twist.linear
                 self.current_pose = self.gazebo_actor_pose
             except rospy.ServiceException as e:
                 print("Gazebo model state service"+str(self.id)+"  call failed: %s") % e
@@ -157,8 +156,8 @@ class ControlActor:
                     self.target_pose.y = copy.deepcopy(middd_pos[0].y)
                     #self.avoid_start_flag = True
                     # print 'current_position:   ' + str(self.id)+'      ', self.current_pose
-                    print 'middd_pos:     '+ str(self.id)+'      ', middd_pos
-                    print '\n'
+                    # print 'middd_pos:     '+ str(self.id)+'      ', middd_pos
+                    # print '\n'
                 except:
                     dis_list = [0,0,0,0]
                     for i in range(len(self.black_box)):
@@ -192,8 +191,8 @@ class ControlActor:
                 if self.arrive_count > 5:
                     self.distance_flag = True
                     self.arrive_count = 0
-                    if self.catching_flag == 1:
-                        self.catching_flag = 2
+                    if self.catching_flag == 2:
+                        self.catching_flag = 0
                 else:
                     self.distance_flag = False
             else:
@@ -222,9 +221,8 @@ class ControlActor:
 
             # # escaping (get a new target position)
             if self.catching_flag == 1:
-                self.catching_flag = 2
                 flag_k = 0
-                angle = self.pos2ang(self.current_vel.x, self.current_vel.y)
+                angle = self.pos2ang(self.gazebo_uav_twist[self.catching_uav_num].x,self.gazebo_uav_twist[self.catching_uav_num].y)
                 print 'angle:   ', angle
                 tar_angle = angle - math.pi/2   # escape to the target vertical of the uav
                 if tar_angle == math.pi/2:
@@ -235,57 +233,60 @@ class ControlActor:
                     k = math.tan(tar_angle) 
                     print 'k:   ', k
                 if (tar_angle < 0) and (flag_k == 0):
-                    y = k*(self.x_max-self.current_pose.x)+self.current_pose.y
+                    y = k*(self.x_max-self.gazebo_uav_pose[self.catching_uav_num].x)+self.gazebo_uav_pose[self.catching_uav_num].y
                     if y < self.y_min:
                         self.target_pose.y = self.y_min
-                        self.target_pose.x = (self.y_min - self.current_pose.y) / k + self.current_pose.x
+                        self.target_pose.x = (self.y_min - self.gazebo_uav_pose[self.catching_uav_num].y) / k + self.gazebo_uav_pose[self.catching_uav_num].x
                     else:
                         self.target_pose.y = y
                         self.target_pose.x = self.x_max
                 elif (tar_angle > 0) and (tar_angle < math.pi/2) and (flag_k == 0):
-                    y = k*(self.x_max-self.current_pose.x)+self.current_pose.y
+                    y = k*(self.x_max-self.gazebo_uav_pose[self.catching_uav_num].x)+self.gazebo_uav_pose[self.catching_uav_num].y
                     if y > self.y_max:
                         self.target_pose.y = self.y_max
-                        self.target_pose.x = (self.y_max - self.current_pose.y) / k + self.current_pose.x
+                        self.target_pose.x = (self.y_max - self.gazebo_uav_pose[self.catching_uav_num].y) / k + self.gazebo_uav_pose[self.catching_uav_num].x
                     else:
                         self.target_pose.y = y
                         self.target_pose.x = self.x_max
                 elif (tar_angle < math.pi) and (tar_angle > math.pi/2) and (flag_k == 0):
-                    y = k*(self.x_min-self.current_pose.x)+self.current_pose.y
+                    y = k*(self.x_min-self.gazebo_uav_pose[self.catching_uav_num].x)+self.gazebo_uav_pose[self.catching_uav_num].y
                     if y > self.y_max:
                         self.target_pose.y = self.y_max
-                        self.target_pose.x = (self.y_max - self.current_pose.y) / k + self.current_pose.x
+                        self.target_pose.x = (self.y_max - self.gazebo_uav_pose[self.catching_uav_num].y) / k + self.gazebo_uav_pose[self.catching_uav_num].x
                     else:
                         self.target_pose.y = y
                         self.target_pose.x = self.x_min
                 elif (tar_angle > math.pi) and (tar_angle < 3*math.pi/2) and (flag_k == 0):
-                    y = k*(self.x_min-self.current_pose.x)+self.current_pose.y
+                    y = k*(self.x_min-self.gazebo_uav_pose[self.catching_uav_num].x)+self.gazebo_uav_pose[self.catching_uav_num].y
                     if y < self.y_min:
                         self.target_pose.y = self.y_min
-                        self.target_pose.x = (self.y_min - self.current_pose.y) / k + self.current_pose.x
+                        self.target_pose.x = (self.y_min - self.gazebo_uav_pose[self.catching_uav_num].y) / k + self.gazebo_uav_pose[self.catching_uav_num].x
                     else:
                         self.target_pose.y = y
                         self.target_pose.x = self.x_min
                 elif flag_k == 1:
-                    self.target_pose.x = self.current_pose.x
+                    self.target_pose.x = self.gazebo_uav_pose[self.catching_uav_num].x
                     self.target_pose.y = self.y_max
                 elif flag_k == 2:
-                    self.target_pose.x = self.current_pose.x
+                    self.target_pose.x = self.gazebo_uav_pose[self.catching_uav_num].x
                     self.target_pose.y = self.y_min
-                print str(self.id) + '   self.curr_pose:', self.current_pose
+                print str(self.id) + '   self.curr_pose:', self.gazebo_uav_pose[self.catching_uav_num]
                 print str(self.id) + '   self.target_pose:', self.target_pose
                 print 'escaping change position'
-                self.subtarget_pos = self.Obstacleavoid.GetPointList(self.current_pose, self.target_pose, 1) # current pose, target pose, safe distance
-                self.subtarget_length = 1
-                # middd_pos = [Point() for k in range(self.subtarget_length)]
-                # middd_pos = copy.deepcopy(self.subtarget_pos)
-                self.target_pose.x = self.subtarget_pos[0].x
-                self.target_pose.y = self.subtarget_pos[0].y
-                #self.avoid_start_flag = True
-                # print 'current_position:   ' + str(self.id)+'      ', self.current_pose
-                print 'target_pose:     '+ str(self.id)+'      ', self.target_pose
-                print '\n'
-                #self.avoid_finish_flag = False
+                try:
+                    print str(self.id)+'general change position'
+                    self.subtarget_pos = self.Obstacleavoid.GetPointList(self.current_pose, self.target_pose, 1) # current pose, target pose, safe distance
+                    self.subtarget_length = 1
+                    # middd_pos = [Point() for k in range(self.subtarget_length)]
+                    # middd_pos = copy.deepcopy(self.subtarget_pos)
+                    self.target_pose.x = self.subtarget_pos[0].x
+                    self.target_pose.y = self.subtarget_pos[0].y
+                    self.catching_flag = 2
+                except:
+                    self.target_pose.x = self.target_pose.x
+                    self.target_pose.y = self.target_pose.y
+                    self.catching_flag = 1
+
 
             # check if the actor is shot:
             if self.get_moving:
@@ -316,10 +317,10 @@ class ControlActor:
                         self.target_pose.x = middd_pos[self.subtarget_count].x
                         self.target_pose.y = middd_pos[self.subtarget_count].y
 
-            if self.catching_flag == 1:
-                self.target_pose.z = 3.0
+            if self.catching_flag == 1 or self.catching_flag == 2:
+                self.target_pose.z = 3
             else:
-                self.target_pose.z = 2.0
+                self.target_pose.z = 2
             if self.count % 200 == 0:
                 print str(self.id) + '   vel:', self.target_pose.z
             self.cmd_pub.publish(self.target_pose)

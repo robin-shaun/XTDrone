@@ -26,7 +26,7 @@ def actor_info_callback(msg):
                 print("find actor_"+str(i))
             elif rospy.get_time() - find_time[i] >= 15:
                 target_finish += 1
-                #del_model('actor_'+str(i))
+                del_model('actor_'+str(i))
                 left_actors.remove(i)
                 time_usage = rospy.get_time() - start_time
                 print('actor_'+str(i)+' is OK')

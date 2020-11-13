@@ -37,7 +37,8 @@ if __name__ == "__main__":
         blue_actorinfo.y = actors_pos[1].y
         brown_actorinfo.x = actors_pos[2].x
         brown_actorinfo.y = actors_pos[2].y
-        test_pub_red2.publish(red2_actorinfo)
+        if rospy.get_time() - start_time < 20:
+            test_pub_red2.publish(red2_actorinfo)
         if rospy.get_time() - start_time > 5:
             test_pub_green.publish(green_actorinfo)
         if rospy.get_time() - start_time > 6:

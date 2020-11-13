@@ -33,7 +33,7 @@ def actor_info_callback(msg):
                 print('Time usage:', time_usage)
 
                 # calculate score
-                if target_finish == 5:
+                if target_finish == 6:
                     score = (800 - time_usage) - sensor_cost * 3e-3
                     print('score:',score)
                     print("Mission finished")

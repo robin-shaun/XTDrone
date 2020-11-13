@@ -317,13 +317,16 @@ class ControlActor:
                     else:
                         self.target_motion.x = middd_pos[self.subtarget_count].x
                         self.target_motion.y = middd_pos[self.subtarget_count].y
-
+            '''
             if self.catching_flag == 1 or self.catching_flag == 2:
                 self.target_motion.v = 3
             else:
                 self.target_motion.v = 2
-            if self.count % 200 == 0:
+                if self.count % 200 == 0:
                 print str(self.id) + '   vel:', self.target_motion.v
+            '''
+            #reduce difficulty
+            self.target_motion.v = 1
             self.cmd_pub.publish(self.target_motion)
             rate.sleep()
 

@@ -1,6 +1,7 @@
 import rospy
 from ros_actor_cmd_pose_plugin_msgs.msg import ActorInfo
 from gazebo_msgs.srv import GetModelState
+import time
 
 if __name__ == "__main__":
     rospy.init_node("test")
@@ -19,6 +20,8 @@ if __name__ == "__main__":
     test_pub_white = rospy.Publisher("/actor_white_info",ActorInfo,queue_size=2)
     get_model_state = rospy.ServiceProxy("/gazebo/get_model_state",GetModelState)
     rospy.Rate(1)
+    time.sleep(1)
+    start_time = rospy.get_time()
     while not rospy.is_shutdown():
         for i in range(6):
             actors_pos[i] = get_model_state('actor_' + str(i), 'ground_plane').pose.position
@@ -35,8 +38,13 @@ if __name__ == "__main__":
         brown_actorinfo.x = actors_pos[2].x
         brown_actorinfo.y = actors_pos[2].y
         test_pub_red2.publish(red2_actorinfo)
-        test_pub_green.publish(green_actorinfo)
-        test_pub_blue.publish(blue_actorinfo)
-        test_pub_brown.publish(brown_actorinfo)
-        #test_pub_red1.publish(red1_actorinfo)
-        test_pub_white.publish(white_actorinfo)
+        if rospy.get_time() - start_time > 5:
+            test_pub_green.publish(green_actorinfo)
+        if rospy.get_time() - start_time > 6:
+            test_pub_blue.publish(blue_actorinfo)
+        if rospy.get_time() - start_time > 10:
+            test_pub_brown.publish(brown_actorinfo)
+        if rospy.get_time() - start_time > 15:
+            test_pub_red1.publish(red1_actorinfo)
+        if rospy.get_time() - start_time > 20:
+            test_pub_white.publish(white_actorinfo)

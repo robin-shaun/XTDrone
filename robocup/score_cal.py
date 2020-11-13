@@ -12,21 +12,23 @@ coordy_bias = 9
 actor_id_dict = {'green':[0], 'blue':[1], 'brown':[2], 'white':[3], 'red':[4,5]}
 
 def actor_info_callback(msg):
-    global target_finish, start_time, score, count_flag, left_actors, actors_pos, find_time
+    global target_finish, start_time, score, count_flag, left_actors, actors_pos, find_time, topic_arrive_time
     actor_id = actor_id_dict[msg.cls]
     if msg.cls == 'red':
         red_cnt = 0
     for i in actor_id:
         if i not in left_actors:
-            break
-        if (msg.x-actors_pos[i].x)**2+(msg.y-actors_pos[i].y)**2<err_threshold**2:
+            continue
+        topic_arrive_interval = rospy.get_time() - topic_arrive_time[i]
+        topic_arrive_time[i] = rospy.get_time() 
+        if (msg.x-actors_pos[i].x)**2+(msg.y-actors_pos[i].y)**2<err_threshold**2 and topic_arrive_interval<1:
             if not count_flag[i]:
                 count_flag[i] = True
                 find_time[i] = rospy.get_time()
                 print("find actor_"+str(i))
             elif rospy.get_time() - find_time[i] >= 15:
                 target_finish += 1
-                del_model('actor_'+str(i))
+                #del_model('actor_'+str(i))
                 left_actors.remove(i)
                 time_usage = rospy.get_time() - start_time
                 print('actor_'+str(i)+' is OK')
@@ -34,18 +36,20 @@ def actor_info_callback(msg):
 
                 # calculate score
                 if target_finish == 6:
-                    score = (800 - time_usage) - sensor_cost * 3e-3
+                    score = (1200 - time_usage) - sensor_cost * 3e-3
                     print('score:',score)
                     print("Mission finished")
                     os._exit(0)
                 else:
-                    score = (1 + target_finish) * 1e2 - sensor_cost * 3e-3
-                    print('score:',score)              
+                    score = (2 + target_finish) * 60 - sensor_cost * 3e-3    
+                    print('score:',score)
+                    break        
         else:
             if msg.cls == 'red':
                 red_cnt += 1
                 if red_cnt == 2:
                     count_flag[i] = False
+                    count_flag[i-1] = False
             else:
                 count_flag[i] = False
 
@@ -53,6 +57,7 @@ if __name__ == "__main__":
     left_actors = range(actor_num)
     actors_pos = [None] * actor_num
     count_flag = [False] * actor_num
+    topic_arrive_time = [0.0] * actor_num
     find_time = [0.0] * actor_num
     rospy.init_node('score_cal')
     del_model = rospy.ServiceProxy("/gazebo/delete_model",DeleteModel)
@@ -77,7 +82,7 @@ if __name__ == "__main__":
     sensor_cost = mono_cam * 5e2 + stereo_cam * 1e3 + laser1d * 2e2+ laser2d * 5e3 + laser3d * 2e4 + gimbal * 2e2
     
     target_finish = 0
-    score = (1 + target_finish) * 2e2 - sensor_cost * 3e-3
+    score = (2 + target_finish) * 60 - sensor_cost * 3e-3
     time.sleep(1)
     rate = rospy.Rate(10)
     start_time = rospy.get_time()

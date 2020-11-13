@@ -19,7 +19,7 @@ if __name__ == "__main__":
     test_pub_blue = rospy.Publisher("/actor_blue_info",ActorInfo,queue_size=2)
     test_pub_white = rospy.Publisher("/actor_white_info",ActorInfo,queue_size=2)
     get_model_state = rospy.ServiceProxy("/gazebo/get_model_state",GetModelState)
-    rospy.Rate(1)
+    rate = rospy.Rate(2)
     time.sleep(1)
     start_time = rospy.get_time()
     while not rospy.is_shutdown():
@@ -49,3 +49,4 @@ if __name__ == "__main__":
             test_pub_red1.publish(red1_actorinfo)
         if rospy.get_time() - start_time > 20:
             test_pub_white.publish(white_actorinfo)
+        rate.sleep()

@@ -20,7 +20,7 @@ def actor_info_callback(msg):
         if i not in left_actors:
             continue
         topic_arrive_interval = rospy.get_time() - topic_arrive_time[i]
-        topic_arrive_time[i] = rospy.get_time() 
+        topic_arrive_time[i] = rospy.get_time()
         if (msg.x-actors_pos[i].x)**2+(msg.y-actors_pos[i].y)**2<err_threshold**2 and topic_arrive_interval<1:
             if not count_flag[i]:
                 count_flag[i] = True
@@ -39,7 +39,8 @@ def actor_info_callback(msg):
                     score = (1200 - time_usage) - sensor_cost * 3e-3
                     print('score:',score)
                     print("Mission finished")
-                    os._exit(0)
+                    while True:
+                        pass
                 else:
                     score = (2 + target_finish) * 60 - sensor_cost * 3e-3    
                     print('score:',score)
@@ -89,7 +90,9 @@ if __name__ == "__main__":
 
     while not rospy.is_shutdown():
         for i in left_actors:
-            actors_pos[i] = get_model_state('actor_' + str(i), 'ground_plane').pose.position
+            actors_pos_tmp = get_model_state('actor_' + str(i), 'ground_plane').pose.position
+            if not actors_pos_tmp.x**2+actors_pos_tmp.y**2 == 0:
+                actors_pos[i] = actors_pos_tmp
         score_pub.publish(score)
         left_actors_pub.publish(str(left_actors))
         rate.sleep()

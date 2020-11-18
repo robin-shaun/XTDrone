@@ -2,14 +2,22 @@ import rospy
 import os
 from std_msgs.msg import String,Int16
 from ros_actor_cmd_pose_plugin_msgs.msg import ActorInfo
+from mavros_msgs.msg import State
 from gazebo_msgs.srv import DeleteModel,GetModelState
 import time
 
 actor_num = 6
+uav_num = 6
 err_threshold = 1
 coordx_bias = 3
 coordy_bias = 9
 actor_id_dict = {'green':[0], 'blue':[1], 'brown':[2], 'white':[3], 'red':[4,5]}
+
+def state_callback(msg, vehicle_id):
+    global fall_detect
+    if msg.armed == 'False':
+        fall_detect[vehicle_id] = 1
+
 
 def actor_info_callback(msg):
     global target_finish, start_time, score, count_flag, left_actors, actors_pos, find_time, topic_arrive_time
@@ -72,6 +80,9 @@ if __name__ == "__main__":
     actor_brown_sub = rospy.Subscriber("/actor_brown_info",ActorInfo,actor_info_callback)
     actor_red1_sub = rospy.Subscriber("/actor_red1_info",ActorInfo,actor_info_callback)
     actor_red2_sub = rospy.Subscriber("/actor_red2_info",ActorInfo,actor_info_callback)
+    state_sub = [None] * 6
+    for vehicle_id in range(uav_num):
+        state_sub[vehicle_id] = rospy.Subscriber('/typhoon_h480_'+vehicle_type+'_'+vehicle_id+'/mavros/state', State, state_callback, vehicle_id)
 
     # sensor cost
     mono_cam = 1
@@ -82,6 +93,7 @@ if __name__ == "__main__":
     gimbal = 1
     sensor_cost = mono_cam * 5e2 + stereo_cam * 1e3 + laser1d * 2e2+ laser2d * 5e3 + laser3d * 2e4 + gimbal * 2e2
     
+    fall_detect = [0] * 6
     target_finish = 0
     score = (2 + target_finish) * 60 - sensor_cost * 3e-3
     time.sleep(1)

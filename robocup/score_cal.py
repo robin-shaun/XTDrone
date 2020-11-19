@@ -13,11 +13,11 @@ coordx_bias = 3
 coordy_bias = 9
 actor_id_dict = {'green':[0], 'blue':[1], 'brown':[2], 'white':[3], 'red':[4,5]}
 
-def state_callback(msg, vehicle_id):
-    global fall_detect, start_time
-    if rospy.get_time() - start_time > 60 and msg.armed == 'False':
-        fall_detect[vehicle_id] = 1
-        print('UAV_' + str(vehicle_id) + ': falled')
+# def state_callback(msg, vehicle_id):
+#     global fall_detect, start_time
+#     if rospy.get_time() - start_time > 60 and not msg.armed and fall_detect[vehicle_id] == 0:
+#         fall_detect[vehicle_id] = 1
+#         print('UAV_' + str(vehicle_id) + ': falled')
         
 
 
@@ -40,22 +40,18 @@ def actor_info_callback(msg):
                 target_finish += 1
                 del_model('actor_'+str(i))
                 left_actors.remove(i)
-                time_usage = rospy.get_time() - start_time
-                if time_usage > 600:
-                    print('score:',score)
-                    print("Time out, mission failed")
                 print('actor_'+str(i)+' is OK')
                 print('Time usage:', time_usage)
                  
                 # calculate score
                 if target_finish == 6:
-                    score = (1200 - time_usage) - sensor_cost * 3e-3 - sum(fall_detect) * 30
+                    score = (1200 - time_usage) - sensor_cost * 3e-3 
                     print('score:',score)
                     print("Mission finished")
                     while True:
                         pass
                 else:
-                    score = (2 + target_finish) * 60 - sensor_cost * 3e-3 - sum(fall_detect) * 30   
+                    score = (2 + target_finish) * 60 - sensor_cost * 3e-3
                     print('score:',score)
                     break        
         else:
@@ -87,9 +83,9 @@ if __name__ == "__main__":
     actor_brown_sub = rospy.Subscriber("/actor_brown_info",ActorInfo,actor_info_callback)
     actor_red1_sub = rospy.Subscriber("/actor_red1_info",ActorInfo,actor_info_callback)
     actor_red2_sub = rospy.Subscriber("/actor_red2_info",ActorInfo,actor_info_callback)
-    state_sub = [None] * 6
-    for vehicle_id in range(uav_num):
-        state_sub[vehicle_id] = rospy.Subscriber('/typhoon_h480_'+str(vehicle_id)+'/mavros/state', State, state_callback, vehicle_id)
+    # state_sub = [None] * 6
+    # for vehicle_id in range(uav_num):
+    #     state_sub[vehicle_id] = rospy.Subscriber('/typhoon_h480_'+str(vehicle_id)+'/mavros/state', State, state_callback, vehicle_id)
 
     # sensor cost
     mono_cam = 1
@@ -102,7 +98,7 @@ if __name__ == "__main__":
     
     fall_detect = [0] * 6
     target_finish = 0
-    score = (2 + target_finish) * 60 - sensor_cost * 3e-3 - sum(fall_detect) * 30  
+    score = (2 + target_finish) * 60 - sensor_cost * 3e-3
     rate = rospy.Rate(10)
 
     while not rospy.is_shutdown():
@@ -110,6 +106,12 @@ if __name__ == "__main__":
             actors_pos_tmp = get_model_state('actor_' + str(i), 'ground_plane').pose.position
             if not actors_pos_tmp.x**2+actors_pos_tmp.y**2 == 0:
                 actors_pos[i] = actors_pos_tmp
+        time_usage = rospy.get_time() - start_time
+        if time_usage > 600:
+            print('score:',score)
+            print("Time out, mission failed")
+            while True:
+                pass
         score_pub.publish(score)
         left_actors_pub.publish(str(left_actors))
         rate.sleep()

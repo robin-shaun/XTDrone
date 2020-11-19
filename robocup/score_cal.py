@@ -102,7 +102,7 @@ if __name__ == "__main__":
     
     fall_detect = [0] * 6
     target_finish = 0
-    score = (2 + target_finish) * 60 - sensor_cost * 3e-3
+    score = (2 + target_finish) * 60 - sensor_cost * 3e-3 - sum(fall_detect) * 30  
     rate = rospy.Rate(10)
 
     while not rospy.is_shutdown():

@@ -1,6 +1,6 @@
 import rospy
 import os
-from std_msgs.msg import String,Int16
+from std_msgs.msg import Int16,String
 from ros_actor_cmd_pose_plugin_msgs.msg import ActorInfo
 from mavros_msgs.msg import State
 from gazebo_msgs.srv import DeleteModel,GetModelState
@@ -14,9 +14,11 @@ coordy_bias = 9
 actor_id_dict = {'green':[0], 'blue':[1], 'brown':[2], 'white':[3], 'red':[4,5]}
 
 def state_callback(msg, vehicle_id):
-    global fall_detect
-    if msg.armed == 'False':
+    global fall_detect, start_time
+    if rospy.get_time() - start_time > 60 and msg.armed == 'False':
         fall_detect[vehicle_id] = 1
+        print('UAV_' + str(vehicle_id) + ': falled')
+        
 
 
 def actor_info_callback(msg):
@@ -39,18 +41,21 @@ def actor_info_callback(msg):
                 del_model('actor_'+str(i))
                 left_actors.remove(i)
                 time_usage = rospy.get_time() - start_time
+                if time_usage > 600:
+                    print('score:',score)
+                    print("Time out, mission failed")
                 print('actor_'+str(i)+' is OK')
                 print('Time usage:', time_usage)
-
+                 
                 # calculate score
                 if target_finish == 6:
-                    score = (1200 - time_usage) - sensor_cost * 3e-3
+                    score = (1200 - time_usage) - sensor_cost * 3e-3 - sum(fall_detect) * 30
                     print('score:',score)
                     print("Mission finished")
                     while True:
                         pass
                 else:
-                    score = (2 + target_finish) * 60 - sensor_cost * 3e-3    
+                    score = (2 + target_finish) * 60 - sensor_cost * 3e-3 - sum(fall_detect) * 30   
                     print('score:',score)
                     break        
         else:
@@ -69,11 +74,13 @@ if __name__ == "__main__":
     topic_arrive_time = [0.0] * actor_num
     find_time = [0.0] * actor_num
     rospy.init_node('score_cal')
+    time.sleep(1)
+    start_time = rospy.get_time()
     del_model = rospy.ServiceProxy("/gazebo/delete_model",DeleteModel)
     get_model_state = rospy.ServiceProxy("/gazebo/get_model_state",GetModelState) 
 
-    score_pub = rospy.Publisher("score",Int16,queue_size=2)  
-    left_actors_pub = rospy.Publisher("left_actors",String,queue_size=2)
+    score_pub = rospy.Publisher("/score",Int16,queue_size=2)  
+    left_actors_pub = rospy.Publisher("/left_actors",String,queue_size=2)
     actor_blue_sub = rospy.Subscriber("/actor_blue_info",ActorInfo,actor_info_callback)
     actor_green_sub = rospy.Subscriber("/actor_green_info",ActorInfo,actor_info_callback)
     actor_white_sub = rospy.Subscriber("/actor_white_info",ActorInfo,actor_info_callback)
@@ -82,7 +89,7 @@ if __name__ == "__main__":
     actor_red2_sub = rospy.Subscriber("/actor_red2_info",ActorInfo,actor_info_callback)
     state_sub = [None] * 6
     for vehicle_id in range(uav_num):
-        state_sub[vehicle_id] = rospy.Subscriber('/typhoon_h480_'+vehicle_type+'_'+vehicle_id+'/mavros/state', State, state_callback, vehicle_id)
+        state_sub[vehicle_id] = rospy.Subscriber('/typhoon_h480_'+str(vehicle_id)+'/mavros/state', State, state_callback, vehicle_id)
 
     # sensor cost
     mono_cam = 1
@@ -96,9 +103,7 @@ if __name__ == "__main__":
     fall_detect = [0] * 6
     target_finish = 0
     score = (2 + target_finish) * 60 - sensor_cost * 3e-3
-    time.sleep(1)
     rate = rospy.Rate(10)
-    start_time = rospy.get_time()
 
     while not rospy.is_shutdown():
         for i in left_actors:

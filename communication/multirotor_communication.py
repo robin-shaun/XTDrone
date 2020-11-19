@@ -81,15 +81,15 @@ class Communication:
                 if(self.disarm()):
                     self.flight_mode = "DISARMED"
                     
-            try:
-                response = self.gazeboModelstate (self.vehicle_type+'_'+self.vehicle_id,'ground_plane')
-            except rospy.ServiceException, e:
-                print "Gazebo model state service call failed: %s"%e
-            odom = Odometry()
-            odom.header = response.header
-            odom.pose.pose = response.pose
-            odom.twist.twist = response.twist
-            self.odom_groundtruth_pub.publish(odom)
+            # try:
+            #     response = self.gazeboModelstate (self.vehicle_type+'_'+self.vehicle_id,'ground_plane')
+            # except rospy.ServiceException, e:
+            #     print "Gazebo model state service call failed: %s"%e
+            # odom = Odometry()
+            # odom.header = response.header
+            # odom.pose.pose = response.pose
+            # odom.twist.twist = response.twist
+            # self.odom_groundtruth_pub.publish(odom)
 
             rate.sleep()
 

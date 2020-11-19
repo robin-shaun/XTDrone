@@ -3,6 +3,7 @@ import random
 from ros_actor_cmd_pose_plugin_msgs.msg import ActorMotion
 from geometry_msgs.msg import Point
 from gazebo_msgs.srv import GetModelState
+from std_msgs.msg import String
 import sys
 import numpy
 import copy
@@ -15,6 +16,7 @@ class ControlActor:
         self.count = 0
         self.shooting_count = 0
         self.uav_num = 6
+        self.actor_num = 6
         self.vehicle_type = 'typhoon_h480'
         self.f = 30
         self.flag = True
@@ -35,6 +37,7 @@ class ControlActor:
         self.target_motion.v = 2
         # obstacle avoidance:
         self.Obstacleavoid = ObstacleAviod()  #ji wu 
+        self.left_actors = range(self.actor_num)
         self.avoid_finish_flag = True
         self.subtarget_count = 0
         self.subtarget_length = 0
@@ -71,7 +74,19 @@ class ControlActor:
         self.state_uav3_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+"_3/ground_truth/odom", Odometry, self.cmd_uav3_pose_callback)
         self.state_uav4_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+"_4/ground_truth/odom", Odometry, self.cmd_uav4_pose_callback)
         self.state_uav5_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+"_5/ground_truth/odom", Odometry, self.cmd_uav5_pose_callback)
-    
+        self.left_actors_sub = rospy.Subscriber("/left_actors",String,self.left_actors_callback)
+
+    def left_actors_callback(self, msg):
+        left = msg.data
+        left = left.replace('[',',')
+        left = left.replace(']',',')
+        left = left.split(',')
+        left_actors = []
+        for i in left[1:-1]:
+            if i == '':
+                continue
+            left_actors.append(int(i))
+        self.left_actors = left_actors
     def cmd_uav0_pose_callback(self, msg):
         self.gazebo_uav_pose[0] = msg.pose.pose.position
         self.gazebo_uav_twist[0] = msg.twist.twist.linear
@@ -104,6 +119,9 @@ class ControlActor:
             self.target_motion.v = 2.0
             self.count = self.count + 1
             # get the pose of uav and actor
+            if not int(self.id) in self.left_actors:
+                print('actor_' + self.id + ' has been deleted')
+                break
             try:
                 get_actor_state = self.gazeboModelstate('actor_' + self.id, 'ground_plane')
                 self.last_pose = self.current_pose
@@ -148,7 +166,7 @@ class ControlActor:
                     self.target_motion.y = self.y_max
                 
                 try:
-                    print str(self.id)+'general change position'
+                    print str(self.id)+' general change position'
                     self.subtarget_pos = self.Obstacleavoid.GetPointList(self.current_pose, self.target_motion, 1) # current pose, target pose, safe distance
                     self.subtarget_length = len(self.subtarget_pos)
                     middd_pos = [Point() for k in range(self.subtarget_length)]
@@ -308,7 +326,7 @@ class ControlActor:
                 if self.distance_flag:
                     self.subtarget_count += 1
                     self.distance_flag = False
-                    print str(self.id)+ 'i am avoiding'
+                    print str(self.id)+ ': I am avoiding'
                     #self.distance_flag = False
                     #self.subtarget_length = len(middd_pos)
                     if self.subtarget_count >= self.subtarget_length:

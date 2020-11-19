@@ -75,7 +75,8 @@ if __name__ == "__main__":
     del_model = rospy.ServiceProxy("/gazebo/delete_model",DeleteModel)
     get_model_state = rospy.ServiceProxy("/gazebo/get_model_state",GetModelState) 
 
-    score_pub = rospy.Publisher("/score",Int16,queue_size=2)  
+    score_pub = rospy.Publisher("/score",Int16,queue_size=2) 
+    time_usage_pub = rospy.Publisher("/time_usage",Int16,queue_size=2) 
     left_actors_pub = rospy.Publisher("/left_actors",String,queue_size=2)
     actor_blue_sub = rospy.Subscriber("/actor_blue_info",ActorInfo,actor_info_callback)
     actor_green_sub = rospy.Subscriber("/actor_green_info",ActorInfo,actor_info_callback)
@@ -113,6 +114,7 @@ if __name__ == "__main__":
             while True:
                 pass
         score_pub.publish(score)
+        time_usage_pub.publish(int(time_usage))
         left_actors_pub.publish(str(left_actors))
         rate.sleep()
 

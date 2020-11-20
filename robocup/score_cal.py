@@ -1,3 +1,4 @@
+#coding: utf-8
 import rospy
 import os
 from std_msgs.msg import Int16,String
@@ -5,6 +6,7 @@ from ros_actor_cmd_pose_plugin_msgs.msg import ActorInfo
 from mavros_msgs.msg import State
 from gazebo_msgs.srv import DeleteModel,GetModelState
 import time
+import cv2
 
 actor_num = 6
 uav_num = 6
@@ -116,6 +118,12 @@ if __name__ == "__main__":
         score_pub.publish(score)
         time_usage_pub.publish(int(time_usage))
         left_actors_pub.publish(str(left_actors))
+        background = cv2.imread("white_background.png")
+        cv2.putText(background,"Score: "+str(score) ,(60,25),cv2.FONT_HERSHEY_SIMPLEX,0.75,(0,0,0),2)
+        cv2.putText(background,"Time usage: "+str(time_usage) ,(360,25),cv2.FONT_HERSHEY_SIMPLEX,0.75,(0,0,0),2)
+        cv2.putText(background,"Left targets: "+str(left_actors) ,(760,25),cv2.FONT_HERSHEY_SIMPLEX,0.75,(0,0,0),2)
+        cv2.imshow("Multi-UAV search simulation competition judgment system",background)
+        cv2.waitKey( 1)
         rate.sleep()
 
 

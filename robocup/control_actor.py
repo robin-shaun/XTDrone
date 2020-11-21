@@ -3,6 +3,7 @@ import random
 from ros_actor_cmd_pose_plugin_msgs.msg import ActorMotion
 from geometry_msgs.msg import Point
 from gazebo_msgs.srv import GetModelState
+from std_msgs.msg import String
 import sys
 import numpy
 import copy
@@ -15,26 +16,33 @@ class ControlActor:
         self.count = 0
         self.shooting_count = 0
         self.uav_num = 6
+        self.actor_num = 6
         self.vehicle_type = 'typhoon_h480'
-        self.f = 30
+        self.f = 10
         self.flag = True
         self.distance_flag = True
         self.suitable_point = True
         self.get_moving = False
         self.x = 0.0
         self.y = 0.0
+        # self.x_max = 50.0
+        # self.x_min = -10.0
+        # self.y_max = -20.0
+        # self.y_min = -30.0
         self.x_max = 150.0
         self.x_min = -50.0
         self.y_max = 50.0
         self.y_min = -50.0
         self.id = actor_id
         self.velocity = 1.5
+        self.avoid = ActorMotion()
         self.last_pose = Point()
         self.current_pose = Point()
-        self.target_motion = ActorMotion()
-        self.target_motion.v = 2
+        self.target_motion = Point()
+        self.avoid.v = 2
         # obstacle avoidance:
         self.Obstacleavoid = ObstacleAviod()  #ji wu 
+        self.left_actors = range(self.actor_num)
         self.avoid_finish_flag = True
         self.subtarget_count = 0
         self.subtarget_length = 0
@@ -49,15 +57,13 @@ class ControlActor:
         self.catching_flag = 0                               # if there is a uav tracking 'me' for a long time
         self.catching_uav_num = 10                             # get the number of uav of which is catching 'me'
         #self.black_box = numpy.array([[[-34, -19], [16, 34]], [[5, 20], [10, 28]], [[53, 68], [13, 31]], [[70, 84], [8, 20]], [[86, 102], [10, 18]], [[77, 96], [22, 35]], [[52, 71], [-34, -25]], [[-6, 6], [-35, -20]], [[12, 40], [-20, -8]], [[-7, 8], [-21, -9]], [[-29, -22], [-16, -27]], [[-37, -30], [-27, -12]], [[-38, -24], [-36, -29]]])
-        self.black_box = [[[-35.375, -34.825], [-4, -3]], [[-3.275, -2.725], [-4, -3]], [[20.725, 21.275], [-4, -3]], \
-        [[57.725, 58.275], [-4, -3]], [[83.725, 84.275], [-4, -3]], [[-25.475, -24.925], [3, 4]], [[8.725, 9.275], [3, 4]], \
-        [[26.725, 27.275], [3, 4]], [[70.725, 71.275], [3, 4]], [[90.225, 90.775], [3, 4]],[[53.2, 54.2],[-9.0, -6.72]], \
-        [[79, 92], [-33.6, -28]],[[3, 8], [35, 36]], [[-34, -21.7], [18, 33]], [[4.5, 20.5], [11.5, 25]], [[55, 67.3], [15.5, 30.3]], \
-        [[71.7, 83.5], [9.5, 18.5]], [[88.3, 100.7], [11.9, 16.2]], [[79, 94.7], [22.2, 34.5]], [[53, 70], [-35, -27]], [[-5.4, 6.6], [-19.4, -10.6]], \
-        [[19.0, 38.5], [-22.0, -6.0]], [[-4.7, 4.4], [-33.4, -21.6]], [[-27.8, -23.5], [-27.5, -15]], [[-36, -24], [-35, -31]], \
-        [[-35.5, -31.3], [-25.5, -13]], [[3.0,8.2],[34.3,35.7]],[[14,17.5],[-15.7,-12.4]]]
+        self.black_box = [[[52.2, 55.2],[-10.0, -5.72]], \
+        [[78, 91], [-34.6, -27]],[[2, 10], [33, 37]], [[-36.0, -19.0], [16.0, 34.5]], [[3.0, 23.0], [10.0, 26.0]], [[54, 70.0], [14, 31.3]], \
+        [[70.7, 84.5], [8.5, 19.5]], [[87.3, 101.7], [10.9, 17.2]], [[78, 95.7], [21.2, 35.5]], [[52, 71], [-36, -26]], [[-6.4, 6.5], [-20.4, -9.6]], \
+        [[13.5, 40.5], [-23.5, -4.5]], [[-6.0, 6.0], [-35.0, -21.0]], [[-28.8, -22.5], [-28.5, -14]], [[-37, -23], [-36, -30]], \
+        [[-36.5, -30.3], [-26.5, -12]], [[2.0,9.2],[33.3,36.7]]]
         self.box_num = len(self.black_box)
-        self.cmd_pub = rospy.Publisher('/actor_' + str(self.id) + '/cmd_motion', ActorMotion, queue_size=10)
+        self.cmd_pub = rospy.Publisher('/actor_' + self.id + '/cmd_motion', ActorMotion, queue_size=10)
         #self.black_box = numpy.array(
         #    [[[-32, -21], [18, 32]], [[7, 18], [12, 26]], [[55, 66], [15, 29]], [[72, 82], [10, 18]],
         #     [[88, 100], [12, 16]], [[79, 94], [24, 33]], [[54, 69], [-34, -27]], [[-4, 4], [-33, -22]],
@@ -71,7 +77,19 @@ class ControlActor:
         self.state_uav3_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+"_3/ground_truth/odom", Odometry, self.cmd_uav3_pose_callback)
         self.state_uav4_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+"_4/ground_truth/odom", Odometry, self.cmd_uav4_pose_callback)
         self.state_uav5_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+"_5/ground_truth/odom", Odometry, self.cmd_uav5_pose_callback)
-    
+        self.left_actors_sub = rospy.Subscriber("/left_actors",String,self.left_actors_callback)
+
+    def left_actors_callback(self, msg):
+        left = msg.data
+        left = left.replace('[',',')
+        left = left.replace(']',',')
+        left = left.split(',')
+        left_actors = []
+        for i in left[1:-1]:
+            if i == '':
+                continue
+            left_actors.append(int(i))
+        self.left_actors = left_actors
     def cmd_uav0_pose_callback(self, msg):
         self.gazebo_uav_pose[0] = msg.pose.pose.position
         self.gazebo_uav_twist[0] = msg.twist.twist.linear
@@ -97,25 +115,26 @@ class ControlActor:
         self.gazebo_uav_twist[5] = msg.twist.twist.linear
 
     def loop(self):
-        rospy.init_node('actor_' + str(self.id))
+        rospy.init_node('actor_' + self.id)
         rate = rospy.Rate(self.f)
         
         while not rospy.is_shutdown():
-            self.target_motion.v = 2.0
+            self.avoid.v = 2.0
             self.count = self.count + 1
             # get the pose of uav and actor
+            if not int(self.id) in self.left_actors:
+                print('actor_' + self.id + ' has been deleted')
+                break
             try:
                 get_actor_state = self.gazeboModelstate('actor_' + self.id, 'ground_plane')
                 self.last_pose = self.current_pose
                 self.gazebo_actor_pose = get_actor_state.pose.position
                 self.current_pose = self.gazebo_actor_pose
             except rospy.ServiceException as e:
-                print("Gazebo model state service"+str(self.id)+"  call failed: %s") % e
+                print("Gazebo model state service"+self.id+"  call failed: %s") % e
                 self.current_pose.x = 0.0
                 self.current_pose.y = 0.0
                 self.current_pose.z = 1.25
-            distance = (self.current_pose.x - self.target_motion.x) ** 2 + (
-                            self.current_pose.y - self.target_motion.y) ** 2
                 # collosion: if the actor is in the black box, then go backward and update a new target position
             # update new random target position
             if (self.avoid_finish_flag and self.distance_flag):
@@ -129,7 +148,7 @@ class ControlActor:
                             if (self.y > self.black_box[i][1][0]-1.5) and (self.y < self.black_box[i][1][1]+1.5):
                                 self.suitable_point = True
                                 while_time = while_time+1
-                                print str(self.id) + 'while time :  ', while_time
+                                #print self.id + 'while time :  ', while_time
                                 break
                 self.target_motion.x = self.x
                 self.target_motion.y = self.y
@@ -145,20 +164,20 @@ class ControlActor:
                 if self.target_motion.y < self.y_min:
                     self.target_motion.y = self.y_min
                 elif self.target_motion.y > self.y_max:
-                    self.target_motion.y = self.y_max
-                
-                try:
-                    print str(self.id)+'general change position'
+                    self.target_motion.y = self.y_max               
+                try:                   
                     self.subtarget_pos = self.Obstacleavoid.GetPointList(self.current_pose, self.target_motion, 1) # current pose, target pose, safe distance
                     self.subtarget_length = len(self.subtarget_pos)
                     middd_pos = [Point() for k in range(self.subtarget_length)]
                     middd_pos = copy.deepcopy(self.subtarget_pos)
-                    self.target_motion.x = copy.deepcopy(middd_pos[0].x)
-                    self.target_motion.y = copy.deepcopy(middd_pos[0].y)
+                    self.avoid.x = copy.deepcopy(middd_pos[0].x)
+                    self.avoid.y = copy.deepcopy(middd_pos[0].y)
                     #self.avoid_start_flag = True
-                    # print 'current_position:   ' + str(self.id)+'      ', self.current_pose
-                    # print 'middd_pos:     '+ str(self.id)+'      ', middd_pos
-                    # print '\n'
+                    if self.id == '5' or self.id == '4':
+                        print self.id+' general change position'
+                        print 'current_position:   ' + self.id+'      ', self.current_pose
+                        print 'middd_pos:     '+ self.id+'      ', middd_pos
+                        print '\n'
                 except:
                     dis_list = [0,0,0,0]
                     for i in range(len(self.black_box)):
@@ -171,22 +190,28 @@ class ControlActor:
                                 dis_min = dis_list.index(min(dis_list))
                                 self.subtarget_length = 1
                                 if dis_min == 0:
-                                    self.target_motion.x = self.black_box[i][0][1] + 1.0
-                                    self.target_motion.y = self.current_pose.y
+                                    self.avoid.x = self.black_box[i][0][0] - 1.0
+                                    self.avoid.y = self.current_pose.y
                                 elif dis_min == 1:
-                                    self.target_motion.x = self.black_box[i][0][0] - 1.0
-                                    self.target_motion.y = self.current_pose.y
+                                    self.avoid.x = self.black_box[i][0][1] + 1.0
+                                    self.avoid.y = self.current_pose.y
                                 elif dis_min == 2:
-                                    self.target_motion.y = self.black_box[i][1][1] + 1.0
-                                    self.target_motion.x = self.current_pose.x
+                                    
+                                    self.avoid.y = self.black_box[i][1][0] - 1.0
+                                    self.avoid.x = self.current_pose.x
                                 else:
-                                    self.target_motion.y = self.black_box[i][1][0] - 1.0
-                                    self.target_motion.x = self.current_pose.x
+                                    self.avoid.y = self.black_box[i][1][1] + 1.0
+                                    self.avoid.x = self.current_pose.x
                                 break
+                    if self.id == '5' or self.id == '4':
+                        print self.id+'change position except'
+                        print 'current_position:   ' + self.id+'      ', self.current_pose
+                        print 'target_motion:     '+ self.id+'      ', self.target_motion
+                        print '\n'
                 self.avoid_finish_flag = False
 
-            distance = (self.current_pose.x - self.target_motion.x) ** 2 + (
-                            self.current_pose.y - self.target_motion.y) ** 2
+            distance = (self.current_pose.x - self.avoid.x) ** 2 + (
+                            self.current_pose.y - self.avoid.y) ** 2
             if distance < 0.01:
                 self.arrive_count += 1
                 if self.arrive_count > 5:
@@ -271,21 +296,22 @@ class ControlActor:
                 elif flag_k == 2:
                     self.target_motion.x = self.gazebo_uav_pose[self.catching_uav_num].x
                     self.target_motion.y = self.y_min
-                print str(self.id) + '   self.curr_pose:', self.gazebo_uav_pose[self.catching_uav_num]
-                print str(self.id) + '   self.target_motion:', self.target_motion
-                print 'escaping change position'
+                if self.id == 5:
+                    print self.id + '   self.curr_pose:', self.gazebo_uav_pose[self.catching_uav_num]
+                    print self.id + '   self.target_motion:', self.target_motion
+                    print 'escaping change position'
                 try:
-                    print str(self.id)+'general change position'
+                    print self.id+'general change position'
                     self.subtarget_pos = self.Obstacleavoid.GetPointList(self.current_pose, self.target_motion, 1) # current pose, target pose, safe distance
                     self.subtarget_length = 1
                     # middd_pos = [Point() for k in range(self.subtarget_length)]
                     # middd_pos = copy.deepcopy(self.subtarget_pos)
-                    self.target_motion.x = self.subtarget_pos[0].x
-                    self.target_motion.y = self.subtarget_pos[0].y
+                    self.avoid.x = self.subtarget_pos[0].x
+                    self.avoid.y = self.subtarget_pos[0].y
                     self.catching_flag = 2
                 except:
-                    self.target_motion.x = self.target_motion.x
-                    self.target_motion.y = self.target_motion.y
+                    self.avoid.x = self.target_motion.x
+                    self.avoid.y = self.target_motion.y
                     self.catching_flag = 1
 
 
@@ -304,30 +330,34 @@ class ControlActor:
                 else:
                     self.shooting_count = 0
 
+            
+
             if not self.avoid_finish_flag:
                 if self.distance_flag:
                     self.subtarget_count += 1
                     self.distance_flag = False
-                    print str(self.id)+ 'i am avoiding'
+                    #print self.id+ ': I am avoiding'
                     #self.distance_flag = False
                     #self.subtarget_length = len(middd_pos)
                     if self.subtarget_count >= self.subtarget_length:
                         self.avoid_finish_flag = True
                         self.subtarget_count = 0
                     else:
-                        self.target_motion.x = middd_pos[self.subtarget_count].x
-                        self.target_motion.y = middd_pos[self.subtarget_count].y
+                        self.avoid.x = middd_pos[self.subtarget_count].x
+                        self.avoid.y = middd_pos[self.subtarget_count].y
             '''
             if self.catching_flag == 1 or self.catching_flag == 2:
                 self.target_motion.v = 3
             else:
                 self.target_motion.v = 2
                 if self.count % 200 == 0:
-                print str(self.id) + '   vel:', self.target_motion.v
+                print self.id + '   vel:', self.target_motion.v
             '''
             #reduce difficulty
-            self.target_motion.v = 1
-            self.cmd_pub.publish(self.target_motion)
+            self.avoid.v = 1
+            if self.id == 5:
+                print 'self.avoid:', self.avoid
+            self.cmd_pub.publish(self.avoid)
             rate.sleep()
 
     def pos2ang(self, deltax, deltay):   #([xb,yb] to [xa, ya])

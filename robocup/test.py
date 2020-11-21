@@ -1,7 +1,20 @@
 import rospy
 from ros_actor_cmd_pose_plugin_msgs.msg import ActorInfo
 from gazebo_msgs.srv import GetModelState
+from std_msgs.msg import String
 import time
+
+def left_actors_callback(msg):
+    global left_actors
+    left = msg.data
+    left = left.replace('[',',')
+    left = left.replace(']',',')
+    left = left.split(',')
+    left_actors = []
+    for i in left[1:-1]:
+        if i == '':
+            continue
+        left_actors.append(int(i))
 
 if __name__ == "__main__":
     rospy.init_node("test")
@@ -19,11 +32,13 @@ if __name__ == "__main__":
     test_pub_blue = rospy.Publisher("/actor_blue_info",ActorInfo,queue_size=2)
     test_pub_white = rospy.Publisher("/actor_white_info",ActorInfo,queue_size=2)
     get_model_state = rospy.ServiceProxy("/gazebo/get_model_state",GetModelState)
+    left_actors_sub = rospy.Subscriber("/left_actors",String,left_actors_callback)
+    left_actors = range(6)
     rate = rospy.Rate(2)
     time.sleep(1)
     start_time = rospy.get_time()
     while not rospy.is_shutdown():
-        for i in range(6):
+        for i in left_actors:
             actors_pos[i] = get_model_state('actor_' + str(i), 'ground_plane').pose.position
         red1_actorinfo.x = actors_pos[5].x
         red1_actorinfo.y = actors_pos[5].y

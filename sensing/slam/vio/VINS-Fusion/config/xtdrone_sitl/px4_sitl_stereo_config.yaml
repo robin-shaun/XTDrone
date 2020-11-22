@@ -8,7 +8,7 @@ num_of_cam: 2
 imu_topic: "/iris_0/imu_stereo"
 image0_topic: "/iris_0/stereo_camera/left/image_raw"
 image1_topic: "/iris_0/stereo_camera/right/image_raw"
-output_path: "/home/robin/catkin_ws/vins_output"
+output_path: "~/catkin_ws/vins_output"
 
 cam0_calib: "cam0_pinhole_p1.yaml"
 cam1_calib: "cam1_pinhole_p1.yaml"

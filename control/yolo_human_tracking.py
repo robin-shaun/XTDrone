@@ -9,7 +9,7 @@ import time
 import math
 
 def darknet_callback(data):
-    global twist, cmd, target_height_mask, target_height,theta
+    global find, twist, cmd, target_height_mask, target_height,theta, not_find_time, get_time
     find = False
     for target in data.bounding_boxes:
         if(target.id==0):
@@ -21,18 +21,14 @@ def darknet_callback(data):
             v_ = v-v_center
             u_velocity = -Kp_xy*u_
             v_velocity = -Kp_xy*v_
-            x_velocity = v_velocity*z/(-v_*math.sin(theta)+fy*math.cos(theta))
-            y_velocity = (u_*math.sin(theta)*x_velocity+z*u_velocity)/fx
+            x_velocity = v_velocity*z/math.sin(theta)/(-v_*math.sin(theta)+fy*math.cos(theta))
+            y_velocity = (u_*math.sin(theta)*x_velocity+z/math.sin(theta)*u_velocity)/fx
             twist.linear.x = x_velocity
             twist.linear.y = y_velocity
             twist.linear.z = Kp_z*(target_height-height)
             cmd = ''
             find = True
-    if not find:
-        twist.linear.x = 0.0
-        twist.linear.y = 0.0
-        twist.linear.z = 0.0
-        cmd = 'HOVER'
+
         
 def local_pose_callback(data):
     global height, target_height, target_set
@@ -50,6 +46,9 @@ if __name__ == "__main__":
     height = 0  
     target_height = 0
     target_set = False
+    find = False
+    not_find_time = 0
+    get_time = False
     twist = Twist()
     cmd = String()
     theta = -math.pi/4
@@ -57,7 +56,7 @@ if __name__ == "__main__":
     v_center=360/2
     fx = 205.46963709898583
     fy = 205.46963709898583
-    Kp_xy = 0.8
+    Kp_xy = 0.5
     Kp_z = 1
     vehicle_type = sys.argv[1]
     vehicle_id = sys.argv[2]
@@ -72,4 +71,15 @@ if __name__ == "__main__":
         rate.sleep()
         vel_pub.publish(twist)
         cmd_pub.publish(cmd)
+        if not find:
+            if not get_time:
+                not_find_time = rospy.get_time()
+                get_time = True
+            if rospy.get_time() - not_find_time > 2.0:
+                twist.linear.x = 0.0
+                twist.linear.y = 0.0
+                twist.linear.z = 0.0
+                cmd = 'HOVER'
+                print(cmd)
+                get_time = False
         

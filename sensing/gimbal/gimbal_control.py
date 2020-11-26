@@ -13,7 +13,7 @@ if __name__ == "__main__":
     mountCnt = rospy.Publisher(vehicle_type+'_'+vehicle_id+'/mavros/mount_control/command', MountControl, queue_size=10)
     mountConfig = rospy.ServiceProxy(vehicle_type+'_'+vehicle_id+'/mavros/mount_control/configure', MountConfigure)
     rate=rospy.Rate(100)
-    gimbal_pitch_ = -45
+    gimbal_pitch_ = -60
     gimbal_yaw_ = 0.0
     gimbal_roll_ = 0.0
     srvheader=std_msgs.msg.Header()

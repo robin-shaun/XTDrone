@@ -81,4 +81,4 @@ Developers can quickly verify algorithms with XTDrone, such as:
 
 #### Thanks to Contributers
 
-Changhao Sun, Yao He
+Changhao Sun, Zihan Lin, Yao He

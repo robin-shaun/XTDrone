@@ -73,10 +73,6 @@ Xiao, K., Ma, L., Tan, S., Cong, Y., Wang, X.: Implementation of UAV Coordinatio
 
 见[XTDrone使用文档](https://www.yuque.com/xtdrone/manual_cn)
 
-### 空中机器人大赛
-
-2020中国机器人大赛暨RoboCup机器人世界杯中国赛中国机器人大赛正在报名中，详细可参见[大赛官网](http://crc.drct-caa.org.cn/index.php/)，XTDrone作为无人机仿真组的仿真平台，将第一次正式登上舞台，详细比赛规则可参见[附件](http://crc.drct-caa.org.cn/index.php/)。
-
 ### 项目团队
 
 - 创立者：肖昆，谭劭昌
@@ -85,4 +81,4 @@ Xiao, K., Ma, L., Tan, S., Cong, Y., Wang, X.: Implementation of UAV Coordinatio
 
 ### 感谢贡献者们
 
-孙长浩 何瑶
+孙长浩 林梓涵 何瑶 

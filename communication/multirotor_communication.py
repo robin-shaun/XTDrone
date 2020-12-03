@@ -22,20 +22,13 @@ class Communication:
         
         self.vehicle_type = vehicle_type
         self.vehicle_id = vehicle_id
-        self.imu = None
         self.local_pose = None
-        self.current_state = None
-        self.current_heading = None 
         self.hover_flag = 0
         self.target_motion = PositionTarget()
-        self.global_target = None
         self.arm_state = False
-        self.offboard_state = False
         self.motion_type = 0
         self.flight_mode = None
         self.mission = None
-        self.transition_state = None
-        self.transition = None
         
         self.platform = platform.platform()
             
@@ -44,7 +37,6 @@ class Communication:
         '''
         self.local_pose_sub = rospy.Subscriber(self.vehicle_type+'_'+self.vehicle_id+"/mavros/local_position/pose", PoseStamped, self.local_pose_callback)
         self.mavros_sub = rospy.Subscriber(self.vehicle_type+'_'+self.vehicle_id+"/mavros/state", State, self.mavros_state_callback)
-        self.imu_sub = rospy.Subscriber(self.vehicle_type+'_'+self.vehicle_id+"/mavros/imu/data", Imu, self.imu_callback)
         self.cmd_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+'_'+self.vehicle_id+"/cmd",String,self.cmd_callback)
         self.cmd_pose_flu_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+'_'+self.vehicle_id+"/cmd_pose_flu", Pose, self.cmd_pose_flu_callback)
         self.cmd_pose_enu_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+'_'+self.vehicle_id+"/cmd_pose_enu", Pose, self.cmd_pose_enu_callback)
@@ -98,9 +90,6 @@ class Communication:
 
     def mavros_state_callback(self, msg):
         self.mavros_state = msg.mode
-
-    def imu_callback(self, msg):
-        self.current_heading = self.q2yaw(msg.orientation)
 
     def construct_target(self, x=0, y=0, z=0, vx=0, vy=0, vz=0, afx=0, afy=0, afz=0, yaw=0, yaw_rate=0):
         target_raw_pose = PositionTarget()

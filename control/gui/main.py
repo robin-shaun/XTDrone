@@ -6,7 +6,7 @@ if __name__== '__main__':
     app = QApplication(sys.argv)
     ui = Gui2Ros()
     ui.show()
-    sys.exit(app.exec_())               # main circulation
+    sys.exit(app.exec_())
 
 
 

@@ -31,7 +31,6 @@ class Ros2Gui(QThread):
                 self.multirotor_type + '_' + str(id_1) + "/mavros/local_position/pose", PoseStamped, self.local_pose_callback, id_1)
             self.local_vel_sub[id_1] = rospy.Subscriber(
                 self.multirotor_type + '_' + str(id_1) + "/mavros/local_position/velocity_body", TwistStamped, self.local_vel_callback, id_1)
-        self.leader_cmd_vel_sub = rospy.Subscriber('/xtdrone/' + self.multirotor_type + '_0' + '/cmd_vel_flu', Twist, self.hhhhhhh)
 
     def run(self):
         print('RUN Thread')

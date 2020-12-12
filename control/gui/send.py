@@ -18,7 +18,7 @@ class Gui2Ros(QMainWindow,xt_ui.Ui_MainWindow):
         super(Gui2Ros, self).__init__()
         self.setupUi(self)
         self.map = 'indoor1'
-        # self.comboBox_maps.currentIndexChanged.connect(self.initplot)
+        self.comboBox_maps.currentIndexChanged.connect(self.initplot)
         self.button_run.clicked.connect(self.startrun)
         self.cmd = ''
         self.ctrl_leader = True
@@ -26,20 +26,18 @@ class Gui2Ros(QMainWindow,xt_ui.Ui_MainWindow):
         self.close_flag = False
         self.local_pose = PoseStamped()
         self.local_vel = Twist()
-        self.m = PlotCanvas(self, map=self.map)
+        self.m = PlotCanvas(self, self.map)
         self.m.move(180, 0)
         self.x = [[]for i in range(self.multirotor_num)]
         self.y = [[] for i in range(self.multirotor_num)]
 
-    # def initplot(self):
-    #     self.map = self.comboBox_maps.currentText()
-    #     self.m = PlotCanvas(self, map=self.map)
-    #     self.m.move(180, 0)
+    def initplot(self):
+        self.map = self.comboBox_maps.currentText()
+        self.m.canvas_update(self.map)
+
 
     def startrun(self):
         print 'start run!'
-        # self.m = PlotCanvas(self, num=self.multirotor_num)
-        # self.m.move(180, 0)
         self.pSend2ros = Process(target=self.run_process)
         self.pSend2ros.start()
         self.text_thread = Ros2Gui(self.multirotor_num, self.multirotor_type)

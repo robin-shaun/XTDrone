@@ -108,8 +108,6 @@ class Follower:
                             self.L_matrix = self.get_L_matrix(self.new_formation)
                             #self.L_matrix = self.get_L_central_matrix()
                             self.orig_formation=self.new_formation
-                    if self.id == 3:
-                        print(self.L_matrix)
                     self.following_ids = numpy.argwhere(self.L_matrix[self.id,:] == 1)
                     self.following_count = 0
                     for i in range(self.uav_num):

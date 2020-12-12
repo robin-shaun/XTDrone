@@ -174,13 +174,11 @@ class Follower:
                     return True            
             else:      
                 self.slack_right[j]=min(gap,self.slack_right[j])          
-        #print('1',slack_right)
         return False 
 
     def KM(self):  
 
         for i in range(self.uav_num-1):   
-            #print(i)
             self.slack_right = numpy.array([100]*(self.uav_num-1))      
             while True:        
                 self.visit_left = numpy.array([0]*(self.uav_num-1))                
@@ -188,11 +186,9 @@ class Follower:
                 if self.find_path(i):    
                     break       
                 d = numpy.inf
-                #print ('2',slack_right)
                 for j, slack in enumerate(self.slack_right):         
                     if not self.visit_right[j] :           
-                        d = min(d,slack)
-                        #print(d)  
+                        d = min(d,slack)  
                 for k in range(self.uav_num-1):          
                     if self.visit_left[k]: 
                         self.label_left[k] -= d                 
@@ -208,7 +204,6 @@ class Follower:
         new_formation=numpy.zeros((3,self.uav_num-1))
         position=numpy.zeros((3,self.uav_num-1))
         change_id=[i + 1 for i in change_id] 
-        #print (change_id)
         for i in range(0,self.uav_num-1):
             position[:,i]=change_formation[:,i]
 

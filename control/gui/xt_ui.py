@@ -52,7 +52,7 @@ class Ui_MainWindow(object):
         MainWindow.setMaximumSize(QtCore.QSize(16777215, 16777215))
         MainWindow.setSizeIncrement(QtCore.QSize(1, 1))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("/home/calt01-1302/xtdrone_pyqt5/images/xt.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("images/xt.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
         MainWindow.setIconSize(QtCore.QSize(32, 32))
         MainWindow.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)

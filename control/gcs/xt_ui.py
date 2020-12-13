@@ -59,7 +59,7 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(170, 500, 711, 271))
+        self.frame.setGeometry(QtCore.QRect(170, 500, 710, 271))
         self.frame.setStyleSheet("border-color: rgb(46, 52, 54);\n"
 "background-color: rgb(238, 238, 236);")
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -268,7 +268,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_7.addWidget(self.button_stop)
         self.gridLayout_4.addLayout(self.verticalLayout_7, 1, 0, 1, 1)
         self.frame_3 = QtWidgets.QFrame(self.centralwidget)
-        self.frame_3.setGeometry(QtCore.QRect(170, 0, 711, 470))
+        self.frame_3.setGeometry(QtCore.QRect(170, 0, 710, 470))
         self.frame_3.setStyleSheet("background-color: rgb(238, 238, 236);")
         self.frame_3.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_3.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -406,6 +406,9 @@ class Ui_MainWindow(object):
         self.comboBox_maps.addItem("")
         self.comboBox_maps.addItem("")
         self.comboBox_maps.addItem("")
+        self.comboBox_maps.addItem("")
+        self.comboBox_maps.addItem("")
+        self.comboBox_maps.addItem("")
         self.comboBox_vehicle_types = QtWidgets.QComboBox(self.frame_5)
         self.comboBox_vehicle_types.setGeometry(QtCore.QRect(30, 480, 101, 25))
         self.comboBox_vehicle_types.setStyleSheet("color: rgb(32, 74, 135);\n"
@@ -494,7 +497,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "XTDrone Window"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "XTDGroundControl"))
         self.label_control_board_2.setText(_translate("MainWindow", "control board"))
         self.label_go_back_2.setText(_translate("MainWindow", "go and back"))
         self.box_go_and_back_2.setToolTip(_translate("MainWindow", "maximum:+-10.00"))
@@ -538,9 +541,12 @@ class Ui_MainWindow(object):
         self.label_control_board_5.setText(_translate("MainWindow", "Settings"))
         self.label_uavnumber_4.setText(_translate("MainWindow", "maps:"))
         self.comboBox_maps.setItemText(0, _translate("MainWindow", "indoor1"))
-        self.comboBox_maps.setItemText(1, _translate("MainWindow", "outdoor1"))
-        self.comboBox_maps.setItemText(2, _translate("MainWindow", "outdoor3"))
-        self.comboBox_maps.setItemText(3, _translate("MainWindow", "robocup"))
+        self.comboBox_maps.setItemText(1, _translate("MainWindow", "indoor2"))
+        self.comboBox_maps.setItemText(2, _translate("MainWindow", "indoor3"))
+        self.comboBox_maps.setItemText(3, _translate("MainWindow", "outdoor1"))
+        self.comboBox_maps.setItemText(4, _translate("MainWindow", "outdoor2"))
+        self.comboBox_maps.setItemText(5, _translate("MainWindow", "outdoor3"))
+        self.comboBox_maps.setItemText(6, _translate("MainWindow", "robocup"))
         self.comboBox_vehicle_types.setItemText(0, _translate("MainWindow", "iris"))
         self.comboBox_vehicle_types.setItemText(1, _translate("MainWindow", "solo"))
         self.comboBox_vehicle_types.setItemText(2, _translate("MainWindow", "typhoon_h480"))

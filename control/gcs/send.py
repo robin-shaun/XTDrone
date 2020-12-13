@@ -7,6 +7,7 @@ from multiprocessing import Process,Queue
 from PyQt5.QtCore import *
 from receive import Ros2Gui
 from PIL import Image
+import random
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
@@ -28,22 +29,26 @@ class Gui2Ros(QMainWindow,xt_ui.Ui_MainWindow):
         self.local_vel = Twist()
         self.m = PlotCanvas(self, self.map)
         self.m.move(180, 0)
-        self.x = [[]for i in range(self.multirotor_num)]
-        self.y = [[] for i in range(self.multirotor_num)]
 
     def initplot(self):
         self.map = self.comboBox_maps.currentText()
         self.m.canvas_update(self.map)
 
-
     def startrun(self):
         print 'start run!'
+        self.color_plot = ['' for i in range(self.multirotor_num)]
+        for i in range(self.multirotor_num):
+            color_R = hex(random.randint(16,255))
+            color_G = hex(random.randint(16,255))
+            color_B = hex(random.randint(16,255))
+            self.color_plot[i] = '#'+str(color_R)+str(color_G)+str(color_B) 
+            self.color_plot[i] = self.color_plot[i].replace('0x','')
+            print self.color_plot[i]
         self.pSend2ros = Process(target=self.run_process)
         self.pSend2ros.start()
         self.text_thread = Ros2Gui(self.multirotor_num, self.multirotor_type)
         self.text_thread.update_text.connect(self.display)
-        if self.map == 'robocup':
-            self.text_thread.plot_array.connect(self.plot)
+        self.text_thread.plot_array.connect(self.plot)
         self.text_thread.start()
 
     #publish messages to ros nodes like a keyboard
@@ -152,10 +157,9 @@ class Gui2Ros(QMainWindow,xt_ui.Ui_MainWindow):
         self.text_show_info.setPlainText(data)
 
     def plot(self, data):
-        for i in range(self.multirotor_num):
-            self.x[i] = data[i][0]
-            self.y[i] = data[i][1]
-            self.m.ax.plot(self.x[i], self.y[i], 'r')
+         for i in range(self.multirotor_num):
+            self.m.ax.plot(data[i][0], data[i][1], color = self.color_plot[i])
+            # self.m.canvas_update(self.map)
             self.m.draw()
 
 

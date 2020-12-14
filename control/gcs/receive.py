@@ -55,9 +55,6 @@ class Ros2Gui(QThread):
                         self.plot_all[id][1].append(self.local_pose[id].pose.position.y*self.time_map_y)
                     self.plot_array.emit(self.plot_all)
                     self.update_text.emit(self.text_all)
-            if self.n % 50 == 0:
-                self.n = 0
-                print 'receiver_run'
 
             rate.sleep()
 

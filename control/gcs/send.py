@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow, QSizePolicy
-import xt_ui
+import xtd_ui
 import rospy
 from geometry_msgs.msg import Twist, PoseStamped, TwistStamped
 from std_msgs.msg import String
@@ -14,7 +14,7 @@ from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 from plotcanvas import PlotCanvas
 
-class Gui2Ros(QMainWindow,xt_ui.Ui_MainWindow):
+class Gui2Ros(QMainWindow,xtd_ui.Ui_MainWindow):
     def __init__(self):
         super(Gui2Ros, self).__init__()
         self.setupUi(self)
@@ -43,7 +43,6 @@ class Gui2Ros(QMainWindow,xt_ui.Ui_MainWindow):
             color_B = hex(random.randint(16,255))
             self.color_plot[i] = '#'+str(color_R)+str(color_G)+str(color_B) 
             self.color_plot[i] = self.color_plot[i].replace('0x','')
-            print self.color_plot[i]
         self.pSend2ros = Process(target=self.run_process)
         self.pSend2ros.start()
         self.text_thread = Ros2Gui(self.multirotor_num, self.multirotor_type)

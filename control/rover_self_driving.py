@@ -9,14 +9,14 @@ def lane_mid_error_callback(msg):
     global twist
     if msg.data == 1000:
         twist.linear.x = 0.0
-        twist.linear.y = 0.0
+        twist.angular.z = 0.0
     else:
         if abs(msg.data) > 20:
-            twist.linear.y = - Kp * msg.data
+            twist.angular.z = - Kp * msg.data
         else:
-            twist.linear.y = 0.0
+            twist.angular.z = 0.0
             
-        twist.linear.x = Vx * (1 - abs(twist.linear.y))
+        twist.linear.x = Vx * (1 - abs(twist.angular.z))
 
 
 if __name__ == "__main__":

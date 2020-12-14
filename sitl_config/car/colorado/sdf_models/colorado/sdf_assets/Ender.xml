@@ -1,0 +1,4 @@
+	<plugin name="colorado_driving_plugin" filename="libcolorado_driving_plugin.so"/>
+		<!--<plugin name="joint_state_publisher" filename="libgazebo_ros_joint_state_publisher.so"><robotNamespace>/Sahar</robotNamespace><jointName>left_wheel_1, </jointName><updateRate>50.0</updateRate><alwaysOn>true</alwaysOn></plugin>-->
+	</model>
+</sdf>

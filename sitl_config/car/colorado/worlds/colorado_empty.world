@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+    <world name="default">
+        <include>
+            <uri>model://sun</uri>
+        </include>
+        <scene>
+            <sky>
+                <time>10</time>
+                <clouds>
+                    <speed>5</speed>
+                    <direction>1.14</direction>
+                    <humidity>0.3</humidity>
+                </clouds>
+            </sky>
+        </scene>
+        <gui>
+            <camera name="camera_pose">
+                <pose>80 -60 60 0 0.5 2</pose>
+            </camera>
+        </gui>
+        <!-- <physics type="bullet">
+            <gravity>0 0 -9.81</gravity>
+            <max_step_size>0.001</max_step_size>
+            <real_time_factor>1</real_time_factor>
+            <real_time_update_rate>1000</real_time_update_rate>
+            <bullet>
+                <solver>
+                    <type>sequencial_impulse</type>
+                    <iters>150</iters>
+                    <sor>1.3</sor>
+                </solver>
+                <constraints>
+                    <cfm>0.0000</cfm>
+                    <erp>0.2</erp>
+                    <contact_max_correcting_vel>0</contact_max_correcting_vel>
+                    <contact_surface_layer>0.001</contact_surface_layer>
+                </constraints>
+            </bullet>
+        </physics>-->
+        <include>
+            <uri>model://ground_plane</uri>
+            <name>ground_plane</name>
+            <pose>0 0 0 0 0 0</pose>
+        </include>
+        <include>
+            <uri>model://colorado</uri>
+            <name>colorado1</name>
+            <pose>0 0 2 0 0 0</pose>
+            <plugin name="colorado1_driving_plugin" filename="libcolorado_driving_plugin.so"/>
+        </include>
+        <include>
+            <uri>model://colorado</uri>
+            <name>colorado2</name>
+            <pose>0 5 2 0 0 0</pose>
+            <plugin name="colorado2_driving_plugin" filename="libcolorado_driving_plugin.so"/>
+        </include>
+    </world>
+</sdf>

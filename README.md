@@ -3,7 +3,7 @@
 <div id="sidebar"><a href="./README.en.md" target="_blank"><font color=#0000FF size=5px >[ENGLISH]<font></center><a></div>
 
 ### 介绍
-这是基于PX4和ROS的无人机仿真平台(目前模拟器使用Gazebo，与Airsim的连接正在开发中)。目前支持多旋翼飞行器（包含四轴和六轴）、固定翼飞行器、可垂直起降固定翼飞行器（包含quadplane，tailsitter和tiltrotor）和无人车。在XTDrone上验证过的算法，可以方便地部署到真实无人机上。
+这是基于PX4和ROS的无人机仿真平台(目前模拟器使用Gazebo，与Airsim的连接正在开发中)。目前支持多旋翼飞行器（包含四轴和六轴）、固定翼飞行器、复合翼飞行器（包含quadplane，tailsitter和tiltrotor）和无人车。在XTDrone上验证过的算法，可以方便地部署到真实无人机上。
 
 <img src="./image/vehicles.png" width="640"  />
 
@@ -59,7 +59,7 @@ Xiao, K., Ma, L., Tan, S., Cong, Y., Wang, X.: Implementation of UAV Coordinatio
 
 <img src="./image/planes.gif" width="640" height="368" />  
 
-10. VTOL
+10. 复合翼
 
 <img src="./image/vtols.gif" width="640" height="368" />  
 

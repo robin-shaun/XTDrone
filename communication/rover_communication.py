@@ -125,12 +125,12 @@ class Communication:
     def cmd_vel_flu_callback(self, msg):
         self.coordinate_frame=8
         self.motion_type=1
-        self.target_motion = self.construct_target(vx=msg.linear.x,vy=msg.linear.y,vz=msg.linear.z,yaw=0)
+        self.target_motion = self.construct_target(vx=msg.linear.x,vy=msg.angular.z,vz=msg.linear.z,yaw=0)
  
     def cmd_vel_enu_callback(self, msg):
         self.coordinate_frame=1
         self.motion_type=1
-        self.target_motion = self.construct_target(vx=msg.linear.x,vy=msg.linear.y,vz=msg.linear.z,yaw=0)
+        self.target_motion = self.construct_target(vx=msg.linear.x,vy=msg.angular.z,vz=msg.linear.z,yaw=0)
 
     def cmd_callback(self, msg):
         if msg.data == '':

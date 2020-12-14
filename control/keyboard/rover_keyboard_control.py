@@ -163,7 +163,7 @@ if __name__=="__main__":
         elif angle < -MAX_ANGLE:
             angle = -MAX_ANGLE
 
-        twist.linear.x = forward; twist.linear.y =  angle
+        twist.linear.x = forward; twist.angular.z =  angle
         
         for i in range(rover_num):
             if ctrl_leader:

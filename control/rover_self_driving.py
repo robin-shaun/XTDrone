@@ -3,7 +3,7 @@ from geometry_msgs.msg import Twist
 from std_msgs.msg import Int16
 
 Kp = 0.003
-Vx = 3
+Vx = 5
 
 def lane_mid_error_callback(msg):
     global twist
@@ -16,7 +16,7 @@ def lane_mid_error_callback(msg):
         else:
             twist.linear.y = 0.0
             
-        twist.linear.x = Vx * (1 - twist.linear.x)
+        twist.linear.x = Vx * (1 - abs(twist.linear.y))
 
 
 if __name__ == "__main__":

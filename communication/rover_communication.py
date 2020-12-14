@@ -92,23 +92,13 @@ class Communication:
         target_raw_pose = PositionTarget()
         target_raw_pose.coordinate_frame = self.coordinate_frame 
 
-        if self.coordinate_frame == 1:
-            target_raw_pose.position.x = x
-            target_raw_pose.position.y = y
-            target_raw_pose.position.z = z
+        target_raw_pose.position.x = x
+        target_raw_pose.position.y = y
+        target_raw_pose.position.z = z
 
-            target_raw_pose.velocity.x = vx
-            target_raw_pose.velocity.y = vy
-            target_raw_pose.velocity.z = vz
-        
-        else:
-            target_raw_pose.position.x = -y
-            target_raw_pose.position.y = x
-            target_raw_pose.position.z = z
-
-            target_raw_pose.velocity.x = -vy
-            target_raw_pose.velocity.y = vx
-            target_raw_pose.velocity.z = vz
+        target_raw_pose.velocity.x = vx
+        target_raw_pose.velocity.y = vy
+        target_raw_pose.velocity.z = vz
 
         target_raw_pose.yaw = yaw
 

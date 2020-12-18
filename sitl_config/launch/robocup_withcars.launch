@@ -4,7 +4,7 @@
     <!-- launches Gazebo environment and 2x: MAVROS, PX4 SITL, and spawns vehicle -->
     <!-- vehicle model and world -->
     <arg name="est" default="ekf2"/>
-    <arg name="world" default="$(find mavlink_sitl_gazebo)/worlds/outdoor2.world"/>
+    <arg name="world" default="$(find mavlink_sitl_gazebo)/worlds/robocup.world"/>
     <!-- gazebo configs -->
     <arg name="gui" default="true"/>
     <arg name="debug" default="false"/>
@@ -18,6 +18,37 @@
         <arg name="verbose" value="$(arg verbose)"/>
         <arg name="paused" value="$(arg paused)"/>
     </include>
+
+    <arg name="obstaclestopper" default="false"/>
+    <group ns="ugv_0">
+        <param name="robot_description"
+                command="$(find xacro)/xacro.py '$(find catvehicle)/urdf/catvehicle.xacro' roboname:='ugv_0'" />
+        <include file="$(find catvehicle)/launch/catvehicle.launch">
+            <arg name="robot_name" value="ugv_0"/>
+            <arg name="init_pose" value="-x -15 -y 93 -z 0 -R 0 -P 0 -Y -1.57"/>
+            <arg name="config_file" value="catvehicle_control.yaml"/>
+            <arg name="obstaclestopper" value="$(arg obstaclestopper)"/>
+        </include>
+
+        <!-- Uncomment this to get immediate motion from the car
+        <node name="openLoopCircle" pkg="safeopenloopcircle" type="safeopenloopcircle_node"/>
+        -->
+    </group>
+
+    <group ns="ugv_1">
+        <param name="robot_description"
+                command="$(find xacro)/xacro.py '$(find catvehicle)/urdf/catvehicle.xacro' roboname:='ugv_1'" />
+        <include file="$(find catvehicle)/launch/catvehicle.launch">
+            <arg name="robot_name" value="ugv_1"/>
+            <arg name="init_pose" value="-x -15 -y 100 -z 0 -R 0 -P 0 -Y -1.57"/>
+            <arg name="config_file" value="catvehicle_control.yaml"/>
+            <arg name="obstaclestopper" value="$(arg obstaclestopper)"/>
+        </include>
+
+        <!-- Uncomment this to get immediate motion from the car
+        <node name="openLoopCircle" pkg="safeopenloopcircle" type="safeopenloopcircle_node"/>
+        -->
+    </group>
      <!-- typhoon_h480_0 -->
      <group ns="typhoon_h480_0">
         <!-- MAVROS and vehicle configs -->
@@ -26,9 +57,9 @@
             <arg name="fcu_url" default="udp://:24540@localhost:34580"/>
         <!-- PX4 SITL and vehicle spawn -->
         <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
-            <arg name="x" value="0"/>
-            <arg name="y" value="3"/>
-            <arg name="z" value="0"/>
+            <arg name="x" value="-15"/>
+            <arg name="y" value="92.7"/>
+            <arg name="z" value="10"/>
             <arg name="R" value="0"/>
             <arg name="P" value="0"/>
             <arg name="Y" value="0"/>
@@ -55,9 +86,9 @@
             <arg name="fcu_url" default="udp://:24541@localhost:34581"/>
         <!-- PX4 SITL and vehicle spawn -->
         <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
-            <arg name="x" value="0"/>
-            <arg name="y" value="6"/>
-            <arg name="z" value="0"/>
+            <arg name="x" value="-15"/>
+            <arg name="y" value="93.6"/>
+            <arg name="z" value="10"/>
             <arg name="R" value="0"/>
             <arg name="P" value="0"/>
             <arg name="Y" value="0"/>
@@ -76,22 +107,22 @@
             <arg name="tgt_component" value="1"/>
         </include>
     </group>
-     <!-- iris_0 -->
-     <group ns="iris_0">
+     <!-- typhoon_h480_2 -->
+     <group ns="typhoon_h480_2">
         <!-- MAVROS and vehicle configs -->
             <arg name="ID" value="2"/>
-            <arg name="ID_in_group" value="0"/>
+            <arg name="ID_in_group" value="2"/>
             <arg name="fcu_url" default="udp://:24542@localhost:34582"/>
         <!-- PX4 SITL and vehicle spawn -->
         <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
-            <arg name="x" value="3"/>
-            <arg name="y" value="3"/>
-            <arg name="z" value="0"/>
+            <arg name="x" value="-15"/>
+            <arg name="y" value="94.5"/>
+            <arg name="z" value="10"/>
             <arg name="R" value="0"/>
             <arg name="P" value="0"/>
             <arg name="Y" value="0"/>
-            <arg name="vehicle" value="iris"/>
-            <arg name="sdf" value="iris_stereo_camera"/>
+            <arg name="vehicle" value="typhoon_h480"/>
+            <arg name="sdf" value="typhoon_h480"/>
             <arg name="mavlink_udp_port" value="18572"/>
             <arg name="mavlink_tcp_port" value="4562"/>
             <arg name="ID" value="$(arg ID)"/>
@@ -105,22 +136,22 @@
             <arg name="tgt_component" value="1"/>
         </include>
     </group>
-     <!-- iris_1 -->
-     <group ns="iris_1">
+     <!-- typhoon_h480_3 -->
+     <group ns="typhoon_h480_3">
         <!-- MAVROS and vehicle configs -->
             <arg name="ID" value="3"/>
-            <arg name="ID_in_group" value="1"/>
+            <arg name="ID_in_group" value="3"/>
             <arg name="fcu_url" default="udp://:24543@localhost:34583"/>
         <!-- PX4 SITL and vehicle spawn -->
         <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
-            <arg name="x" value="6"/>
-            <arg name="y" value="3"/>
-            <arg name="z" value="0"/>
+            <arg name="x" value="-15"/>
+            <arg name="y" value="99.7"/>
+            <arg name="z" value="10"/>
             <arg name="R" value="0"/>
             <arg name="P" value="0"/>
             <arg name="Y" value="0"/>
-            <arg name="vehicle" value="iris"/>
-            <arg name="sdf" value="iris_stereo_camera"/>
+            <arg name="vehicle" value="typhoon_h480"/>
+            <arg name="sdf" value="typhoon_h480"/>
             <arg name="mavlink_udp_port" value="18573"/>
             <arg name="mavlink_tcp_port" value="4563"/>
             <arg name="ID" value="$(arg ID)"/>
@@ -134,22 +165,22 @@
             <arg name="tgt_component" value="1"/>
         </include>
     </group>
-     <!-- iris_2 -->
-     <group ns="iris_2">
+     <!-- typhoon_h480_4 -->
+     <group ns="typhoon_h480_4">
         <!-- MAVROS and vehicle configs -->
             <arg name="ID" value="4"/>
-            <arg name="ID_in_group" value="2"/>
+            <arg name="ID_in_group" value="4"/>
             <arg name="fcu_url" default="udp://:24544@localhost:34584"/>
         <!-- PX4 SITL and vehicle spawn -->
         <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
-            <arg name="x" value="3"/>
-            <arg name="y" value="6"/>
-            <arg name="z" value="0"/>
+            <arg name="x" value="-15"/>
+            <arg name="y" value="100.6"/>
+            <arg name="z" value="10"/>
             <arg name="R" value="0"/>
             <arg name="P" value="0"/>
             <arg name="Y" value="0"/>
-            <arg name="vehicle" value="iris"/>
-            <arg name="sdf" value="iris_stereo_camera"/>
+            <arg name="vehicle" value="typhoon_h480"/>
+            <arg name="sdf" value="typhoon_h480"/>
             <arg name="mavlink_udp_port" value="18574"/>
             <arg name="mavlink_tcp_port" value="4564"/>
             <arg name="ID" value="$(arg ID)"/>
@@ -163,22 +194,22 @@
             <arg name="tgt_component" value="1"/>
         </include>
     </group>
-     <!-- iris_3 -->
-     <group ns="iris_3">
+     <!-- typhoon_h480_5 -->
+     <group ns="typhoon_h480_5">
         <!-- MAVROS and vehicle configs -->
             <arg name="ID" value="5"/>
-            <arg name="ID_in_group" value="3"/>
+            <arg name="ID_in_group" value="5"/>
             <arg name="fcu_url" default="udp://:24545@localhost:34585"/>
         <!-- PX4 SITL and vehicle spawn -->
         <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
-            <arg name="x" value="6"/>
-            <arg name="y" value="6"/>
-            <arg name="z" value="0"/>
+            <arg name="x" value="-15"/>
+            <arg name="y" value="101.5"/>
+            <arg name="z" value="10"/>
             <arg name="R" value="0"/>
             <arg name="P" value="0"/>
             <arg name="Y" value="0"/>
-            <arg name="vehicle" value="iris"/>
-            <arg name="sdf" value="iris_stereo_camera"/>
+            <arg name="vehicle" value="typhoon_h480"/>
+            <arg name="sdf" value="typhoon_h480"/>
             <arg name="mavlink_udp_port" value="18575"/>
             <arg name="mavlink_tcp_port" value="4565"/>
             <arg name="ID" value="$(arg ID)"/>

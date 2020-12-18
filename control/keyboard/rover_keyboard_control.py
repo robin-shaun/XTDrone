@@ -86,10 +86,10 @@ if __name__=="__main__":
     multi_cmd_vel_flu_pub = [None]*rover_num
     multi_cmd_pub = [None]*rover_num
     for i in range(rover_num):
-        multi_cmd_vel_flu_pub[i] = rospy.Publisher('/xtdrone/rover_'+str(i)+'/cmd_vel_flu', Twist, queue_size=10)
-        multi_cmd_pub[i] = rospy.Publisher('/xtdrone/rover_'+str(i)+'/cmd',String,queue_size=10)
-    leader_cmd_vel_pub = rospy.Publisher("/xtdrone/leader/cmd_vel", Twist, queue_size=10)
-    leader_cmd_pub = rospy.Publisher("/xtdrone/leader_cmd", String, queue_size=10)
+        multi_cmd_vel_flu_pub[i] = rospy.Publisher('/ugv_'+str(i)+'/cmd_vel', Twist, queue_size=10)
+        multi_cmd_pub[i] = rospy.Publisher('/ugv_'+str(i)+'/cmd',String,queue_size=10)
+    leader_cmd_vel_pub = rospy.Publisher("/ugv/leader/cmd_vel", Twist, queue_size=10)
+    leader_cmd_pub = rospy.Publisher("/ugv/leader_cmd", String, queue_size=10)
     cmd= String()
     twist = Twist()    
 

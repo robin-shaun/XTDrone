@@ -21,6 +21,7 @@ class Gui2Ros(QMainWindow,xtd_ui.Ui_MainWindow):
         self.map = 'indoor1'
         self.comboBox_maps.currentIndexChanged.connect(self.initplot)
         self.button_run.clicked.connect(self.startrun)
+        self.button_control.clicked.connect(self.startcontrol)
         self.cmd = ''
         self.ctrl_leader = True
         self.cmd_vel_mask = False
@@ -29,6 +30,7 @@ class Gui2Ros(QMainWindow,xtd_ui.Ui_MainWindow):
         self.local_vel = Twist()
         self.m = PlotCanvas(self, self.map)
         self.m.move(180, 0)
+        # rospy.init_node('multirotor_pyqt5_control')
 
     def initplot(self):
         self.map = self.comboBox_maps.currentText()
@@ -36,48 +38,73 @@ class Gui2Ros(QMainWindow,xtd_ui.Ui_MainWindow):
 
     def startrun(self):
         print 'start run!'
-        self.color_plot = ['' for i in range(self.multirotor_num)]
-        for i in range(self.multirotor_num):
+        self.init_controller()
+        
+        self.text_thread = Ros2Gui(self.multirotor_select, self.multirotor_num, self.multi_type)
+        self.text_thread.update_text.connect(self.display)
+        self.text_thread.plot_array.connect(self.plot)
+        self.text_thread.start()
+        # self.pSend2ros = Process(target=self.run_process)
+        # self.pSend2ros.start()
+        
+
+    def startcontrol(self):
+        print 'start control!'
+        self.pSend2ros = Process(target=self.run_process)
+        self.pSend2ros.start()
+
+    def init_controller(self):
+        rospy.init_node('multirotor_pyqt5_control')
+        self.text_show_info.setPlainText('data')
+        self.multi_num = 0
+        self.multi_type = []
+        counnnt = 0
+        print self.multirotor_select
+        for j in self.multirotor_select:
+            self.multi_num = self.multi_num + self.multirotor_num[j]   
+            for id_1 in range(self.multirotor_num[j]):
+                self.multi_type.append(self.multirotor_type[j])
+                counnnt+=1
+        self.color_plot = ['' for i in range(self.multi_num)]
+        for i in range(self.multi_num):
             color_R = hex(random.randint(16,255))
             color_G = hex(random.randint(16,255))
             color_B = hex(random.randint(16,255))
             self.color_plot[i] = '#'+str(color_R)+str(color_G)+str(color_B) 
             self.color_plot[i] = self.color_plot[i].replace('0x','')
-        self.pSend2ros = Process(target=self.run_process)
-        self.pSend2ros.start()
-        self.text_thread = Ros2Gui(self.multirotor_num, self.multirotor_type)
-        self.text_thread.update_text.connect(self.display)
-        self.text_thread.plot_array.connect(self.plot)
-        self.text_thread.start()
+        counnnt = 0
+        if self.control_type == 'vel':
+            self.multi_cmd_vel_flu_pub = [None] * self.multi_num
+            self.multi_cmd_pub = [None] * self.multi_num
+            for i in self.multirotor_select:
+                for k in range(self.multirotor_num[i]):
+                    self.multi_cmd_vel_flu_pub[counnnt] = rospy.Publisher(
+                        '/xtdrone/' + self.multi_type[counnnt] + '_' + str(k) + '/cmd_vel_flu',
+                        Twist, queue_size=10)
+                    self.multi_cmd_pub[i] = rospy.Publisher('/xtdrone/' + self.multi_type[counnnt] + '_' + str(k) + '/cmd',
+                                                            String,
+                                                            queue_size=10)
+                    counnnt += 1
+                self.leader_cmd_vel_flu_pub = rospy.Publisher("/xtdrone/leader/cmd_vel_flu", Twist, queue_size=10)
+                self.leader_cmd_pub = rospy.Publisher("/xtdrone/leader/cmd", String, queue_size=10)
+
+        else:
+            self.multi_cmd_accel_flu_pub = [None] * self.multi_num
+            self.multi_cmd_pub = [None] * self.multi_num
+            for i in self.multirotor_select:
+                for k in range(self.multirotor_num[i]):
+                    self.multi_cmd_accel_flu_pub[i] = rospy.Publisher(
+                        '/xtdrone/' + self.multi_type[counnnt] + '_' + str(k) + '/cmd_accel_flu', Twist, queue_size=10)
+                    self.multi_cmd_pub[i] = rospy.Publisher('/xtdrone/' + self.multi_type[counnnt] + '_' + str(k) + '/cmd',
+                                                            String,
+                                                            queue_size=10)
+                    counnnt = 0
+            self.leader_cmd_accel_flu_pub = rospy.Publisher("/xtdrone/leader/cmd_accel_flu", Twist, queue_size=10)
+            self.leader_cmd_pub = rospy.Publisher("/xtdrone/leader/cmd", String, queue_size=10)
 
     #publish messages to ros nodes like a keyboard
     def run_process(self):
-        rospy.init_node('multirotor_pyqt5_control')
-        self.text_show_info.setPlainText('data')
-        if self.control_type == 'vel':
-            self.multi_cmd_vel_flu_pub = [None] * self.multirotor_num
-            self.multi_cmd_pub = [None] * self.multirotor_num
-            for i in range(self.multirotor_num):
-                self.multi_cmd_vel_flu_pub[i] = rospy.Publisher(
-                    '/xtdrone/' + self.multirotor_type + '_' + str(i) + '/cmd_vel_flu',
-                    Twist, queue_size=10)
-                self.multi_cmd_pub[i] = rospy.Publisher('/xtdrone/' + self.multirotor_type + '_' + str(i) + '/cmd',
-                                                        String,
-                                                        queue_size=10)
-            self.leader_cmd_vel_flu_pub = rospy.Publisher("/xtdrone/leader/cmd_vel_flu", Twist, queue_size=10)
-            self.leader_cmd_pub = rospy.Publisher("/xtdrone/leader/cmd", String, queue_size=10)
-
-        else:
-            self.multi_cmd_accel_flu_pub = [None] * self.multirotor_num
-            self.multi_cmd_pub = [None] * self.multirotor_num
-            for i in range(self.multirotor_num):
-                self.multi_cmd_accel_flu_pub[i] = rospy.Publisher(
-                    '/xtdrone/' + self.multirotor_type + '_' + str(i) + '/cmd_accel_flu', Twist, queue_size=10)
-                self.multi_cmd_pub[i] = rospy.Publisher('/xtdrone/' + self.multirotor_type + '_' + str(i) + '/cmd',
-                                                        String,
-                                                        queue_size=10)
-            self.leader_cmd_accel_flu_pub = rospy.Publisher("/xtdrone/leader/cmd_accel_flu", Twist, queue_size=10)
-            self.leader_cmd_pub = rospy.Publisher("/xtdrone/leader/cmd", String, queue_size=10)
+        # rospy.init_node('multirotor_pyqt5_control')
         last_forward = 0.0
         last_upward = 0.0
         last_leftward = 0.0
@@ -131,7 +158,7 @@ class Gui2Ros(QMainWindow,xtd_ui.Ui_MainWindow):
                 check_stop_flag = self.q_stop_flag.get()
                 if check_stop_flag:
                     self.cmd = 'AUTO.RTL'
-            for i in range(self.multirotor_num):
+            for i in range(self.multi_num):
                 if self.ctrl_leader:
                     if self.control_type == 'vel':
                         self.leader_cmd_vel_flu_pub.publish(self.twist)
@@ -143,6 +170,7 @@ class Gui2Ros(QMainWindow,xtd_ui.Ui_MainWindow):
                     if not self.cmd_vel_mask:
                         if self.control_type == 'vel':
                             self.multi_cmd_vel_flu_pub[i].publish(self.twist)
+                            print self.multi_cmd_pub[i]
                         else:
                             self.multi_cmd_accel_flu_pub[i].publish(self.twist)
                     self.multi_cmd_pub[i].publish(self.cmd)
@@ -156,7 +184,7 @@ class Gui2Ros(QMainWindow,xtd_ui.Ui_MainWindow):
         self.text_show_info.setPlainText(data)
 
     def plot(self, data):
-         for i in range(self.multirotor_num):
+         for i in range(self.multi_num):
             self.m.ax.plot(data[i][0], data[i][1], color = self.color_plot[i])
             # self.m.canvas_update(self.map)
             self.m.draw()

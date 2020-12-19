@@ -75,8 +75,12 @@ class Gui2Ros(QMainWindow,xtd_ui.Ui_MainWindow):
             self.multi_cmd_pub = [None] * self.multi_num
             for i in self.multirotor_select:
                 for k in range(self.multirotor_num[i]):
-                    self.multi_cmd_vel_flu_pub[counnnt] = rospy.Publisher('/xtdrone/' + self.multi_type[counnnt] + '_' + str(k) + '/cmd_vel_flu', Twist, queue_size=10)
-                    self.multi_cmd_pub[counnnt] = rospy.Publisher('/xtdrone/' + self.multi_type[counnnt] + '_' + str(k) + '/cmd', String,queue_size=10)
+                    if i == 7:
+                        self.multi_cmd_vel_flu_pub[counnnt] = rospy.Publisher('/ugv_' + str(k) + '/cmd_vel', Twist, queue_size=10)
+                        self.multi_cmd_pub[counnnt] = rospy.Publisher('/ugv_' + str(k) + + '/cmd', String,queue_size=10)      
+                    else:                    
+                        self.multi_cmd_vel_flu_pub[counnnt] = rospy.Publisher('/xtdrone/' + self.multi_type[counnnt] + '_' + str(k) + '/cmd_vel_flu', Twist, queue_size=10)
+                        self.multi_cmd_pub[counnnt] = rospy.Publisher('/xtdrone/' + self.multi_type[counnnt] + '_' + str(k) + '/cmd', String,queue_size=10)
                     counnnt += 1
                 self.leader_cmd_vel_flu_pub = rospy.Publisher("/xtdrone/leader/cmd_vel_flu", Twist, queue_size=10)
                 self.leader_cmd_pub = rospy.Publisher("/xtdrone/leader/cmd", String, queue_size=10)

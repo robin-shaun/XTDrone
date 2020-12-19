@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<package>
+  <name>sicktoolbox_wrapper</name>
+  <version>2.5.3</version>
+  <description>sicktoolbox_wrapper is a ROS wrapper for the outstanding <a href="http://www.ros.org/wiki/sicktoolbox">sicktoolbox</a>
+    library for interfacing with the SICK LMS2xx lasers.
+  </description>
+
+  <maintainer email="chadrockey@gmail.com">Chad Rockey</maintainer>
+
+  <license>BSD</license>
+
+  <url type="website">http://ros.org/wiki/sicktoolbox_wrapper</url>
+  <url type="bugtracker">https://github.com/ros-drivers/sicktoolbox_wrapper/issues</url>
+  <url type="repository">https://github.com/ros-drivers/sicktoolbox_wrapper</url>
+
+  <author email="mquigley@cs.stanford.edu">Morgan Quigley</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>roscpp</build_depend>
+  <build_depend>rosconsole</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>sicktoolbox</build_depend>
+  <build_depend>diagnostic_updater</build_depend>
+
+  <run_depend>roscpp</run_depend>
+  <run_depend>rosconsole</run_depend>
+  <run_depend>sensor_msgs</run_depend>
+  <run_depend>sicktoolbox</run_depend>
+  <run_depend>diagnostic_updater</run_depend>
+
+  <export>
+  </export>
+</package>

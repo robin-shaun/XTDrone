@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+
+<launch>
+
+
+<arg name="robot" default="catvehicle"/>
+<arg name="dist_topic" default="/$(arg robot)/distance"/>
+<arg name="rvel_topic" default="/$(arg robot)/relative_vel"/>
+<node name="velocityEstimator" pkg="catvehicle" type="velocityEstimator" output="screen">
+    <param name="dist_topic" value="$(arg dist_topic)"/>
+    <param name="vel_topic" value="$(arg rvel_topic)"/>
+</node>
+
+
+</launch>

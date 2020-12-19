@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<launch>
+
+<arg name="robot" default="toyota"/>
+<arg name="rosbag" default="false"/>
+<arg name="csvfile" default="/home/ivory/CyverseData/JmscslgroupData/PandaData/2020_02_18/2020-02-18-13-00-42-209119__CAN_Messages.csv"/>
+<arg name="dbcfile" default="/home/ivory/VersionControl/Jmscslgroup/strym/examples/newToyotacode.dbc"/>
+<group ns="$(arg robot)">
+    <!-- load the predict rospy class-->
+    <node pkg="catvehicle" type="drive_lead.py" name="drive_lead_$(arg robot)" output="screen" required="true" args="$(arg csvfile) $(arg dbcfile)">
+    </node>
+    <node name="recorder" pkg="rosbag" type="record" output="screen" args=" -o /home/ivory/CyverseData/JmscslgroupData/Bagfiles/RNN_Prediction/CAN2ROS -a" if="$(arg rosbag)"/>
+</group>
+
+</launch>

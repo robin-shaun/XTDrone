@@ -12,7 +12,7 @@ class Ros2Gui(QThread):
     plot_array = pyqtSignal(list)
     def __init__(self, multi_select, multi_num, multi_type):
         super(Ros2Gui, self).__init__()
-        # rospy.init_node('multirotor_pyqt5_receiver')
+        rospy.init_node('multirotor_pyqt5_receiver')
         self.multirotor_num = 0
         self.multirotor_type = multi_type
         self.map = map

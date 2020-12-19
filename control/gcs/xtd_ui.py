@@ -18,8 +18,10 @@ from plotcanvas import PlotCanvas
 class Ui_MainWindow(object):
     def __init__(self):
         self.multirotor_type = ['iris','typhoon_h480','solo','tailsitter','quadplane','plane','tiltrotor','rotor']
-        self.multirotor_num = [1, 0, 0, 0, 0, 0, 0]
+        self.multirotor_num = [1, 0, 0, 0, 0, 0, 0, 0]
+        self.multi_type_num = 8
         self.multirotor_select=[]
+        self.multirotor_get_control = []
         self.control_type = 'vel'
         self.task = 'Flying'
         self.map = 'indoor1'
@@ -27,10 +29,7 @@ class Ui_MainWindow(object):
         self.terminal_point = numpy.array([0.0,0.0])
         self.formation2 = 'formation1'
         self.control_type = 'vel'
-        self.twist = Twist()
-        self.twist.angular.x = 0.0
-        self.twist.angular.y = 0.0
-        self.cmd2 = 'control the leader'
+        self.cmd2 = 'control all'
         self.q_cmd = Queue()
         self.q_ctrl_leader = Queue()
         self.q_forward = Queue()
@@ -40,6 +39,8 @@ class Ui_MainWindow(object):
         self.q_stop_flag = Queue()
         self.q_cmd_vel_mask = Queue()
         self.q_close_flag = Queue()
+        self.q_start_control_flag = Queue()
+        self.q_multirotor_get_control = Queue()
         self.once = 0
         self.twice = 0
 
@@ -77,7 +78,7 @@ class Ui_MainWindow(object):
         self.label_control_board_2.setAlignment(QtCore.Qt.AlignCenter)
         self.label_control_board_2.setObjectName("label_control_board_2")
         self.layoutWidget = QtWidgets.QWidget(self.frame)
-        self.layoutWidget.setGeometry(QtCore.QRect(40, 60, 331, 198))
+        self.layoutWidget.setGeometry(QtCore.QRect(180, 60, 331, 198))
         self.layoutWidget.setObjectName("layoutWidget")
         self.gridLayout = QtWidgets.QGridLayout(self.layoutWidget)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
@@ -199,7 +200,7 @@ class Ui_MainWindow(object):
         self.text_control_tips.setObjectName("text_control_tips")
         self.gridLayout.addWidget(self.text_control_tips, 2, 0, 1, 2)
         self.layoutWidget1 = QtWidgets.QWidget(self.frame)
-        self.layoutWidget1.setGeometry(QtCore.QRect(430, 60, 234, 191))
+        self.layoutWidget1.setGeometry(QtCore.QRect(530, 60, 171, 191))
         self.layoutWidget1.setObjectName("layoutWidget1")
         self.gridLayout_4 = QtWidgets.QGridLayout(self.layoutWidget1)
         self.gridLayout_4.setContentsMargins(0, 0, 0, 0)
@@ -285,7 +286,53 @@ class Ui_MainWindow(object):
         self.button_stop.setObjectName("button_stop")
         self.horizontalLayout_3.addWidget(self.button_stop)
         self.verticalLayout_7.addLayout(self.horizontalLayout_3)
-        self.gridLayout_4.addLayout(self.verticalLayout_7, 1, 0, 1, 1)
+        self.gridLayout_4.addLayout(self.verticalLayout_7, 0, 0, 1, 1)
+        self.widget = QtWidgets.QWidget(self.frame)
+        self.widget.setGeometry(QtCore.QRect(20, 60, 151, 204))
+        self.widget.setObjectName("widget")
+        self.verticalLayout_8 = QtWidgets.QVBoxLayout(self.widget)
+        self.verticalLayout_8.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_8.setObjectName("verticalLayout_8")
+        self.checkBox_iris = QtWidgets.QCheckBox(self.widget)
+        self.checkBox_iris.setStyleSheet("font: 57 12pt \"Ubuntu\";\n"
+"color: rgb(32, 74, 135);")
+        self.checkBox_iris.setObjectName("checkBox_iris")
+        self.verticalLayout_8.addWidget(self.checkBox_iris)
+        self.checkBox_typhoon = QtWidgets.QCheckBox(self.widget)
+        self.checkBox_typhoon.setStyleSheet("font: 57 12pt \"Ubuntu\";\n"
+"color: rgb(32, 74, 135);")
+        self.checkBox_typhoon.setObjectName("checkBox_typhoon")
+        self.verticalLayout_8.addWidget(self.checkBox_typhoon)
+        self.checkBox_solo = QtWidgets.QCheckBox(self.widget)
+        self.checkBox_solo.setStyleSheet("font: 57 12pt \"Ubuntu\";\n"
+"color: rgb(32, 74, 135);")
+        self.checkBox_solo.setObjectName("checkBox_solo")
+        self.verticalLayout_8.addWidget(self.checkBox_solo)
+        self.checkBox_tailsitter = QtWidgets.QCheckBox(self.widget)
+        self.checkBox_tailsitter.setStyleSheet("font: 57 12pt \"Ubuntu\";\n"
+"color: rgb(32, 74, 135);")
+        self.checkBox_tailsitter.setObjectName("checkBox_tailsitter")
+        self.verticalLayout_8.addWidget(self.checkBox_tailsitter)
+        self.checkBox_quadplane = QtWidgets.QCheckBox(self.widget)
+        self.checkBox_quadplane.setStyleSheet("font: 57 12pt \"Ubuntu\";\n"
+"color: rgb(32, 74, 135);")
+        self.checkBox_quadplane.setObjectName("checkBox_quadplane")
+        self.verticalLayout_8.addWidget(self.checkBox_quadplane)
+        self.checkBox_plane = QtWidgets.QCheckBox(self.widget)
+        self.checkBox_plane.setStyleSheet("font: 57 12pt \"Ubuntu\";\n"
+"color: rgb(32, 74, 135);")
+        self.checkBox_plane.setObjectName("checkBox_plane")
+        self.verticalLayout_8.addWidget(self.checkBox_plane)
+        self.checkBox_tiltrotor = QtWidgets.QCheckBox(self.widget)
+        self.checkBox_tiltrotor.setStyleSheet("font: 57 12pt \"Ubuntu\";\n"
+"color: rgb(32, 74, 135);")
+        self.checkBox_tiltrotor.setObjectName("checkBox_tiltrotor")
+        self.verticalLayout_8.addWidget(self.checkBox_tiltrotor)
+        self.checkBox_rotor = QtWidgets.QCheckBox(self.widget)
+        self.checkBox_rotor.setStyleSheet("font: 57 12pt \"Ubuntu\";\n"
+"color: rgb(32, 74, 135);")
+        self.checkBox_rotor.setObjectName("checkBox_rotor")
+        self.verticalLayout_8.addWidget(self.checkBox_rotor)
         self.frame_3 = QtWidgets.QFrame(self.centralwidget)
         self.frame_3.setGeometry(QtCore.QRect(170, 0, 711, 470))
         self.frame_3.setStyleSheet("background-color: rgb(238, 238, 236);")
@@ -340,7 +387,7 @@ class Ui_MainWindow(object):
         self.frame_5.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_5.setObjectName("frame_5")
         self.comboBox_controltype = QtWidgets.QComboBox(self.frame_5)
-        self.comboBox_controltype.setGeometry(QtCore.QRect(30, 700, 101, 25))
+        self.comboBox_controltype.setGeometry(QtCore.QRect(30, 690, 101, 25))
         self.comboBox_controltype.setStyleSheet("color: rgb(32, 74, 135);\n"
 "font: 57 12pt \"Ubuntu\";")
         self.comboBox_controltype.setObjectName("comboBox_controltype")
@@ -348,7 +395,7 @@ class Ui_MainWindow(object):
         self.comboBox_controltype.addItem("")
         self.label_uavnumber_2 = QtWidgets.QLabel(self.frame_5)
         self.label_uavnumber_2.setEnabled(True)
-        self.label_uavnumber_2.setGeometry(QtCore.QRect(10, 670, 101, 19))
+        self.label_uavnumber_2.setGeometry(QtCore.QRect(10, 660, 101, 19))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(1)
         sizePolicy.setVerticalStretch(0)
@@ -730,7 +777,7 @@ class Ui_MainWindow(object):
         self.box_command.setItemText(5, _translate("MainWindow", "take off"))
         self.box_command.setItemText(6, _translate("MainWindow", "land"))
         self.box_command.setItemText(7, _translate("MainWindow", "offboard"))
-        self.box_command.setItemText(8, _translate("MainWindow", "hover and remove the mask"))
+        self.box_command.setItemText(8, _translate("MainWindow", "hover"))
         self.label_choose_formation.setText(_translate("MainWindow", "choose formation"))
         self.box_formation.setItemText(0, _translate("MainWindow", "waiting"))
         self.box_formation.setItemText(1, _translate("MainWindow", "formation1"))
@@ -738,6 +785,14 @@ class Ui_MainWindow(object):
         self.box_formation.setItemText(3, _translate("MainWindow", "formation3"))
         self.button_control.setText(_translate("MainWindow", "CONTROL"))
         self.button_stop.setText(_translate("MainWindow", "STOP!"))
+        self.checkBox_iris.setText(_translate("MainWindow", "iris"))
+        self.checkBox_typhoon.setText(_translate("MainWindow", "typhoon_h480"))
+        self.checkBox_solo.setText(_translate("MainWindow", "solo"))
+        self.checkBox_tailsitter.setText(_translate("MainWindow", "tailsitter"))
+        self.checkBox_quadplane.setText(_translate("MainWindow", "quadplane"))
+        self.checkBox_plane.setText(_translate("MainWindow", "plane"))
+        self.checkBox_tiltrotor.setText(_translate("MainWindow", "tiltrotor"))
+        self.checkBox_rotor.setText(_translate("MainWindow", "rotor"))
         self.label_control_board_4.setText(_translate("MainWindow", "vehicle states"))
         self.more_topics.setText(_translate("MainWindow", "more topics"))
         self.label_website.setToolTip(_translate("MainWindow", "XTDrone wiki"))
@@ -797,6 +852,22 @@ class Ui_MainWindow(object):
         self.box_command.currentIndexChanged.connect(self.get_command)
         self.box_formation.currentIndexChanged.connect(self.get_formation)
         self.comboBox_maps.currentIndexChanged.connect(self.initplot)
+        self.checkBox_iris.setCheckable(False)
+        self.checkBox_iris.stateChanged.connect(self.get_uav_control)
+        self.checkBox_typhoon.setCheckable(False)
+        self.checkBox_typhoon.stateChanged.connect(self.get_uav_control)
+        self.checkBox_solo.setCheckable(False)
+        self.checkBox_solo.stateChanged.connect(self.get_uav_control)
+        self.checkBox_tailsitter.setCheckable(False)
+        self.checkBox_tailsitter.stateChanged.connect(self.get_uav_control)
+        self.checkBox_plane.setCheckable(False)
+        self.checkBox_plane.stateChanged.connect(self.get_uav_control)
+        self.checkBox_tiltrotor.setCheckable(False)
+        self.checkBox_tiltrotor.stateChanged.connect(self.get_uav_control)
+        self.checkBox_rotor.setCheckable(False)
+        self.checkBox_rotor.stateChanged.connect(self.get_uav_control)
+        self.checkBox_quadplane.setCheckable(False)
+        self.checkBox_quadplane.stateChanged.connect(self.get_uav_control)
         
     def initplot(self):
         self.map = self.comboBox_maps.currentText()
@@ -815,33 +886,58 @@ class Ui_MainWindow(object):
         self.once += 1
         self.map = str(self.comboBox_maps.currentText())
         if self.once == 1:
-            for i in range (7):
+            for i in range (self.multi_type_num):
                 if i == 0:
                     self.multirotor_num[i] = int(self.box_iris_num.value())
+                    if self.multirotor_num[i] > 0.5:
+                        self.multirotor_select.append(i)
+                        self.checkBox_iris.setCheckable(True)
                 elif i == 1:
                     self.multirotor_num[i] = int(self.box_typhoon_num.value())
+                    if self.multirotor_num[i] > 0.5:
+                        self.multirotor_select.append(i)
+                        self.checkBox_typhoon.setCheckable(True)
                 elif i == 2:
                     self.multirotor_num[i] = int(self.box_solo_num.value())
+                    if self.multirotor_num[i] > 0.5:
+                        self.multirotor_select.append(i)
+                        self.checkBox_solo.setCheckable(True)
                 elif i == 3:
                     self.multirotor_num[i] = int(self.box_tailsitter_num.value())
+                    if self.multirotor_num[i] > 0.5:
+                        self.multirotor_select.append(i)
+                        self.checkBox_tailsitter.setCheckable(True)
                 elif i == 4:
                     self.multirotor_num[i] = int(self.box_quadplane_num.value())
+                    if self.multirotor_num[i] > 0.5:
+                        self.multirotor_select.append(i)
+                        self.checkBox_quadplane.setCheckable(True)
                 elif i == 5:
                     self.multirotor_num[i] = int(self.box_plane_num.value())
+                    if self.multirotor_num[i] > 0.5:
+                        self.multirotor_select.append(i)
+                        self.checkBox_plane.setCheckable(True)
                 elif i == 6:
                     self.multirotor_num[i] = int(self.box_tiltrotor_num.value())
+                    if self.multirotor_num[i] > 0.5:
+                        self.multirotor_select.append(i)
+                        self.checkBox_tiltrotor.setCheckable(True)
                 else:
                     self.multirotor_num[i] = int(self.box_rotor_num.value())
+                    if self.multirotor_num[i] > 0.5:
+                        self.multirotor_select.append(i)
+                        self.checkBox_rotor.setCheckable(True)
                 if self.multirotor_num[i] != 6 and self.multirotor_num[i] != 9 and self.multirotor_num[i] != 18:
                     self.box_formation.setVisible(False)
-                if self.multirotor_num[i] > 0.5:
-                    self.multirotor_select.append(i)
+                
         self.control_type = str(self.comboBox_controltype.currentText())
         self.button_control.setEnabled(True)
         self.button_run.setEnabled(False)
 
     def on_button_control_clicked(self):
         self.twice += 1
+        print 'Start Control!'
+        self.q_start_control_flag.put(True)
         if self.twice == 1:
             self.box_go_and_back_2.setReadOnly(False)
             self.box_up_and_down_2.setReadOnly(False)
@@ -889,8 +985,6 @@ class Ui_MainWindow(object):
         orientation_exp = self.box_orientation.value()
         self.q_orientation.put(orientation_exp )
         #print('orientation_exp:',self.twist.angular.z)
-
-   
 
     def get_command(self):
         self.cmd2 = str(self.box_command.currentText())
@@ -978,6 +1072,52 @@ class Ui_MainWindow(object):
                 formation = 'waiting'
                 self.q_cmd.put(formation)
         #print(self.formation)
+
+    def get_uav_control(self):
+        self.multirotor_get_control = []
+        for i in range(self.multirotor_num[0]):
+            if self.checkBox_iris.isChecked():
+                self.multirotor_get_control.append(1)
+            else:
+                self.multirotor_get_control.append(0)
+        for i in range(self.multirotor_num[1]):
+            if self.checkBox_typhoon.isChecked():
+                self.multirotor_get_control.append(1)
+            else:
+                self.multirotor_get_control.append(0)
+        for i in range(self.multirotor_num[2]):
+            if self.checkBox_solo.isChecked():
+                self.multirotor_get_control.append(1)
+            else:
+                self.multirotor_get_control.append(0)
+        for i in range(self.multirotor_num[3]):
+            if self.checkBox_tailsitter.isChecked():
+                self.multirotor_get_control.append(1)
+            else:
+                self.multirotor_get_control.append(0)
+        for i in range(self.multirotor_num[4]):
+            if self.checkBox_quadplane.isChecked():
+                self.multirotor_get_control.append(1)
+            else:
+                self.multirotor_get_control.append(0)
+        for i in range(self.multirotor_num[5]):
+            if self.checkBox_plane.isChecked():
+                self.multirotor_get_control.append(1)
+            else:
+                self.multirotor_get_control.append(0)
+        for i in range(self.multirotor_num[6]):
+            if self.checkBox_tiltrotor.isChecked():
+                self.multirotor_get_control.append(1)
+            else:
+                self.multirotor_get_control.append(0)
+        for i in range(self.multirotor_num[7]):
+            if self.checkBox_rotor.isChecked():
+                self.multirotor_get_control.append(1)
+            else:
+                self.multirotor_get_control.append(0)
+        print self.multirotor_get_control
+        self.q_multirotor_get_control.put(self.multirotor_get_control)
+
 
 
 if __name__== '__main__':

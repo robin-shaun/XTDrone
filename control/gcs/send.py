@@ -21,15 +21,12 @@ class Gui2Ros(QMainWindow,xtd_ui.Ui_MainWindow):
         self.map = 'indoor1'
         self.comboBox_maps.currentIndexChanged.connect(self.initplot)
         self.button_run.clicked.connect(self.startrun)
-        self.button_control.clicked.connect(self.startcontrol)
-        self.cmd = ''
-        self.ctrl_leader = True
-        self.cmd_vel_mask = False
         self.close_flag = False
         self.local_pose = PoseStamped()
         self.local_vel = Twist()
         self.m = PlotCanvas(self, self.map)
         self.m.move(180, 0)
+        self.flag = 0
         # rospy.init_node('multirotor_pyqt5_control')
 
     def initplot(self):
@@ -39,22 +36,17 @@ class Gui2Ros(QMainWindow,xtd_ui.Ui_MainWindow):
     def startrun(self):
         print 'start run!'
         self.init_controller()
-        
+        self.pSend2ros = Process(target=self.run_process)
+        self.pSend2ros.start()
         self.text_thread = Ros2Gui(self.multirotor_select, self.multirotor_num, self.multi_type)
         self.text_thread.update_text.connect(self.display)
         self.text_thread.plot_array.connect(self.plot)
         self.text_thread.start()
         # self.pSend2ros = Process(target=self.run_process)
         # self.pSend2ros.start()
-        
-
-    def startcontrol(self):
-        print 'start control!'
-        self.pSend2ros = Process(target=self.run_process)
-        self.pSend2ros.start()
 
     def init_controller(self):
-        rospy.init_node('multirotor_pyqt5_control')
+        
         self.text_show_info.setPlainText('data')
         self.multi_num = 0
         self.multi_type = []
@@ -72,18 +64,19 @@ class Gui2Ros(QMainWindow,xtd_ui.Ui_MainWindow):
             color_B = hex(random.randint(16,255))
             self.color_plot[i] = '#'+str(color_R)+str(color_G)+str(color_B) 
             self.color_plot[i] = self.color_plot[i].replace('0x','')
+        
+
+    #publish messages to ros nodes like a keyboard
+    def run_process(self):
+        rospy.init_node('multirotor_pyqt5_control')
         counnnt = 0
         if self.control_type == 'vel':
             self.multi_cmd_vel_flu_pub = [None] * self.multi_num
             self.multi_cmd_pub = [None] * self.multi_num
             for i in self.multirotor_select:
                 for k in range(self.multirotor_num[i]):
-                    self.multi_cmd_vel_flu_pub[counnnt] = rospy.Publisher(
-                        '/xtdrone/' + self.multi_type[counnnt] + '_' + str(k) + '/cmd_vel_flu',
-                        Twist, queue_size=10)
-                    self.multi_cmd_pub[i] = rospy.Publisher('/xtdrone/' + self.multi_type[counnnt] + '_' + str(k) + '/cmd',
-                                                            String,
-                                                            queue_size=10)
+                    self.multi_cmd_vel_flu_pub[counnnt] = rospy.Publisher('/xtdrone/' + self.multi_type[counnnt] + '_' + str(k) + '/cmd_vel_flu', Twist, queue_size=10)
+                    self.multi_cmd_pub[counnnt] = rospy.Publisher('/xtdrone/' + self.multi_type[counnnt] + '_' + str(k) + '/cmd', String,queue_size=10)
                     counnnt += 1
                 self.leader_cmd_vel_flu_pub = rospy.Publisher("/xtdrone/leader/cmd_vel_flu", Twist, queue_size=10)
                 self.leader_cmd_pub = rospy.Publisher("/xtdrone/leader/cmd", String, queue_size=10)
@@ -101,79 +94,124 @@ class Gui2Ros(QMainWindow,xtd_ui.Ui_MainWindow):
                     counnnt = 0
             self.leader_cmd_accel_flu_pub = rospy.Publisher("/xtdrone/leader/cmd_accel_flu", Twist, queue_size=10)
             self.leader_cmd_pub = rospy.Publisher("/xtdrone/leader/cmd", String, queue_size=10)
-
-    #publish messages to ros nodes like a keyboard
-    def run_process(self):
-        # rospy.init_node('multirotor_pyqt5_control')
-        last_forward = 0.0
-        last_upward = 0.0
-        last_leftward = 0.0
-        last_orientation = 0.0
+        self.twist = [Twist() for i in range (self.multi_num)]
+        self.cmd = ['' for i in range (self.multi_num)]
+        self.ctrl_leader = True 
+        self.cmd_vel_mask = False
+        for j in range(self.multi_num):
+            self.twist[j].angular.x = 0.0
+            self.twist[j].angular.y = 0.0
+        last_forward = [0.0 for i in range(self.multi_num)]
+        last_upward = [0.0 for i in range(self.multi_num)]
+        last_leftward = [0.0 for i in range(self.multi_num)]
+        last_orientation = [0.0 for i in range(self.multi_num)]
         last_ctrl_leader = False
         last_cmd_vel_mask = False
+        last_multirotor_get_control = [0 for i in range(self.multi_num)]
+        last_forward_all = 0.0
+        last_upward_all = 0.0
+        last_leftward_all = 0.0
+        last_orientation_all = 0.0
+
         num = 0
         rate = rospy.Rate(30)
         check_stop_flag = False
         print('StartRun!')
+        start_flag = False
+        flag = False
+        time = 0
         while True:
-            num += 1
-            #print(check_stop_flag)
-            if self.q_forward.empty():
-                self.twist.linear.x = last_forward
-            else:
-                self.twist.linear.x = self.q_forward.get()
-                last_forward = self.twist.linear.x
-            if self.q_upward.empty():
-                self.twist.linear.z = last_upward
-            else:
-                self.twist.linear.z = self.q_upward.get()
-                last_upward = self.twist.linear.z
-            if self.q_leftward.empty():
-                self.twist.linear.y = last_leftward
-            else:
-                self.twist.linear.y = self.q_leftward.get()
-                last_leftward = self.twist.linear.y
-            if self.q_orientation.empty():
-                self.twist.angular.z = last_orientation
-            else:
-                self.twist.angular.z = self.q_orientation.get()
-                last_orientation = self.twist.angular.z
-            if self.q_cmd.empty():
-                self.cmd = ''
-            else:
-                self.cmd = self.q_cmd.get()
-            if self.q_ctrl_leader.empty():
-                self.ctrl_leader = last_ctrl_leader
-            else:
-                self.ctrl_leader = self.q_ctrl_leader.get()
-                last_ctrl_leader = self.ctrl_leader
-            if self.q_cmd_vel_mask.empty():
-                self.cmd_vel_mask = last_cmd_vel_mask
-            else:
-                self.cmd_vel_mask = self.q_cmd_vel_mask.get()
-                last_cmd_vel_mask = self.cmd_vel_mask
-            if self.q_stop_flag.empty():
-                pass
-            else:
-                check_stop_flag = self.q_stop_flag.get()
-                if check_stop_flag:
-                    self.cmd = 'AUTO.RTL'
-            for i in range(self.multi_num):
+            if not start_flag:
+                flag = self.q_start_control_flag.get()
+            if flag: 
+                time += 1
+                start_flag = True
+                num += 1
+                if self.q_multirotor_get_control.empty():
+                    multirotor_get_control = last_multirotor_get_control
+                else:
+                    multirotor_get_control = self.q_multirotor_get_control.get()
+                    last_multirotor_get_control = multirotor_get_control
+                if self.q_forward.empty():
+                    for i in range(self.multi_num):
+                        if multirotor_get_control[i]:
+                            self.twist[i].linear.x = last_forward[i]
+                else:
+                    for i in range(self.multi_num):
+                        if multirotor_get_control[i]:
+                            self.twist[i].linear.x = self.q_forward.get()
+                            last_forward[i] = self.twist.linear.x[i]
+                if self.q_upward.empty():
+                    for i in range(self.multi_num):
+                        if multirotor_get_control[i]:
+                            self.twist[i].linear.z = last_upward[i]
+                else:
+                    for i in range(self.multi_num):
+                        if multirotor_get_control[i]:
+                            self.twist[i].linear.z = self.q_upward.get()
+                            last_upward[i] = self.twist[i].linear.z
+                if self.q_leftward.empty():
+                    for i in range(self.multi_num):
+                        if multirotor_get_control[i]:
+                            self.twist[i].linear.y = last_leftward[i]
+                else:
+                    for i in range(self.multi_num):
+                        if multirotor_get_control[i]:
+                            self.twist[i].linear.y = self.q_leftward.get()
+                            last_leftward[i] = self.twist[i].linear.y
+                if self.q_orientation.empty():
+                    for i in range(self.multi_num):
+                        if multirotor_get_control[i]:
+                            self.twist[i].angular.z = last_orientation[i]
+                else:
+                    for i in range(self.multi_num):
+                        if multirotor_get_control[i]:
+                            self.twist[i].angular.z = self.q_orientation.get()
+                            last_orientation[i] = self.twist[i].angular.z
+                if self.q_cmd.empty():
+                    for i in range(self.multi_num):
+                        if multirotor_get_control[i]:
+                            self.cmd[i] = ''
+                else:
+                    for i in range(self.multi_num):
+                        if multirotor_get_control[i]:
+                            self.cmd[i] = self.q_cmd.get()
+                if self.q_ctrl_leader.empty():
+                    self.ctrl_leader = last_ctrl_leader
+                else:
+                    self.ctrl_leader = self.q_ctrl_leader.get()
+                    last_ctrl_leader = self.ctrl_leader
+                
+                if self.q_cmd_vel_mask.empty():
+                    self.cmd_vel_mask = last_cmd_vel_mask
+                else:
+                    self.cmd_vel_mask = self.q_cmd_vel_mask.get()
+                    last_cmd_vel_mask = self.cmd_vel_mask
+                if self.q_stop_flag.empty():
+                    pass
+                else:
+                    check_stop_flag = self.q_stop_flag.get()
+                    if check_stop_flag:
+                        for i in range(self.multi_num):
+                            self.cmd[i] = 'AUTO.RTL'
                 if self.ctrl_leader:
-                    if self.control_type == 'vel':
-                        self.leader_cmd_vel_flu_pub.publish(self.twist)
-                    else:
-                        self.leader_cmd_accel_flu_pub.publish(self.twist)
-                    self.leader_cmd_pub.publish(self.cmd)
+                    for i in range(self.multi_num):
+                        if multirotor_get_control[i]:
+                            if self.control_type == 'vel':
+                                self.leader_cmd_vel_flu_pub.publish(self.twist[i])
+                            else:
+                                self.leader_cmd_accel_flu_pub.publish(self.twist[i])
+                            self.leader_cmd_pub.publish(self.cmd[i])
+                            break
 
                 else:
-                    if not self.cmd_vel_mask:
-                        if self.control_type == 'vel':
-                            self.multi_cmd_vel_flu_pub[i].publish(self.twist)
-                            print self.multi_cmd_pub[i]
-                        else:
-                            self.multi_cmd_accel_flu_pub[i].publish(self.twist)
-                    self.multi_cmd_pub[i].publish(self.cmd)
+                    for i in range(self.multi_num):
+                        if not self.cmd_vel_mask:
+                            if self.control_type == 'vel':
+                                self.multi_cmd_vel_flu_pub[i].publish(self.twist[i])
+                            else:
+                                self.multi_cmd_accel_flu_pub[i].publish(self.twist[i])
+                        self.multi_cmd_pub[i].publish(self.cmd[i])
             rate.sleep()
             if check_stop_flag:
                 self.q_stop_flag.put(True)

@@ -137,45 +137,51 @@ class Gui2Ros(QMainWindow,xtd_ui.Ui_MainWindow):
                         if multirotor_get_control[i]:
                             self.twist[i].linear.x = last_forward[i]
                 else:
+                    forward = self.q_forward.get()
                     for i in range(self.multi_num):
                         if multirotor_get_control[i]:
-                            self.twist[i].linear.x = self.q_forward.get()
-                            last_forward[i] = self.twist.linear.x[i]
+                            self.twist[i].linear.x = forward
+                            last_forward[i] = self.twist[i].linear.x
                 if self.q_upward.empty():
                     for i in range(self.multi_num):
                         if multirotor_get_control[i]:
                             self.twist[i].linear.z = last_upward[i]
                 else:
+                    upward = self.q_upward.get()
                     for i in range(self.multi_num):
                         if multirotor_get_control[i]:
-                            self.twist[i].linear.z = self.q_upward.get()
+                            self.twist[i].linear.z = upward
                             last_upward[i] = self.twist[i].linear.z
                 if self.q_leftward.empty():
                     for i in range(self.multi_num):
                         if multirotor_get_control[i]:
                             self.twist[i].linear.y = last_leftward[i]
                 else:
+                    leftward = self.q_leftward.get()
                     for i in range(self.multi_num):
                         if multirotor_get_control[i]:
-                            self.twist[i].linear.y = self.q_leftward.get()
+                            self.twist[i].linear.y = leftward
                             last_leftward[i] = self.twist[i].linear.y
                 if self.q_orientation.empty():
                     for i in range(self.multi_num):
                         if multirotor_get_control[i]:
                             self.twist[i].angular.z = last_orientation[i]
                 else:
+                    orientation = self.q_orientation.get()
                     for i in range(self.multi_num):
                         if multirotor_get_control[i]:
-                            self.twist[i].angular.z = self.q_orientation.get()
+                            self.twist[i].angular.z = orientation
                             last_orientation[i] = self.twist[i].angular.z
                 if self.q_cmd.empty():
                     for i in range(self.multi_num):
                         if multirotor_get_control[i]:
                             self.cmd[i] = ''
                 else:
+                    cmd = self.q_cmd.get()
                     for i in range(self.multi_num):
                         if multirotor_get_control[i]:
-                            self.cmd[i] = self.q_cmd.get()
+                            self.cmd[i] = cmd
+                            print(self.cmd[i])
                 if self.q_ctrl_leader.empty():
                     self.ctrl_leader = last_ctrl_leader
                 else:
@@ -203,7 +209,6 @@ class Gui2Ros(QMainWindow,xtd_ui.Ui_MainWindow):
                                 self.leader_cmd_accel_flu_pub.publish(self.twist[i])
                             self.leader_cmd_pub.publish(self.cmd[i])
                             break
-
                 else:
                     for i in range(self.multi_num):
                         if not self.cmd_vel_mask:
@@ -212,11 +217,15 @@ class Gui2Ros(QMainWindow,xtd_ui.Ui_MainWindow):
                             else:
                                 self.multi_cmd_accel_flu_pub[i].publish(self.twist[i])
                         self.multi_cmd_pub[i].publish(self.cmd[i])
+            else:
+                print 'shut down!'
             rate.sleep()
+            
             if check_stop_flag:
                 self.q_stop_flag.put(True)
                 rospy.signal_shutdown('STOP!')
                 break
+        
 
     def display(self, data):
         self.text_show_info.setPlainText(data)

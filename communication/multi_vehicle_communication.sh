@@ -1,7 +1,7 @@
 #!/bin/bash
 iris_num=0
-typhoon_h480_num=6
-solo_num=0
+typhoon_h480_num=2
+solo_num=2
 plane_num=0
 rover_num=0
 standard_vtol_num=0

@@ -57,8 +57,9 @@ class Ros2Gui(QThread):
                                         +'\n'+str(self.multirotor_type[id])+' vel:\n'+'uav'+str(id)+':\n'+'x:'+"%s"%(self.local_vel[id].twist.linear.x)+'    '+'y:'\
                                         +"%s"%(self.local_vel[id].twist.linear.y)+'    '+'z:'+"%s"%(self.local_vel[id].twist.linear.z)+'\n'
                         self.text_all = self.text_all + self.text[id]
-                        self.plot_all[id][0].append(self.local_pose[id].pose.position.x*self.time_map_x)
-                        self.plot_all[id][1].append(self.local_pose[id].pose.position.y*self.time_map_y)
+                        if self.n > 0:
+                            self.plot_all[id][0].append(self.local_pose[id].pose.position.x*self.time_map_x)
+                            self.plot_all[id][1].append(self.local_pose[id].pose.position.y*self.time_map_y)
                     self.plot_array.emit(self.plot_all)
                     self.update_text.emit(self.text_all)
 

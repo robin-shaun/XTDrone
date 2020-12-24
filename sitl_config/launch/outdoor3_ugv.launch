@@ -1,0 +1,41 @@
+<launch>
+
+	  <arg name="paused" default="false"/>
+	  <arg name="use_sim_time" default="true"/>
+	  <arg name="gui" default="true"/>
+	  <arg name="headless" default="false"/>
+	  <arg name="debug" default="false"/>
+      <arg name="obstaclestopper" default="false"/>
+
+<param name="use_sim_time" value="true"/>
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find mavlink_sitl_gazebo)/worlds/outdoor3.world"/>
+    <arg name="debug" value="$(arg debug)" />
+    <arg name="gui" value="$(arg gui)" />
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+    <arg name="headless" value="$(arg headless)"/>
+  </include>
+
+<group ns="ugv_0">
+<param name="robot_description"
+         command="$(find xacro)/xacro.py '$(find catvehicle)/urdf/catvehicle1-3.xacro' roboname:='ugv_0'" />
+<include file="$(find catvehicle)/launch/catvehicle.launch">
+    <arg name="robot_name" value="ugv_0"/>
+    <arg name="init_pose" value="-x 0 -y 0 -z 0 -R 0 -P 0 -Y -0.6"/>
+    <arg name="config_file" value="catvehicle_control.yaml"/>
+    <arg name="obstaclestopper" value="$(arg obstaclestopper)"/>
+</include>
+</group>
+<group ns="ugv_1">
+<param name="robot_description"
+         command="$(find xacro)/xacro.py '$(find catvehicle)/urdf/catvehicle4-6.xacro' roboname:='ugv_1'" />
+<include file="$(find catvehicle)/launch/catvehicle.launch">
+    <arg name="robot_name" value="ugv_1"/>
+    <arg name="init_pose" value="-x -5 -y 0 -z 0 -R 0 -P 0 -Y -0.6"/>
+    <arg name="config_file" value="catvehicle_control.yaml"/>
+    <arg name="obstaclestopper" value="$(arg obstaclestopper)"/>
+</include>
+</group>
+</launch>

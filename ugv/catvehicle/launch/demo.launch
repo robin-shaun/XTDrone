@@ -1,6 +1,0 @@
-<launch>
-
-<node pkg="catvehicle_demo" type="catvehicle_demo_node" name="catvehicle_demo" output="screen">
-<param name="/linearvel" value="9.0"/>
-</node>
-</launch>

@@ -25,20 +25,24 @@ class ReturnHome:
         self.Kp = 0.5
         self.Kpy = 1
         self.Kpvel = 1
-        self.z = 8.0   # height
+        self.z = 12.0   # height
         self.velxy_max = 4
         self.velz_max = 3
         self.angz_max = 3
+        self.bias = [[-10, 32.7],[100,33.5],[75,30],[60,-3],[-30,-40.5],[45,-15]]
         self.target_position = Twist()
         self.target_yaw = 0.0
         self.last_yaw = 0.0
-        self.tracking_id = tracking()
         self.arrive_count = 0
+        self.safe_dis = 0.3
+        self.safe_height = 0.5
         self.cmd = ''
         self.last_ugv0_pose = Point()
         self.current_ugv0_pose = Point()
         self.last_ugv1_pose = Point()
         self.current_ugv1_pose = Point()
+        self.situation_flag = 0
+        self.change_task_flag = False
          #variables of rostopic
         rospy.init_node('uav'+str(self.id))
         self.local_pose_sub = rospy.Subscriber(self.uav_type + '_' + str(self.id) + "/mavros/local_position/pose",
@@ -50,8 +54,8 @@ class ReturnHome:
     def local_pose_callback(self, msg):
         self.local_pose = msg
         self.uav_current_pose = self.local_pose.pose.position
-        self.uav_current_pose.x = self.uav_current_pose.x + self.bais[self.id][0]
-        self.uav_current_pose.y = self.uav_current_pose.y + self.bais[self.id][1]
+        self.uav_current_pose.x = self.uav_current_pose.x+self.bias[self.id][0]
+        self.uav_current_pose.y = self.uav_current_pose.y+self.bias[self.id][1]
         self.uav_current_pose.z = self.uav_current_pose.z
         # change Quaternion to TF:
         x = self.local_pose.pose.orientation.x
@@ -72,8 +76,8 @@ class ReturnHome:
         
     def following_local_pose_callback(self, msg, id):
         self.following_local_pose[id] = msg
-        self.following_local_pose[id].pose.position.x = self.following_local_pose[id].pose.position.x + self.bais[id][0]
-        self.following_local_pose[id].pose.position.y = self.following_local_pose[id].pose.position.y + self.bais[id][1]
+        self.following_local_pose[id].pose.position.x = self.following_local_pose[id].pose.position.x+self.bias[id][0]
+        self.following_local_pose[id].pose.position.y = self.following_local_pose[id].pose.position.y+self.bias[id][1]
         self.following_local_pose[id].pose.position.z = self.following_local_pose[id].pose.position.z
         
     def loop(self):
@@ -82,7 +86,6 @@ class ReturnHome:
         for i in range(self.uav_num):
             if not i == self.id:
                 self.following_local_pose_sub[i] = rospy.Subscriber(self.uav_type + '_' + str(i) + "/mavros/local_position/pose", PoseStamped, self.following_local_pose_callback, i)
-            self.auction_sub[i] = rospy.Subscriber(self.uav_type+'_'+str(i)+'/auction',auction,self.auction_callback,i)
         while not rospy.is_shutdown():
             self.count += 1
             self.velxy_max = 4.0
@@ -120,11 +123,12 @@ class ReturnHome:
                 self.change_task_flag = False
                 #if not self.avoid_start_flag:
                 self.return_home()
+                print 'flag222222'
                 
             distance_tar_cur = self.VectNorm3(self.target_position.linear, self.uav_current_pose)
-            if  distance_tar_cur < 1:
+            if  distance_tar_cur < 0.5:
                 self.arrive_count += 1
-                if self.arrive_count > 3:
+                if self.arrive_count > 5:
                     self.arrive_point = True
                     self.arrive_count = 0
                 else:
@@ -139,7 +143,6 @@ class ReturnHome:
                 self.situation_flag = 1
                 self.arrive_point = False
             elif (self.situation_flag == 1) and self.arrive_point:
-                #self.avoid_start_flag = False
                 self.situation_flag = 2
                 # self.start_yolo_pub.publish('gogogo')
                 self.arrive_point = False
@@ -147,11 +150,14 @@ class ReturnHome:
                 
             if self.situation_flag == 2:
                 self.velz_max = 1
-                if self.uav_current_pose.z < 2.0:
+                if self.uav_current_pose.z < 2.2:
+                    self.target_position.linear.x = self.uav_current_pose.x
+                    self.target_position.linear.y = self.uav_current_pose.y
+                if self.uav_current_pose.z < 1.9:
                     self.cmd = 'DISARM'
  
             self.get_control_vel()
-            self.obstacle_avoid()
+            # self.obstacle_avoid()
             self.vel_enu_pub.publish(self.uav_vel)
             self.cmd_pub.publish(self.cmd)
 
@@ -172,13 +178,9 @@ class ReturnHome:
             self.uav_vel.linear.x = 0.0
             self.uav_vel.linear.y = 0.0
 
-        if self.uav_vel.linear.z > self.velz_max:
-            self.uav_vel.linear.z = self.velz_max
-        elif self.uav_vel.linear.z < - self.velz_max:
-            self.uav_vel.linear.z = - self.velz_max
+
         '''
-        
-        turnover_flag = False
+
         self.target_yaw = self.pos2ang(self.target_position.linear.x, self.target_position.linear.y, self.uav_current_pose.x, self.uav_current_pose.y)
         mid_yaw = self.target_yaw - self.uav_current_yaw
         if mid_yaw > math.pi:
@@ -194,35 +196,39 @@ class ReturnHome:
         self.uav_vel.linear.y = uav_vel_total * math.sin(mid_yaw)
 
         self.uav_vel.linear.z = self.Kp * (self.target_position.linear.z - self.uav_current_pose.z)
+        if self.uav_vel.linear.z > self.velz_max:
+            self.uav_vel.linear.z = self.velz_max
+        elif self.uav_vel.linear.z < - self.velz_max:
+            self.uav_vel.linear.z = - self.velz_max
                        
     def init_point(self):
         if self.id == 0:  # middle circle  3
-            self.target_position.linear.x = 0.0    # ugv0 -0.3
-            self.target_position.linear.y = 0.0
+            self.target_position.linear.x = self.current_ugv0_pose.x   # ugv0 -0.3
+            self.target_position.linear.y = self.current_ugv0_pose.y-0.2
 
-        elif self.id == 5:  # middle circle  2
-            self.target_position.linear.x = 0.0   # ugv0 0.5
-            self.target_position.linear.y = 3.0
+        elif self.id == 1:  # middle circle  2
+            self.target_position.linear.x = self.current_ugv0_pose.x   # ugv0 0.5
+            self.target_position.linear.y = self.current_ugv0_pose.y+0.6
 
         elif self.id == 2:  # outer loop  0 
-            self.target_position.linear.x = 0.0    #ugv0 1.3
-            self.target_position.linear.y = 6.0
+            self.target_position.linear.x = self.current_ugv0_pose.x    #ugv0 1.3
+            self.target_position.linear.y = self.current_ugv0_pose.y+1.3
 
-        elif self.id == 1:  # outer loop  4
-            self.target_position.linear.x = 3.0   #ugv1 -0.3
-            self.target_position.linear.y = 0.0
+        elif self.id == 3:  # outer loop  4
+            self.target_position.linear.x = self.current_ugv1_pose.x   #ugv1 -0.3
+            self.target_position.linear.y = self.current_ugv1_pose.y-0.2
 
         elif self.id == 4:  # outer loop  1
-            self.target_position.linear.x = 3.0
-            self.target_position.linear.y = 3.0
+            self.target_position.linear.x = self.current_ugv1_pose.x
+            self.target_position.linear.y = self.current_ugv1_pose.y+0.6
 
-        elif self.id == 3:  # outer loop  5
-            self.target_position.linear.x = 3.0
-            self.target_position.linear.y = 6.0
+        elif self.id == 5:  # outer loop  5
+            self.target_position.linear.x = self.current_ugv1_pose.x
+            self.target_position.linear.y = self.current_ugv1_pose.y+1.3
 
             
-    def init_point(self):
-        self.target_position.linear.z = 1.5
+    def return_home(self):
+        self.target_position.linear.z = 0.0
             
     # ji jian bi zhang
     def obstacle_avoid(self):
@@ -241,11 +247,11 @@ class ReturnHome:
                 if self.following_local_pose[self.avo_id[j]].pose.position.z > self.uav_current_pose.z:
                     heigher_num = heigher_num + 1
             if heigher_num == 0:
-                self.target_position.linear.z = self.z + self.safe_height
+                self.target_position.linear.z = self.target_position.linear.z + self.safe_height
             else:
-                self.target_position.linear.z = self.z - self.safe_height * heigher_num
+                self.target_position.linear.z = self.target_position.linear.z - self.safe_height * heigher_num
         else:
-            self.target_position.linear.z = self.z
+            self.target_position.linear.z = self.target_position.linear.z
 
     def pos2ang(self, xa, ya, xb, yb):   #([xb,yb] to [xa, ya])
         if not xa-xb == 0:

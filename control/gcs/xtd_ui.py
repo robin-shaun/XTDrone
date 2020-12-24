@@ -17,7 +17,7 @@ from plotcanvas import PlotCanvas
 
 class Ui_MainWindow(object):
     def __init__(self):
-        self.multirotor_type = ['iris','typhoon_h480','solo','tailsitter','quadplane','plane','tiltrotor','rotor']
+        self.multirotor_type = ['iris','typhoon_h480','solo','tailsitter','quadplane','plane','tiltrotor','ugv']
         self.multirotor_num = [1, 0, 0, 0, 0, 0, 0, 0]
         self.multi_type_num = 8
         self.multirotor_select=[]
@@ -792,7 +792,7 @@ class Ui_MainWindow(object):
         self.checkBox_quadplane.setText(_translate("MainWindow", "quadplane"))
         self.checkBox_plane.setText(_translate("MainWindow", "plane"))
         self.checkBox_tiltrotor.setText(_translate("MainWindow", "tiltrotor"))
-        self.checkBox_rotor.setText(_translate("MainWindow", "rotor"))
+        self.checkBox_rotor.setText(_translate("MainWindow", "ugv"))
         self.label_control_board_4.setText(_translate("MainWindow", "vehicle states"))
         self.more_topics.setText(_translate("MainWindow", "more topics"))
         self.label_website.setToolTip(_translate("MainWindow", "XTDrone wiki"))
@@ -825,7 +825,7 @@ class Ui_MainWindow(object):
         self.box_plane_num.setToolTip(_translate("MainWindow", "maximum:+-10.00"))
         self.label_tiltrotor.setText(_translate("MainWindow", "tiltrotor:"))
         self.box_tiltrotor_num.setToolTip(_translate("MainWindow", "maximum:+-10.00"))
-        self.label_rotor.setText(_translate("MainWindow", "rotor:"))
+        self.label_rotor.setText(_translate("MainWindow", "ugv:"))
         self.box_rotor_num.setToolTip(_translate("MainWindow", "maximum:+-10.00"))
         self.button_world.setText(_translate("MainWindow", "world"))
         self.button_waypoint.setText(_translate("MainWindow", "way point"))
@@ -854,6 +854,7 @@ class Ui_MainWindow(object):
         self.box_orientation.setReadOnly(True)
         self.box_command.currentIndexChanged.connect(self.get_command)
         self.box_formation.currentIndexChanged.connect(self.get_formation)
+        self.box_formation.setVisible(False)
         self.comboBox_maps.currentIndexChanged.connect(self.initplot)
         self.checkBox_iris.setCheckable(False)
         self.checkBox_iris.stateChanged.connect(self.get_uav_control)
@@ -930,8 +931,9 @@ class Ui_MainWindow(object):
                     if self.multirotor_num[i] > 0.5:
                         self.multirotor_select.append(i)
                         self.checkBox_rotor.setCheckable(True)
-                if self.multirotor_num[i] != 6 and self.multirotor_num[i] != 9 and self.multirotor_num[i] != 18:
-                    self.box_formation.setVisible(False)
+
+                if self.multirotor_num[i] != 6 or self.multirotor_num[i] != 9 or self.multirotor_num[i] != 18:
+                    self.box_formation.setVisible(True)
                 
         self.control_type = str(self.comboBox_controltype.currentText())
         self.button_control.setEnabled(True)

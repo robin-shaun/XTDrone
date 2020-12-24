@@ -1,8 +1,9 @@
 import rospy
 from geometry_msgs.msg import Twist
 from std_msgs.msg import Int16
+import sys
 
-Kp = 0.003
+Kp = 0.002
 Vx = 5
 
 def lane_mid_error_callback(msg):
@@ -20,11 +21,15 @@ def lane_mid_error_callback(msg):
 
 
 if __name__ == "__main__":
-    rospy.init_node('rover_self_driving')
-    cmd_vel_flu_pub = rospy.Publisher('/xtdrone/rover_0/cmd_vel_flu', Twist, queue_size=2)
-    lane_mid_error_sub = rospy.Subscriber("/rover_0/lane_mid_error",Int16,callback=lane_mid_error_callback)                                   
+    ugv_num = sys.argv[1]
+    rospy.init_node('ugv_self_driving_'+ugv_num)
+    cmd_vel_flu_pub = rospy.Publisher('/ugv_'+ugv_num+'/cmd_vel', Twist, queue_size=2)
+    lane_mid_error_sub = rospy.Subscriber("/ugv_"+ugv_num+"/lane_mid_error",Int16,callback=lane_mid_error_callback)                                   
     twist = Twist()
     rate = rospy.Rate(50)
     while not rospy.is_shutdown():
         cmd_vel_flu_pub.publish(twist)
         rate.sleep()
+                                        
+    
+

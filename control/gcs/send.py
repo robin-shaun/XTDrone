@@ -77,13 +77,13 @@ class Gui2Ros(QMainWindow,xtd_ui.Ui_MainWindow):
                 for k in range(self.multirotor_num[i]):
                     if i == 7:
                         self.multi_cmd_vel_flu_pub[counnnt] = rospy.Publisher('/ugv_' + str(k) + '/cmd_vel', Twist, queue_size=10)
-                        self.multi_cmd_pub[counnnt] = rospy.Publisher('/ugv_' + str(k) + + '/cmd', String,queue_size=10)      
+                        self.multi_cmd_pub[counnnt] = rospy.Publisher('/ugv_' + str(k) + '/cmd', String,queue_size=10)      
                     else:                    
                         self.multi_cmd_vel_flu_pub[counnnt] = rospy.Publisher('/xtdrone/' + self.multi_type[counnnt] + '_' + str(k) + '/cmd_vel_flu', Twist, queue_size=10)
                         self.multi_cmd_pub[counnnt] = rospy.Publisher('/xtdrone/' + self.multi_type[counnnt] + '_' + str(k) + '/cmd', String,queue_size=10)
                     counnnt += 1
-                self.leader_cmd_vel_flu_pub = rospy.Publisher("/xtdrone/leader/cmd_vel_flu", Twist, queue_size=10)
-                self.leader_cmd_pub = rospy.Publisher("/xtdrone/leader/cmd", String, queue_size=10)
+            self.leader_cmd_vel_flu_pub = rospy.Publisher("/xtdrone/leader/cmd_vel_flu", Twist, queue_size=10)
+            self.leader_cmd_pub = rospy.Publisher("/xtdrone/leader/cmd", String, queue_size=10)
 
         else:
             self.multi_cmd_accel_flu_pub = [None] * self.multi_num
@@ -176,21 +176,29 @@ class Gui2Ros(QMainWindow,xtd_ui.Ui_MainWindow):
                         if multirotor_get_control[i]:
                             self.twist[i].angular.z = orientation
                             last_orientation[i] = self.twist[i].angular.z
+                if self.q_ctrl_leader.empty():
+                    self.ctrl_leader = last_ctrl_leader
+                else:
+                    self.ctrl_leader = self.q_ctrl_leader.get()
+                    last_ctrl_leader = self.ctrl_leader
+
                 if self.q_cmd.empty():
                     for i in range(self.multi_num):
                         if multirotor_get_control[i]:
                             self.cmd[i] = ''
                 else:
                     cmd = self.q_cmd.get()
-                    for i in range(self.multi_num):
-                        if multirotor_get_control[i]:
-                            self.cmd[i] = cmd
-                            print(self.cmd[i])
-                if self.q_ctrl_leader.empty():
-                    self.ctrl_leader = last_ctrl_leader
-                else:
-                    self.ctrl_leader = self.q_ctrl_leader.get()
-                    last_ctrl_leader = self.ctrl_leader
+                    if self.ctrl_leader:
+                        for i in range(self.multi_num):
+                            if i == 1:
+                                self.cmd[i] = cmd
+                            else:
+                                self.cmd[i] = ''
+                    else:
+                        for i in range(self.multi_num):
+                            if multirotor_get_control[i]:
+                                self.cmd[i] = cmd
+                                print(self.cmd[i])
                 
                 if self.q_cmd_vel_mask.empty():
                     self.cmd_vel_mask = last_cmd_vel_mask
@@ -204,15 +212,15 @@ class Gui2Ros(QMainWindow,xtd_ui.Ui_MainWindow):
                     if check_stop_flag:
                         for i in range(self.multi_num):
                             self.cmd[i] = 'AUTO.RTL'
+
                 if self.ctrl_leader:
-                    for i in range(self.multi_num):
-                        if multirotor_get_control[i]:
-                            if self.control_type == 'vel':
-                                self.leader_cmd_vel_flu_pub.publish(self.twist[i])
-                            else:
-                                self.leader_cmd_accel_flu_pub.publish(self.twist[i])
-                            self.leader_cmd_pub.publish(self.cmd[i])
-                            break
+                    if self.control_type == 'vel':
+                        self.leader_cmd_vel_flu_pub.publish(self.twist[1])
+                    else:
+                        self.leader_cmd_accel_flu_pub.publish(self.twist[1])
+                    self.leader_cmd_pub.publish(self.cmd[1])
+                    print self.cmd[1]
+             
                 else:
                     for i in range(self.multi_num):
                         if not self.cmd_vel_mask:
@@ -221,6 +229,7 @@ class Gui2Ros(QMainWindow,xtd_ui.Ui_MainWindow):
                             else:
                                 self.multi_cmd_accel_flu_pub[i].publish(self.twist[i])
                         self.multi_cmd_pub[i].publish(self.cmd[i])
+                    # print self.cmd[0]
             else:
                 print 'shut down!'
             rate.sleep()

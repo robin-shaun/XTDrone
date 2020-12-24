@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<launch>
+<arg name="rosbag" default="true"/>
+<arg name="robot" default="catvehicle"/>
+<group ns="$(arg robot)">
+    <!-- load the predict rospy class-->
+    <node pkg="catvehicle" type="predict.py" name="predict" output="screen" required="true">
+    </node>
+    <!-- load the rosbag recorder -->
+    <node name="recorder" pkg="rosbag" type="record" output="screen" args=" -o /home/ivory/CyverseData/JmscslgroupData/Bagfiles/RNN_Prediction/model_prediction -a" if="$(arg rosbag)"/>
+</group>
+
+</launch>

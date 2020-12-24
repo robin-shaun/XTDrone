@@ -1,0 +1,12 @@
+
+<launch>
+<arg name="robot" default="catvehicle"/>
+
+<node name="hoffmannsubsystem_$(arg robot)" pkg="hoffmansubsystem" type="hoffmansubsystem_node" respawn="false" output="screen">
+
+    <remap from="/cmd_control_vel" to="/$(arg robot)/cmd_control_vel"/>
+    <remap from="/timer_companion/do_publish" to="/$(arg robot)/timer_companion/do_publish"/>
+
+</node>
+
+</launch>

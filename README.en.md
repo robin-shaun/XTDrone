@@ -4,7 +4,7 @@
 
 #### Description
 
-XTDrone is a customizable Multi-Rotor UAVs simulation platform based on PX4, ROS and Gazebo. XTDrone supports mulitrotors (including quadrotors and hexarotors), fixed wings, VTOLs (including quadplanes, tailsitters and tiltrotors) and rovers. It's convenient to deploy the algorithm to real UAVs after testing and debugging on the simulation platform.
+XTDrone is a UAV simulation platform based on PX4, ROS and Gazebo. XTDrone supports mulitrotors (including quadrotors and hexarotors), fixed wings, VTOLs (including quadplanes, tailsitters and tiltrotors) and rovers. It's convenient to deploy the algorithm to real UAVs after testing and debugging on the simulation platform.
 
 <img src="./image/vehicles.png" width="640"  /> 
 

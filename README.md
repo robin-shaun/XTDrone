@@ -79,6 +79,10 @@ Xiao, K., Ma, L., Tan, S., Cong, Y., Wang, X.: Implementation of UAV Coordinatio
 - 指导老师：王祥科
 - 开发团队：肖昆，谭劭昌，王冠政，马澜，王齐鹏，管若乔，陈科研，陈皋
 
+### 加入我们
+
+欢迎广大无人机开发者们加入我们的团队，共同学习进步。如有意向，请把简历（包含对PX4 ROS与Gazebo的掌握情况）发到[肖昆的邮箱](robin_shaun@foxmail.com)，让我们一起完善XTDrone仿真平台。
+
 ### 感谢贡献者们
 
 孙长浩 林梓涵 何瑶 

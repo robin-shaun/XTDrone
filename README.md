@@ -11,13 +11,13 @@ XTDrone是基于PX4、ROS与Gazebo的无人机仿真平台。支持多旋翼飞�
 
 Xiao, K., Tan, S., Wang, G., An, X., Wang, X., Wang, X.: Xtdrone: A customizable multi-rotor uavs simulation platform. arXiv preprint **[ arXiv:2003.09700](https://arxiv.org/abs/2003.09700)** (2020)
 
-<img src="./image/architecture1.png" width="640" height="480" /> 
+<img src="./image/architecture_1.png" width="640" height="480" /> 
 
 多机仿真架构如下图所示，详见论文 
 
 Xiao, K., Ma, L., Tan, S., Cong, Y., Wang, X.: Implementation of UAV Coordination Based on a Hierarchical Multi-UAV Simulation Platform. arXiv preprint **[ arXiv:2005.01125](https://arxiv.org/abs/2005.01125)** (2020)
 
-<img src="./image/architecture2.png" width="640" />
+<img src="./image/architecture_2.png" width="640" />
 
 在这个平台上，开发者可以快速验证算法。如：
 

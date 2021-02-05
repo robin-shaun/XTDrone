@@ -12,13 +12,13 @@ Architecture for single vehicle simulation is shown as the below figure.  For mo
 
 Xiao, K., Tan, S., Wang, G., An, X., Wang, X., Wang, X.: Xtdrone: A customizable multi-rotor uavs simulation platform. arXiv preprint **[ arXiv:2003.09700](https://arxiv.org/abs/2003.09700)** (2020)
 
-<img src="./image/architecture1.png" width="640" height="480" />  
+<img src="./image/architecture_1.png" width="640" height="480" />  
 
 Architecture for multiple vehicle simulation is shown as the below figure.  For more details, see the paper
 
 Xiao, K., Ma, L., Tan, S., Cong, Y., Wang, X.: Implementation of UAV Coordination Based on a Hierarchical Multi-UAV Simulation Platform. arXiv preprint **[ arXiv:2005.01125](https://arxiv.org/abs/2005.01125)** (2020)
 
-<img src="./image/architecture2.png" width="640" />  
+<img src="./image/architecture_2.png" width="640" />  
 
 Developers can quickly verify algorithms with XTDrone, such as:
 

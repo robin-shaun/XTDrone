@@ -9,8 +9,7 @@ import time
 import math
 
 def darknet_callback(data):
-    global find, twist, cmd, target_height_mask, target_height,theta, not_find_time, get_time
-    find = False
+    global find_cnt, twist, cmd, target_height_mask, target_height,theta, get_time
     for target in data.bounding_boxes:
         if(target.id==0):
             print('find human')
@@ -27,8 +26,9 @@ def darknet_callback(data):
             twist.linear.y = y_velocity
             twist.linear.z = Kp_z*(target_height-height)
             cmd = ''
-            find = True
-
+            find_cnt = find_cnt + 1
+            get_time = False
+    
         
 def local_pose_callback(data):
     global height, target_height, target_set
@@ -46,7 +46,8 @@ if __name__ == "__main__":
     height = 0  
     target_height = 0
     target_set = False
-    find = False
+    find_cnt = 0
+    find_cnt_last = 0
     not_find_time = 0
     get_time = False
     twist = Twist()
@@ -71,7 +72,7 @@ if __name__ == "__main__":
         rate.sleep()
         vel_pub.publish(twist)
         cmd_pub.publish(cmd)
-        if not find:
+        if find_cnt - find_cnt_last == 0:
             if not get_time:
                 not_find_time = rospy.get_time()
                 get_time = True
@@ -82,4 +83,4 @@ if __name__ == "__main__":
                 cmd = 'HOVER'
                 print(cmd)
                 get_time = False
-        
+        find_cnt_last = find_cnt

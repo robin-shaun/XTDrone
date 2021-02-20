@@ -1,9 +1,16 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
+### This code is about the distributed formation control of consensus protocol with a certain
+### Laplacian matrix and the formation transformation based on a task allocation algorithm——
+### KM for the shorest distances of all the UAVs to achieve the new pattern.
+### For more information of these two algorithms, please see the latest paper on https://arxiv.org/abs/2005.01125
+
 import rospy
 from geometry_msgs.msg import Twist, Vector3, PoseStamped, TwistStamped
 from std_msgs.msg import String 
 import sys
+
+# formation patterns
 if sys.argv[3] == '6':
     from formation_dict import formation_dict_6 as formation_dict
 elif sys.argv[3] == '9':
@@ -21,7 +28,7 @@ class Follower:
         self.uav_type = uav_type
         self.id = uav_id
         self.uav_num = uav_num
-        self.f = 100
+        self.f = 100 # control/communication rate
         self.local_pose = PoseStamped()
         self.local_pose_queue = Queue.Queue(self.f/10)
         for i in range(self.f/10):
@@ -29,15 +36,15 @@ class Follower:
         self.local_velocity = TwistStamped()
         self.cmd_vel_enu = Twist()
         self.avoid_vel = Vector3()
-        self.following_switch = False
-        self.arrive_print = True
-        self.following_ids = []
+        self.following_switch = False # determine whether the formation pattern is required to be changed
+        self.arrive_print = True # determine whether the target position has been reached
+        self.following_ids = [] # followers of this uav
         self.formation_config = 'waiting'
-        self.following_count = 0
+        self.following_count = 0 # the number of followers of this uav
         self.Kp = 1 
         self.velxy_max = 1 #0.8
         self.velz_max = 1
-        self.following_local_pose = [PoseStamped() for i in range(self.uav_num)]
+        self.following_local_pose = [PoseStamped() for i in range(self.uav_num)] # local position of other uavs, and only the position of followers of this uav is not zero
         self.following_local_pose_sub = [None]*self.uav_num
         self.arrive_count = 0
         self.local_pose_sub = rospy.Subscriber(self.uav_type+'_'+str(self.id)+"/mavros/local_position/pose", PoseStamped, self.local_pose_callback)
@@ -55,7 +62,7 @@ class Follower:
         pose_comparison = self.local_pose_queue.get()
         self.local_pose_queue.put(self.local_pose)
         comparison = (self.local_pose.pose.position.x - pose_comparison.pose.position.x)**2+(self.local_pose.pose.position.y - pose_comparison.pose.position.y)**2+(self.local_pose.pose.position.z - pose_comparison.pose.position.z)**2
-        if comparison < float(self.velxy_max**2+self.velxy_max**2+self.velz_max**2)/1e5:
+        if comparison < float(self.velxy_max**2+self.velxy_max**2+self.velz_max**2)/1e5: # if the target position is reached, arrive_count ++1
             self.arrive_count += 1
         else:
             self.arrive_count = 0
@@ -63,6 +70,7 @@ class Follower:
     def following_local_pose_callback(self, msg, id):
         self.following_local_pose[id] = msg 
 
+    # the order of changing the formation pattern
     def formation_switch_callback(self, msg):
         if not self.formation_config == msg.data:
             self.following_switch = True
@@ -86,28 +94,33 @@ class Follower:
                     self.cmd_pub.publish(self.offboard)
                     self.info_pub.publish("Received")
                     print("Follower"+str(self.id-1)+": Switch to Formation "+self.formation_config)
-                    if self.formation_config=='waiting':
+                    # The Laplacian matrix is invarible in this code, and you can change it if necessary.
+                    if self.formation_config=='waiting': 
                         self.L_matrix = self.get_L_central_matrix()
                     else:
-                        if self.first_formation:
+                        # Change from the original pattern to the first pattern without KM.
+                        if self.first_formation: 
                             self.first_formation=False
                             self.orig_formation=formation_dict[self.formation_config]
                             self.L_matrix = self.get_L_central_matrix()
                         else:
                             self.adj_matrix = self.build_graph(self.orig_formation,formation_dict[self.formation_config])
+                            # These variables are determined for KM algorithm, see examples of KM algorithm on Github.
                             self.label_left = numpy.max(self.adj_matrix, axis=1)  # init label for the left 
                             self.label_right = numpy.array([0]*(self.uav_num-1)) # init label for the right set
-
                             self.match_right = numpy.array([-1] *(self.uav_num-1))
                             self.visit_left = numpy.array([0]*(self.uav_num-1))
                             self.visit_right = numpy.array([0]*(self.uav_num-1))
                             self.slack_right = numpy.array([100]*(self.uav_num-1)) 
+
                             self.change_id = self.KM()
+                            # Get a new formation pattern of UAVs based on KM.
                             self.new_formation=self.get_new_formation(self.change_id,formation_dict[self.formation_config])
                             self.L_matrix = self.get_L_central_matrix()
                             self.orig_formation=self.new_formation
                     if self.id == 3:
                         print(self.L_matrix)
+                    # Get the followers of this uav based on the Laplacian matrix, and update the position of the followers.
                     self.following_ids = numpy.argwhere(self.L_matrix[self.id,:] == 1)
                     self.following_count = 0
                     for i in range(self.uav_num):
@@ -118,6 +131,7 @@ class Follower:
                         self.following_count += 1
                       
             self.cmd_vel_enu.linear = Vector3(0, 0, 0)
+            # Code of the consensus protocol, see details on the paper.
             for following_id in self.following_ids:
                 self.cmd_vel_enu.linear.x += self.following_local_pose[following_id[0]].pose.position.x - self.local_pose.pose.position.x + self.new_formation[0, self.id-1]
                 self.cmd_vel_enu.linear.y += self.following_local_pose[following_id[0]].pose.position.y - self.local_pose.pose.position.y + self.new_formation[1, self.id-1]
@@ -152,6 +166,8 @@ class Follower:
                 self.arrive_count = 0
             rate.sleep()
 
+    # 'build_graph',  'find_path' and 'KM' functions are all determined for KM algorithm.
+    # A graph of UAVs is established based on distances between them in 'build_graph' function.
     def build_graph(self,orig_formation,change_formation):
         distance=[[0 for i in range(self.uav_num-1)]for j in range(self.uav_num-1)]
         for i in range(self.uav_num-1):
@@ -160,8 +176,8 @@ class Follower:
                 distance[i][j]=int(50-distance[i][j])
         return distance
 
+    # Determine whether a path has been found.
     def find_path(self,i):
-        
         self.visit_left[i] = True
         for j, match_weight in enumerate(self.adj_matrix[i],start=0): 
             if self.visit_right[j]: 
@@ -176,8 +192,8 @@ class Follower:
                 self.slack_right[j]=min(gap,self.slack_right[j])          
         return False 
 
+    # Main body of KM algorithm.
     def KM(self):  
-
         for i in range(self.uav_num-1):   
             self.slack_right = numpy.array([100]*(self.uav_num-1))      
             while True:        
@@ -198,9 +214,10 @@ class Follower:
                         self.slack_right[k] -=d 
         return self.match_right
     
+    # The formation patterns designed in the formation dictionaries are random (the old ones), 
+    # and a new formation pattern based on the distances of UAVs of the current pattern is designed as follows.
+    # Note that only the desired position of each UAV has changed, while the form of the new pattern is the same as the one in the dictionary.
     def get_new_formation(self,change_id,change_formation):
-
-        
         new_formation=numpy.zeros((3,self.uav_num-1))
         position=numpy.zeros((3,self.uav_num-1))
         change_id=[i + 1 for i in change_id] 
@@ -213,7 +230,7 @@ class Follower:
                     new_formation[:,i]=position[:,j]
         return new_formation
 
-    #central-station control 
+    # Laplacian matrix 
     def get_L_central_matrix(self):
         
         L=numpy.zeros((self.uav_num,self.uav_num))

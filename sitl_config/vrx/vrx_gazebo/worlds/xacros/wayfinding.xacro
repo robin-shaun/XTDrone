@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<world xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="wayfinding" params="**wp_markers
+                                         **waypoints
+                                         namespace:=wamv
+                                         competition:=vrx">
+    <plugin name="wayfinding_scoring_plugin"
+            filename="libwayfinding_scoring_plugin.so">
+      <vehicle>${namespace}</vehicle>
+      <task_name>wayfinding</task_name>
+
+      <min_errors_topic>/${competition}/wayfinding/min_errors</min_errors_topic>
+      <mean_error_topic>/${competition}/wayfinding/mean_error</mean_error_topic>
+      <waypoints_topic>/${competition}/wayfinding/waypoints</waypoints_topic>
+      <task_info_topic>/${competition}/task/info</task_info_topic>
+      <contact_debug_topic>/${competition}/debug/contact</contact_debug_topic>
+
+      <per_plugin_exit_on_completion>true</per_plugin_exit_on_completion>
+
+      <!-- Goal as Latitude, Longitude, Yaw -->
+      <waypoints>
+        <xacro:insert_block name="waypoints"/>
+      </waypoints>
+      <initial_state_duration>10</initial_state_duration>
+      <ready_state_duration>10</ready_state_duration>
+      <running_state_duration>300</running_state_duration>
+      <release_joints>
+        <joint>
+          <name>${namespace}_external_pivot_joint</name>
+        </joint>
+        <joint>
+          <name>${namespace}_external_riser</name>
+        </joint>
+      </release_joints>
+      <xacro:insert_block name="wp_markers" />
+    </plugin>
+  </xacro:macro>
+</world>

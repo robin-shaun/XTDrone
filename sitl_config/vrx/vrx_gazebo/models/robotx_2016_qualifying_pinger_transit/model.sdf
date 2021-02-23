@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <model name="robotx_2016_qualifying_pinger_transit">
+      <include>
+        <name>base_gate</name>
+        <pose>0 0 0 0 0 0 </pose>
+        <uri>model://robotx_2016_finals_pinger_transit</uri>      
+      </include>
+      <include>
+        <name>circle_buoy</name>
+        <pose>30 0 0 0 0 0 </pose>
+        <uri>model://black_totem</uri>      
+      </include>
+  </model>
+</sdf>

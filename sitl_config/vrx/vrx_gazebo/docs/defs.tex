@@ -1,0 +1,144 @@
+% Stolen from Austratlian Center for Field Robotics
+% Thanks Alex!
+% bbing 24.02.03
+
+% references to figurs and equations
+\newcommand{\fref}[1] {Figure~\ref{#1}}
+\newcommand{\eref}[1] {~(\ref{#1})}
+
+% general global definitions
+\newcommand{\Def}{\ {\buildrel \triangle\over =}\ }
+%\newcommand{\beq} {\begin{equation}}
+%\newcommand{\eeq} {\end{equation}}
+%\newcommand{\beqn} {\begin{eqnarray}}
+%\newcommand{\eeqn} {\end{eqnarray}}
+%\newcommand{\E}[1] {\mbox{$ {\rm E} \{ #1 \}$ }}
+\newcommand{\Es}[2] {\mbox{$ {\rm E}^{#1} \{ #2 \}$ }}
+\newcommand{\Set}[1] {\mbox{$ \{ #1 \} $ }}
+\newcommand{\Cal}[1] {\mbox{$ {\cal #1 } $}}
+\newcommand{\PR}[1]  {\mbox{$ P(#1) $}}
+\newcommand{\Pri}[2]  {\mbox{$ P_{#1}(#2) $}}
+\newcommand{\PRi}[2]  {\mbox{$ P_{#1}(#2) $}}
+\newcommand{\Pris}[3]  {\mbox{$ P_{#1}^{#2}(#3) $}}
+\newcommand{\like}[1]  {\mbox{$ \Lambda(\bf #1) $}}
+\newcommand{\likei}[2]  {\mbox{$ \Lambda_{#2}(\bf #1) $}}
+\newcommand{\LL}[1]  {\mbox{$ l(#1) $}} % loglikelihood
+\newcommand{\LLi}[2]  {\mbox{$ l_{#1}(#2) $}} %loglikelihood
+\newcommand{\EN}[1]  {\mbox{$ H(#1) $}} % entropy
+\newcommand{\ENi}[2]  {\mbox{$ H_{#1}(#2) $}} % entropy
+\newcommand{\mEN}[1]  {\mbox{$ \overline{H}(#1) $}} % mean entropy
+\newcommand{\MI}[1]  {\mbox{$ I(#1) $}}  %mutual information
+\newcommand{\est}[1]  {\mbox{$\hat{\bf #1}$}}
+\newcommand{\estk}[2]  {\mbox{$\hat{\bf #1}(#2)$}}
+\newcommand{\D}[1]    {\mbox{${\rm d} {#1}$}}
+\newcommand{\mean}[1] {\mbox{$\overline{ #1}$}}
+\newcommand{\Det}[1] {\mbox{$\mid {#1} \mid $}}
+\newcommand{\One}      {\mbox{${\bf 1}$}}
+\newcommand{\Zero}      {\mbox{${\bf 0}$}}
+\newcommand{\grad}[1] {\mbox{${\bf\nabla} #1$}}
+\newcommand{\J}[3] {\mbox{${\bf\nabla}{\bf #1}_{\bf #2}(#3)$}}
+\newcommand{\Jt}[3] {\mbox{${\bf\nabla}^T{\bf #1}_{\bf #2}(#3)$}}
+\newcommand{\pdf}{{\it pdf\ }}
+\newcommand{\dxt}[2]  {\mbox{$\dot{\bf #1}( #2)$}}
+% defining different types of vectors
+% first those with no time subscripts
+\newcommand{\V}[1] {\mbox{${\bf #1}$}}
+\newcommand{\Vt}[1] {\mbox{${\bf #1}^T$}}
+\newcommand{\Vin}[1] {\mbox{${\bf #1}^{-1}$}}
+\newcommand{\Vgin}[1] {\mbox{${\bf #1}^{\dagger}$}}
+\newcommand{\Vi}[2] {\mbox{${\bf #1}_{#2}$}}
+\newcommand{\Vs}[2] {\mbox{${\bf #1}^{#2}$}}
+\newcommand{\Vis}[3] {\mbox{${\bf #1}_{#2}^{#3}$}}
+\newcommand{\Vit}[2] {\mbox{${\bf #1}_{#2}^T$}}
+\newcommand{\Vini}[2] {\mbox{${\bf #1}_{#2}^{-1}$}}
+\newcommand{\Vgini}[2] {\mbox{${\bf #1}^{\dagger}$}}
+
+% next those with time subscript k (very common)
+\newcommand{\Vk}[1] {\mbox{${\bf #1}(k)$}}
+\newcommand{\Vkt}[1] {\mbox{${\bf #1}^T(k)$}}
+\newcommand{\Vkin}[1] {\mbox{${\bf #1}^{-1}(k)$}}
+\newcommand{\Vkgin}[1] {\mbox{${\bf #1}^{\dagger}(k)$}}
+\newcommand{\Vki}[2] {\mbox{${\bf #1}_{#2}(k)$}}
+\newcommand{\Vks}[2] {\mbox{${\bf #1}^{#2}(k)$}}
+\newcommand{\Vkis}[3] {\mbox{${\bf #1}_{#2}^{#3}(k)$}}
+\newcommand{\Vkit}[2] {\mbox{${\bf #1}_{#2}^T(k)$}}
+\newcommand{\Vkini}[2] {\mbox{${\bf #1}_{#2}^{-1}(k)$}}
+\newcommand{\Vkgini}[2] {\mbox{${\bf #1}^{\dagger}_{#2}(k)$}}
+\newcommand{\tVk}[1] {\mbox{$\tilde{\bf #1}(k)$}}
+\newcommand{\tVki}[2] {\mbox{$\tilde{\bf #1}_{#2}(k)$}}
+
+% now those with general purpose time subscripts
+%\newcommand{\Vec}[2] {\mbox{${\bf #1}(#2)$}}
+\newcommand{\Vect}[2] {\mbox{${\bf #1}^T(#2)$}}
+\newcommand{\Vecin}[2] {\mbox{${\bf #1}^{-1}(#2)$}}
+\newcommand{\Veci}[3] {\mbox{${\bf #1}_{#2}(#3)$}}
+\newcommand{\Vecit}[3] {\mbox{${\bf #1}_{#2}^T(#3)$}}
+\newcommand{\Vecini}[3] {\mbox{${\bf #1}_{#2}^{-1}(#3)$}}
+\newcommand{\Vecgin}[2] {\mbox{${\bf #1}^{\dagger}(#2)$}}
+\newcommand{\Vecgini}[3] {\mbox{${\bf #1}^{\dagger}_{#2}(#3)$}}
+
+% special symbols used very commonly
+% state estimates of different sorts
+\newcommand{\x}[2] {\mbox{$\hat{\bf x}( #1 \mid #2)$}}
+\newcommand{\ix}[3] {\mbox{$\hat{\bf x}_{#1}( #2 \mid #3)$}}
+\newcommand{\tx}[2] {\mbox{$\tilde{\bf x}( #1 \mid #2 )$}}
+\newcommand{\txi}[3] {\mbox{$\tilde{\bf x}_{#1}( #2 \mid #3 )$}}
+\newcommand{\z}[2] {\mbox{$\hat{\bf z}( #1 \mid #2)$}}
+\newcommand{\tz}[2] {\mbox{$\tilde{\bf z}( #1 \mid #2)$}}
+\newcommand{\tzt}[2] {\mbox{$\tilde{\bf z}^T( #1 \mid #2)$}}
+\newcommand{\zi}[3] {\mbox{$\hat{\bf z}_{#1}( #2 \mid #3)$}}
+\newcommand{\di}[3] {\mbox{$\hat{\bf \delta}_{#1}( #2 \mid #3)$}}
+
+% variances of different sorts
+\newcommand{\var}[2] {\mbox{${\bf P}( #1 \mid #2)$}}
+\newcommand{\varin}[2] {\mbox{${\bf P}^{-1}( #1 \mid #2)$}}
+\newcommand{\tvar}[2] {\mbox{$\tilde{\bf P}( #1 \mid #2)$}}
+\newcommand{\tvarin}[2] {\mbox{$\tilde{\bf P}^{-1}( #1 \mid #2)$}}
+\newcommand{\vari}[3] {\mbox{${\bf P}_{#1}( #2 \mid #3)$}}
+\newcommand{\varini}[3] {\mbox{${\bf P}^{-1}_{#1}( #2 \mid #3)$}}
+\newcommand{\tvari}[3] {\mbox{$\tilde{\bf P}_{#1}( #2 \mid #3)$}}
+\newcommand{\tvarini}[3] {\mbox{$\tilde{\bf P}^{-1}_{#1}( #2 \mid #3)$}}
+
+% information states and variances
+\newcommand{\y}[2] {\mbox{$\hat{\bf y}( #1 \mid #2)$}}
+\newcommand{\ty}[2] {\mbox{$\tilde{\bf y}( #1 \mid #2)$}}
+\newcommand{\yi}[3] {\mbox{$\hat{\bf y}_{#1}( #2 \mid #3)$}}
+\newcommand{\tyi}[3] {\mbox{$\tilde{\bf y}_{#1}( #2 \mid #3)$}}
+\newcommand{\Y}[2] {\mbox{${\bf Y}( #1 \mid #2)$}}
+\newcommand{\Yin}[2] {\mbox{${\bf Y}^{-1}( #1 \mid #2)$}}
+\newcommand{\tY}[2] {\mbox{$\tilde{\bf Y}( #1 \mid #2)$}}
+\newcommand{\Yi}[3] {\mbox{${\bf Y}_{#1}( #2 \mid #3)$}}
+\newcommand{\Yini}[3] {\mbox{${\bf Y}_{#1}^{-1}( #2 \mid #3)$}}
+\newcommand{\tYi}[3] {\mbox{$\tilde{\bf Y}_{#1}( #2 \mid #3)$}}
+\newcommand{\info}[1] {\mbox{${\bf i}( #1)$}}
+\newcommand{\Info}[1] {\mbox{${\bf I}( #1)$}}
+\newcommand{\infoi}[2] {\mbox{${\bf i}_{#1}( #2)$}}
+\newcommand{\infois}[3] {\mbox{${\bf i}_{#1}^{#2}(#3)$}}
+\newcommand{\Infoi}[2] {\mbox{${\bf I}_{#1}( #2)$}}
+\newcommand{\tInfoi}[2] {\mbox{$\tilde{\bf I}_{#1}( #2)$}}
+\newcommand{\Infoini}[2] {\mbox{${\bf I}^{\dagger}_{#1}( #2)$}}
+\newcommand{\Prop}[2] {\mbox{${\bf L}( #1 \mid #2)$}}
+\newcommand{\Propi}[3] {\mbox{${\bf L}_{#1}( #2 \mid #3)$}}
+\newcommand{\Z}[2] {\mbox{${\cal Z}^{#1}_{#2}$}}
+
+% spurious ones
+\newcommand{\maybe}{\ {\buildrel ?\over =}\ } %chapter 4
+\newcommand{\svd} {\mbox{$\dagger$}} % chapter 4
+\newcommand{\dnoise} {\mbox{$\delta d$}} % chapter 6 and 7
+\newcommand{\unoise} {\mbox{$\delta u$}} % chapter 6
+\newcommand{\ns}[1] {\mbox{$ #1$}} % chapter 6
+\newcommand{\vs} {\vspace{0.17in}}
+\newcommand{\svs} {\vspace{0.17cm}}
+\newcommand{\vsf} {\vspace{0.4in}}
+\newcommand{\vsff} {\vspace{1in}}
+\newcommand{\veqns} {\vspace{-0.15in}}
+\newcommand{\veqn} {\vspace{-0.12in}}
+\newcommand{\sveqn} {\vspace{-0.06in}}
+%\newcommand{\bc}{\begin{center}}
+%\newcommand{\ec}{\end{center}}
+%\newcommand{\bi}{\begin{itemize}}
+%\newcommand{\ei}{\end{itemize}}
+%\newcommand{\be}{\begin{enumerate}}
+%\newcommand{\ee}{\end{enumerate}}
+\newcommand{\Quote}{\parbox[t]{12.5cm}}
+\newtheorem{example}{Example}

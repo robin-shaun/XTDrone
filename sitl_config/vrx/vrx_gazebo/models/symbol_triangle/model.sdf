@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <model name="symbol_triangle">
+    <static>true</static>
+    <pose>0 0 0 1.5708 0 0</pose>
+    <link name="link">
+      <visual name="visual">
+        <geometry>
+          <mesh><uri>model://symbol_triangle/mesh/triangle.dae</uri></mesh>
+        </geometry>
+        <transparency>1</transparency>
+      </visual>
+    </link>
+  </model>
+</sdf>

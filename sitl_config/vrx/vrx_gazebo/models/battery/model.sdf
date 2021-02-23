@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <model name="battery">
+    <link name="battery_link">
+      <visual name="battery_visual">
+        <pose>0 -1.03 -.45 0 0 0 </pose>
+        <geometry>
+          <mesh> 
+            <uri>model://battery/mesh/battery.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name="battery_collision">
+        <pose>0 0 .15 0 0 0</pose>
+        <geometry>
+          <box><size>.6 .4 .31</size></box>
+        </geometry>
+      </collision>
+      <inertial>
+        <pose>0 0 .15 0 0 0</pose>
+        <mass>23.5</mass>
+        <inertia>
+          <ixx>0.5015291666666667</ixx>
+          <iyy>0.8931958333333333</iyy>
+          <izz>1.0183333333333333</izz>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyz>0</iyz>
+        </inertia>
+      </inertial>
+    </link>
+  </model>
+</sdf>

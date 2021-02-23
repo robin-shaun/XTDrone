@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<world xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="scene_macro" params="**fog **ambient">
+    <scene>
+      <sky>
+        <clouds>
+          <speed>12</speed>
+        </clouds>
+      </sky>
+      <grid>0</grid>
+      <origin_visual>0</origin_visual>
+      <xacro:insert_block name="fog"/>
+      <ambient>
+        <xacro:insert_block name="ambient"/>
+      </ambient>
+    </scene>
+  </xacro:macro>
+</world>

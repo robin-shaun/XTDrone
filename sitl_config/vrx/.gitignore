@@ -1,0 +1,17 @@
+syntax: glob
+vrx_gazebo/models/dock_2016_base/model.sdf
+vrx_gazebo/models/dock_2016/model.sdf
+vrx_gazebo/models/dock_2018_base/model.sdf
+vrx_gazebo/models/dock_2018/model.sdf
+vrx_gazebo/models/dock_2018_dynamic/model.sdf
+vrx_gazebo/models/robotx_2018_qualifying_avoid_obstacles_buoys/model.sdf
+wave_gazebo/world_models/ocean_waves/model.sdf
+vrx_gazebo/src/vrx_gazebo_python/generator_scripts/wamv_config/*.xacro
+build
+build_*
+.DS_Store
+*.swp
+*.orig
+*.*~
+vrx_gazebo/models/dock_permutations/*
+*.pyc

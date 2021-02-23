@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<!-- Example of launch rviz with a custom rviz config to have selected topics preloaded -->
+<launch>
+  <arg name="rviz_config" default="$(find wamv_gazebo)/config/rviz_vrx.rviz" />
+  <node pkg="rviz" type="rviz"
+        name="wamv_visualization" args="-d $(arg rviz_config)" />
+</launch>

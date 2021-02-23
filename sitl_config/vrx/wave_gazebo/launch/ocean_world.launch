@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<launch>
+  <!--
+    These are the arguments you can pass this launch file.
+    See: gazebo_ros/launch/empty_world.launch for details.
+  -->
+  <arg name="paused" default="false"/>
+  <arg name="use_sim_time" default="true"/>
+  <arg name="extra_gazebo_args" default=""/>
+  <arg name="gui" default="true"/>
+  <arg name="recording" default="false"/>
+  <arg name="debug" default="false"/>
+  <arg name="verbose" default="false"/>
+
+  <!-- Resume the logic in empty_world.launch, over-riding a number of arguments -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find wave_gazebo)/worlds/ocean.world" />
+    <arg name="paused" value="$(arg paused)" />
+    <arg name="use_sim_time" value="$(arg use_sim_time)" />
+    <arg name="extra_gazebo_args" value="$(arg extra_gazebo_args)" />
+    <arg name="gui" value="$(arg gui)" />
+    <arg name="recording" value="$(arg recording)" />
+    <arg name="debug" value="$(arg debug)" />
+    <arg name="verbose" value="$(arg verbose)" />
+  </include>
+</launch>

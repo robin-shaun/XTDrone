@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+
+  <!-- Important: This file is generated. DO NOT EDIT! -->
+
+  <model name="robotx_dock_2016_base">
+    <selfCollide>false</selfCollide>
+<%
+layout = [
+  'X  X  X  X',
+  'X  X  X  X',
+  'XXXXXXXXXX',
+  false
+]
+%>
+<%= ERB.new(File.read('dock_generator.erb'),
+                      nil, '-', 'dock').result(binding) %>
+  </model>
+</sdf>

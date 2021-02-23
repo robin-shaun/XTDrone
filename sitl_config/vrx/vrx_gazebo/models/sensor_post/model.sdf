@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <model name="sensor_post">
+    <pose>0 0 0 1.57 0 0</pose>
+    <!-- Post link -->
+    <link name="post_link">
+      <visual name="post_visual">
+        <pose>0 -0.2515 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://sensor_post/mesh/sensor_post.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name="post_collision">
+        <pose>0 0 0 1.57 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.0076</radius>
+            <length>0.503</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <inertial>
+        <pose>0 0 0 1.57 0 0</pose>
+        <mass>0.5</mass>
+        <inertia>
+          <ixx>0.010549261666667</ixx>
+          <iyy>0.010549261666667</iyy>
+          <izz>0.000014440000000</izz>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyz>0</iyz>
+        </inertia>
+      </inertial>
+    </link>
+
+    <!-- Arm link -->
+    <link name="arm_link">
+      <pose>0 0.2 0.03 0 0 0</pose>
+      <visual name="arm_visual">
+        <pose>0 -0.016 -0.035 0 0 0 </pose>
+        <geometry>
+          <mesh> 
+            <uri>model://sensor_post/mesh/sensor_post_arm.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name="arm_collision">
+        <pose>0 0 0 -0.15 0 0 </pose>
+        <geometry>
+          <cylinder>
+            <radius>0.008</radius>
+            <length>0.065</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <inertial>
+        <pose>0 0 0 -0.15 0 0 </pose>
+        <mass>0.1</mass>
+        <inertia>
+          <ixx>0.00003680833</ixx>
+          <iyy>0.00003680833</iyy>
+          <izz>0.00000320000</izz>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyz>0</iyz>
+        </inertia> 
+      </inertial>
+    </link>
+
+    <!-- Post to arm joint -->
+    <joint name="post_to_arm_joint" type="fixed">
+      <parent>post_link</parent>
+      <child>arm_link</child>
+      <pose>0 0 -0.03 0 0 0</pose>
+    </joint>
+
+  </model>
+</sdf>

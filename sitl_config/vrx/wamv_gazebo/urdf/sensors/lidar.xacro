@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:include filename="$(find wamv_gazebo)/urdf/sensors/wamv_3d_lidar.xacro"/>
+  <xacro:macro name="lidar"
+               params = "type:='16_beam'
+                         name
+                         x:=0.7 y:=0 z:=1.8
+                         R:=0 P:=0 Y:=0
+                         post_Y:=0 post_z_from:=1.2965">
+    <xacro:if value="${type == '16_beam'}">
+      <xacro:wamv_3d_lidar name="${name}"
+                           x="${x}" y="${y}" z="${z}"
+                           R="${R}" P="${P}" Y="${Y}"
+                           post_Y="${post_Y}" post_z_from="${post_z_from}"
+                           vertical_lasers="16"/>
+      <!--specs for 16 beam lidar are implemented by default.
+          See wamv_3d_lidar for those-->
+    </xacro:if>
+    <xacro:if value="${type == '32_beam'}">
+      <xacro:wamv_3d_lidar name="${name}"
+                           x="${x}" y="${y}" z="${z}"
+                           R="${R}" P="${P}" Y="${Y}"
+                           post_Y="${post_Y}" post_z_from="${post_z_from}"
+                           vertical_lasers="32"
+                           samples="2187"
+                           min_vertical_angle="-0.186"
+                           max_vertical_angle="0.54"/>
+    </xacro:if>
+  </xacro:macro>
+</robot>

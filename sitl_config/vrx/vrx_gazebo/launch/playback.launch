@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Extra gazebo arguments -->
+  <arg name="log_file"/>
+
+  <!-- If true, start in paused state -->
+  <arg name="paused"  default="false"/>
+  <!-- If true, run gazebo in verbose mode -->
+  <arg name="verbose" default="false"/>
+
+  <!-- Needed to find the WAM-V model during playback -->
+  <env name="GAZEBO_MODEL_PATH" value="$(find wamv_description)/models:$(find wamv_gazebo)/models:$(optenv GAZEBO_MODEL_PATH)"/>
+
+  <!-- Start Gazebo with the recorded log file -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="extra_gazebo_args" value="-p $(arg log_file)"/>
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="verbose" value="$(arg verbose)"/>
+  </include>
+
+</launch>
+

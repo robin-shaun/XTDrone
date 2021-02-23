@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="wamv_p3d" params="name:=ground_truth_odometry">
+    <gazebo>
+      <plugin name="p3d_plugin_${name}" filename="libgazebo_ros_p3d.so">
+        <bodyName>base_link</bodyName>
+        <frameName>map</frameName>
+        <updateRate>10.0</updateRate>
+        <topicName>${namespace}/${sensor_namespace}position/${name}</topicName>
+        <xyzOffset>0 0 0</xyzOffset>
+        <rpyOffset>0 0 0</rpyOffset>
+        <gaussianNoise>0</gaussianNoise>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+</robot>

@@ -1,0 +1,141 @@
+<?xml version="1.0" ?>
+<!-- World containing sandisland model and some course challenges -->
+<sdf version="1.6" xmlns:xacro="http://ros.org/wiki/xacro">
+  <world name="robotx_scan_and_dock">
+    <xacro:include filename="$(find vrx_gazebo)/worlds/sandisland.xacro" />
+    <xacro:sandisland />
+    <!--Waves-->
+    <xacro:include filename="$(find wave_gazebo)/world_models/ocean_waves/model.xacro"/>
+    <xacro:ocean_waves/>
+    <!--wind for the wamv-->
+    <xacro:include filename="$(find vrx_gazebo)/worlds/xacros/usv_wind_plugin.xacro"/>
+    <xacro:usv_wind_gazebo>
+      <wind_objs>
+        <wind_obj>
+          <name>wamv</name>
+          <link_name>base_link</link_name>
+          <coeff_vector>.5 .5 .33</coeff_vector>
+        </wind_obj>
+      </wind_objs>
+    </xacro:usv_wind_gazebo>
+
+
+    <!-- The light buoy -->
+    <include>
+      <uri>model://robotx_light_buoy</uri>
+      <pose>90 70 0.25 0 0 0</pose>
+    </include>
+
+    <!-- The 2018 dock with the two placards -->
+    <include>
+      <uri>model://dock_2018</uri>
+      <pose>60 -2.75 0 0 0 0</pose>
+    </include>
+
+    <!-- Uncomment to visualize the bay #1 activation zone -->
+    <!-- <model name="activation_placard1">
+      <static>true</static>
+      <link name="link">
+        <visual name="visual">
+          <pose>72.75 0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>1.5 4 2</size>
+            </box>
+          </geometry>
+          <transparency>0.8</transparency>
+        </visual>
+      </link>
+    </model> -->
+
+    <!-- Uncomment to visualize the bay #2 activation zone -->
+    <!-- <model name="activation_placard2">
+      <static>true</static>
+      <link name="link">
+        <visual name="visual">
+          <pose>61.75 0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>1.5 4 2</size>
+            </box>
+          </geometry>
+          <transparency>0.8</transparency>
+        </visual>
+      </link>
+    </model> -->
+
+    <!-- The scoring plugin -->
+    <plugin name="scan_dock_scoring_plugin"
+            filename="libscan_dock_scoring_plugin.so">
+      <!-- Parameters for scoring_plugin -->
+      <vehicle>wamv</vehicle>
+      <task_name>scan_and_dock</task_name>
+      <initial_state_duration>3</initial_state_duration>
+      <ready_state_duration>3</ready_state_duration>
+      <running_state_duration>300</running_state_duration>
+      <release_joints>
+        <joint>
+          <name>wamv_external_pivot_joint</name>
+        </joint>
+        <joint>
+          <name>wamv_external_riser</name>
+        </joint>
+      </release_joints>
+
+      <!-- Color sequence checker -->
+      <robot_namespace>vrx</robot_namespace>
+      <color_sequence_service>scan_dock/color_sequence</color_sequence_service>
+      <color_1>blue</color_1>
+      <color_2>green</color_2>
+      <color_3>red</color_3>
+
+      <!-- Dock checkers -->
+      <bays>
+        <bay>
+          <name>bay1</name>
+          <internal_activation_topic>/vrx/dock_2018/bay_1/contain</internal_activation_topic>
+          <external_activation_topic>/vrx/dock_2018/bay_1_exterior/contain</external_activation_topic>
+          <symbol_topic>/vrx/dock_2018_placard1/symbol</symbol_topic>
+	        <min_dock_time>10.0</min_dock_time>
+	        <dock_allowed>false</dock_allowed>
+	        <symbol>red_circle</symbol>
+        </bay>
+
+        <bay>
+          <name>bay2</name>
+          <internal_activation_topic>/vrx/dock_2018/bay_2/contain</internal_activation_topic>
+          <external_activation_topic>/vrx/dock_2018/bay_2_exterior/contain</external_activation_topic>
+          <symbol_topic>/vrx/dock_2018_placard2/symbol</symbol_topic>
+          <min_dock_time>10.0</min_dock_time>
+	        <dock_allowed>true</dock_allowed>
+	        <symbol>blue_circle</symbol>
+        </bay>
+      </bays>
+    </plugin>
+
+    <!-- Triggers a message when the vehicle enters and exits the bay #1 -->
+    <plugin name="vehicle_docked_bay1" filename="libContainPlugin.so">
+      <entity>wamv::base_link</entity>
+      <namespace>vrx/dock_2018/bay_1</namespace>
+      <pose frame="robotx_dock_2018::dock_2018_placard1::placard::link">0 -5 -1.5 0 0 0</pose>
+      <geometry>
+        <box>
+          <size>4 1.5 2</size>
+        </box>
+      </geometry>
+    </plugin>
+
+    <!-- Triggers a message when the vehicle enters and exits the bay #2 -->
+    <plugin name="vehicle_docked_bay2" filename="libContainPlugin.so">
+      <entity>wamv::base_link</entity>
+      <namespace>vrx/dock_2018/bay_2</namespace>
+      <pose frame="robotx_dock_2018::dock_2018_placard2::placard::link">0 5 -1.5 0 0 0</pose>
+      <geometry>
+        <box>
+          <size>4 1.5 2</size>
+        </box>
+      </geometry>
+    </plugin>
+
+  </world>
+</sdf>

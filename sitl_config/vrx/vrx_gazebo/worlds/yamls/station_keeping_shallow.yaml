@@ -1,0 +1,68 @@
+constant:
+    steps: 1
+    macros:
+        sandisland_minus_scene: 
+            -
+    sequence:
+
+tasks:
+    steps: 1
+    macros:
+        stationkeeping:
+            -
+    sequence:
+        0:
+            stationkeeping:
+                -
+    macros:
+        ocean_waves:
+            -
+        usv_wind_gazebo:
+            -
+        scene_macro:
+            -
+    sequence:
+        0:
+            ocean_waves:
+                - gain: 1.0
+                  period: 1.0
+            usv_wind_gazebo:
+                - mean_vel: 0.0
+                  var_gain: 0
+                  var_time: 2
+                  seed: 10
+                  /**wind_objs: "
+                  <wind_obj>
+
+                  <name>wamv</name>
+
+                  <link_name>base_link</link_name>
+
+                  <coeff_vector>.5 .5 .33</coeff_vector>
+
+                  </wind_obj>"
+            scene_macro:
+                - /**fog: ""
+                  /**ambient: "1 1 1 1"
+        1:
+            ocean_waves:
+                - gain: 0.4
+                  period: 8.0
+            usv_wind_gazebo:
+                - mean_vel: 8.0
+                  var_gain: 8.0
+                  var_time: 20
+                  seed: 10
+                  /**wind_objs: "
+                  <wind_obj>
+
+                  <name>wamv</name>
+
+                  <link_name>base_link</link_name>
+
+                  <coeff_vector> .5 .5 .33</coeff_vector>
+
+                  </wind_obj>"
+            scene_macro:
+                - /**fog: ""
+                  /**ambient: "0.3 0.3 0.3 1"

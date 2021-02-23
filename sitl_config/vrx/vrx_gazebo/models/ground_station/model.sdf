@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <model name="ground_station">
+    <static>true</static>
+    <include>
+      <name>tent</name>
+      <uri>model://tent</uri>
+    </include>
+    <include>
+      <name>table_a</name>
+      <pose>0.5 0.9 0.0 0.0 0.0 0.0</pose>
+      <uri>model://foldable_table</uri>
+    </include>
+    <include>
+      <name>table_b</name>
+      <pose>1.0 -0.5 0.0 0.0 0.0 1.57</pose>
+      <uri>model://foldable_table</uri>
+    </include>
+    <include>
+      <name>chair_a</name>
+      <pose>0.2 0 0 0 0 1.57</pose>
+      <uri>model://foldable_chair</uri>
+    </include>
+    <include>
+      <name>chair_b</name>
+      <pose>0.2 -0.8 0 0 0 1.57</pose>
+      <uri>model://foldable_chair</uri>
+    </include>
+    <include>
+      <name>chair_c</name>
+      <pose>-0.6 0.8 0 0 0 1.57</pose>
+      <uri>model://foldable_chair</uri>
+    </include>
+  </model>
+</sdf>

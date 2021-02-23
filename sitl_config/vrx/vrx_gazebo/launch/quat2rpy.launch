@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+
+  <node pkg="vrx_gazebo" type="quat2rpy.py" name="quat2rpy" output="screen">
+    <remap from="in_topic" to="/gazebo/model_states" />
+    <remap from="out_topic" to="wamv_rpy" />
+    <param name="input_msg_type" value="ModelStates" />
+    <param name="modelstates_index" value="6" type="int" />
+  </node>
+
+</launch>

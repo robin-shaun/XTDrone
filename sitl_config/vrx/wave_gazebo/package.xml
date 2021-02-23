@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>wave_gazebo</name>
+  <version>1.3.0</version>
+  <description>
+    This package contains Gazebo media, models and worlds for simulating
+    water waves and dynamics for surface vessels. There are ROS 
+    launch scripts that may be used to launch a Gazebo session and
+    load a world and models using `roslaunch`. 
+  </description>
+
+  <maintainer email="rhys.mainwaring@me.com">Rhys Mainwaring</maintainer>
+  <license>TBD</license>
+  <author email="rhys.mainwaring@me.com">Rhys Mainwaring</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>ruby</build_depend>
+
+  <exec_depend>wave_gazebo_plugins</exec_depend>
+  <exec_depend>gazebo_ros</exec_depend>
+  <depend>xacro</depend>
+
+  <export>
+    <gazebo_ros gazebo_media_path="${prefix}" />
+    <gazebo_ros gazebo_model_path="${prefix}/world_models:${prefix}/models" />
+  </export>
+</package>

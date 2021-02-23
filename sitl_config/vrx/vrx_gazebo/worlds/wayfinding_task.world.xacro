@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<!-- World containing sandisland model and some course challenges -->
+<sdf version="1.6" xmlns:xacro="http://ros.org/wiki/xacro">
+  <world name="robotx_wayfinding">
+    <xacro:include filename="$(find vrx_gazebo)/worlds/sandisland.xacro" />
+    <xacro:sandisland />
+    <!--Waves-->
+    <xacro:include filename="$(find wave_gazebo)/world_models/ocean_waves/model.xacro"/>
+    <xacro:ocean_waves/>
+    <!--wind for the wamv-->
+    <xacro:include filename="$(find vrx_gazebo)/worlds/xacros/usv_wind_plugin.xacro"/>
+    <xacro:usv_wind_gazebo>
+      <wind_objs>
+        <wind_obj>
+          <name>wamv</name>
+          <link_name>base_link</link_name>
+          <coeff_vector>.5 .5 .33</coeff_vector>
+        </wind_obj>
+      </wind_objs>
+    </xacro:usv_wind_gazebo>
+
+    <plugin name="wayfinding_scoring_plugin"
+            filename="libwayfinding_scoring_plugin.so">
+      <vehicle>wamv</vehicle>
+      <task_name>wayfinding</task_name>
+      <!-- Goal as Latitude, Longitude, Yaw -->
+      <waypoints>
+        <!-- Approx. starting point of wamv -->
+        <waypoint>
+          <pose>21.3109331464 -157.888576027 1.21756121843</pose>
+        </waypoint>
+        <!-- A waypoint -->
+        <waypoint>
+          <pose>21.30996 -157.8901 1.0</pose>
+        </waypoint>
+        <!-- Another waypoint -->
+        <waypoint>
+          <pose>21.31 -157.89 1.0</pose>
+        </waypoint>
+      </waypoints>
+      <initial_state_duration>10</initial_state_duration>
+      <ready_state_duration>10</ready_state_duration>
+      <running_state_duration>300</running_state_duration>
+      <release_joints>
+        <joint>
+          <name>wamv_external_pivot_joint</name>
+        </joint>
+        <joint>
+          <name>wamv_external_riser</name>
+        </joint>
+      </release_joints>
+      <markers>
+        <scaling>0.2 0.2 2.0</scaling>
+        <height>0.5</height>
+      </markers>
+    </plugin>
+
+  </world>
+</sdf>

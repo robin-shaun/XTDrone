@@ -1,6 +1,0 @@
-engine:
-    num: 4
-    allowed_params:
-        prefix
-        position
-        orientation

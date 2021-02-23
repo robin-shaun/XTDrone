@@ -1,9 +1,0 @@
-syntax = "proto2";
-package light_buoy_colors_msgs.msgs;
-
-message LightBuoyColors
-{
-    required string   color_1 = 1; 
-    required string   color_2 = 2;
-    required string   color_3 = 3;
-}

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <model name="tent">
+    <static>true</static>
+    <link name="base_link">
+      <visual name="visual">
+        <geometry>
+           <mesh>
+            <uri>model://tent/mesh/tent.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name="collision">
+        <pose>0 0 1.5 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>3.0 3.0 3.0</size>
+          </box>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+</sdf>

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <model name="post">
+    <static>true</static>
+    <pose>0 0 0 0 0 0</pose>
+    <link name="base_link">
+      <visual name="visual">
+        <geometry>
+           <mesh>
+            <uri>file://post/meshes/post.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name="collision">
+        <pose>0 0 0.5 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.3</radius>
+            <length>1</length>
+          </cylinder>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+</sdf>

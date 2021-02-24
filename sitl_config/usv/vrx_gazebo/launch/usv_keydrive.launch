@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="max_angle" default="$(eval pi/2)"/>
+  <arg name="thrust_config" default="H"/>
+  <arg name="namespace" default="wamv"/>
+
+  <!-- Keyboard teleop -->
+  <node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="teleop_twist_keyboard" output="screen">
+  </node>
+
+  <!-- Two cases for different topic names for rear thrusters -->
+  <!-- Case 1 -->
+  <group if="$(eval (arg('thrust_config') == 'H' or arg('thrust_config') == 'T') )">
+    <!-- Set articulation angles -->
+    <node pkg="vrx_gazebo" type="key2thrust_angle.py" name="key2thrust_angle" output="screen">
+      <param name="max_angle" value="$(arg max_angle)"/>
+      <remap from="left_thrust_angle" to="/$(arg namespace)/thrusters/left_thrust_angle"/>
+      <remap from="right_thrust_angle" to="/$(arg namespace)/thrusters/right_thrust_angle"/>
+    </node>
+    <!-- Convert Twist messages (from keyboard teleop) to Drive messages -->
+    <node pkg="vrx_gazebo" type="twist2thrust.py" name="twist2thrust" output="screen" args="--keyboard">
+      <remap from="left_cmd" to="/$(arg namespace)/thrusters/left_thrust_cmd"/>
+      <remap from="right_cmd" to="/$(arg namespace)/thrusters/right_thrust_cmd"/>
+    </node>
+  </group>
+
+  <!-- Case 1 -->
+  <group if="$(eval arg('thrust_config') == 'X')">
+    <!-- Set articulation angles -->
+    <node pkg="vrx_gazebo" type="key2thrust_angle.py" name="key2thrust_angle" output="screen">
+      <param name="max_angle" value="$(arg max_angle)"/>
+      <remap from="left_thrust_angle" to="/$(arg namespace)/thrusters/left_rear_thrust_angle"/>
+      <remap from="right_thrust_angle" to="/$(arg namespace)/thrusters/right_rear_thrust_angle"/>
+    </node>
+    <!-- Convert Twist messages (from keyboard teleop) to Drive messages -->
+    <node pkg="vrx_gazebo" type="twist2thrust.py" name="twist2thrust" output="screen" args="--keyboard">
+      <remap from="left_cmd" to="/$(arg namespace)/thrusters/left_rear_thrust_cmd"/>
+      <remap from="right_cmd" to="/$(arg namespace)/thrusters/right_rear_thrust_cmd"/>
+    </node>
+
+  </group>
+  
+</launch>

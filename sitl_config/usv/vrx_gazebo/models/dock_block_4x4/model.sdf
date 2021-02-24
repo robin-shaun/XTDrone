@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<sdf version="1.5">
+  <model name="dock_block_4x4">
+    <static>true</static>
+    <link name="link">
+      <collision name="collision">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>2 2 0.4</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <pose>-0.25 0.25 0.0 0 0 0 </pose>
+        <geometry>
+          <mesh>
+            <uri>file://dock_block_4x4/mesh/dock_block_4x4.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+  </model>
+</sdf>

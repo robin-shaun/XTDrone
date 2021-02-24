@@ -1,0 +1,240 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <model name="wavegauge">
+    <static>false</static>
+    <pose>0 0 0 0 0 0</pose>
+    <link name="base_link">
+			<gravity>0</gravity>
+      <inertial>
+        <mass>0.000001</mass>
+      </inertial>
+      <visual name="visual">
+        <geometry>
+          <cylinder>
+						<radius>0.05></radius>
+						<length>0.2></length>
+					</cylinder>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Red</name>
+          </script>
+        </material>
+      </visual>
+    </link>
+    <plugin name="wavegauge_plugin" filename="libwavegauge_plugin.so">
+      <wave_model>ocean_waves</wave_model>
+      <fluid_level>0.0</fluid_level>
+    </plugin>
+		<link name="bar1">
+			<gravity>0</gravity>
+      <inertial>
+        <mass>0.000001</mass>
+      </inertial>
+			<pose frame="base_link"> 0 0 0.15 0 0 0 </pose>
+			<visual name="visual">
+				<geometry>
+					<cylinder>
+						<radius>0.05</radius>
+						<length>0.1</length>
+					</cylinder>
+				</geometry>
+				<material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/White</name>
+          </script>
+        </material>
+      </visual>
+		</link>
+		<joint name="bar1" type="fixed">
+			<parent>base_link</parent>
+			<child>bar1</child>
+			<pose>0 0 0.15 0 0 0 </pose>
+		</joint>
+		<link name="bar2">
+			<gravity>0</gravity>
+      <inertial>
+        <mass>0.000001</mass>
+      </inertial>
+			<pose frame="base_link"> 0 0 0.25 0 0 0 </pose>
+			<visual name="visual">
+				<geometry>
+					<cylinder>
+						<radius>0.05</radius>
+						<length>0.1</length>
+					</cylinder>
+				</geometry>
+				<material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Black</name>
+          </script>
+        </material>
+      </visual>
+		</link>
+		<joint name="bar2" type="fixed">
+			<parent>base_link</parent>
+			<child>bar2</child>
+			<pose>0 0 0.25 0 0 0 </pose>
+		</joint>
+		<link name="bar3">
+			<gravity>0</gravity>
+      <inertial>
+        <mass>0.000001</mass>
+      </inertial>
+			<pose frame="base_link"> 0 0 0.35 0 0 0 </pose>
+			<visual name="visual">
+				<geometry>
+					<cylinder>
+						<radius>0.05</radius>
+						<length>0.1</length>
+					</cylinder>
+				</geometry>
+				<material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/White</name>
+          </script>
+        </material>
+      </visual>	
+		</link>
+		<joint name="bar3" type="fixed">
+			<parent>base_link</parent>
+			<child>bar3</child>
+			<pose>0 0 0.35 0 0 0 </pose>
+		</joint>
+		<link name="bar4">
+			<gravity>0</gravity>
+      <inertial>
+        <mass>0.000001</mass>
+      </inertial>
+			<pose frame="base_link"> 0 0 0.45 0 0 0 </pose>
+			<visual name="visual">
+				<geometry>
+					<cylinder>
+						<radius>0.05</radius>
+						<length>0.1</length>
+					</cylinder>
+				</geometry>
+				<material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Black</name>
+          </script>
+        </material>
+      </visual>
+		</link>
+		<joint name="bar4" type="fixed">
+			<parent>base_link</parent>
+			<child>bar4</child>
+			<pose>0 0 0.45 0 0 0 </pose>
+		</joint>
+
+		<link name="bar10">
+			<gravity>0</gravity>
+      <inertial>
+        <mass>0.000001</mass>
+      </inertial>
+			<pose frame="base_link"> 0 0 -0.15 0 0 0 </pose>
+			<visual name="visual">
+				<geometry>
+					<cylinder>
+						<radius>0.05</radius>
+						<length>0.1</length>
+					</cylinder>
+				</geometry>
+				<material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/White</name>
+          </script>
+        </material>
+      </visual>
+		</link>
+		<joint name="bar10" type="fixed">
+			<parent>base_link</parent>
+			<child>bar10</child>
+			<pose>0 0 -0.15 0 0 0 </pose>
+		</joint>
+		<link name="bar20">
+			<gravity>0</gravity>
+      <inertial>
+        <mass>0.000001</mass>
+      </inertial>
+			<pose frame="base_link"> 0 0 -0.25 0 0 0 </pose>
+			<visual name="visual">
+				<geometry>
+					<cylinder>
+						<radius>0.05</radius>
+						<length>0.1</length>
+					</cylinder>
+				</geometry>
+				<material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Black</name>
+          </script>
+        </material>
+      </visual>
+		</link>
+		<joint name="bar20" type="fixed">
+			<parent>base_link</parent>
+			<child>bar20</child>
+			<pose>0 0 -0.25 0 0 0 </pose>
+		</joint>
+		<link name="bar30">
+			<gravity>0</gravity>
+      <inertial>
+        <mass>0.000001</mass>
+      </inertial>
+			<pose frame="base_link"> 0 0 -0.35 0 0 0 </pose>
+			<visual name="visual">
+				<geometry>
+					<cylinder>
+						<radius>0.05</radius>
+						<length>0.1</length>
+					</cylinder>
+				</geometry>
+				<material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/White</name>
+          </script>
+        </material>
+      </visual>	
+		</link>
+		<joint name="bar30" type="fixed">
+			<parent>base_link</parent>
+			<child>bar30</child>
+			<pose>0 0 -0.35 0 0 0 </pose>
+		</joint>
+		<link name="bar40">
+			<gravity>0</gravity>
+      <inertial>
+        <mass>0.000001</mass>
+      </inertial>
+			<pose frame="base_link"> 0 0 -0.45 0 0 0 </pose>
+			<visual name="visual">
+				<geometry>
+					<cylinder>
+						<radius>0.05</radius>
+						<length>0.1</length>
+					</cylinder>
+				</geometry>
+				<material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Black</name>
+          </script>
+        </material>
+      </visual>
+		</link>
+		<joint name="bar40" type="fixed">
+			<parent>base_link</parent>
+			<child>bar40</child>
+			<pose>0 0 -0.45 0 0 0 </pose>
+		</joint>
+  </model>
+</sdf>

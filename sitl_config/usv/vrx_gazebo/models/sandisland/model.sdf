@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sdf version="1.6">
+  <model name="sandisland">
+    <pose>0 0 0 0 0 0</pose>
+    <static>true</static>
+    <link name="silink">
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>file://sandisland/meshes/sandisland.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name="collision">
+        <geometry>
+          <mesh>
+            <uri>file://sandisland/meshes/sandisland.dae</uri>
+          </mesh>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+</sdf>

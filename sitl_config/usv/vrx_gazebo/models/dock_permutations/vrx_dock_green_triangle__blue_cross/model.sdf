@@ -1,0 +1,230 @@
+<?xml version="1.0" ?> 
+<sdf version="1.6">
+          <model name="vrx_dock_green_triangle__blue_cross" >
+
+    <!-- The 2018 dock base -->
+    <include>
+      <name>dock_2018_base</name>
+      <uri>model://dock_2018_base_dynamic</uri>
+    </include>
+    
+    
+    <!-- Placard #1 -->
+    <model name="dock_2018_placard1">
+      <pose>7.5 3 1.6 0 0 1.5707963267948966</pose>
+      <include>
+      <pose> 0 0 0.25 0 0 0</pose>
+        <uri>model://placard</uri>
+      </include>
+      <link name="link_symbols">
+        
+        <pose> 0 -0.1 0.75 0 0 0 </pose>
+        
+
+        
+          <visual name="visual_triangle">
+            <pose> -0.5 0 -0.5 1.571 0 0</pose>
+            <geometry>
+              <mesh><uri>model://symbol_triangle/mesh/triangle.dae</uri></mesh>
+            </geometry>
+        
+
+          <transparency>0</transparency>
+          <plugin name="placard1_plugin" filename="libplacard_plugin.so">
+            <!-- Set shape and color -->
+            <color>green</color>
+            <shape>triangle</shape>
+            <visuals>
+              
+	            
+              
+	             <visual>vrx_dock_green_triangle__blue_cross::dock_2018_placard1::link_symbols::visual_triangle</visual>
+              
+            </visuals>
+            <shuffle>false</shuffle>
+            <robot_namespace>vrx/dock_2018_placard1</robot_namespace>
+            <ros_shuffle_topic>shuffle</ros_shuffle_topic>
+          </plugin>
+        </visual>
+        
+      </link>
+
+      <joint name="placard_to_visual" type="fixed">
+        <pose> 0 0 0 0 0 0 </pose>
+        <parent>placard::link</parent>
+        <child>link_symbols</child>
+      </joint>
+
+    <!-- For visualizing ContainPlugin volume 
+           Make sure that the size and location are consistent with plugin -->
+    <!--  Uncomment if you'd like to see the visualization 
+      <link name="bay_visualization1">
+        <visual name="bay_box1">
+          
+          <pose frame="placard::link">0 -5 -1.5 0 0 0</pose>
+          
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Green</name>
+            </script>
+          </material>
+          <geometry>
+            <box>
+              <size>1.5 4 2</size>
+            </box>
+          </geometry>
+          <transparency>0.0</transparency>
+        </visual>
+        <visual name="bay_box_exterior1">
+          
+          <pose frame="placard::link">0 -10 -1.5 0 0 0</pose>
+          
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Red</name>
+            </script>
+          </material>
+          <geometry>
+            <box>
+              <size>8 1.5 2</size>
+            </box>
+          </geometry>
+          <transparency>0.0</transparency>
+        </visual>
+      </link>
+      <joint name="placard_to_bay" type="fixed">
+        <child>placard::link</child>
+        <parent>bay_visualization1</parent>
+      </joint>
+    -->
+
+    </model>
+    
+    
+    <!-- Placard #2 -->
+    <model name="dock_2018_placard2">
+      <pose>6.5 3 1.6 0 0 1.5707963267948966</pose>
+      <include>
+      <pose> 0 0 0.25 0 0 0</pose>
+        <uri>model://placard</uri>
+      </include>
+      <link name="link_symbols">
+        
+        <pose> 0 0.1 0.75 0 0 0 </pose>
+        
+
+        
+          <visual name="visual_h_cross">
+            <pose>0 0 0 1.571 0 0</pose>
+            <geometry>
+              <box>
+                <size>0.99 0.33 0.001</size>
+              </box>
+            </geometry>
+        
+
+          <transparency>0</transparency>
+          <plugin name="placard2_plugin" filename="libplacard_plugin.so">
+            <!-- Set shape and color -->
+            <color>blue</color>
+            <shape>cross</shape>
+            <visuals>
+              
+	            
+                <visual>vrx_dock_green_triangle__blue_cross::dock_2018_placard2::link_symbols::visual_h_cross</visual>
+                <visual>vrx_dock_green_triangle__blue_cross::dock_2018_placard2::link_symbols::visual_v_cross</visual>
+              
+              
+            </visuals>
+            <shuffle>false</shuffle>
+            <robot_namespace>vrx/dock_2018_placard2</robot_namespace>
+            <ros_shuffle_topic>shuffle</ros_shuffle_topic>
+          </plugin>
+        </visual>
+        
+        <visual name="visual_v_cross">
+          <pose>0 0 0 1.571 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.33 0.99 0.001</size>
+            </box>
+          </geometry>
+          <transparency>0</transparency>
+        </visual>
+        
+      </link>
+
+      <joint name="placard_to_visual" type="fixed">
+        <pose> 0 0 0 0 0 0 </pose>
+        <parent>placard::link</parent>
+        <child>link_symbols</child>
+      </joint>
+
+    <!-- For visualizing ContainPlugin volume 
+           Make sure that the size and location are consistent with plugin -->
+    <!--  Uncomment if you'd like to see the visualization 
+      <link name="bay_visualization2">
+        <visual name="bay_box2">
+          
+          <pose frame="placard::link">0  5 -1.5 0 0 0</pose>
+          
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Green</name>
+            </script>
+          </material>
+          <geometry>
+            <box>
+              <size>1.5 4 2</size>
+            </box>
+          </geometry>
+          <transparency>0.0</transparency>
+        </visual>
+        <visual name="bay_box_exterior2">
+          
+          <pose frame="placard::link">0  10 -1.5 0 0 0</pose>
+          
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Red</name>
+            </script>
+          </material>
+          <geometry>
+            <box>
+              <size>8 1.5 2</size>
+            </box>
+          </geometry>
+          <transparency>0.0</transparency>
+        </visual>
+      </link>
+      <joint name="placard_to_bay" type="fixed">
+        <child>placard::link</child>
+        <parent>bay_visualization2</parent>
+      </joint>
+    -->
+
+    </model>
+    
+    
+
+
+    <joint name = "joint_placard1" type="fixed">
+      <pose>0 0 3 0 0 0 </pose>
+      <parent>dock_2018_placard1::placard::link</parent>
+      <child>dock_2018_base::dock_block_4_1::link</child>
+    </joint>
+
+    <joint name = "joint_placard2" type="fixed">
+      <pose>0 0 3 0 0 0 </pose>
+      <parent>dock_2018_placard2::placard::link</parent>
+      <child>dock_2018_base::dock_block_3_1::link</child>
+    </joint>
+
+  </model>
+
+
+</sdf>

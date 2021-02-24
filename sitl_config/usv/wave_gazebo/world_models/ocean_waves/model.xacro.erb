@@ -1,0 +1,123 @@
+<?xml version="1.0" ?>
+<!-- 
+  Copyright (c) 2016 The UUV Simulator Authors.
+  All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  Re-scaled by Louise Poubel
+
+
+  Copyright (c) 2019 Rhys Mainwaring.
+  Modified to include wave field model and visual plugins.
+-->
+
+<%
+  # Wave model parameters
+  model = "PMS"     # Wave model, must be PMS or CWR
+  # period = ${period} # Peak wave period [s]
+  # gain = ${gain}  # Deterined at load time by the world xacro file
+  number = 3        # Number of component waves
+  # scale = 1.5       # Spectrum sampling scale 
+  # direction_x = 1.0 # Direction of peak wave component 
+  # direction_y = 0.0
+  # angle = 0.4       # Delta direction for components
+  tau = 2.0         # Time constant for starting wave [s]
+  amplitude = 0.0  # No effect for PMS
+  steepness = 0.0  # Not yet supported
+  enableRtt = true
+  rttNoise = 0.1
+  refractOpacity = 0.2
+  reflectOpacity = 0.2
+%>
+
+<world xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="ocean_waves" params="gain:=0.1 period:=5
+                     direction_x:=1.0 direction_y:=0.0
+                     angle:=0.4 scale:=1.5">
+  <model name='ocean_waves'>
+    <static>true</static>
+    <plugin name="wavefield_plugin" filename="libWavefieldModelPlugin.so">
+      <static>false</static>
+      <update_rate>30</update_rate>
+      <size>1000 1000</size>
+      <cell_count>50 50</cell_count>
+      <wave>
+				<model><%= model %></model>
+        <period>${period}</period>
+        <number><%= number %></number>
+        <scale>${scale}</scale>
+        <gain>${gain}</gain>
+        <direction>${direction_x} ${direction_y}</direction>
+        <angle>${angle}</angle>        
+        <tau><%= tau %></tau>
+        <amplitude><%= amplitude %></amplitude>  <!-- No effect for the PMS model -->
+        <steepness><%= steepness %></steepness>
+      </wave>
+    </plugin>
+
+    <link name="ocean_waves_link">
+      <visual name="ocean_waves_visual">
+        <plugin name="ocean_waves_visual_plugin" filename="libWavefieldVisualPlugin.so">
+          <enableRtt><%= enableRtt %></enableRtt>
+          <rttNoise><%= rttNoise %></rttNoise>
+          <refractOpacity><%= refractOpacity %></refractOpacity>
+          <reflectOpacity><%= reflectOpacity %></reflectOpacity>
+          <wave>
+            <model><%= model %></model>
+            <period>${period}</period>
+            <number><%= number %></number>
+            <scale>${scale}</scale>
+            <gain>${gain}</gain>
+            <direction>${direction_x} ${direction_y}</direction>
+            <angle>${angle}</angle>        
+            <tau><%= tau %></tau>
+            <amplitude><%= amplitude %></amplitude>  <!-- No effect for the PMS model -->
+            <steepness><%= steepness %></steepness>
+          </wave>
+        </plugin>
+        <geometry>
+          <mesh>
+            <scale>${scale} ${scale} 1</scale>
+            <uri>model://ocean_waves/meshes/mesh.dae</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://ocean_waves/materials/scripts/waves.material</uri>
+            <name>WaveSim/GerstnerWaves</name>
+          </script>
+        </material>
+        <laser_retro>-1</laser_retro>
+      </visual>
+      <visual name="ocean_waves_below_visual">
+        <pose>0 0 -0.05 0 0 0</pose>  <!-- Offset to prevent rendering conflict -->
+        <geometry>
+          <mesh>
+            <scale>${scale} ${scale} 1</scale>
+            <uri>model://ocean_waves/meshes/mesh_below.dae</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://ocean_waves/materials/scripts/waves.material</uri>
+            <name>WaveSim/GerstnerWaves</name>
+          </script>
+        </material>
+        <laser_retro>-1</laser_retro>
+      </visual>
+    </link>
+  </model>
+  </xacro:macro>
+</world>
+

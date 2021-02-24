@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <model name="antenna">
+    <static>true</static>
+    <link name="base_link">
+      <visual name="visual">
+        <geometry>
+           <mesh>
+            <uri>file://antenna/meshes/antenna.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name="collision">
+        <pose>0 0 0.95 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.35</radius>
+            <length>1.9</length>
+          </cylinder>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+</sdf>

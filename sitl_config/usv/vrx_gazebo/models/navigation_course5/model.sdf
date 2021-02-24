@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<!-- Model for the VRX navigation course -->
+<sdf version="1.6">
+  <model name="vrx_navigation_course_5">
+
+    <!-- Starboard_border -->
+    <include>
+      <name>red_bound_0</name>
+      <pose>10 12 0 0 0 0</pose>
+      <uri>model://surmark950410</uri>
+    </include>
+
+    <include>
+      <name>red_bound_1</name>
+      <pose>-20 25 0 0 0 0</pose>
+      <uri>model://surmark950410</uri>
+    </include>
+
+    <include>
+      <name>red_bound_2</name>
+      <pose>-40 -5 0 0 0 0</pose>
+      <uri>model://surmark950410</uri>
+    </include>
+
+    <include>
+      <name>red_bound_3</name>
+      <pose>-60 4 0 0 0 0</pose>
+      <uri>model://surmark950410</uri>
+    </include>
+
+    <include>
+      <name>red_bound_4</name>
+      <pose>-72 24 0 0 0 0</pose>
+      <uri>model://surmark950410</uri>
+    </include>
+
+    <!-- Port_border -->
+    <include>
+      <name>green_bound_0</name>
+      <pose>10 0 0.2 0 0 0</pose>
+      <uri>model://surmark46104</uri>
+    </include>
+
+    <include>
+      <name>green_bound_1</name>
+      <pose>-20 15 0.2 0 0 0</pose>
+      <uri>model://surmark950400</uri>
+    </include>
+
+    <include>
+      <name>green_bound_2</name>
+      <pose>-40 -13 0.2 0 0 0</pose>
+      <uri>model://surmark950400</uri>
+    </include>
+
+    <include>
+      <name>green_bound_3</name>
+      <pose>-72 4 0.2 0 0 0</pose>
+      <uri>model://surmark950400</uri>
+    </include>
+
+    <include>
+      <name>green_bound_4</name>
+      <pose>-72 32 0.2 0 0 0</pose>
+      <uri>model://blue_totem</uri>
+    </include>
+
+    <!-- Obstacles -->
+    <include>
+      <name>obstacle_1</name>
+      <pose>10 8 -0.2 0 -0 0</pose>
+      <uri>model://polyform_a5</uri>
+    </include>
+
+    <include>
+      <name>obstacle_2</name>
+      <pose>-32 8 -0.2 0 -0 0</pose>
+      <uri>model://polyform_a5</uri>
+    </include>
+
+    <include>
+      <name>obstacle_3</name>
+      <pose>-31 8 -0.2 0 -0 0</pose>
+      <uri>model://polyform_a5</uri>
+    </include>
+
+    <include>
+      <name>obstacle_4</name>
+      <pose>-52 -5 -0.2 0 -0 0</pose>
+      <uri>model://polyform_a5</uri>
+    </include>
+
+    <include>
+      <name>obstacle_5</name>
+      <pose>-52 -6 -0.2 0 -0 0</pose>
+      <uri>model://polyform_a5</uri>
+    </include>
+
+  </model>
+
+</sdf>

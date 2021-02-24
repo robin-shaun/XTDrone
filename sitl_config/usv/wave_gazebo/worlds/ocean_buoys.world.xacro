@@ -1,0 +1,89 @@
+<?xml version="1.0" ?>
+<!--
+  Copyright (C) 2019  Rhys Mainwaring
+
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+ 
+       http://www.apache.org/licenses/LICENSE-2.0
+ 
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+-->
+<sdf version="1.6" xmlns:xacro="http://ros.org/wiki/xacro">
+  <world name="ocean_buoys_world">
+
+    <!-- GUI -->
+    <gui>
+      <plugin name="keyboard_gui_plugin" filename="libKeyboardGUIPlugin.so"/>
+      <camera name='user_camera'>
+        <pose frame=''>-12 0  5 0 0.27 0</pose>
+        <view_controller>orbit</view_controller>
+        <projection_type>perspective</projection_type>
+      </camera>
+    </gui>
+
+    <!-- Scene -->
+    <scene>
+      <sky>
+        <time>10</time>
+        <sunrise>6</sunrise>
+        <sunset>18</sunset>
+        <clouds>
+          <speed>12</speed>
+          <direction>1.57079</direction>
+        </clouds>
+      </sky>
+      <grid>false</grid>
+      <origin_visual>false</origin_visual>
+    </scene>
+
+    <!-- Lights -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+
+    <!--Waves-->
+    <xacro:include filename="$(find wave_gazebo)/world_models/ocean_waves/model.xacro"/>
+    <xacro:ocean_waves/>
+
+    <!-- Models  -->
+    <!--
+    <model name="a3_buoy">
+      <pose>0 1 4 0 0 0 </pose>
+      <include>
+        <uri>model://polyform_a3</uri>
+      </include>
+    </model>
+    <model name="surmark46104">
+      <include>
+        <uri>model://surmark46104</uri>
+        <pose>0 -1 4 0 0 0 </pose>
+      </include>
+    </model>
+  
+    
+    <model name="wavegauge">
+      <pose>0 0 0 0 0 0 </pose>
+      <include>
+        <uri>model://wavegauge</uri>
+      </include>
+    </model>
+    -->
+
+    <!-- Add auto generated model with N buoys -->
+    <model name="robotx_2018_qualifying_avoid_obstacles_buoys">
+      <include>
+        <uri>model://robotx_2018_qualifying_avoid_obstacles_buoys</uri>
+      </include>
+    </model>
+
+  </world>
+</sdf>

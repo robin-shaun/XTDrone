@@ -1,0 +1,101 @@
+<?xml version="1.0" ?>
+<!-- Macro to insert the sandisland into the world -->
+<world xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="sandisland_minus_scene">
+    <!-- Estimated latitude/longitude of sandisland from satellite imagery -->
+    <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <world_frame_orientation>ENU</world_frame_orientation>
+      <latitude_deg>21.30996</latitude_deg>
+      <longitude_deg>-157.8901</longitude_deg>
+      <elevation>0.0</elevation>
+      <!-- For legacy gazebo reasons, need to rotate -->
+      <!--<heading_deg>180</heading_deg>-->
+    </spherical_coordinates>
+
+    <!-- A global light source -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <gui fullscreen='0'>
+      <camera name='user_camera'>
+        <pose frame=''>175.544 123.61 4.70958 0 0.168 -2.40718</pose>
+        <view_controller>orbit</view_controller>
+      </camera>
+      <!--<plugin name="GUITaskWidget" filename="libgui_task_widget.so"/>-->
+    </gui>
+
+    <include>
+      <!-- Note - the pose tag doesn't seem to work for heightmaps, so you need
+      to go into the model file to change the altitutde/height!-->
+      <pose> 0 0 0 0 0 0 </pose>
+      <uri>model://sandisland</uri>
+    </include>
+
+    <!-- The posts for securing the WAM-V -->
+    <include>
+      <name>post_0</name>
+      <pose>169.22 112.06 0.47 0.046 -0.157 0</pose>
+      <uri>model://post</uri>
+    </include>
+    <include>
+      <name>post_1</name>
+      <pose>173.558 100.809 0.42 0.046 -0.157 0</pose>
+      <uri>model://post</uri>
+    </include>
+    <include>
+      <name>post_2</name>
+      <pose>177.64 90.86 0.3 0.046 -0.157 0</pose>
+      <uri>model://post</uri>
+    </include>
+
+    <!-- Antenna for communication with the WAM-V -->
+    <include>
+      <pose>175.69 114.29 1.37 0 0 2.00</pose>
+      <uri>model://antenna</uri>
+    </include>
+
+    <!-- ground station tents -->
+    <include>
+      <name>ground_station_0</name>
+      <pose>177.61 117.20 1.55 0 0 3.54</pose>
+      <uri>model://ground_station</uri>
+    </include>
+    <include>
+      <name>ground_station_1</name>
+      <pose>179.16 113.73 1.55 0 0 3.54</pose>
+      <uri>model://ground_station</uri>
+    </include>
+    <include>
+      <name>ground_station_2</name>
+      <pose>180.61 110.31 1.55 0 0 3.54</pose>
+      <uri>model://ground_station</uri>
+    </include>
+    <include>
+      <name>ground_station_3</name>
+      <pose>182.05 106.83 1.55 0 0 3.54</pose>
+      <uri>model://ground_station</uri>
+    </include>
+    <include>
+      <name>ground_station_4</name>
+      <pose>183.71 103.14 1.55 0 0 3.54</pose>
+      <uri>model://ground_station</uri>
+    </include>
+    <include>
+      <name>ground_station_5</name>
+      <pose>185.28 99.51 1.55 0 0 3.54</pose>
+      <uri>model://ground_station</uri>
+    </include>
+    <include>
+      <name>ground_station_6</name>
+      <pose>186.80 96.02 1.55 0 0 3.54</pose>
+      <uri>model://ground_station</uri>
+    </include>
+    <include>
+      <name>ground_station_7</name>
+      <pose>188.17 92.45 1.55 0 0 3.54</pose>
+      <uri>model://ground_station</uri>
+    </include>
+  </xacro:macro>
+</world>

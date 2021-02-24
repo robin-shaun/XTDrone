@@ -23,6 +23,7 @@ class Communication:
         self.vehicle_type = vehicle_type
         self.vehicle_id = vehicle_id
         self.local_pose = None
+        self.yaw = 0
         self.hover_flag = 0
         self.target_motion = PositionTarget()
         self.arm_state = False
@@ -69,7 +70,7 @@ class Communication:
         while not rospy.is_shutdown():
             self.target_motion_pub.publish(self.target_motion)
             
-            if (self.flight_mode is "LAND") and (self.local_pose.pose.position.z < 0.15):
+            if (self.flight_mode is "LAND") and (self.local_pose.position.z < 0.15):
                 if(self.disarm()):
                     self.flight_mode = "DISARMED"
                     
@@ -86,7 +87,8 @@ class Communication:
             rate.sleep()
 
     def local_pose_callback(self, msg):
-        self.local_pose = msg
+        self.local_pose = msg.pose
+        self.yaw = self.q2yaw(msg.pose.orientation)
 
     def mavros_state_callback(self, msg):
         self.mavros_state = msg.mode
@@ -212,7 +214,7 @@ class Communication:
     def hover(self):
         self.coordinate_frame = 1
         self.motion_type = 0
-        self.target_motion = self.construct_target(x=self.local_pose.pose.position.x,y=self.local_pose.pose.position.y,z=self.local_pose.pose.position.z)
+        self.target_motion = self.construct_target(x=self.local_pose.position.x,y=self.local_pose.position.y,z=self.local_pose.position.z,yaw=self.yaw)
 
     def flight_mode_switch(self):
         if self.flight_mode == 'HOVER':
@@ -227,7 +229,7 @@ class Communication:
             return False
 
     def takeoff_detection(self):
-        if self.local_pose.pose.position.z > 0.3 and self.arm_state:
+        if self.local_pose.position.z > 0.3 and self.arm_state:
             return True
         else:
             return False

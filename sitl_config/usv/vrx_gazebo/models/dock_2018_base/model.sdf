@@ -1,0 +1,139 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+
+  <!-- Important: This file is generated. DO NOT EDIT! -->
+
+  <model name="robotx_dock_2018_base">
+    
+    <!--
+      This is how this dock should look like:
+
+          X  X          X  X          X  X          XXXX          XXXX          X  X          X  X          X  X    
+    -->
+
+
+      <static>true</static>
+
+
+    <!-- Row 0 -->
+    <include>
+      <name>dock_block_0_0</name>
+      <pose>0 0 0.25 0 0 0</pose>
+        <uri>model://dock_block_4x4</uri>
+    </include>
+    <include>
+      <name>dock_block_0_3</name>
+      <pose>0 6 0.25 0 0 0</pose>
+        <uri>model://dock_block_4x4</uri>
+    </include>
+
+    <!-- Row 1 -->
+    <include>
+      <name>dock_block_1_0</name>
+      <pose>2 0 0.25 0 0 0</pose>
+        <uri>model://dock_block_4x4</uri>
+    </include>
+    <include>
+      <name>dock_block_1_3</name>
+      <pose>2 6 0.25 0 0 0</pose>
+        <uri>model://dock_block_4x4</uri>
+    </include>
+
+    <!-- Row 2 -->
+    <include>
+      <name>dock_block_2_0</name>
+      <pose>4 0 0.25 0 0 0</pose>
+        <uri>model://dock_block_4x4</uri>
+    </include>
+    <include>
+      <name>dock_block_2_3</name>
+      <pose>4 6 0.25 0 0 0</pose>
+        <uri>model://dock_block_4x4</uri>
+    </include>
+
+    <!-- Row 3 -->
+    <include>
+      <name>dock_block_3_0</name>
+      <pose>6 0 0.25 0 0 0</pose>
+        <uri>model://dock_block_4x4</uri>
+    </include>
+    <include>
+      <name>dock_block_3_1</name>
+      <pose>6 2 0.25 0 0 0</pose>
+        <uri>model://dock_block_4x4</uri>
+    </include>
+    <include>
+      <name>dock_block_3_2</name>
+      <pose>6 4 0.25 0 0 0</pose>
+        <uri>model://dock_block_4x4</uri>
+    </include>
+    <include>
+      <name>dock_block_3_3</name>
+      <pose>6 6 0.25 0 0 0</pose>
+        <uri>model://dock_block_4x4</uri>
+    </include>
+
+    <!-- Row 4 -->
+    <include>
+      <name>dock_block_4_0</name>
+      <pose>8 0 0.25 0 0 0</pose>
+        <uri>model://dock_block_4x4</uri>
+    </include>
+    <include>
+      <name>dock_block_4_1</name>
+      <pose>8 2 0.25 0 0 0</pose>
+        <uri>model://dock_block_4x4</uri>
+    </include>
+    <include>
+      <name>dock_block_4_2</name>
+      <pose>8 4 0.25 0 0 0</pose>
+        <uri>model://dock_block_4x4</uri>
+    </include>
+    <include>
+      <name>dock_block_4_3</name>
+      <pose>8 6 0.25 0 0 0</pose>
+        <uri>model://dock_block_4x4</uri>
+    </include>
+
+    <!-- Row 5 -->
+    <include>
+      <name>dock_block_5_0</name>
+      <pose>10 0 0.25 0 0 0</pose>
+        <uri>model://dock_block_4x4</uri>
+    </include>
+    <include>
+      <name>dock_block_5_3</name>
+      <pose>10 6 0.25 0 0 0</pose>
+        <uri>model://dock_block_4x4</uri>
+    </include>
+
+    <!-- Row 6 -->
+    <include>
+      <name>dock_block_6_0</name>
+      <pose>12 0 0.25 0 0 0</pose>
+        <uri>model://dock_block_4x4</uri>
+    </include>
+    <include>
+      <name>dock_block_6_3</name>
+      <pose>12 6 0.25 0 0 0</pose>
+        <uri>model://dock_block_4x4</uri>
+    </include>
+
+    <!-- Row 7 -->
+    <include>
+      <name>dock_block_7_0</name>
+      <pose>14 0 0.25 0 0 0</pose>
+        <uri>model://dock_block_4x4</uri>
+    </include>
+    <include>
+      <name>dock_block_7_3</name>
+      <pose>14 6 0.25 0 0 0</pose>
+        <uri>model://dock_block_4x4</uri>
+    </include>
+
+
+
+
+
+  </model>
+</sdf>

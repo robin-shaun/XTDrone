@@ -1,0 +1,156 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+
+  <model name="robotx_dock_2018">
+
+    <static>true</static>
+    <!-- The 2018 dock base -->
+    <include>
+      <name>dock_2018_base</name>
+      <uri>model://dock_2018_base</uri>
+    </include>
+    
+    
+    <!-- Placard #1 -->
+    <model name="dock_2018_placard1">
+      <static>true</static>
+      <pose>7.5 3 1.6 0 0 1.5707963267948966</pose>
+      <include>
+        <static>true</static>
+        <pose> 0 0 0.25 0 0 0</pose>
+        <uri>model://placard</uri>
+      </include>
+      <link name="link_symbols">
+        
+        <pose> 0 -0.1 0.75 0 0 0 </pose>
+        
+        <visual name="visual_circle">
+          <pose>0 0 0 1.571 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.5</radius>
+              <length>0.001</length>
+            </cylinder>
+          </geometry>
+          <transparency>1</transparency>
+          <plugin name="placard1_plugin" filename="libplacard_plugin.so">
+            <!-- Uncomment for setting the shape and color. -->
+            <!--
+            <shape>cross</shape>
+            <color>blue</color>
+            -->
+            <visuals>
+              <visual>robotx_dock_2018::dock_2018_placard1::link_symbols::visual_circle</visual>
+              <visual>robotx_dock_2018::dock_2018_placard1::link_symbols::visual_h_cross</visual>
+              <visual>robotx_dock_2018::dock_2018_placard1::link_symbols::visual_v_cross</visual>
+              <visual>robotx_dock_2018::dock_2018_placard1::link_symbols::visual_triangle</visual>
+            </visuals>
+            <shuffle>true</shuffle>
+            <robot_namespace>vrx/dock_2018_placard1</robot_namespace>
+            <ros_shuffle_topic>shuffle</ros_shuffle_topic>
+          </plugin>
+        </visual>
+        <visual name="visual_h_cross">
+          <pose>0 0 0 1.571 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.99 0.33 0.001</size>
+            </box>
+          </geometry>
+          <transparency>1</transparency>
+        </visual>
+        <visual name="visual_v_cross">
+          <pose>0 0 0 1.571 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.33 0.99 0.001</size>
+            </box>
+          </geometry>
+          <transparency>1</transparency>
+        </visual>
+        <visual name="visual_triangle">
+          <pose> -0.5 0 -0.5 1.571 0 0</pose>
+          <geometry>
+            <mesh><uri>model://symbol_triangle/mesh/triangle.dae</uri></mesh>
+          </geometry>
+          <transparency>1</transparency>
+        </visual>
+      </link>
+
+    </model>
+    
+    
+    <!-- Placard #2 -->
+    <model name="dock_2018_placard2">
+      <static>true</static>
+      <pose>6.5 3 1.6 0 0 1.5707963267948966</pose>
+      <include>
+        <static>true</static>
+        <pose> 0 0 0.25 0 0 0</pose>
+        <uri>model://placard</uri>
+      </include>
+      <link name="link_symbols">
+        
+        <pose> 0 0.1 0.75 0 0 0 </pose>
+        
+        <visual name="visual_circle">
+          <pose>0 0 0 1.571 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.5</radius>
+              <length>0.001</length>
+            </cylinder>
+          </geometry>
+          <transparency>1</transparency>
+          <plugin name="placard2_plugin" filename="libplacard_plugin.so">
+            <!-- Uncomment for setting the shape and color. -->
+            <!--
+            <shape>cross</shape>
+            <color>blue</color>
+            -->
+            <visuals>
+              <visual>robotx_dock_2018::dock_2018_placard2::link_symbols::visual_circle</visual>
+              <visual>robotx_dock_2018::dock_2018_placard2::link_symbols::visual_h_cross</visual>
+              <visual>robotx_dock_2018::dock_2018_placard2::link_symbols::visual_v_cross</visual>
+              <visual>robotx_dock_2018::dock_2018_placard2::link_symbols::visual_triangle</visual>
+            </visuals>
+            <shuffle>true</shuffle>
+            <robot_namespace>vrx/dock_2018_placard2</robot_namespace>
+            <ros_shuffle_topic>shuffle</ros_shuffle_topic>
+          </plugin>
+        </visual>
+        <visual name="visual_h_cross">
+          <pose>0 0 0 1.571 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.99 0.33 0.001</size>
+            </box>
+          </geometry>
+          <transparency>1</transparency>
+        </visual>
+        <visual name="visual_v_cross">
+          <pose>0 0 0 1.571 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.33 0.99 0.001</size>
+            </box>
+          </geometry>
+          <transparency>1</transparency>
+        </visual>
+        <visual name="visual_triangle">
+          <pose> -0.5 0 -0.5 1.571 0 0</pose>
+          <geometry>
+            <mesh><uri>model://symbol_triangle/mesh/triangle.dae</uri></mesh>
+          </geometry>
+          <transparency>1</transparency>
+        </visual>
+      </link>
+
+    </model>
+    
+    
+  
+  </model>
+
+
+</sdf>

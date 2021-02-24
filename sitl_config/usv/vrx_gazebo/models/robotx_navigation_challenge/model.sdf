@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!-- Model for the RobotX navigation challenge, containing 4 buoys -->
+<sdf version="1.6">
+  <model name="robotx_navigation_challenge">
+      <!-- Start -->
+      <!-- Red naun -->
+      <include>
+        <name>gate_start_red</name>
+        <pose>0 5 0 0 0 0 </pose>
+        <uri>model://surmark950410</uri>      
+      </include>
+      <!-- Green can -->
+      <include>
+        <name>gate_start_green</name>
+        <pose>0 -5 0 0 0 0 </pose>
+        <uri>model://surmark950400</uri>      
+      </include>
+
+      <!-- End -->
+      <!-- Red naun -->
+      <include>
+        <name>gate_end_red</name>
+        <pose>30 5 0 0 0 0 </pose>
+        <uri>model://surmark950410</uri>      
+      </include>
+      <!-- Green can -->
+      <include>
+        <name>gate_end_green</name>
+        <pose>30 -5 0 0 0 0 </pose>
+        <uri>model://surmark950400</uri>      
+      </include>
+  </model>
+</sdf>

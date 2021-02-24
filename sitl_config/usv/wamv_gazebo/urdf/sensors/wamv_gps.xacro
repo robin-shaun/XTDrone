@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="wamv_gps" params="name:=gps x:=0.3 y:=0 z:=1.3 R:=0 P:=0 Y:=0 lat:=21.30996 lon:=-157.8901 elev:=0.0 update_rate:=15">
+    <link name="${name}_link">
+      <visual name="${name}_visual">
+        <geometry>
+          <mesh filename="package://wamv_gazebo/models/gps/mesh/gps.dae"/>
+        </geometry>
+      </visual>
+      <collision name="${name}_collision_base">
+        <origin xyz="0 0 0.025" rpy="0 0 0" />
+        <geometry>
+          <cylinder length="0.05" radius="0.015" />
+        </geometry>
+      </collision>
+      <collision name="${name}_collision_antenna">
+        <origin xyz="0 0 0.11" rpy="0 0 0" />
+        <geometry>
+          <cylinder length="0.1" radius="0.15" />
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="1"/>
+        <inertia ixx="0.006458" ixy="0.0" ixz="0.0" iyy="0.006458" iyz="0.0" izz="0.01125"/>
+      </inertial>
+    </link>
+    <joint name="${name}_joint" type="revolute">
+      <axis xyz="0 0 1"/>
+      <limit effort="1000.0" lower="0.0" upper="0" velocity="0"/>
+      <origin xyz="${x} ${y} ${z}" rpy="${R} ${P} ${Y}" />
+      <parent link="base_link" />
+      <child link="${name}_link" />
+    </joint>
+    <gazebo>
+      <plugin name="gps_plugin_${name}" filename="libhector_gazebo_ros_gps.so">
+        <updateRate>${update_rate}</updateRate>
+        <alwaysOn>true</alwaysOn>
+        <bodyName>${name}_link</bodyName>
+        <!-- Manually prepend namespace to tf frame. -->
+        <frameId>${namespace}/${name}_link</frameId>
+        <topicName>${namespace}/${sensor_namespace}gps/gps/fix</topicName>
+        <!-- Note that the hector_gazebo_ros_gps plugin uses NWU coordinates
+             for reporting velocities.  This may cause problems if localization
+             requires velocity in ENU.
+             See Issue #64 in VRX project for details
+             https://bitbucket.org/osrf/vrx/issues/64 -->
+        <velocityTopicName>${namespace}/${sensor_namespace}gps/gps/fix_velocity</velocityTopicName>
+        <!-- Location of origin of Gazebo Sand Island map -->
+        <referenceLatitude>${lat}</referenceLatitude>
+        <referenceLongitude>${lon}</referenceLongitude>
+        <referenceAltitude>${elev}</referenceAltitude>
+        <referenceHeading>90</referenceHeading>
+        <offset>0.0 0.0 0.0</offset>
+        <drift>0.0 0.0 0.0</drift>
+        <gaussianNoise>0 0 0</gaussianNoise>
+        <velocityOffset>0.0 0.0 0.0</velocityOffset>
+        <velocityDrift>0.0 0.0 0.0</velocityDrift>
+        <velocityGaussianNoise>0.0 0.0 0.0</velocityGaussianNoise>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+</robot>
+
+

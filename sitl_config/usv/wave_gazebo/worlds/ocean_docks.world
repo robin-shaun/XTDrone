@@ -1,0 +1,108 @@
+<?xml version="1.0" ?>
+<!--
+  Copyright (C) 2019  Rhys Mainwaring
+
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+ 
+       http://www.apache.org/licenses/LICENSE-2.0
+ 
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+-->
+<sdf version="1.6">
+  <world name="ocean_world">
+
+    <!-- GUI -->
+    <gui>
+      <plugin name="keyboard_gui_plugin" filename="libKeyboardGUIPlugin.so"/>
+      <camera name='user_camera'>
+        <pose frame=''>-12 0  5 0 0.27 0</pose>
+        <view_controller>orbit</view_controller>
+        <projection_type>perspective</projection_type>
+      </camera>
+    </gui>
+
+    <!-- Scene -->
+    <scene>
+      <sky>
+        <time>10</time>
+        <sunrise>6</sunrise>
+        <sunset>18</sunset>
+        <clouds>
+          <speed>12</speed>
+          <direction>1.57079</direction>
+        </clouds>
+      </sky>
+      <grid>false</grid>
+      <origin_visual>false</origin_visual>
+    </scene>
+
+    <!-- Lights -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <!-- World models  -->
+    <include>
+      <uri>model://ocean_waves</uri>
+    </include>
+
+    <!-- Models  -->
+    <model name="dock_block">
+      <pose>10 -10 0.25 0 0 0 </pose>
+      <include>
+        <uri>model://dock_block</uri>
+      </include>
+    </model>
+			 
+    <model name="dock_block_2x2">
+      <pose>10 -5 0.25 0 0 0 </pose>
+      <include>
+        <uri>model://dock_block_2x2</uri>
+      </include>
+    </model>
+
+    <model name="dock_block_3x3">
+      <pose>10 0 0.25 0 0 0 </pose>
+      <include>
+        <uri>model://dock_block_3x3</uri>
+      </include>
+    </model>
+
+    <model name="dock_block_4x4">
+      <pose>10 5 0.25 0 0 0 </pose>
+      <include>
+        <uri>model://dock_block_4x4</uri>
+      </include>
+    </model>
+
+    <!-- The 2016 dock with the three placards -->
+    
+    <include>
+      <uri>model://dock_2016</uri>
+      <pose>20 -15 0.25 0 0 0</pose>
+    </include>
+    
+
+    <!-- The 2018 dock with the two placards -->
+    
+    <include>
+      <uri>model://dock_2018</uri>
+      <pose>20 15 0.25 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://robotx_light_buoy</uri>
+      <pose>10 10 0.25 0 0 0</pose>
+    </include>
+    
+
+  </world>
+</sdf>

@@ -1,0 +1,12 @@
+
+# Period values
+T = [1, 1, 2, 4, 6, 8, 8];
+# Gain values
+G = [0, 1, 1, 0.5, 0.375, 0.375, 0];
+
+figure(1)
+clf()
+plot(T,G,'-o')
+xlabel('P-M Peak Period ($T_p$) [s]')
+ylabel('Gain ($\gamma$) [m/m]')
+grid(True)

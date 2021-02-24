@@ -9,7 +9,7 @@ XTDrone是基于PX4、ROS与Gazebo的无人机仿真平台。支持多旋翼飞�
 
 单机仿真架构如下图所示，详见论文
 
-Xiao, K., Tan, S., Wang, G., An, X., Wang, X., Wang, X.: Xtdrone: A customizable multi-rotor uavs simulation platform. arXiv preprint **[ arXiv:2003.09700](https://arxiv.org/abs/2003.09700)** (2020)
+Xiao, K., Tan, S., Wang, G., An, X., Wang, X., Wang, X.: XTDrone: A Customizable Multi-rotor UAVs Simulation Platform. arXiv preprint **[ arXiv:2003.09700](https://arxiv.org/abs/2003.09700)** (2020)
 
 <img src="./image/architecture_1.png" width="640" height="480" /> 
 
@@ -23,50 +23,54 @@ Xiao, K., Ma, L., Tan, S., Cong, Y., Wang, X.: Implementation of UAV Coordinatio
 
 1. 目标检测与追踪
 
-<img src="./image/human_tracking.gif" width="640" height="368" /> 
+<img src="./image/human_tracking.gif" width="640" height="360" /> 
 
 2. 双目SLAM
 
-<img src="./image/vslam.gif" width="640" height="368" /> 
+<img src="./image/vslam.gif" width="640" height="360" /> 
 
 3. RGBD-SLAM
 
-<img src="./image/rgbdslam.gif" width="640" height="368" /> 
+<img src="./image/rgbdslam.gif" width="640" height="360" /> 
 
 4. 2D激光SLAM
 
-<img src="./image/laser_slam_2d.gif" width="640" height="368" /> 
+<img src="./image/laser_slam_2d.gif" width="640" height="360" /> 
 
 5. 3D激光SLAM
 
-<img src="./image/laser_slam_3d.gif" width="640" height="368"/>  
+<img src="./image/laser_slam_3d.gif" width="640" height="360"/>  
 
 6. 视觉惯性导航
 
-<img src="./image/vio.gif" width="640" height="368" />  
+<img src="./image/vio.gif" width="640" height="360" />  
 
 7. 运动规划
 
-<img src="./image/motion_planning.gif" width="640" height="368" />  
+<img src="./image/motion_planning.gif" width="640" height="360" />  
 
 8. 多机协同
 
-<img src="./image/formation_1.gif" width="640" height="368" />  
+<img src="./image/formation_1.gif" width="640" height="360" />  
 
-<img src="./image/formation_2.gif" width="640" height="368" />  
+<img src="./image/formation_2.gif" width="640" height="360" />  
 
 9. 固定翼
 
-<img src="./image/planes.gif" width="640" height="368" />  
+<img src="./image/planes.gif" width="640" height="360" />  
 
 10. 复合翼
 
-<img src="./image/vtols.gif" width="640" height="368" />  
+<img src="./image/vtols.gif" width="640" height="360" />  
 
 
-11. 自动驾驶
+11. 无人车
 
-<img src="./image/self_driving.gif" width="640" height="368" />  
+<img src="./image/ugv.gif" width="640" height="360" />  
+
+12. 无人船
+
+<img src="./image/usv.gif" width="640" height="360" />  
 
 
 ### 教程
@@ -77,7 +81,7 @@ Xiao, K., Ma, L., Tan, S., Cong, Y., Wang, X.: Implementation of UAV Coordinatio
 
 - 创立者：肖昆，谭劭昌
 - 指导老师：王祥科
-- 开发团队：肖昆，谭劭昌，王冠政，马澜，王齐鹏，管若乔，陈科研，陈皋
+- 开发团队：肖昆，谭劭昌，王冠政，马澜，王齐鹏，管若乔，胡新雨，陈科研，陈皋
 
 ### 加入我们
 

@@ -22,6 +22,7 @@ class Communication:
         self.vehicle_id = vehicle_id
         self.imu = None
         self.local_pose = None
+        self.yaw = 0
         self.current_state = None
         self.target_motion = PositionTarget()
         self.global_target = None
@@ -83,14 +84,15 @@ class Communication:
             odom.pose.pose = response.pose
             odom.twist.twist = response.twist
             self.odom_groundtruth_pub.publish(odom)
-            if (self.flight_mode is "LAND") and (self.local_pose.pose.position.z < 0.15):
+            if (self.flight_mode is "LAND") and (self.local_pose.position.z < 0.15):
                 if(self.disarm()):
                     self.flight_mode = "DISARMED"
 
             rate.sleep()
 
     def local_pose_callback(self, msg):
-        self.local_pose = msg
+        self.local_pose = msg.pose
+        self.yaw = self.q2yaw(msg.pose.orientation)
 
     def q2yaw(self, q):
         if isinstance(q, Quaternion):
@@ -248,7 +250,7 @@ class Communication:
     def hover(self):
         self.coordinate_frame = 1
         self.motion_type = 0
-        self.target_motion = self.construct_target(x=self.local_pose.pose.position.x,y=self.local_pose.pose.position.y,z=self.local_pose.pose.position.z,yaw=self.current_heading)
+        self.target_motion = self.construct_target(x=self.local_pose.position.x,y=self.local_pose.position.y,z=self.local_pose.position.z,yaw=self.current_heading,yaw=self.yaw)
 
     def flight_mode_switch(self):
         if self.flight_mode == 'HOVER':

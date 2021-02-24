@@ -1,0 +1,97 @@
+// Copyright (c) 2016 The UUV Simulator Authors.
+// All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.s
+
+vertex_program GerstnerWavesVS glsl
+{
+  source ../programs/GerstnerWaves.vert
+}
+
+fragment_program GerstnerWavesFS glsl
+{
+  source ../programs/GerstnerWaves.frag
+}
+
+material WaveSim/GerstnerWaves
+{
+  technique GLSL
+  {
+    pass
+    {
+      vertex_program_ref GerstnerWavesVS
+      {
+        param_named_auto eyePos camera_position_object_space
+        param_named rescale float 0.5
+        param_named bumpScale float2 25 25
+        param_named bumpSpeed float2 0.01 0.01
+        // param_named_auto time time_0_x 100.0
+        // param_named amplitud3 float 2.0 0.0 0.0
+        // param_named wavenumber3 float 0.0785 0.0 0.0
+        // param_named omega3 float 0.877 0.0 0.0
+        // param_named steepness float3 1.0 0.0 0.0
+      }
+
+      fragment_program_ref GerstnerWavesFS
+      {
+        // Colors and ratios
+        param_named deepColor float4 0 0.05 0.2 1.0
+        param_named shallowColor float4 0 0.6 1 1.0
+        param_named fresnelPower float 5
+        param_named hdrMultiplier float 0.4
+
+        // Commented out b/c set in C++ code
+        // param_named refractOpacity float 0.2
+        // param_named reflectOpacity float 0.2
+        // param_named flipAcrossY int 1  // Temp fix for camera sensors rendering upsidedown
+        // param_named rttNoise float 0.1
+
+        // Textures
+        param_named bumpMap int 0
+        param_named cubeMap int 1
+        param_named reflectMap int 2
+        param_named refractMap int 3
+      }
+
+      texture_unit
+      {
+        texture ../textures/wave_normals.dds
+        tex_coord_set 0
+        scale 0.1 0.1
+        filtering linear linear linear
+      }
+
+      texture_unit
+      {
+        cubic_texture ../textures/clouds.jpg combinedUVW
+        tex_address_mode clamp
+        tex_coord_set 1
+        filtering linear linear linear
+      }
+      // Reflection
+      texture_unit
+      {
+        // Will be filled in at runtime
+        // texture reflection
+        tex_address_mode clamp
+      }
+      // Refraction
+      texture_unit
+      {
+        // Will be filled in at runtime
+        // texture refraction
+        tex_address_mode clamp
+      }
+    }
+  }
+}

@@ -1,0 +1,78 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% math_bbing.sty
+%
+% Brian Bingham's LaTeX Math Style File
+%
+% HISTORY
+% 20.03.2007  bbing  Created from rme's style file
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ProvidesPackage{math_bbing}
+\usepackage{ifthen}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{cancel}
+
+\newcommand{\ifempty}[3]% Macro tests when calling param is empty
+  {\ifcat_#1_ %
+   #2 \else             % Action when calling parameter empty
+   #3 \fi}%             % Action when calling parameter not empty 
+
+
+%% Probability Utilities
+% normal cov: syntax \normalcov[optional]{u}{P}
+\providecommand{\normalcov}[3][]{
+  \ifempty{#1}{\ensuremath{\mathcal{N}\bigl({#2},{#3}\bigr)}}      % N(u,P)
+	      {\ensuremath{\mathcal{N}\bigl({#1};{#2},{#3}\bigr)}} % N(x;u,P)
+}
+
+% normal info: syntax \normalinfo[optional]{u}{P}
+\providecommand{\normalinfo}[3][]{
+  \ifempty{#1}{\ensuremath{\mathcal{N}^{-1}\bigl({#2},{#3}\bigr)}}     % N^-1(u,P)
+	      {\ensuremath{\mathcal{N}^{-1}\bigl({#1};{#2},{#3}\bigr)}}% N^-1(x;u,P)
+}
+
+% pdf
+%\providecommand{\pdf}[2][]{
+%  \ifempty{#1}{\ensuremath{p\bigl({#2}\bigr)}}               % p(x)
+%	      {\ensuremath{p\bigl({#1}\bigl\vert{#2}\bigr)}} % p(x|y)
+%}
+% expectation
+\providecommand{\E}[1]{\ensuremath{\mathsf{E}\bigl[#1\bigr]}}
+
+
+%% Vectors and Matricies
+% bold vector
+\providecommand{\bvec}[1]{\ensuremath{\boldsymbol{\mathrm{#1}}}}
+% homogenous vector
+\providecommand{\hvec}[1]{\ensuremath{\underline{\boldsymbol{\mathrm{#1}}}}}
+% mean vector
+\providecommand{\mvec}[1]{\ensuremath{\overline{\boldsymbol{\mathrm{#1}}}}}
+% matrix
+\providecommand{\mat}[1]{\ensuremath{\mathrm{#1}}}
+% skew-symmetric matrix
+\providecommand{\skewsym}[1]{\ensuremath{[{#1}]_{\times}}}
+% identity matrix
+\providecommand{\eye}[1]{\ensuremath{\mat{I}_{#1\times#1}}}
+% zeros matrix
+\providecommand{\zeros}[2][]{%
+  \ifempty{#1}{\ensuremath{0_{#2\times#2}}}  %0_{nxn}
+	      {\ensuremath{0_{#1\times#2}}}  %0_{mxn}
+}
+% absolute
+\providecommand{\abs}[1]{\ensuremath{\lvert{#1}\rvert}}
+% norm
+\providecommand{\norm}[1]{\ensuremath{\left\lVert{#1}\right\rVert}}
+% left sub/sup script
+\providecommand{\leftexp}[2]{\ensuremath{{\vphantom{#2}}{#1}{#2}}}
+\providecommand{\cov}[1]{\ensuremath{\operatorname{cov}({#1})}}
+% derivative
+\providecommand{\deriv}[2]{\ensuremath{\frac{\mathrm{d}#1}{\mathrm{d}#2}}}
+% partial derivative
+\providecommand{\pderiv}[2]{\ensuremath{\frac{\partial#1}{\partial#2}}}
+% differential
+\providecommand{\dt}[1][]{
+  \ifempty{#1}{\ensuremath{\mathrm{dt}}}   %dt
+	      {\ensuremath{\mathrm{d}#1}}  %d#1
+}

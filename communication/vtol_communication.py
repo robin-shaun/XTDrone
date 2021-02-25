@@ -1,17 +1,11 @@
 import rospy
-import tf
-import yaml
-from mavros_msgs.msg import GlobalPositionTarget, PositionTarget
+from mavros_msgs.msg import PositionTarget
 from mavros_msgs.srv import CommandBool, CommandVtolTransition, SetMode
 from geometry_msgs.msg import PoseStamped, Pose, Twist
 from nav_msgs.msg import Odometry
 from gazebo_msgs.srv import GetModelState
-from sensor_msgs.msg import Imu, NavSatFix
 from std_msgs.msg import String
-import time
 from pyquaternion import Quaternion
-import math
-from multiprocessing import Process
 import sys
 
 class Communication:
@@ -20,15 +14,11 @@ class Communication:
         
         self.vehicle_type = vehicle_type
         self.vehicle_id = vehicle_id
-        self.imu = None
         self.local_pose = None
-        self.yaw = 0
+        self.current_yaw = 0
         self.current_state = None
         self.target_motion = PositionTarget()
-        self.global_target = None
         self.arm_state = False
-        self.offboard_state = False
-        self.current_heading = None
         self.hover_flag = 0
         self.coordinate_frame = 1
         self.motion_type = 0
@@ -39,7 +29,6 @@ class Communication:
         ros subscribers
         '''
         self.local_pose_sub = rospy.Subscriber(self.vehicle_type+'_'+self.vehicle_id+"/mavros/local_position/pose", PoseStamped, self.local_pose_callback)
-        self.imu_sub = rospy.Subscriber(self.vehicle_type+'_'+self.vehicle_id+"/mavros/imu/data", Imu, self.imu_callback)
         self.cmd_pose_flu_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+'_'+self.vehicle_id+"/cmd_pose_flu", Pose, self.cmd_pose_flu_callback)
         self.cmd_pose_enu_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+'_'+self.vehicle_id+"/cmd_pose_enu", Pose, self.cmd_pose_enu_callback)
         self.cmd_vel_flu_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+'_'+self.vehicle_id+"/cmd_vel_flu", Twist, self.cmd_vel_flu_callback)
@@ -92,7 +81,7 @@ class Communication:
 
     def local_pose_callback(self, msg):
         self.local_pose = msg.pose
-        self.yaw = self.q2yaw(msg.pose.orientation)
+        self.current_yaw = self.q2yaw(msg.pose.orientation)
 
     def q2yaw(self, q):
         if isinstance(q, Quaternion):
@@ -229,9 +218,6 @@ class Communication:
         else:
             self.flight_mode = msg.data
             self.flight_mode_switch()
-    
-    def imu_callback(self, msg):
-        self.current_heading = self.q2yaw(msg.orientation)
 
     def arm(self):
         if self.armService(True):
@@ -250,7 +236,7 @@ class Communication:
     def hover(self):
         self.coordinate_frame = 1
         self.motion_type = 0
-        self.target_motion = self.construct_target(x=self.local_pose.position.x,y=self.local_pose.position.y,z=self.local_pose.position.z,yaw=self.current_heading,yaw=self.yaw)
+        self.target_motion = self.construct_target(x=self.local_pose.position.x,y=self.local_pose.position.y,z=self.local_pose.position.z,yaw=self.current_heading,yaw=self.current_yaw)
 
     def flight_mode_switch(self):
         if self.flight_mode == 'HOVER':

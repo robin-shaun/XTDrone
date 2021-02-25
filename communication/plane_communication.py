@@ -1,17 +1,11 @@
 import rospy
-import tf
-import yaml
-from mavros_msgs.msg import GlobalPositionTarget, PositionTarget
-from mavros_msgs.srv import CommandBool, CommandVtolTransition, SetMode
+from mavros_msgs.msg import PositionTarget
+from mavros_msgs.srv import CommandBool, SetMode
 from geometry_msgs.msg import PoseStamped, Pose
 from nav_msgs.msg import Odometry
 from gazebo_msgs.srv import GetModelState
-from sensor_msgs.msg import Imu, NavSatFix
 from std_msgs.msg import String
-import time
 from pyquaternion import Quaternion
-import math
-from multiprocessing import Process
 import sys
 
 class Communication:
@@ -20,13 +14,9 @@ class Communication:
         
         self.vehicle_type = 'plane'
         self.vehicle_id = vehicle_id
-        self.imu = None
         self.local_pose = None
-        self.current_state = None
         self.target_motion = PositionTarget()
-        self.global_target = None
         self.arm_state = False
-        self.offboard_state = False
         self.motion_type = 0
         self.flight_mode = None
         self.mission = None
@@ -35,7 +25,6 @@ class Communication:
         ros subscribers
         '''
         self.local_pose_sub = rospy.Subscriber(self.vehicle_type+'_'+self.vehicle_id+"/mavros/local_position/pose", PoseStamped, self.local_pose_callback)
-        #self.imu_sub = rospy.Subscriber(self.vehicle_type+'_'+self.vehicle_id+"/mavros/imu/data", Imu, self.imu_callback)
         self.cmd_pose_flu_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+'_'+self.vehicle_id+"/cmd_pose_flu", Pose, self.cmd_pose_flu_callback)
         self.cmd_pose_enu_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+'_'+self.vehicle_id+"/cmd_pose_enu", Pose, self.cmd_pose_enu_callback)      
         self.cmd_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+'_'+self.vehicle_id+"/cmd",String,self.cmd_callback)

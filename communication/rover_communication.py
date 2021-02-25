@@ -1,17 +1,12 @@
 import rospy
-import tf
-import yaml
-from mavros_msgs.msg import GlobalPositionTarget, State, PositionTarget
-from mavros_msgs.srv import CommandBool, CommandVtolTransition, SetMode
+from mavros_msgs.msg import State, PositionTarget
+from mavros_msgs.srv import CommandBool, SetMode
 from geometry_msgs.msg import PoseStamped, Pose, Twist
 from nav_msgs.msg import Odometry
 from gazebo_msgs.srv import GetModelState
-from sensor_msgs.msg import Imu, NavSatFix
 from std_msgs.msg import String
-import time
 from pyquaternion import Quaternion
 import math
-from multiprocessing import Process
 import sys
 
 class Communication:
@@ -19,12 +14,8 @@ class Communication:
     def __init__(self, vehicle_id):
         self.vehicle_type = 'rover'
         self.vehicle_id = vehicle_id
-        self.imu = None
         self.local_pose = None
-        self.current_state = None
-        self.current_heading = None
         self.target_motion = PositionTarget()
-        self.global_target = None
         self.arm_state = False
         self.motion_type = 0
         self.flight_mode = None

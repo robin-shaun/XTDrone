@@ -1,0 +1,12 @@
+=================================================
+Sick LIDAR Matlab/C++ Toolbox
+=================================================
+
+Example: lms_partial_scan
+Note: This example is NOT COMPATIBLE w/ LMS {211,221,291}-S14 LIDARs!
+
+Desc: This example illustrates grabbing partial scans using the
+      Sick LMS driver.
+
+Example call (from build dir): ./lms_partial_scan /dev/ttyUSB0 9600
+

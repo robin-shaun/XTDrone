@@ -1,0 +1,12 @@
+=================================================
+Sick LIDAR Matlab/C++ Toolbox
+=================================================
+
+Example: lms_real_time_indices
+Note: This example is COMPATIBLE w/ ALL Sick 2xx LIDAR units! :o)
+
+Desc: This example provides a simple program template for grabbing
+      data as well as real-time indices from a Sick LMS 2xx LIDAR. 
+
+Example call (from build dir): ./lms_real_time_indices /dev/ttyUSB0 9600
+

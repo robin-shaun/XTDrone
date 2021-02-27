@@ -1,0 +1,43 @@
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+The Sick LIDAR Matlab/C++ Toolbox
+-------------------------------------------------------------------
+
+The Sick LIDAR Matlab/C++ Toolbox was originally developed
+and is currently maintained by Jason Derenick and Thomas Miller
+at Lehigh University. It is branched from the source code used
+by the Ben Franklin Racing Team, whose robot car, "Little Ben",
+was only one of six to successfully finish the 2007 DARPA Urban
+Grand Challenge.  
+
+***AUTHORS
+
+  -----------------------------------------
+  Jason Derenick, Ph.D. Candidate
+  Computer Science and Engineering
+  Lehigh University
+  19 Memorial Drive West
+  Bethlehem, PA 18015 USA
+
+  derenick(at)lehigh(dot)edu
+  http://vader.cse.lehigh.edu/~derenick
+  -----------------------------------------
+
+  -----------------------------------------
+  Thomas Miller
+  Computer Science and Engineering
+  Lehigh University
+  19 Memorial Drive West
+  Bethlehem, PA 18015 USA
+
+  thm204(at)lehigh(dot)edu
+  http://www.lehigh.edu/~thm204
+  -----------------------------------------
+
+  Jason and Thomas are advised by Professor John Spletzer
+  in the Department of Computer Science and Engineering.
+
+***ACKNOWLEDGEMENTS
+Please see the THANKS file :o)
+
+-------------------------------------------------------------------

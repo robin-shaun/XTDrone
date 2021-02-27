@@ -1,0 +1,23 @@
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+The Sick LIDAR C++ Toolbox
+-------------------------------------------------------------------
+
+This is the ROS fork of the Sick LIDAR C++ Toolbox.  If you're
+looking for Matlab, please see the original at:
+http://sicktoolbox.sourceforge.net/
+
+*** Quick Start
+To get up and running quickly with the toolbox, be sure to read
+the quick start guide in the manuals directory. Additionally, to
+enable 500Kbps communication via a USB-COMi-M be sure to see the
+RS-422 tutorial in said directory.
+
+*** Other Files
+Please see the following documents for additional info:
+
+  COPYING - Information regarding the software license
+  AUTHORS - Information about the authors
+  THANKS  - Acknowledgements
+
+-------------------------------------------------------------------

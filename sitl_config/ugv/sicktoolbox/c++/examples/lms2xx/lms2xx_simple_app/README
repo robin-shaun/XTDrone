@@ -1,0 +1,13 @@
+=================================================
+Sick LIDAR Matlab/C++ Toolbox
+=================================================
+
+Example: lms_simple_app
+Note: This example is COMPATIBLE w/ ALL Sick 2xx LIDAR units! :o)
+
+Desc: This example provides a simple program template for grabbing
+      data from a Sick LMS 2xx LIDAR.  It illustrates the simplest
+      use of the Sick LIDAR Toolkit w/ C++.
+
+Example call (from build dir): ./lms_simple_app /dev/ttyUSB0 9600
+

@@ -1,0 +1,12 @@
+=================================================
+Sick LIDAR Matlab/C++ Toolbox
+=================================================
+
+Example: lms_stream_range_and_reflect
+Note: This example is COMPATIBLE w/ ONLY Sick 291-S14 (LMS FAST) LIDAR units!
+
+Desc: This example provides a simple program template for streaming
+      range and reflectivity data from a Sick LMS 291-S14 LIDAR.
+
+Example call (from build dir): ./lms_stream_range_and_reflect /dev/ttyUSB0 9600
+

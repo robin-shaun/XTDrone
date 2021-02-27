@@ -1,0 +1,31 @@
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+The Sick LIDAR Matlab/C++ Toolbox
+-------------------------------------------------------------------
+
+The authors would like to express their sincere gratitude to the
+following members of the Ben Franklin Racing Team for their key
+insights and help in developing the toolbox:
+
+  Aleksandr Kushleyev 
+  Tully Foote         
+  Alex Stewart
+  Jon Bohren           
+  Brian Satterfield      
+  Professor Daniel Lee   
+  Professor John Spetzer
+
+Additionally, we'd like to thank Douglas Paul for his work on the
+initial Sick LMS 2xx serial driver.
+
+*** Additional Acknowledgments
+This software makes use of the following open-source
+packages for its package configuration:
+
+doxample - by Oren Ben-kiki
+http://www.ben-kiki.org/oren/doxample
+
+acx_pthread - by Steven G. Johnson
+http://autoconf-archive.cryp.to/acx_pthread.html
+
+-------------------------------------------------------------------

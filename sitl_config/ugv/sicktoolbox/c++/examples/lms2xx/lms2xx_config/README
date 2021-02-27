@@ -1,0 +1,14 @@
+=================================================
+Sick LIDAR Matlab/C++ Toolbox
+=================================================
+
+Example: lms_config
+Note: This example is COMPATIBLE w/ ALL Sick 2xx LIDAR units! :o)
+
+Desc: This example provides a simple shell-like configuration
+      utility for working w/ Sick LMS 2xx LIDARs.  It can be
+      used for setting measuring units, measuring mode, and
+      sensitivity. It can also display the current LMS config.
+
+Example call (from build dir): ./lms_config /dev/ttyUSB0 9600
+

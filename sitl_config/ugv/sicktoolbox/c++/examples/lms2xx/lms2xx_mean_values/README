@@ -1,0 +1,11 @@
+=================================================
+Sick LIDAR Matlab/C++ Toolbox
+=================================================
+
+Example: lms_mean_values
+Note: This example is COMPATIBLE w/ ALL Sick 2xx LIDAR units! :o)
+
+Desc: This example illustrates grabbing mean values from the Sick LMS.
+
+Example call (from build dir): ./lms_mean_values /dev/ttyUSB0 9600
+

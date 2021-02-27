@@ -1,0 +1,12 @@
+=================================================
+Sick LIDAR Matlab/C++ Toolbox
+=================================================
+
+Example: lms_subrange
+Note: This example is COMPATIBLE w/ ALL Sick 2xx LIDAR units! :o)
+
+Desc: This example illustrates how to acquire a scan subrange from
+      the Sick LMS.
+
+Example call (from build dir): ./lms_subrange /dev/ttyUSB0 9600
+

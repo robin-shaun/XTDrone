@@ -1,0 +1,12 @@
+=================================================
+Sick LIDAR Matlab/C++ Toolbox
+=================================================
+
+Example: lms_set_variant
+Note: This example is NOT COMPATIBLE w/ LMS {211,221,291}-S14 LIDARs!
+
+Desc: This example illustrates the proper way to switch the Sick LMS
+      variant (i.e. the Sick's FOV and scan resolution).
+
+Example call (from build dir): ./lms_set_variant /dev/ttyUSB0 9600
+

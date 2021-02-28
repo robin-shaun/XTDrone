@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+
+<robot name="le_arm" xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:include filename="$(find le_arm)/urdf/le_arm.urdf.xacro" />
+    
+    <gazebo>
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so"> 
+            <robotNamespace>/</robotNamespace>
+        </plugin> 
+    </gazebo>
+    
+    <link name="world"/>
+    <joint name="world_fixed" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <parent link="world"/>
+        <child link="root_link"/>
+    </joint>
+
+    <link name="root_link">
+        <visual>
+            <origin xyz="0 0 0.025" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.5 0.15 0.05"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0.025" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.5 0.15 0.05"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="0.01" />
+            <origin xyz="0.0 0.0 0.0" />
+            <inertia ixx = "0.000001" ixy = "0.000000" ixz = "0.000000"
+                     iyx = "0.000000" iyy = "0.000001" iyz = "0.000000"
+                     izx = "0.000000" izy = "0.000000" izz = "0.000001" />
+        </inertial>
+    </link>
+
+
+    <xacro:le_arm parent="root_link" >
+        <origin xyz="0.05 0 0.051" rpy="0 0 0"/>
+    </xacro:le_arm>   
+</robot>

@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  
+  <xacro:property name="PI" value="3.14159265359" />
+  <xacro:macro name="le_arm_gripper_transmission" params="prefix">
+
+
+      <transmission name="${prefix}wrist_2_transmission">
+          <type>transmission_interface/SimpleTransmission</type>
+          <joint name="${prefix}wrist_2_joint">
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+          </joint>
+          <actuator name="${prefix}wrist_2_motor">	 
+            <mechanicalReduction>1</mechanicalReduction>
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+          </actuator>
+      </transmission>
+
+
+      <transmission name="${prefix}left_knuckle_joint_transmission">
+          <type>transmission_interface/SimpleTransmission</type>
+          <joint name="${prefix}left_knuckle_joint">
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+          </joint>
+          <actuator name="${prefix}left_knuckle_motor">	 
+            <mechanicalReduction>1</mechanicalReduction>
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+          </actuator>
+      </transmission>
+
+      <gazebo>
+        <plugin name="${prefix}MimicJointPlugin_right_finger" filename="libroboticsgroup_gazebo_mimic_joint_plugin.so">
+            <joint>${prefix}left_knuckle_joint</joint>
+            <mimicJoint>${prefix}right_finger_joint</mimicJoint>
+        </plugin>
+
+          <plugin name="${prefix}MimicJointPlugin_right_inner_knuckle" filename="libroboticsgroup_gazebo_mimic_joint_plugin.so">
+            <joint>${prefix}left_knuckle_joint</joint>
+            <mimicJoint>${prefix}right_inner_knuckle_joint</mimicJoint>
+            <multiplier>-1</multiplier>
+            <offset>0.0</offset>
+          </plugin>
+
+          <plugin name="${prefix}MimicJointPlugin_left_finger" filename="libroboticsgroup_gazebo_mimic_joint_plugin.so">
+            <joint>${prefix}left_knuckle_joint</joint>
+            <mimicJoint>${prefix}left_finger_joint</mimicJoint>
+            <multiplier>-1</multiplier>
+            <offset>0.0</offset>	
+          </plugin>
+            
+            <plugin name="${prefix}MimicJointPlugin_left_inner_knuckle" filename="libroboticsgroup_gazebo_mimic_joint_plugin.so">
+            <joint>${prefix}left_knuckle_joint</joint>
+            <mimicJoint>${prefix}left_inner_knuckle_joint</mimicJoint>
+          </plugin>
+
+            <plugin name="${prefix}Mimic_right_knuckle" filename="libroboticsgroup_gazebo_mimic_joint_plugin.so">
+            <joint>${prefix}left_knuckle_joint</joint>
+            <mimicJoint>${prefix}right_knuckle_joint</mimicJoint>
+            <multiplier>-1</multiplier>
+            <offset>0.0</offset>	
+          </plugin>  
+      </gazebo> 
+  </xacro:macro>
+
+</robot>

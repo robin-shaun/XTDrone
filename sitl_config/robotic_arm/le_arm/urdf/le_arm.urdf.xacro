@@ -1,0 +1,306 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:include filename="$(find le_arm)/urdf/le_arm.transmission.xacro" />
+    <xacro:include filename="$(find le_arm)/urdf/le_arm_gripper.urdf.xacro" />
+    <xacro:macro name="le_arm" params="parent *origin">  
+        <joint name="arm_base_joint" type="fixed">
+            <parent link="${parent}"/>
+            <child link="arm_base_link"/>
+            <xacro:insert_block name="origin"/>
+        </joint>
+
+        <link
+            name="arm_base_link">
+            <inertial>
+            <origin
+                xyz="0.034411 3.2244E-06 0.02029"
+                rpy="0 0 0" />
+            <mass value="0.00001" />
+            <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001" />
+            </inertial>
+            <visual>
+            <origin
+                xyz="0 0 0"
+                rpy="0 0 0" />
+            <geometry>
+                <mesh
+                filename="file:///home/robin/le_arm_ws/src/le_arm/meshes/arm/base_link.STL" />
+            </geometry>
+            <material
+                name="">
+                <color
+                rgba="0.75294 0.75294 0.75294 1" />
+            </material>
+            </visual>
+            <collision>
+            <origin
+                xyz="0 0 0"
+                rpy="0 0 0" />
+            <geometry>
+                <mesh
+                filename="file:///home/robin/le_arm_ws/src/le_arm/meshes/arm/base_link.STL" />
+            </geometry>
+            </collision>
+        </link>
+
+        <gazebo reference="arm_base_link">
+            <implicitSpringDamper>1</implicitSpringDamper>
+            <mu1>100000</mu1>
+            <mu2>100000</mu2>
+            <kp>100000000.0</kp>
+            <kd>1.0</kd>
+        </gazebo> 
+
+        <link
+            name="shoulder_link">
+            <inertial>
+            <origin
+                xyz="-0.0005946 -0.00090913 0.017195"
+                rpy="0 0 0" />
+            <mass value="0.00001" />
+            <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001" />
+            </inertial>
+            <visual>
+            <origin
+                xyz="0 0 0"
+                rpy="0 0 0" />
+            <geometry>
+                <mesh
+                filename="file:///home/robin/le_arm_ws/src/le_arm/meshes/arm/shoulder_link.STL" />
+            </geometry>
+            <material
+                name="">
+                <color
+                rgba="0.75294 0.75294 0.75294 1" />
+            </material>
+            </visual>
+            <collision>
+            <origin
+                xyz="0 0 0"
+                rpy="0 0 0" />
+            <geometry>
+                <mesh
+                filename="file:///home/robin/le_arm_ws/src/le_arm/meshes/arm/shoulder_link.STL" />
+            </geometry>
+            </collision>
+        </link>
+
+                
+        <gazebo reference="shoulder_link">
+            <implicitSpringDamper>1</implicitSpringDamper>
+            <mu1>100000</mu1>
+            <mu2>100000</mu2>
+            <kp>100000000.0</kp>
+            <kd>1.0</kd>
+        </gazebo> 
+
+        <joint
+            name="shoulder_pan_joint"
+            type="revolute">
+            <origin
+            xyz="0.0005 0 0.0535"
+            rpy="1.2297E-10 2.2825E-27 -3.4694E-17" />
+            <parent
+            link="arm_base_link" />
+            <child
+            link="shoulder_link" />
+            <axis
+            xyz="0 0 1" />
+            <limit
+            lower="-1.57"
+            upper="1.57"
+            effort="1000"
+            velocity="2" />
+        </joint>
+        <link
+            name="upper_arm_link">
+            <inertial>
+            <origin
+                xyz="2.6345E-08 -0.02405 0.05197"
+                rpy="0 0 0" />
+            <mass value="0.00001" />
+            <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001" />
+            </inertial>
+            <visual>
+            <origin
+                xyz="0 0 0"
+                rpy="0 0 0" />
+            <geometry>
+                <mesh
+                filename="file:///home/robin/le_arm_ws/src/le_arm/meshes/arm/upper_arm_link.STL" />
+            </geometry>
+            <material
+                name="">
+                <color
+                rgba="0.75294 0.75294 0.75294 1" />
+            </material>
+            </visual>
+            <collision>
+            <origin
+                xyz="0 0 0"
+                rpy="0 0 0" />
+            <geometry>
+                <mesh
+                filename="file:///home/robin/le_arm_ws/src/le_arm/meshes/arm/upper_arm_link.STL" />
+            </geometry>
+            </collision>
+        </link>
+
+        <gazebo reference="upper_arm_link">
+            <implicitSpringDamper>1</implicitSpringDamper>
+            <mu1>100000</mu1>
+            <mu2>100000</mu2>
+            <kp>100000000.0</kp>
+            <kd>1.0</kd>
+        </gazebo> 
+
+        <joint
+            name="shoulder_lift_joint" 
+            type="revolute">
+            <origin
+            xyz="-0.0105 0.0226 0.032"
+            rpy="-5.7183E-11 0.785 0" />
+            <parent
+            link="shoulder_link" />
+            <child
+            link="upper_arm_link" />
+            <axis
+            xyz="0 -1 0" />
+            <limit
+            lower="-1.57"
+            upper="1.57"
+            effort="1000"
+            velocity="2" />
+        </joint>
+        <link
+            name="forearm_link">
+            <inertial>
+            <origin
+                xyz="3.5006E-08 0.0090395 0.033861"
+                rpy="0 0 0" />
+            <mass value="0.00001" />
+            <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001" />
+            </inertial>
+            <visual>
+            <origin
+                xyz="0 0 0"
+                rpy="0 0 0" />
+            <geometry>
+                <mesh
+                filename="file:///home/robin/le_arm_ws/src/le_arm/meshes/arm/forearm_link.STL" />
+            </geometry>
+            <material
+                name="">
+                <color
+                rgba="0.75294 0.75294 0.75294 1" />
+            </material>
+            </visual>
+            <collision>
+            <origin
+                xyz="0 0 0"
+                rpy="0 0 0" />
+            <geometry>
+                <mesh
+                filename="file:///home/robin/le_arm_ws/src/le_arm/meshes/arm/forearm_link.STL" />
+            </geometry>
+            </collision>
+        </link>
+
+        <gazebo reference="forearm_link">
+            <implicitSpringDamper>1</implicitSpringDamper>
+            <mu1>100000</mu1>
+            <mu2>100000</mu2>
+            <kp>100000000.0</kp>
+            <kd>1.0</kd>
+        </gazebo> 
+
+
+        <joint
+            name="elbow_joint"
+            type="revolute">
+            <origin
+            xyz="0 -0.0335 0.104"
+            rpy="-1.6E-10 0.785 0" />
+            <parent
+            link="upper_arm_link" />
+            <child
+            link="forearm_link" />
+            <axis
+            xyz="0 -1 0" />
+            <limit
+            lower="-1.57"
+            upper="1.57"
+            effort="1000"
+            velocity="2" />
+        </joint>
+        <link
+            name="wrist_1_link">
+            <inertial>
+            <origin
+                xyz="-0.010432 0.010212 0.019017"
+                rpy="0 0 0" />
+            <mass value="0.00001" />
+            <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001" />
+            </inertial>
+            <visual>
+            <origin
+                xyz="0 0 0"
+                rpy="0 0 0" />
+            <geometry>
+                <mesh
+                filename="file:///home/robin/le_arm_ws/src/le_arm/meshes/arm/wrist_1_link.STL" />
+            </geometry>
+            <material
+                name="">
+                <color
+                rgba="0.75294 0.75294 0.75294 1" />
+            </material>
+            </visual>
+            <collision>
+            <origin
+                xyz="0 0 0"
+                rpy="0 0 0" />
+            <geometry>
+                <mesh
+                filename="file:///home/robin/le_arm_ws/src/le_arm/meshes/arm/wrist_1_link.STL" />
+            </geometry>
+            </collision>
+        </link>
+
+         <gazebo reference="wrist_1_link">
+            <implicitSpringDamper>1</implicitSpringDamper>
+            <mu1>100000</mu1>
+            <mu2>100000</mu2>
+            <kp>100000000.0</kp>
+            <kd>1.0</kd>
+        </gazebo> 
+
+        <joint
+            name="wrist_1_joint"
+            type="revolute">
+            <origin
+            xyz="-0.0007415 0.0054 0.088419"
+            rpy="5.3884E-11 0 0" />
+            <parent
+            link="forearm_link" />
+            <child
+            link="wrist_1_link" />
+            <axis
+            xyz="0 -1 0" />
+            <limit
+            lower="-1.57"
+            upper="1.57"
+            effort="1000"
+            velocity="2" />
+        </joint>  
+
+
+        <xacro:le_arm_gripper prefix="" parent="wrist_1_link" >
+            <origin xyz="0 0.009 0.059" rpy="0 0 0"/>
+        </xacro:le_arm_gripper>
+
+
+        <xacro:le_arm_transmission prefix=""/>
+
+    </xacro:macro>    
+</robot>

@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- <arg name="limited" default="false"/> -->
+  <arg name="paused" default="false"/>
+  <arg name="gui" default="true"/>
+
+  
+  <!-- startup simulated world -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" default="worlds/empty.world"/>
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="gui" value="$(arg gui)"/>
+  </include>
+
+  <!-- send robot urdf to param server -->
+  <include file="$(find le_arm)/launch/upload_le_arm.launch"/>
+
+  <!-- push robot_description to factory and spawn robot in gazebo -->
+  <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model robot" respawn="false" output="screen" />
+
+  <include file="$(find le_arm)/launch/controller_utils.launch"/>
+
+  <rosparam file="$(find le_arm)/controller/le_arm_controller.yaml" command="load"/> 
+ 
+  <node name="le_arm_controller_spawner" pkg="controller_manager" type="spawner" args="le_arm_controller  " />
+
+
+
+  <rosparam file="$(find le_arm)/controller/gripper_controller.yaml" command="load"/> 
+
+  <node name="gripper_controller_spawner" pkg="controller_manager" type="spawner" args="gripper_controller " />
+
+    <!-- Add Coke can to the world -->
+  <node name="spawn_object" pkg="gazebo_ros" type="spawn_model" 
+   args="-urdf -file $(find object_models)/models/urdf/coke_can.urdf -model coke -x 0.745 -y -0.75 -z 0.0"
+   respawn="false" output="screen" />
+
+</launch>

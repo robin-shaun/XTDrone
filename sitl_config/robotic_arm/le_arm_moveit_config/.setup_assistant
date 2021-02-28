@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: le_arm
+    relative_path: urdf/le_arm.xacro
+    xacro_args: "--inorder "
+  SRDF:
+    relative_path: config/le_arm.srdf
+  CONFIG:
+    author_name: wsc
+    author_email: wsc820508@163.com
+    generated_timestamp: 1541628407

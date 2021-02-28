@@ -15,14 +15,14 @@ This link is the base of the arm in which arm is placed
        <collision>
            <origin xyz="0 0 0" rpy="0 0 0"/>
            <geometry>
-           <mesh filename="file:///home/robin/le_arm_ws/src/le_arm/meshes/sensors/camera.STL" />
+           <mesh filename="package://le_arm/meshes/sensors/camera.STL" />
            </geometry>
        </collision> 
 
        <visual>
            <origin xyz="0 0 0" rpy="-3.14 0 -1.57"/>
            <geometry>
-           <mesh filename="file:///home/robin/le_arm_ws/src/le_arm/meshes/sensors/camera.STL" />
+           <mesh filename="package://le_arm/meshes/sensors/camera.STL" />
            </geometry>
            <material name="red"/>
        </visual>

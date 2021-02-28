@@ -5,7 +5,7 @@
     <!-- vehicle model and world -->
     <arg name="est" default="ekf2"/>
     <arg name="vehicle" default="iris"/>
-    <arg name="world" default="worlds/empty.world"/>
+    <arg name="world" default="$(find mavlink_sitl_gazebo)/worlds/grasping.world"/>
     <!-- gazebo configs -->
     <arg name="gui" default="true"/>
     <arg name="debug" default="false"/>
@@ -26,7 +26,7 @@
         <arg name="fcu_url" default="udp://:24540@localhost:34580"/>
         <!-- PX4 SITL and vehicle spawn -->
         <include file="$(find px4)/launch/single_vehicle_spawn.launch">
-            <arg name="x" value="0.5"/>
+            <arg name="x" value="-0.1"/>
             <arg name="y" value="0"/>
             <arg name="z" value="0"/>
             <arg name="R" value="0"/>
@@ -52,8 +52,3 @@
     <rosparam file="$(find le_arm)/controller/gripper_controller.yaml" command="load"/>
     <node name="gripper_controller_spawner" pkg="controller_manager" type="spawner" args="gripper_controller" />
 </launch>
-<!-- to add more UAVs (up to 10):
-Increase the id
-Change the name space
-Set the FCU to default="udp://:14540+id@localhost:14550+id"
-Set the malink_udp_port to 14560+id) -->

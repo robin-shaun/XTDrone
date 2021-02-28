@@ -569,7 +569,7 @@
         <noiseUniformLinearVelocity>${noise_uniform_linear_velocity}</noiseUniformLinearVelocity>  <!-- symmetric bounds of uniform noise [m/s] -->
         <noiseUniformAngularVelocity>${noise_uniform_angular_velocity}</noiseUniformAngularVelocity>  <!-- symmetric bounds of uniform noise [rad/s] -->
         <xacro:if value="${enable_odometry_map}">
-          <covarianceImage>file:///home/robin/le_arm_ws/src/rotors_gazebo/resource/${odometry_map}</covarianceImage>
+          <covarianceImage>package://rotors_gazebo/resource/${odometry_map}</covarianceImage>
           <covarianceImageScale>${image_scale}</covarianceImageScale>
         </xacro:if>
       </plugin>

@@ -26,7 +26,7 @@
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                filename="file:///home/robin/le_arm_ws/src/le_arm/meshes/gripper/base_link.STL" />
+                filename="package://le_arm/meshes/gripper/base_link.STL" />
             </geometry>
             <material
                 name="">
@@ -40,7 +40,7 @@
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                filename="file:///home/robin/le_arm_ws/src/le_arm/meshes/gripper/base_link.STL" />
+                filename="package://le_arm/meshes/gripper/base_link.STL" />
             </geometry>
             </collision>
         </link>
@@ -68,7 +68,7 @@
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                filename="file:///home/robin/le_arm_ws/src/le_arm/meshes/gripper/left_knuckle_link.STL" />
+                filename="package://le_arm/meshes/gripper/left_knuckle_link.STL" />
             </geometry>
             <material
                 name="">
@@ -82,7 +82,7 @@
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                filename="file:///home/robin/le_arm_ws/src/le_arm/meshes/gripper/left_knuckle_link.STL" />
+                filename="package://le_arm/meshes/gripper/left_knuckle_link.STL" />
             </geometry>
             </collision>
         </link>
@@ -128,7 +128,7 @@
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                filename="file:///home/robin/le_arm_ws/src/le_arm/meshes/gripper/right_knuckle_link.STL" />
+                filename="package://le_arm/meshes/gripper/right_knuckle_link.STL" />
             </geometry>
             <material
                 name="">
@@ -142,7 +142,7 @@
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                filename="file:///home/robin/le_arm_ws/src/le_arm/meshes/gripper/right_knuckle_link.STL" />
+                filename="package://le_arm/meshes/gripper/right_knuckle_link.STL" />
             </geometry>
             </collision>
         </link>
@@ -189,7 +189,7 @@
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                filename="file:///home/robin/le_arm_ws/src/le_arm/meshes/gripper/left_inner_knuckle_link.STL" />
+                filename="package://le_arm/meshes/gripper/left_inner_knuckle_link.STL" />
             </geometry>
             <material
                 name="">
@@ -203,7 +203,7 @@
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                filename="file:///home/robin/le_arm_ws/src/le_arm/meshes/gripper/left_inner_knuckle_link.STL" />
+                filename="package://le_arm/meshes/gripper/left_inner_knuckle_link.STL" />
             </geometry>
             </collision>
         </link>
@@ -250,7 +250,7 @@
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                filename="file:///home/robin/le_arm_ws/src/le_arm/meshes/gripper/left_finger_link.STL" />
+                filename="package://le_arm/meshes/gripper/left_finger_link.STL" />
             </geometry>
             <material
                 name="">
@@ -264,7 +264,7 @@
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                filename="file:///home/robin/le_arm_ws/src/le_arm/meshes/gripper/left_finger_link.STL" />
+                filename="package://le_arm/meshes/gripper/left_finger_link.STL" />
             </geometry>
             </collision>
         </link>
@@ -311,7 +311,7 @@
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                filename="file:///home/robin/le_arm_ws/src/le_arm/meshes/gripper/right_inner_knuckle_link.STL" />
+                filename="package://le_arm/meshes/gripper/right_inner_knuckle_link.STL" />
             </geometry>
             <material
                 name="">
@@ -325,7 +325,7 @@
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                filename="file:///home/robin/le_arm_ws/src/le_arm/meshes/gripper/right_inner_knuckle_link.STL" />
+                filename="package://le_arm/meshes/gripper/right_inner_knuckle_link.STL" />
             </geometry>
             </collision>
         </link>
@@ -372,7 +372,7 @@
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                filename="file:///home/robin/le_arm_ws/src/le_arm/meshes/gripper/right_finger_link.STL" />
+                filename="package://le_arm/meshes/gripper/right_finger_link.STL" />
             </geometry>
             <material
                 name="">
@@ -386,7 +386,7 @@
                 rpy="0 0 0" />
             <geometry>
                 <mesh
-                filename="file:///home/robin/le_arm_ws/src/le_arm/meshes/gripper/right_finger_link.STL" />
+                filename="package://le_arm/meshes/gripper/right_finger_link.STL" />
             </geometry>
             </collision>
         </link>

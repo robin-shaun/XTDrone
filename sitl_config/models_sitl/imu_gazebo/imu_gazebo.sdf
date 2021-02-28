@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name="imu_gazebo">
+    <link name="link">
+      <pose>0 0 0 0 0 0</pose>
+      <inertial>
+        <mass>0.001</mass>
+        <inertia>
+          <ixx>0.000000166667</ixx>
+          <iyy>0.000000166667</iyy>
+          <izz>0.000000166667</izz>
+        </inertia>
+      </inertial>
+
+    <sensor name="imu_sensor" type="imu">
+      <always_on>true</always_on>
+      <parent>link</parent>
+      <update_rate>500</update_rate>
+      <visualize>true</visualize>
+      <topic>imu_gazebo</topic>
+      <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+        <topicName>imu_gazebo</topicName>
+        <bodyName>imu_link_stereo</bodyName>
+        <updateRateHZ>500.0</updateRateHZ>
+        <gaussianNoise>0.0</gaussianNoise>
+        <xyzOffset>0 0 0</xyzOffset>
+        <rpyOffset>0 0 0</rpyOffset>
+        <frameName>imu_link_stereo</frameName>
+
+        <gyroscopeNoiseDensity>0.0006</gyroscopeNoiseDensity>
+        <gyroscopeRandomWalk>0.000003</gyroscopeRandomWalk>        
+        <gyroscopeTurnOnBiasSigma>0.03</gyroscopeTurnOnBiasSigma>
+
+        <accelerometerNoiseDensity>0.002</accelerometerNoiseDensity>
+        <accelerometerRandomWalk>0.00002</accelerometerRandomWalk>
+        <accelerometerTurnOnBiasSigma>0.1</accelerometerTurnOnBiasSigma>
+
+      </plugin>
+      <pose>0 0 0.3 0 0 0</pose>
+    </sensor>
+    </link>
+  </model>
+</sdf>

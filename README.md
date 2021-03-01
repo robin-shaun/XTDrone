@@ -3,74 +3,74 @@
 <div id="sidebar"><a href="./README.en.md" target="_blank"><font color=#0000FF size=5px >[ENGLISH]<font></center><a></div>
 
 ### 介绍
-XTDrone是基于PX4、ROS与Gazebo的无人机仿真平台。支持多旋翼飞行器（包含四轴和六轴）、固定翼飞行器、复合翼飞行器（包含quadplane，tailsitter和tiltrotor）和无人车。在XTDrone上验证过的算法，可以方便地部署到真实无人机上。
+XTDrone是基于PX4、ROS与Gazebo的无人机仿真平台。支持多旋翼飞行器（包含四轴和六轴）、固定翼飞行器、复合翼飞行器（包含quadplane，tailsitter和tiltrotor）与其他无人装备（如无人车、无人船与机械臂）。在XTDrone上验证过的算法，可以方便地部署到真实无人机上。
 
-<img src="./image/vehicles.png" width="640"  />
+<img src="./images/vehicles.png" width="640"  />
 
 单机仿真架构如下图所示，详见论文
 
 Xiao, K., Tan, S., Wang, G., An, X., Wang, X., Wang, X.: XTDrone: A Customizable Multi-rotor UAVs Simulation Platform. arXiv preprint **[ arXiv:2003.09700](https://arxiv.org/abs/2003.09700)** (2020)
 
-<img src="./image/architecture_1.png" width="640" height="480" /> 
+<img src="./images/architecture_1_cn.png" width="640" height="480" /> 
 
 多机仿真架构如下图所示，详见论文 
 
 Xiao, K., Ma, L., Tan, S., Cong, Y., Wang, X.: Implementation of UAV Coordination Based on a Hierarchical Multi-UAV Simulation Platform. arXiv preprint **[ arXiv:2005.01125](https://arxiv.org/abs/2005.01125)** (2020)
 
-<img src="./image/architecture_2.png" width="640" />
+<img src="./images/architecture_2_cn.png" width="640" />
 
 在这个平台上，开发者可以快速验证算法。如：
 
 1. 目标检测与追踪
 
-<img src="./image/human_tracking.gif" width="640" height="360" /> 
+<img src="./images/human_tracking.gif" width="640" height="360" /> 
 
 2. 双目SLAM
 
-<img src="./image/vslam.gif" width="640" height="360" /> 
+<img src="./images/vslam.gif" width="640" height="360" /> 
 
 3. RGBD-SLAM
 
-<img src="./image/rgbdslam.gif" width="640" height="360" /> 
+<img src="./images/rgbdslam.gif" width="640" height="360" /> 
 
 4. 2D激光SLAM
 
-<img src="./image/laser_slam_2d.gif" width="640" height="360" /> 
+<img src="./images/laser_slam_2d.gif" width="640" height="360" /> 
 
 5. 3D激光SLAM
 
-<img src="./image/laser_slam_3d.gif" width="640" height="360"/>  
+<img src="./images/laser_slam_3d.gif" width="640" height="360"/>  
 
 6. 视觉惯性导航
 
-<img src="./image/vio.gif" width="640" height="360" />  
+<img src="./images/vio.gif" width="640" height="360" />  
 
 7. 运动规划
 
-<img src="./image/motion_planning.gif" width="640" height="360" />  
+<img src="./images/motion_planning.gif" width="640" height="360" />  
 
 8. 多机协同
 
-<img src="./image/formation_1.gif" width="640" height="360" />  
+<img src="./images/formation_1.gif" width="640" height="360" />  
 
-<img src="./image/formation_2.gif" width="640" height="360" />  
+<img src="./images/formation_2.gif" width="640" height="360" />  
 
 9. 固定翼
 
-<img src="./image/planes.gif" width="640" height="360" />  
+<img src="./images/planes.gif" width="640" height="360" />  
 
 10. 复合翼
 
-<img src="./image/vtols.gif" width="640" height="360" />  
+<img src="./images/vtols.gif" width="640" height="360" />  
 
 
 11. 无人车
 
-<img src="./image/ugv.gif" width="640" height="360" />  
+<img src="./images/ugv.gif" width="640" height="360" />  
 
 12. 无人船
 
-<img src="./image/usv.gif" width="640" height="360" />  
+<img src="./images/usv.gif" width="640" height="360" />  
 
 
 ### 教程

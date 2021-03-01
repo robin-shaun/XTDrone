@@ -5,31 +5,15 @@
     <include>
       <uri>model://iris</uri>
     </include> 
-<!-- For Stereo Camera Payload -->
-      <include>
-        <uri>model://stereo_camera</uri>
-        <pose>0 0 -0.05 0 0 0</pose>
-      </include>
 
-    <joint name="stereo_joint" type="fixed">
-      <child>stereo_camera::link</child>
-      <parent>iris::base_link</parent>
-      <axis>
-        <xyz>0 0 1</xyz>
-        <limit>
-          <upper>0</upper>
-          <lower>0</lower>
-        </limit>
-      </axis>
-    </joint>
-<!-- For Kinect -->
+<!-- For realsense -->
       <include>
         <uri>model://realsense_camera</uri>
-        <pose>0 0 0.05 0 0 0</pose>
+        <pose>0 0 0.2 0 0 0</pose>
       </include>
 
-    <joint name="kinect_joint" type="fixed">
-      <child>realsense_camera::link</child>
+    <joint name="realsense_joint" type="revolute">
+      <child>realsense::link</child>
       <parent>iris::base_link</parent>
       <axis>
         <xyz>0 0 1</xyz>
@@ -39,22 +23,7 @@
         </limit>
       </axis>
     </joint>
-  <!-- For IMU-->
-    <include>
-      <uri>model://imu_gazebo</uri>
-      <pose>0 0 -0.05 0 0 0</pose>
-    </include>
-    <joint name="imu_gazebo_joint" type="fixed">
-      <child>imu_gazebo::link</child>
-      <parent>iris::base_link</parent>
-      <axis>
-        <xyz>0 0 1</xyz>
-        <limit>
-          <upper>0</upper>
-          <lower>0</lower>
-        </limit>
-      </axis>
-    </joint>
+
   </model>
 </sdf>
 <!-- vim: set noet fenc=utf-8 ff=unix sts=0 sw=4 ts=4 : -->

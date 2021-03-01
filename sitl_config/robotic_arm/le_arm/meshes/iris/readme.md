@@ -1,0 +1,1 @@
+cp ~/PX4_Firmware/Tools/sitl_gazebo/models/rotors_description/meshes/* ~/catkin_ws/src/le_arm/meshes/iris/

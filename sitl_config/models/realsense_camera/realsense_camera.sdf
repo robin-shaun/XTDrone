@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <sdf version="1.6">
-  <model name="realsense">
+  <model name="realsense_camera">
     <pose frame="">0 0 0.015 0 0 0</pose>
     <link name="link">
       <inertial>
@@ -22,7 +22,7 @@
       <visual name="visual">
         <geometry>
           <mesh>
-            <uri>model://realsense/meshes/realsense.dae</uri>
+            <uri>model://realsense_camera/meshes/realsense_camera.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -43,7 +43,7 @@
         <frameName>imu_link_stereo</frameName>
 
         <gyroscopeNoiseDensity>0.0006</gyroscopeNoiseDensity>
-        <gyroscopeRandomWalk>0.000003</gyroscopeRandomWalk>        
+        <gyroscopeRandomWalk>0.000003</gyroscopeRandomWalk>
         <gyroscopeTurnOnBiasSigma>0.03</gyroscopeTurnOnBiasSigma>
 
         <accelerometerNoiseDensity>0.002</accelerometerNoiseDensity>

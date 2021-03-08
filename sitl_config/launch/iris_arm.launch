@@ -25,7 +25,7 @@
         <arg name="ID" value="0"/>
         <arg name="fcu_url" default="udp://:24540@localhost:34580"/>
         <!-- PX4 SITL and vehicle spawn -->
-        <include file="$(find px4)/launch/single_vehicle_spawn.launch">
+        <include file="$(find px4)/launch/single_vehicle_with_arm_spawn.launch">
             <arg name="x" value="-0.1"/>
             <arg name="y" value="0"/>
             <arg name="z" value="0"/>
@@ -45,7 +45,6 @@
             <arg name="tgt_component" value="1"/>
         </include>
     </group>
-    <param  name="robot_description"  command="$(find xacro)/xacro --inorder '$(find le_arm)/urdf/le_arm.xacro'" />
     <include file="$(find le_arm)/launch/controller_utils.launch"/>
     <rosparam file="$(find le_arm)/controller/le_arm_controller.yaml" command="load"/>
     <node name="le_arm_controller_spawner" pkg="controller_manager" type="spawner" args="le_arm_controller" />

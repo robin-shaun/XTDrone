@@ -20,7 +20,7 @@
     <!-- PX4 configs -->
     <arg name="interactive" default="true"/>
     <!-- generate urdf vehicle model -->
-    <arg name="cmd" default="$(find xacro)/xacro $(find px4)/Tools/sitl_gazebo/models/rotors_description/urdf/$(arg vehicle)_base.xacro rotors_description_dir:=$(find px4)/Tools/sitl_gazebo/models/rotors_description mavlink_udp_port:=$(arg mavlink_udp_port) mavlink_tcp_port:=$(arg mavlink_tcp_port) --inorder"/>
+    <arg name="cmd" default="$(find xacro)/xacro $(find px4)/Tools/sitl_gazebo/models/rotors_description/urdf/$(arg vehicle)_arm_base.xacro rotors_description_dir:=$(find px4)/Tools/sitl_gazebo/models/rotors_description mavlink_udp_port:=$(arg mavlink_udp_port) mavlink_tcp_port:=$(arg mavlink_tcp_port) --inorder"/>
     <param command="$(arg cmd)" name="rotors_description"/>
     <!-- PX4 SITL -->
     <arg unless="$(arg interactive)" name="px4_command_arg1" value=""/>

@@ -8,7 +8,7 @@ import sys
 
 vehicle_type = sys.argv[1]
 local_pose = PoseStamped()
-local_pose.header.frame_id = 'map'
+local_pose.header.frame_id = 'world'
 quaternion = tf.transformations.quaternion_from_euler(0, -math.pi/2, math.pi/2)
 q = Quaternion([quaternion[3],quaternion[0],quaternion[1],quaternion[2]])
 

@@ -2,7 +2,7 @@
 
 <div id="sidebar"><a href="./README.md" target="_blank"><font color=#0000FF size=5px >[中文版]<font></center><a></div>
 
-#### Description
+### Description
 
 XTDrone is a UAV simulation platform based on PX4, ROS and Gazebo. XTDrone supports mulitrotors (including quadrotors and hexarotors), fixed wings, VTOLs (including quadplanes, tailsitters and tiltrotors) and other unmanned equipment (such as UGVs, USVs and robotic arms). It's convenient to deploy the algorithm to real UAVs after testing and debugging on the simulation platform.
 
@@ -73,16 +73,35 @@ Developers can quickly verify algorithms with XTDrone, such as:
 <img src="./images/usv.gif" width="640" height="360" />  
 
 
-#### User manual
+### User manual
 
  [XTDrone Manual](https://www.yuque.com/xtdrone/manual_en)
 
-#### Developing Team
+### Developing Team
 
 - Founders: Kun Xiao, Shaochang Tan
 - Adviser: Xiangke Wang
-- Developers: Kun Xiao, Shaochang Tan, Guanzheng Wang, Lan Ma, Qipeng Wang, Ruoqiao Guan, Xinyu Hu, Keyan Chen, Gao Chen
+- Developers: Kun Xiao, Shaochang Tan, Guanzheng Wang, Lan Ma, Qipeng Wang, Xinyu Hu, Wenxin Hu, Yi Bao, Ruoqiao Guan, Xinyu Hu, Keyan Chen, Gao Chen
 
-#### Thanks to Contributers
+### Contributers
+
+Sincerely thank you for your contribution to XTDrone.
 
 Changhao Sun, Zihan Lin, Yao He
+
+### Donation
+
+If you like XTDrone, you can donate to the XTDrone teams. Feel free to note your name or homepage, we will add to the sponsor list.
+
+<img src="./images/donation.png" width="640" height="360" /> 
+
+### Sponsors
+
+Sincerely thank you for your generosity.
+
+Rongxuan Gao
+
+
+
+
+

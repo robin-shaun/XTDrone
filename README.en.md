@@ -99,7 +99,7 @@ If you like XTDrone, you can donate to the XTDrone teams. Feel free to note your
 
 Sincerely thank you for your generosity.
 
-Rongxuan Gao
+Duoduo Gao
 
 
 

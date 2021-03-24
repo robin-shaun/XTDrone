@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/indoor1.jpg</file>
+        <file>images/indoor2.jpg</file>
+        <file>images/indoor3.jpg</file>
+        <file>images/outdoor2.jpg</file>
+        <file>images/outdoor3.jpg</file>
+        <file>images/robocup.jpg</file>
+        <file>images/xtd.ico</file>
+        <file>images/outdoor1.jpg</file>
+    </qresource>
+</RCC>

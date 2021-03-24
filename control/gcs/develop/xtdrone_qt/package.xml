@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package>
+  <name>xtdrone_qt</name>
+  <version>0.1.0</version>
+  <description>
+
+     xtdrone_qt
+
+  </description>
+  <maintainer email="robin@gmail.com">robin</maintainer>
+  <author>robin</author>
+  <license>BSD</license>
+  <!-- <url type="bugtracker">https://github.com/stonier/qt_ros/issues</url> -->
+  <!-- <url type="repository">https://github.com/stonier/qt_ros</url> -->
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>qt_build</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>libqt4-dev</build_depend>
+  <build_depend>rviz</build_depend>
+  <run_depend>qt_build</run_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>libqt4-dev</run_depend>
+  <run_depend>rviz</run_depend>
+
+ 
+</package>

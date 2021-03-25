@@ -89,18 +89,6 @@ Sincerely thank you for your contribution to XTDrone.
 
 Changhao Sun, Zihan Lin, Yao He
 
-### Donation
-
-If you like XTDrone, you can donate to the XTDrone teams. Feel free to note your name or homepage, we will add to the sponsor list.
-
-<img src="./images/donation.png" width="640" height="360" /> 
-
-### Sponsors
-
-Sincerely thank you for your generosity.
-
-Duoduo Gao
-
 
 
 

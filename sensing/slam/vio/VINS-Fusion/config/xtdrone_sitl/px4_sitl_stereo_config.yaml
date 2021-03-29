@@ -5,7 +5,7 @@
 imu: 0         
 num_of_cam: 2  
 
-imu_topic: "/iris_0/imu_stereo"
+imu_topic: "/iris_0/imu_gazebo"
 image0_topic: "/iris_0/stereo_camera/left/image_raw"
 image1_topic: "/iris_0/stereo_camera/right/image_raw"
 output_path: "~/catkin_ws/vins_output"

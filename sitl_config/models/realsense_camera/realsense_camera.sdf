@@ -88,7 +88,7 @@
           <robotNamespace></robotNamespace>
           <alwaysOn>true</alwaysOn>
           <updateRate>30</updateRate>
-          <cameraName>realsense/stereo_camera</cameraName>
+          <cameraName>/stereo_camera</cameraName>
           <imageTopicName>image_raw</imageTopicName>
           <cameraInfoTopicName>camera_info</cameraInfoTopicName>
           <frameName>stereo_camera_frame</frameName>
@@ -131,7 +131,7 @@
           <depthImageInfoTopicName>depth/camera_info</depthImageInfoTopicName>
           <pointCloudTopicName>depth/points</pointCloudTopicName>
           <frameName>depth_camera_base</frameName>
-          <pointCloudCutoff>0.5</pointCloudCutoff>
+          <pointCloudCutoff>0.05</pointCloudCutoff>
           <pointCloudCutoffMax>3.0</pointCloudCutoffMax>
           <distortionK1>0.00000001</distortionK1>
           <distortionK2>0.00000001</distortionK2>

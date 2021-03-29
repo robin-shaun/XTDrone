@@ -32,10 +32,10 @@
       <parent>link</parent>
       <update_rate>500</update_rate>
       <visualize>true</visualize>
-      <topic>realsense/imu</topic>
+      <topic>imu_gazebo</topic>
       <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
-        <topicName>realsense/imu</topicName>
-        <bodyName>realsense_imu_link</bodyName>
+        <topicName>imu_gazebo</topicName>
+        <bodyName>imu_link_stereo</bodyName>
         <updateRateHZ>500.0</updateRateHZ>
         <gaussianNoise>0.0</gaussianNoise>
         <xyzOffset>0 0 0</xyzOffset>
@@ -51,7 +51,7 @@
         <accelerometerTurnOnBiasSigma>0.1</accelerometerTurnOnBiasSigma>
 
       </plugin>
-      <pose>0 0 0 0 0 0</pose>
+      <pose>0 0 0.3 0 0 0</pose>
     </sensor>
 
       <sensor name="stereo" type="multicamera">

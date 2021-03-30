@@ -1,5 +1,5 @@
-#ifndef xtdrone_qt_FORM_H
-#define xtdrone_qt_FORM_H
+#ifndef xtdgroundcontrol_FORM_H
+#define xtdgroundcontrol_FORM_H
 
 #include <QWidget>
 

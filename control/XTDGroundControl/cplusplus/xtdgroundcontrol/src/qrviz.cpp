@@ -1,4 +1,4 @@
-#include "../include/xtdrone_qt/qrviz.hpp"
+#include "../include/xtdgroundcontrol/qrviz.hpp"
 #include <QDebug>
 
 qrviz::qrviz(QVBoxLayout* layout)
@@ -101,11 +101,11 @@ void qrviz::Display_Image(QString Image_topic, bool enable, int num)
    ROS_ASSERT(Image[num]!=NULL);
    manager->startUpdate();
 }
-void qrviz::Set_start_pose()
-{
-    rviz::Tool* current_tool = tool_manager->addTool("rviz/SetInitialPose");
-    tool_manager->setCurrentTool(current_tool);
-}
+//void qrviz::Set_start_pose()
+//{
+//    rviz::Tool* current_tool = tool_manager->addTool("rviz/SetInitialPose");
+//    tool_manager->setCurrentTool(current_tool);
+//}
 void qrviz::Set_goal_pose()
 {
     rviz::Tool* current_tool = tool_manager->addTool("rviz/SetGoal");

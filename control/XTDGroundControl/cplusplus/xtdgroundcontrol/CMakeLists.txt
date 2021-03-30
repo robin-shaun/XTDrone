@@ -3,7 +3,7 @@
 ##############################################################################
 
 cmake_minimum_required(VERSION 2.8.0)
-project(xtdrone_qt)
+project(xtdgroundcontrol)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "/opt/ros/melodic/")
 ##############################################################################
@@ -37,7 +37,7 @@ catkin_package()
 
 file(GLOB QT_FORMS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ui/*.ui)
 file(GLOB QT_RESOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} resources/*.qrc)
-file(GLOB_RECURSE QT_MOC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINKS include/xtdrone_qt/*.hpp *.h)
+file(GLOB_RECURSE QT_MOC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINKS include/xtdgroundcontrol/*.hpp *.h)
 
 QT5_ADD_RESOURCES(QT_RESOURCES_CPP ${QT_RESOURCES})
 QT5_WRAP_UI(QT_FORMS_HPP ${QT_FORMS})
@@ -53,7 +53,7 @@ file(GLOB_RECURSE QT_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINK
 # Binaries
 ##############################################################################
 
-add_executable(xtdrone_qt ${QT_SOURCES} ${QT_RESOURCES_CPP} ${QT_FORMS_HPP} ${QT_MOC_HPP})
-target_link_libraries(xtdrone_qt ${QT_LIBRARIES} ${catkin_LIBRARIES})
-install(TARGETS xtdrone_qt RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+add_executable(xtdgroundcontrol ${QT_SOURCES} ${QT_RESOURCES_CPP} ${QT_FORMS_HPP} ${QT_MOC_HPP})
+target_link_libraries(xtdgroundcontrol ${QT_LIBRARIES} ${catkin_LIBRARIES})
+install(TARGETS xtdgroundcontrol RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 

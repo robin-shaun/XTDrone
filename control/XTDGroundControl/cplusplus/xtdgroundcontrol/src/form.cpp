@@ -1,4 +1,4 @@
-#include "../include/xtdrone_qt/form.h"
+#include "../include/xtdgroundcontrol/form.h"
 #include "ui_form.h"
 
 Form::Form(QWidget *parent) :

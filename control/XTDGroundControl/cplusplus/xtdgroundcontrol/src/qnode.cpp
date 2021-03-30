@@ -15,7 +15,7 @@
 #include <string>
 #include <std_msgs/String.h>
 #include <sstream>
-#include "../include/xtdrone_qt/qnode.hpp"
+#include "../include/xtdgroundcontrol/qnode.hpp"
 //#include <boost/bind.hpp>
 #include "QDebug"
 #include <math.h>
@@ -27,7 +27,7 @@ typedef QList<geometry_msgs::Pose> LISTPOSE;
 ** Namespaces
 *****************************************************************************/
 
-namespace xtdrone_qt {
+namespace xtdgroundcontrol {
 
 /*****************************************************************************
 ** Implementation
@@ -64,8 +64,8 @@ void odm_groundtruth_callback(const geometry_msgs::PoseStamped::ConstPtr& msg, i
 *****************************************************************************/
 
 //bool QNode::init() {
-//	ros::init("xtdrone_qt");
-//    ros::init(init_argc,init_argv,"xtdrone_qt");
+//	ros::init("xtdgroundcontrol");
+//    ros::init(init_argc,init_argv,"xtdgroundcontrol");
 //	if ( ! ros::master::check() ) {
 //		return false;
 //	}
@@ -79,7 +79,7 @@ void odm_groundtruth_callback(const geometry_msgs::PoseStamped::ConstPtr& msg, i
 //}
 
 bool QNode::init(const LISTINT multi_select, const int *multi_num, const LISTSTR multi_type, std::string q_control_type) {
-//	ros::init("xtdrone_qt");
+//	ros::init("xtdgroundcontrol");
     int leng_select = multi_select.size();
     int counnnt = 0;
     int counnnnnt = 0;
@@ -108,7 +108,7 @@ bool QNode::init(const LISTINT multi_select, const int *multi_num, const LISTSTR
         vel[i].angular.y = 0.0;
         cmd[i].data = "";
     }
-    ros::init(init_argc,init_argv,"xtdrone_qt");
+    ros::init(init_argc,init_argv,"xtdgroundcontrol");
     if ( ! ros::master::check() ) {
         return false;
     }
@@ -538,4 +538,4 @@ double QNode::pos2ang(double xa, double ya, double xb, double yb)
             angle = angle + 2 * 3.1415926;
         return angle;
 }
-}  // namespace xtdrone_qt
+}  // namespace xtdgroundcontrol

@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <package>
-  <name>xtdrone_qt</name>
+  <name>xtdgroundcontrol</name>
   <version>0.1.0</version>
   <description>
 
-     xtdrone_qt
+     XTDGroundControl
 
   </description>
   <maintainer email="robin@gmail.com">robin</maintainer>

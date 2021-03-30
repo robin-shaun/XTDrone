@@ -1,5 +1,5 @@
 /**
- * @file /include/xtdrone_qt/qnode.hpp
+ * @file /include/xtdgroundcontrol/qnode.hpp
  *
  * @brief Communications central!
  *
@@ -9,8 +9,8 @@
 ** Ifdefs
 *****************************************************************************/
 
-#ifndef xtdrone_qt_QNODE_HPP_
-#define xtdrone_qt_QNODE_HPP_
+#ifndef xtdgroundcontrol_QNODE_HPP_
+#define xtdgroundcontrol_QNODE_HPP_
 
 /*****************************************************************************
 ** Includes
@@ -41,7 +41,7 @@
 ** Namespaces
 *****************************************************************************/
 
-namespace xtdrone_qt {
+namespace xtdgroundcontrol {
 
 /*****************************************************************************
 ** Class
@@ -133,6 +133,6 @@ private:
 
 };
 
-}  // namespace xtdrone_qt
+}  // namespace xtdgroundcontrol
 
-#endif /* xtdrone_qt_QNODE_HPP_ */
+#endif /* xtdgroundcontrol_QNODE_HPP_ */

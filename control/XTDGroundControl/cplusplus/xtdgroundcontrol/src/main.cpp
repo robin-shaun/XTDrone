@@ -11,7 +11,7 @@
 
 #include <QtGui>
 #include <QApplication>
-#include "../include/xtdrone_qt/main_window.hpp"
+#include "../include/xtdgroundcontrol/main_window.hpp"
 
 /*****************************************************************************
 ** Main
@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
     ** Qt
     **********************/
     QApplication app(argc, argv);
-    xtdrone_qt::MainWindow w(argc,argv);
+    xtdgroundcontrol::MainWindow w(argc,argv);
     w.show();
     app.connect(&app, SIGNAL(lastWindowClosed()), &app, SLOT(quit()));
     int result = app.exec();

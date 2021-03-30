@@ -1,12 +1,12 @@
 /**
- * @file /include/xtdrone_qt/main_window.hpp
+ * @file /include/xtdgroundcontrol/main_window.hpp
  *
- * @brief Qt based gui for xtdrone_qt.
+ * @brief Qt based gui for xtdgroundcontrol.
  *
  * @date November 2010
  **/
-#ifndef xtdrone_qt_MAIN_WINDOW_H
-#define xtdrone_qt_MAIN_WINDOW_H
+#ifndef xtdgroundcontrol_MAIN_WINDOW_H
+#define xtdgroundcontrol_MAIN_WINDOW_H
 
 /*****************************************************************************
 ** Includes
@@ -32,7 +32,7 @@
 ** Namespace
 *****************************************************************************/
 
-namespace xtdrone_qt {
+namespace xtdgroundcontrol {
 
 /*****************************************************************************
 ** Interface [MainWindow]
@@ -141,7 +141,7 @@ public Q_SLOTS:
     void slot_display_Pose(int);
     void slot_btn_add_click(bool);
     void slot_addrviz(QString);
-    void slot_btn_estimate_click(bool);
+//    void slot_btn_estimate_click(bool);
     void slot_btn_goal_click(bool);
     void slot_rviz_control();
 private:
@@ -151,6 +151,6 @@ private:
     qrviz* my_rviz;
 };
 
-}  // namespace xtdrone_qt
+}  // namespace xtdgroundcontrol
 
-#endif // xtdrone_qt_MAIN_WINDOW_H
+#endif // xtdgroundcontrol_MAIN_WINDOW_H

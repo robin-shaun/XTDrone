@@ -18,6 +18,8 @@ public:
 private slots:
     void on_button_image_cancel_clicked();
     void on_button_image_ok_clicked();
+    void slot_btn_addtopic_clicked();
+    void slot_btn_other_clicked();
 
 signals:
     void rviz_to_main(QString);

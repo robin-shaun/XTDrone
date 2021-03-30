@@ -1707,32 +1707,6 @@ font: 57 12pt &quot;Ubuntu&quot;;</string>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_10">
        <item>
-        <widget class="QPushButton" name="button_estimate">
-         <property name="styleSheet">
-          <string notr="true">font: 57 12pt &quot;Ubuntu&quot;;
-color: rgb(32, 74, 135);
-border-bottom-color: rgb(186, 189, 182);
-</string>
-         </property>
-         <property name="text">
-          <string>2D pose Estimate</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
         <widget class="QPushButton" name="button_goal">
          <property name="styleSheet">
           <string notr="true">font: 57 12pt &quot;Ubuntu&quot;;

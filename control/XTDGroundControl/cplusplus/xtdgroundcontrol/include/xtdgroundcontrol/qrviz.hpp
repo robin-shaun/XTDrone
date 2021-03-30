@@ -20,7 +20,7 @@ public:
     void Display_LaserScan(QString laser_topic, bool enable);
     void Display_Image(QString Image_topic, bool enable, int num);
     void Display_Pose(QString pose_topic, QString pose_shape, QColor color, bool enable, int num);
-    void Set_start_pose();
+//    void Set_start_pose();
     void Set_goal_pose();
 private:
     rviz::RenderPanel* render_panel;

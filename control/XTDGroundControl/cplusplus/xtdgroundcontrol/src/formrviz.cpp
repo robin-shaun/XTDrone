@@ -1,4 +1,4 @@
-#include "../include/xtdrone_qt/formrviz.h"
+#include "../include/xtdgroundcontrol/formrviz.h"
 #include "ui_formrviz.h"
 
 FormRviz::FormRviz(QWidget *parent) :
@@ -6,6 +6,11 @@ FormRviz::FormRviz(QWidget *parent) :
     ui(new Ui::FormRviz)
 {
     ui->setupUi(this);
+    ui->edit_addtopic->setReadOnly(true);
+    connect(ui->button_image_addtopic,SIGNAL(clicked()),this,SLOT(slot_btn_addtopic_clicked()));
+    connect(ui->button_image_tf,SIGNAL(clicked()),this,SLOT(slot_btn_other_clicked()));
+    connect(ui->button_image_camera,SIGNAL(clicked()),this,SLOT(slot_btn_other_clicked()));
+    connect(ui->button_image_laser,SIGNAL(clicked()),this,SLOT(slot_btn_other_clicked()));
 }
 
 FormRviz::~FormRviz()
@@ -46,4 +51,12 @@ void FormRviz::on_button_image_ok_clicked()
         this->hide();
 
 
+}
+void FormRviz::slot_btn_addtopic_clicked()
+{
+    ui->edit_addtopic->setReadOnly(false);
+}
+void FormRviz::slot_btn_other_clicked()
+{
+    ui->edit_addtopic->setReadOnly(true);
 }

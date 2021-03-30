@@ -12,7 +12,7 @@
 #include <QtGui>
 #include <QMessageBox>
 #include <iostream>
-#include "../include/xtdrone_qt/main_window.hpp"
+#include "../include/xtdgroundcontrol/main_window.hpp"
 #include "QDebug"
 //#include <sstream>
 //#include <string>
@@ -22,7 +22,7 @@
 ** Namespaces
 *****************************************************************************/
 
-namespace xtdrone_qt {
+namespace xtdgroundcontrol {
 
 using namespace Qt;
 
@@ -186,7 +186,7 @@ void MainWindow::updateLoggingView() {
 *****************************************************************************/
 
 void MainWindow::ReadSettings() {
-    QSettings settings("Qt-Ros Package", "xtdrone_qt");
+    QSettings settings("Qt-Ros Package", "xtdgroundcontrol");
     restoreGeometry(settings.value("geometry").toByteArray());
     restoreState(settings.value("windowState").toByteArray());
     connect(ui.button_run,SIGNAL(clicked(bool)),this,SLOT(slot_btn_run_click(bool)));
@@ -211,13 +211,13 @@ void MainWindow::ReadSettings() {
     connect(ui.comboBox_maps,SIGNAL(currentTextChanged(const QString)),this,SLOT(slot_box_maps_change(const QString)));
     connect(&qnode, SIGNAL(uavposition(float, float)),this,SLOT(slot_update_plot(float, float)));
     connect(ui.button_add, SIGNAL(clicked(bool)),this,SLOT(slot_btn_add_click(bool)));
-    connect(ui.button_estimate, SIGNAL(clicked(bool)),this,SLOT(slot_btn_estimate_click(bool)));
+//    connect(ui.button_estimate, SIGNAL(clicked(bool)),this,SLOT(slot_btn_estimate_click(bool)));
     connect(ui.button_goal, SIGNAL(clicked(bool)),this,SLOT(slot_btn_goal_click(bool)));
     connect(&qnode, SIGNAL(rvizsetgoal()),this,SLOT(slot_rviz_control()));
 }
 
 void MainWindow::WriteSettings() {
-    QSettings settings("Qt-Ros Package", "xtdrone_qt");
+    QSettings settings("Qt-Ros Package", "xtdgroundcontrol");
     //settings.setValue("topic_name",ui.line_edit_topic->text());
 //    settings.setValue("use_environment_variables",QVariant(ui.checkbox_use_environment->isChecked()));
     settings.setValue("geometry", saveGeometry());
@@ -267,6 +267,8 @@ void MainWindow::init_uisettings()
     ui.checkBox_quadplane->setCheckable(false);
     ui.checkBox_tiltrotor->setCheckable(false);
     ui.checkBox_tailsitter->setCheckable(false);
+    ui.button_goal->setEnabled(false);
+
 //    ui.button_add->setChecked(false);
 //    ui.button_add->setEnabled(false);
 
@@ -433,6 +435,7 @@ void MainWindow::slot_btn_run_click(bool)
             } else {
                 ui.button_run->setEnabled(false);
                 ui.button_control->setEnabled(true);
+
                 my_rviz = new qrviz(ui.verticalLayout_rviz);
                 ui.treeWidget->setEnabled(true);
 //                ui.button_add->setEnabled(true);
@@ -461,6 +464,7 @@ void MainWindow::slot_btn_control_click(bool)
         ui.box_left_and_right_2->setReadOnly(false);
         ui.box_orientation->setReadOnly(false);
         ui.button_stop->setEnabled(true);
+        ui.button_goal->setEnabled(true);
     }
 
 }
@@ -916,10 +920,10 @@ void MainWindow::slot_addrviz(QString value)
     }
 }
 
-void MainWindow::slot_btn_estimate_click(bool)
-{
-    my_rviz->Set_start_pose();
-}
+//void MainWindow::slot_btn_estimate_click(bool)
+//{
+//    my_rviz->Set_start_pose();
+//}
 
 void MainWindow::slot_btn_goal_click(bool)
 {
@@ -932,4 +936,4 @@ void MainWindow::slot_rviz_control()
     ui.box_left_and_right_2->setProperty("value", 0.0);
     ui.box_orientation->setProperty("value", 0.0);
 }
-}  // namespace xtdrone_qt
+}  // namespace xtdgroundcontrol

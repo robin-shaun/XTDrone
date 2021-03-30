@@ -107,15 +107,41 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     QTreeWidgetItem* Global = new QTreeWidgetItem(QStringList()<<"Global Options");
     ui.treeWidget->addTopLevelItem(Global);
     Global->setExpanded(true);
+    // FixFrame
     QTreeWidgetItem* Fixed_frame = new QTreeWidgetItem(QStringList()<<"Fixed Frame");
-    QComboBox* fixed_box = new QComboBox();
+    fixed_box = new QComboBox();
     fixed_box->addItem("map");
-    fixed_box->setMaximumWidth(100);
+    fixed_box->addItem("base_footprint");
+    fixed_box->addItem("laser");
+    fixed_box->setMaximumWidth(120);
     fixed_box->setEditable(true);
+    connect(fixed_box,SIGNAL(currentTextChanged(QString)),this,SLOT(slot_treewidget_value_change(QString)));
     Global->addChild(Fixed_frame);
     ui.treeWidget->setItemWidget(Fixed_frame,1,fixed_box);
     ui.treeWidget->header()->setMaximumSectionSize(150);
     ui.treeWidget->header()->setDefaultSectionSize(150);
+    // Grid
+    QTreeWidgetItem* Grid = new QTreeWidgetItem(QStringList()<<"Grid");
+    QCheckBox* Grid_Check = new QCheckBox();
+    connect(Grid_Check, SIGNAL(stateChanged(int)), this, SLOT(slot_display_grid(int)));
+    ui.treeWidget->addTopLevelItem(Grid);
+    ui.treeWidget->setItemWidget(Grid,1,Grid_Check);
+    Grid->setExpanded(true);
+    QTreeWidgetItem* Cell_count = new QTreeWidgetItem(QStringList()<<"Cell Count");
+    Grid->addChild(Cell_count);
+    Cell_count_box = new QSpinBox();
+    Cell_count_box->setValue(15);
+    Cell_count_box->setMaximumWidth(120);
+    ui.treeWidget->setItemWidget(Cell_count,1,Cell_count_box);
+    QTreeWidgetItem* Grid_color = new QTreeWidgetItem(QStringList()<<"Color");
+    Grid->addChild(Grid_color);
+    Grid_color_box = new QComboBox();
+    Grid_color_box->addItem("160;160;160");
+    Grid_color_box->setEditable(true);
+    Grid_color_box->setMaximumWidth(120);
+    ui.treeWidget->setItemWidget(Grid_color,1,Grid_color_box);
+    signalMapper_image = new QSignalMapper(this);
+    signalMapper_pose = new QSignalMapper(this);
 
 }
 
@@ -184,6 +210,10 @@ void MainWindow::ReadSettings() {
     connect(ui.button_connect,SIGNAL(clicked(bool)),this,SLOT(slot_btn_connect_click(bool)));
     connect(ui.comboBox_maps,SIGNAL(currentTextChanged(const QString)),this,SLOT(slot_box_maps_change(const QString)));
     connect(&qnode, SIGNAL(uavposition(float, float)),this,SLOT(slot_update_plot(float, float)));
+    connect(ui.button_add, SIGNAL(clicked(bool)),this,SLOT(slot_btn_add_click(bool)));
+    connect(ui.button_estimate, SIGNAL(clicked(bool)),this,SLOT(slot_btn_estimate_click(bool)));
+    connect(ui.button_goal, SIGNAL(clicked(bool)),this,SLOT(slot_btn_goal_click(bool)));
+    connect(&qnode, SIGNAL(rvizsetgoal()),this,SLOT(slot_rviz_control()));
 }
 
 void MainWindow::WriteSettings() {
@@ -208,7 +238,6 @@ void MainWindow::Seriesint(int ch)
     color.setBlue(randnum);
     color_plot.push_back(color);
     seriesList[ch]->setPen(QPen(color,2,Qt::SolidLine));
-    qDebug()<<"colot_polt";
     chart->setAxisX(axisX, seriesList[ch]);
     chart->setAxisY(axisY, seriesList[ch]);
 }
@@ -238,6 +267,9 @@ void MainWindow::init_uisettings()
     ui.checkBox_quadplane->setCheckable(false);
     ui.checkBox_tiltrotor->setCheckable(false);
     ui.checkBox_tailsitter->setCheckable(false);
+//    ui.button_add->setChecked(false);
+//    ui.button_add->setEnabled(false);
+
     once_flag = 0;
     twice_flag = 0;
     ui.box_go_and_back_2->setProperty("value", 0.0);
@@ -397,10 +429,13 @@ void MainWindow::slot_btn_run_click(bool)
 
             if ( !qnode.init(multirotor_select, multirotor_num, multi_type,control_type.toStdString())) {   //toStdString()
                 showNoMasterMessage();
+                ui.treeWidget->setEnabled(false);
             } else {
                 ui.button_run->setEnabled(false);
                 ui.button_control->setEnabled(true);
                 my_rviz = new qrviz(ui.verticalLayout_rviz);
+                ui.treeWidget->setEnabled(true);
+//                ui.button_add->setEnabled(true);
             }
         }
 
@@ -435,7 +470,7 @@ void MainWindow::slot_quick_output()
     ui.launch_info_text->append("<font color=\"#FF0000\">"+launch_cmd->readAllStandardError()+"</font>");
     ui.launch_info_text->append("<font color=\"#000000\">"+launch_cmd->readAllStandardOutput()+"</font>");
 }
-void MainWindow::slot_box_valuechange(double value)
+void MainWindow::slot_box_valuechange(double)
 {
     qDebug()<<"change!!!";
     double forward_change = ui.box_go_and_back_2->value();
@@ -448,7 +483,7 @@ void MainWindow::slot_box_valuechange(double value)
     qnode.set_cmd(forward_change, upward_change, leftward_change, orientation_change, ctrl_leader, cmd3, cmd_vel_mask);
 }
 
-void MainWindow::box_command_valuechange(const QString value)
+void MainWindow::box_command_valuechange(const QString)
 {
     qDebug()<<"change!!!";
     double forward_change = ui.box_go_and_back_2->value();
@@ -580,7 +615,7 @@ QString MainWindow::box_formation_valuechange(const QString formation_mid)
     return formation2;
 }
 
-void MainWindow::slot_checkbox_get_uav_control(int value)
+void MainWindow::slot_checkbox_get_uav_control(int)
 {
     multirotor_get_control.clear();
     for (int i = 0; i<multirotor_num[0] ;i++)
@@ -737,9 +772,164 @@ void MainWindow::slot_update_plot(float x_position, float y_position)
     seriesList[plot_count]->append(x_position, y_position);
 //    if (plot_count==1 ||plot_count ==5)
 //    {
-        qDebug()<<"series"<<plot_count<<":"<<x_position;
-        qDebug()<<"series"<<plot_count<<":"<<y_position;
+//        qDebug()<<"series"<<plot_count<<":"<<x_position;
+//        qDebug()<<"series"<<plot_count<<":"<<y_position;
 //    }
     plot_count ++;
+}
+
+void MainWindow::slot_treewidget_value_change(QString)
+{
+    my_rviz->Set_FixedFrame(fixed_box->currentText());
+}
+
+void MainWindow::slot_display_grid(int state)
+{
+    bool enable=state>1?true:false;
+    QStringList cut_color = Grid_color_box->currentText().split(";");
+    QColor color = QColor(cut_color[0].toInt(),cut_color[1].toInt(),cut_color[2].toInt());
+    my_rviz->Display_Grid(Cell_count_box->text().toInt(), color, enable);
+}
+
+void MainWindow::slot_display_tf(int state)
+{
+    bool enable=state>1?true:false;
+    int state1 = Tf_showname_Check->checkState();
+    bool enable1=state1>1?true:false;
+    my_rviz->Display_TF(enable1, enable);
+}
+
+void MainWindow::slot_display_Laser(int state)
+{
+    bool enable=state>1?true:false;
+    my_rviz->Display_LaserScan(Laser_topic_box->currentText(),enable);
+}
+
+void MainWindow::slot_display_Image(int num)
+{
+    bool enable = Image_Check[num]->checkState()>1?true:false;
+    my_rviz->Display_Image(Image_topic_box[num]->currentText(),enable, num);
+}
+
+void MainWindow::slot_display_Pose(int num)
+{
+    bool enable = Pose_Check[num]->checkState()>1?true:false;
+    QStringList cut_color = Pose_color_box[num]->currentText().split(";");
+    QColor color = QColor(cut_color[0].toInt(),cut_color[1].toInt(),cut_color[2].toInt());
+    my_rviz->Display_Pose(Pose_topic_box[num]->currentText(),Pose_shape_box[num]->currentText(),color,enable,num);
+    qDebug()<<"test!!!";
+}
+
+void MainWindow::slot_btn_add_click(bool)
+{
+    FormRviz* frviz=new FormRviz;
+    frviz->show();
+    connect(frviz,SIGNAL(rviz_to_main(QString)),this,SLOT(slot_addrviz(QString)));
+}
+
+void MainWindow::slot_addrviz(QString value)
+{
+    qDebug()<<value;
+    if (value == "tf")
+    {
+        //TF
+        QTreeWidgetItem* TF = new QTreeWidgetItem(QStringList()<<"TF");
+        QCheckBox* TF_Check = new QCheckBox();
+        connect(TF_Check, SIGNAL(stateChanged(int)), this, SLOT(slot_display_tf(int)));
+        ui.treeWidget->addTopLevelItem(TF);
+        ui.treeWidget->setItemWidget(TF,1,TF_Check);
+        QTreeWidgetItem* Tf_showname = new QTreeWidgetItem(QStringList()<<"Show Names");
+        TF->addChild(Tf_showname);
+        Tf_showname_Check = new QCheckBox();
+        ui.treeWidget->setItemWidget(Tf_showname,1,Tf_showname_Check);
+        Tf_showname_Check->setCheckState(Qt::CheckState(2));
+    }
+    else if (value == "laser")
+    {
+        //Laser
+        QTreeWidgetItem* Laser = new QTreeWidgetItem(QStringList()<<"Laser Scan");
+        QCheckBox* Laser_Check = new QCheckBox();
+        connect(Laser_Check, SIGNAL(stateChanged(int)), this, SLOT(slot_display_Laser(int)));
+        ui.treeWidget->addTopLevelItem(Laser);
+        ui.treeWidget->setItemWidget(Laser,1,Laser_Check);
+        QTreeWidgetItem* Laser_topic = new QTreeWidgetItem(QStringList()<<"Topic");
+        Laser->addChild(Laser_topic);
+        Laser_topic_box = new QComboBox();
+        Laser_topic_box->addItem("/scan");
+        Laser_topic_box->setEditable(true);
+        Laser_topic_box->setMaximumWidth(120);
+        ui.treeWidget->setItemWidget(Laser_topic,1,Laser_topic_box);
+    }
+    else if (value == "image")
+    {
+        //Image
+        QTreeWidgetItem* Image = new QTreeWidgetItem(QStringList()<<"Image");
+        Image_Check.push_back(new QCheckBox());
+        connect(Image_Check[image_num], SIGNAL(stateChanged(int)), signalMapper_image, SLOT(map()));
+        signalMapper_image->setMapping(Image_Check[image_num],image_num);
+        connect(signalMapper_image,SIGNAL(mapped(int)),this,SLOT(slot_display_Image(int)));
+        ui.treeWidget->addTopLevelItem(Image);
+        ui.treeWidget->setItemWidget(Image,1,Image_Check[image_num]);
+        QTreeWidgetItem* Image_topic = new QTreeWidgetItem(QStringList()<<"Topic");
+        Image->addChild(Image_topic);
+        Image_topic_box.push_back( new QComboBox());
+        Image_topic_box[image_num]->addItem("");
+        Image_topic_box[image_num]->setEditable(true);
+        Image_topic_box[image_num]->setMaximumWidth(120);
+        ui.treeWidget->setItemWidget(Image_topic,1,Image_topic_box[image_num]);
+        image_num++;
+    }
+    else
+    {
+        value.remove(QChar('\n'), Qt::CaseInsensitive);
+        //Add topic
+        QTreeWidgetItem* Pose = new QTreeWidgetItem(QStringList()<<"Pose");
+        Pose_Check.push_back(new QCheckBox());
+        connect(Pose_Check[pose_num], SIGNAL(stateChanged(int)), signalMapper_pose, SLOT(map()));
+        signalMapper_pose->setMapping(Pose_Check[pose_num],pose_num);
+        connect(signalMapper_pose,SIGNAL(mapped(int)),this,SLOT(slot_display_Pose(int)));
+        ui.treeWidget->addTopLevelItem(Pose);
+        ui.treeWidget->setItemWidget(Pose,1,Pose_Check[pose_num]);
+        QTreeWidgetItem* Pose_topic = new QTreeWidgetItem(QStringList()<<"Topic");
+        Pose->addChild(Pose_topic);
+        Pose_topic_box.push_back(new QComboBox());
+        Pose_topic_box[pose_num]->addItem(value);
+        Pose_topic_box[pose_num]->setEditable(true);
+        Pose_topic_box[pose_num]->setMaximumWidth(200);
+        ui.treeWidget->setItemWidget(Pose_topic,1,Pose_topic_box[pose_num]);
+        QTreeWidgetItem* Pose_color = new QTreeWidgetItem(QStringList()<<"Color");
+        Pose->addChild(Pose_color);
+        Pose_color_box.push_back(new QComboBox());
+        Pose_color_box[pose_num]->addItem("160;160;160");
+        Pose_color_box[pose_num]->setEditable(true);
+        Pose_color_box[pose_num]->setMaximumWidth(120);
+        ui.treeWidget->setItemWidget(Pose_color,1,Pose_color_box[pose_num]);
+        QTreeWidgetItem* Pose_shape = new QTreeWidgetItem(QStringList()<<"Shape");
+        Pose->addChild(Pose_shape);
+        Pose_shape_box.push_back(new QComboBox());
+        Pose_shape_box[pose_num]->addItem("Axes");
+        Pose_shape_box[pose_num]->addItem("Arrow");
+        Pose_shape_box[pose_num]->setEditable(true);
+        Pose_shape_box[pose_num]->setMaximumWidth(120);
+        ui.treeWidget->setItemWidget(Pose_shape,1,Pose_shape_box[pose_num]);
+        pose_num++;
+    }
+}
+
+void MainWindow::slot_btn_estimate_click(bool)
+{
+    my_rviz->Set_start_pose();
+}
+
+void MainWindow::slot_btn_goal_click(bool)
+{
+    my_rviz->Set_goal_pose();
+}
+void MainWindow::slot_rviz_control()
+{
+    ui.box_go_and_back_2->setProperty("value", 0.0);
+    ui.box_up_and_down_2->setProperty("value", 0.0);
+    ui.box_left_and_right_2->setProperty("value", 0.0);
+    ui.box_orientation->setProperty("value", 0.0);
 }
 }  // namespace xtdrone_qt

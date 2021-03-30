@@ -16,6 +16,7 @@
 #include "ui_main_window.h"
 #include "qnode.hpp"
 #include "form.h"
+#include "formrviz.h"
 #include "qrviz.hpp"
 #include <QtCharts/QChart>
 #include <QtCharts/QChartView>
@@ -24,6 +25,8 @@
 #include <QProcess>
 #include <QColor>
 #include <QComboBox>
+#include <QSpinBox>
+#include <QSignalMapper>
 
 /*****************************************************************************
 ** Namespace
@@ -86,6 +89,21 @@ public:
     int plot_count = 0;
     int randnum;
     QColor color;
+    QComboBox* fixed_box;
+    QSpinBox* Cell_count_box;
+    QComboBox* Grid_color_box;
+    QComboBox* Laser_topic_box;
+    std::vector<QCheckBox*> Pose_Check;
+    std::vector<QCheckBox*> Image_Check;
+    std::vector<QComboBox*> Image_topic_box;
+    std::vector<QComboBox*> Pose_topic_box;
+    std::vector<QComboBox*> Pose_color_box;
+    std::vector<QComboBox*> Pose_shape_box;
+    QCheckBox* Tf_showname_Check;
+    int pose_num=0;
+    int image_num=0;
+    QSignalMapper* signalMapper_image;
+    QSignalMapper* signalMapper_pose;
 
 
     void ReadSettings(); // Load up qt program settings at startup
@@ -115,7 +133,17 @@ public Q_SLOTS:
     void slot_quick_output();
     void slot_box_maps_change(const QString);
     void slot_update_plot(float, float);
-
+    void slot_treewidget_value_change(QString);
+    void slot_display_grid(int);
+    void slot_display_tf(int);
+    void slot_display_Laser(int);
+    void slot_display_Image(int);
+    void slot_display_Pose(int);
+    void slot_btn_add_click(bool);
+    void slot_addrviz(QString);
+    void slot_btn_estimate_click(bool);
+    void slot_btn_goal_click(bool);
+    void slot_rviz_control();
 private:
     void init_uisettings();
     Ui::MainWindowDesign ui;

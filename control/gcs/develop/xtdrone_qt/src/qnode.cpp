@@ -18,6 +18,8 @@
 #include "../include/xtdrone_qt/qnode.hpp"
 //#include <boost/bind.hpp>
 #include "QDebug"
+#include <math.h>
+
 
 typedef QList<geometry_msgs::Twist> LISTTWIST;
 typedef QList<geometry_msgs::Pose> LISTPOSE;
@@ -51,9 +53,9 @@ QNode::~QNode() {
 *****************************************************************************/
 
 
-void odm_groundtruth_callback(const nav_msgs::Odometry::ConstPtr& msg, int num_odm, geometry_msgs::Pose local_pose[])
+void odm_groundtruth_callback(const geometry_msgs::PoseStamped::ConstPtr& msg, int num_odm, geometry_msgs::Pose local_pose[])
 {
-    local_pose[num_odm] = msg->pose.pose;
+    local_pose[num_odm] = msg->pose;
 //    qDebug()<<"pose::"<<num_odm<<"::"<<local_pose[num_odm].position.y;
 }
 
@@ -115,6 +117,8 @@ bool QNode::init(const LISTINT multi_select, const int *multi_num, const LISTSTR
 
     // Add your ros communications here.
     chatter_publisher = n.advertise<std_msgs::String>("chatter_0", 1000);
+    goal_sub = n.subscribe("/move_base_simple/goal", 1000, &QNode::goal_callback, this);
+    path_pub = n.advertise<nav_msgs::Path>("trajectory", 1, true);
     if (control_type == "vel")
     {
         for (int i = 0; i < leng_select; i ++)
@@ -129,7 +133,7 @@ bool QNode::init(const LISTINT multi_select, const int *multi_num, const LISTSTR
                 }
                 else
                 {
-                    buffer_multi_cmd_vel_flu_pub.push_back(n.advertise<geometry_msgs::Twist>("/xtdrone/"+multi_type[counnnnnt]+"_"+std::to_string(k)+"/cmd_vel_flu", 1000));
+                    buffer_multi_cmd_vel_flu_pub.push_back(n.advertise<geometry_msgs::Twist>("/xtdrone/"+multi_type[counnnnnt]+"_"+std::to_string(k)+"/cmd_vel_enu", 1000));
                     buffer_multi_cmd_pub.push_back(n.advertise<std_msgs::String>("/xtdrone/"+multi_type[counnnnnt]+"_"+std::to_string(k)+"/cmd",1000));
                     qDebug()<<"multi_type"<<multi_type[counnnnnt].c_str();
                     counnnnnt++;
@@ -161,7 +165,7 @@ bool QNode::init(const LISTINT multi_select, const int *multi_num, const LISTSTR
     {
         for (int k = 0; k < multi_num[multi_select[i]]; k ++)
         {
-            buffer_multi_odom_groundtruth_sub.push_back(n.subscribe<nav_msgs::Odometry>("/xtdrone/"+multi_type[counnnt]+'_'+std::to_string(k)+"/ground_truth/odom", 1000, boost::bind(&odm_groundtruth_callback, _1, counnnt, local_pose)));
+            buffer_multi_odom_groundtruth_sub.push_back(n.subscribe<geometry_msgs::PoseStamped>(multi_type[counnnt]+'_'+std::to_string(k)+"/mavros/local_position/pose", 1000, boost::bind(&odm_groundtruth_callback, _1, counnnt, local_pose)));
             counnnt ++;
         }
     }
@@ -218,6 +222,17 @@ void QNode::start_control(bool q_start_control_flag)
     qDebug()<<"control!!!";
 }
 
+void QNode::goal_callback(const geometry_msgs::PoseStamped &msg)
+{
+    goal_pose.position.x  = msg.pose.position.x;
+    goal_pose.position.y = msg.pose.position.y;
+    get_goal_flag = true;
+    qDebug()<<"goal x:"<<goal_pose.position.x;
+    qDebug()<<"goal y:"<<goal_pose.position.y;
+    qDebug()<<"current x:"<<local_pose[0].position.x;
+    qDebug()<<"current y:"<<local_pose[0].position.y;
+    emit rvizsetgoal();
+}
 // functions of ROS
 void QNode::run() {
     ros::Rate loop_rate(100);
@@ -225,11 +240,39 @@ void QNode::run() {
     std::string text_all;
     std::string text[multirotor_num];
     std_msgs::String msg;
+    geometry_msgs::Twist vel_goal;
+    bool arrive_flag = false;
+    int arrive_count = 0;
+    int control_num = 0;
+    ros::Time current_time, last_time;
+    current_time = ros::Time::now();
+    last_time = ros::Time::now();
+    nav_msgs::Path path;
+    //nav_msgs::Path path;
+    path.header.stamp = current_time;
+    path.header.frame_id = "odom";
+
 //    geometry_msgs::Twist twist[multirotor_num];
     qDebug()<<"start!!!";
     while ( ros::ok() ) {
-        // show log:
+        //rviz draw path
+        current_time = ros::Time::now();
+        geometry_msgs::PoseStamped this_pose_stamped;
+        this_pose_stamped.pose.position.x = local_pose[0].position.x;
+        this_pose_stamped.pose.position.y = local_pose[0].position.y;
+        this_pose_stamped.pose.position.z = local_pose[0].position.z;
+        this_pose_stamped.pose.orientation.x = local_pose[0].orientation.x;
+        this_pose_stamped.pose.orientation.y = local_pose[0].orientation.y;
+        this_pose_stamped.pose.orientation.z = local_pose[0].orientation.z;
+        this_pose_stamped.pose.orientation.w = local_pose[0].orientation.w;
+        this_pose_stamped.header.stamp = current_time;
+        this_pose_stamped.header.frame_id = "odom";
+        path.poses.push_back(this_pose_stamped);
+        path_pub.publish(path);
+        last_time = current_time;
+
         text_all = "";
+        // show log:
         if (count%30 == 0)
         {
             if (multirotor_num < 10)
@@ -248,6 +291,76 @@ void QNode::run() {
                 log(Info,msg.data);
             }
         }
+        if (get_goal_flag)
+        {
+            for (int i = 0; i < multirotor_num; i ++)
+            {
+                if (multirotor_get_control[i])
+                {
+                    control_num = i;
+                    break;
+                }
+            }
+            double distance_tar_cur = (pow((goal_pose.position.x - local_pose[control_num].position.x),2)+pow((goal_pose.position.y - local_pose[control_num].position.y),2));
+            if (count_control%30 == 0)
+            {
+                qDebug()<< "distance" << distance_tar_cur;
+                qDebug()<<"arrive flag"<<arrive_flag;
+                qDebug()<<"current pose x"<<local_pose[control_num].position.x;
+                qDebug()<<"current pose y"<<local_pose[control_num].position.y;
+            }
+            if  (distance_tar_cur < 0.1)
+            {
+                arrive_count += 1;
+                if (arrive_count > 3)
+                {
+                    arrive_flag = true;
+                    arrive_count = 0;
+                    get_goal_flag = false;
+                }
+                else
+                    arrive_flag = false;
+            }
+            else
+            {
+                arrive_count = 0;
+                arrive_flag = false;
+            }
+            if (!arrive_flag)
+            {
+                tf::quaternionMsgToTF(local_pose[control_num].orientation, quat);
+                tf::Matrix3x3(quat).getRPY(roll, pitch, yaw);
+//                qDebug()<<"yaw:"<<yaw;
+                vel_goal = get_uav_control(distance_tar_cur,control_num);
+                for (int i = 0; i < multirotor_num; i ++)
+                {
+                    cmd[i].data = "";
+                    if (multirotor_get_control[i])
+                    {
+                        vel[i].linear.x = vel_goal.linear.x;
+                        vel[i].linear.y = vel_goal.linear.y;
+                        vel[i].linear.z = vel_goal.linear.z;
+                        vel[i].angular.z = vel_goal.angular.z;
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < multirotor_num; i ++)
+                {
+                    cmd[i].data = "";
+                    if (multirotor_get_control[i])
+                    {
+                        vel[i].linear.x = 0.0;
+                        vel[i].linear.y = 0.0;
+                        vel[i].linear.z = 0.0;
+                        vel[i].angular.z = 0.0;
+                    }
+                }
+            }
+            QNode::publish();
+        }
+
         if (start_control_flag)
         {
             // update cmd:
@@ -270,7 +383,10 @@ void QNode::run() {
                 }
             }
             cmd_change_flag = false;
-            QNode::publish();
+            if (!get_goal_flag)
+            {
+                QNode::publish();
+            }
         }
         if (stop_flag)
         {
@@ -357,4 +473,69 @@ void QNode::log( const LogLevel &level, const std::string &msg) {
     Q_EMIT loggingUpdated(); // used to readjust the scrollbar
 }
 
+geometry_msgs::Twist QNode::get_uav_control(double distance, int control_num)
+{
+    geometry_msgs::Twist vel_goal;
+    double uav_vel_total =  0.5*distance;
+    if (uav_vel_total > 2.0)
+        uav_vel_total = 2.0;
+    double target_yaw = pos2ang(goal_pose.position.x, goal_pose.position.y, local_pose[control_num].position.x, local_pose[control_num].position.y);
+    count_control ++;
+    double mid_yaw = target_yaw - yaw;
+    if (mid_yaw > 3.1415926)
+         mid_yaw = mid_yaw - 3.1415926*2;
+    else if(mid_yaw < -3.1415926)
+        mid_yaw = 2*3.1415926 + mid_yaw;
+    vel_goal.angular.x = 0.0;
+    vel_goal.angular.y = 0.0;
+    vel_goal.angular.z = 1.0* mid_yaw;
+    if (vel_goal.angular.z > 3.0)
+        vel_goal.angular.z = 3.0;
+    else if (vel_goal.angular.z < -3.0)
+        vel_goal.angular.z = -3.0;
+    vel_goal.linear.x  = uav_vel_total * cos(target_yaw);
+    vel_goal.linear.y = uav_vel_total * sin(target_yaw);
+    vel_goal.linear.z = 0.0;
+    if (count_control %30 == 0)
+    {
+    qDebug()<<"target_yaw"<<target_yaw;
+    qDebug()<<"current_yaw"<<yaw;
+    qDebug()<<"vel_goal x" << vel_goal.linear.x;
+    qDebug()<<"vel_goal y" << vel_goal.linear.y;
+    qDebug()<<"vel_goal ang" << vel_goal.angular.z;
+    }
+    return vel_goal;
+}
+
+double QNode::pos2ang(double xa, double ya, double xb, double yb)
+{
+    double angle = 0.0;
+        if (xa-xb != 0)
+        {
+           angle = atan2((ya - yb),(xa - xb));
+            if (ya-yb > 0 && angle < 0)
+                angle = angle + 3.1415926;
+            else if (ya-yb < 0 && angle > 0)
+                angle = angle - 3.1415926;
+            else if (ya-yb == 0)
+            {
+                if (xa-xb > 0)
+                    angle = 0.0;
+                else
+                    angle = 3.1415926;
+            }
+        }
+        else
+        {
+            if (ya-yb > 0)
+                angle = 3.1415926 / 2;
+            else if (ya-yb <0)
+                angle = -3.1415926 / 2;
+            else
+                angle = 0.0;
+        }
+        if (angle < 0)
+            angle = angle + 2 * 3.1415926;
+        return angle;
+}
 }  // namespace xtdrone_qt

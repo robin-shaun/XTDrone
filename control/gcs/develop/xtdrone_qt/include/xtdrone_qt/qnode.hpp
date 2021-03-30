@@ -32,6 +32,9 @@
 #include <std_msgs/String.h>
 //#include <boost/bind.hpp>
 #include <vector>
+#include <tf/tf.h>
+#include <tf/transform_broadcaster.h>
+#include <nav_msgs/Path.h>
 
 
 /*****************************************************************************
@@ -79,6 +82,11 @@ public:
     void stop_control(bool q_stop_flag);
     void get_uav_control(LISTINT multirotor_get_control);
     void run();
+    geometry_msgs::Pose goal_pose;
+    bool get_goal_flag = false;
+    double roll, pitch, yaw;
+    tf::Quaternion quat;
+    int count_control = 0;
 
 
 
@@ -100,6 +108,7 @@ Q_SIGNALS:
     void loggingUpdated();
     void rosShutdown();
     void uavposition(float posi_x, float posi_y);
+    void rvizsetgoal();
 
 private:
     int init_argc;
@@ -115,7 +124,12 @@ private:
     ros::Publisher leader_cmd_vel_flu_pub;
     ros::Publisher leader_cmd_accel_flu_pub;
     ros::Publisher leader_cmd_pub;
+    ros::Publisher path_pub;
     void publish();
+    ros::Subscriber goal_sub;
+    void goal_callback(const geometry_msgs::PoseStamped &msg);
+    geometry_msgs::Twist get_uav_control(double distance, int control_num);
+    double pos2ang(double xa, double ya, double xb, double yb);
 
 };
 

@@ -29,9 +29,9 @@ Xiao, K., Ma, L., Tan, S., Cong, Y., Wang, X.: Implementation of UAV Coordinatio
 
 <img src="./images/vslam.gif" width="640" height="360" /> 
 
-3. RGBD-SLAM
+3. 三维稠密重建
 
-<img src="./images/rgbdslam.gif" width="640" height="360" /> 
+<img src="./images/dense_reconstruction.gif" width="640" height="360" /> 
 
 4. 2D激光SLAM
 

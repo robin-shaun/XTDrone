@@ -30,9 +30,9 @@ Developers can quickly verify algorithms with XTDrone, such as:
 
 <img src="./images/vslam.gif" width="640" height="360" /> 
 
-3. RGBD-SLAM
+3. Dense Reconstruction
 
-<img src="./images/rgbdslam.gif" width="640" height="360" /> 
+<img src="./images/dense_reconstruction.gif" width="640" height="360" /> 
 
 4. 2D Laser SLAM
 

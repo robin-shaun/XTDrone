@@ -60,7 +60,7 @@ Developers can quickly verify algorithms with XTDrone, such as:
 
 <img src="./images/planes.gif" width="640" height="360" />  
 
-10. VTOLs
+10. VTOL
 
 <img src="./images/vtols.gif" width="640" height="360" />  
 

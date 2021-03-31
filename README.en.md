@@ -22,13 +22,13 @@ Xiao, K., Ma, L., Tan, S., Cong, Y., Wang, X.: Implementation of UAV Coordinatio
 
 Developers can quickly verify algorithms with XTDrone, such as:
 
-1. Object Detection and Tracking
-
-<img src="./images/human_tracking.gif" width="640" height="360" /> 
-
-2. Stereo SLAM
+1. Stereo SLAM
 
 <img src="./images/vslam.gif" width="640" height="360" /> 
+
+2. VIO 
+
+<img src="./images/vio.gif" width="640" height="360" />  
 
 3. Dense Reconstruction
 
@@ -42,13 +42,13 @@ Developers can quickly verify algorithms with XTDrone, such as:
 
 <img src="./images/laser_slam_3d.gif" width="640" height="360"/>  
 
-6. VIO 
-
-<img src="./images/vio.gif" width="640" height="360" />  
-
-7. Motion Planning
+6. Motion Planning
 
 <img src="./images/motion_planning.gif" width="640" height="360" />  
+
+7. Object Detection and Tracking
+
+<img src="./images/human_tracking.gif" width="640" height="360" /> 
 
 8. Formation
 

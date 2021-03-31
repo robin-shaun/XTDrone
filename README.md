@@ -21,13 +21,13 @@ Xiao, K., Ma, L., Tan, S., Cong, Y., Wang, X.: Implementation of UAV Coordinatio
 
 在这个平台上，开发者可以快速验证算法。如：
 
-1. 目标检测与追踪
-
-<img src="./images/human_tracking.gif" width="640" height="360" /> 
-
-2. 双目SLAM
+1. 双目SLAM
 
 <img src="./images/vslam.gif" width="640" height="360" /> 
+
+2. 视觉惯性导航
+
+<img src="./images/vio.gif" width="640" height="360" />  
 
 3. 三维稠密重建
 
@@ -41,13 +41,13 @@ Xiao, K., Ma, L., Tan, S., Cong, Y., Wang, X.: Implementation of UAV Coordinatio
 
 <img src="./images/laser_slam_3d.gif" width="640" height="360"/>  
 
-6. 视觉惯性导航
-
-<img src="./images/vio.gif" width="640" height="360" />  
-
-7. 运动规划
+6. 运动规划
 
 <img src="./images/motion_planning.gif" width="640" height="360" />  
+
+7. 目标检测与追踪
+
+<img src="./images/human_tracking.gif" width="640" height="360" /> 
 
 8. 多机协同
 

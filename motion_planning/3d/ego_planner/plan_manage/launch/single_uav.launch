@@ -3,7 +3,7 @@
     <arg name="map_size_y" value="20.0"/>
     <arg name="map_size_z" value=" 3.0"/>
 
-    <arg name="odom_topic" value="ground_truth/odom" />
+    <arg name="odom_topic" value="vins_estimator/odometry" />
 
     <node pkg="tf" type="static_transform_publisher" name="iris_0_map_to_world"
     args="0.0 0.0 0 0.0 0.0 0.0 /map /world 40" />
@@ -13,8 +13,8 @@
     <include file="$(find ego_planner)/launch/run_in_xtdrone.launch">
         <arg name="drone_id" value="0"/>
 
-        <arg name="target_x" value="3.2"/>
-        <arg name="target_y" value="-5.5"/>
+        <arg name="target_x" value="5.2"/>
+        <arg name="target_y" value="-13"/>
         <arg name="target_z" value="1.0"/>
 
         <arg name="map_size_x" value="$(arg map_size_x)"/>

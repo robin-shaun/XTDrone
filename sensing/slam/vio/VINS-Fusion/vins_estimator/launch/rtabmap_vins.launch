@@ -1,5 +1,5 @@
 <launch>
-    <node pkg="tf" type="static_transform_publisher" name="iris_0_base_link_to_laser"
+    <node pkg="tf" type="static_transform_publisher" name="iris_0_camera_link_to_depth"
     args="0.0 0.0 0 0.0 0.0 0.0 /camera_link /iris_0/depth_camera_base 40" />
     <arg name="clip_distance"             default="-2"/>
     <arg name="use_rviz"                  default="true"/>

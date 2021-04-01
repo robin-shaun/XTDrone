@@ -22,53 +22,57 @@ Xiao, K., Ma, L., Tan, S., Cong, Y., Wang, X.: Implementation of UAV Coordinatio
 
 Developers can quickly verify algorithms with XTDrone, such as:
 
-1. Stereo SLAM
+Stereo SLAM
 
 <img src="./images/vslam.gif" width="640" height="360" /> 
 
-2. VIO 
+VIO 
 
 <img src="./images/vio.gif" width="640" height="360" />  
 
-3. Dense Reconstruction
+Dense Reconstruction
 
 <img src="./images/dense_reconstruction.gif" width="640" height="360" /> 
 
-4. 2D Laser SLAM
+2D Laser SLAM
 
 <img src="./images/laser_slam_2d.gif" width="640" height="360" /> 
 
-5. 3D Laser SLAM
+3D Laser SLAM
 
 <img src="./images/laser_slam_3d.gif" width="640" height="360"/>  
 
-6. Motion Planning
+2D Motion Planning
 
-<img src="./images/motion_planning.gif" width="640" height="360" />  
+<img src="./images/2d_motion_planning.gif" width="640" height="360" />  
 
-7. Object Detection and Tracking
+3D Motion Planning
+
+<img src="./images/3d_motion_planning.gif" width="640" height="360" /> 
+
+Object Detection and Tracking
 
 <img src="./images/human_tracking.gif" width="640" height="360" /> 
 
-8. Formation
+Formation
 
 <img src="./images/formation_1.gif" width="640" height="360" />  
 
 <img src="./images/formation_2.gif" width="640" height="360" />  
 
-9. Fixed wing
+Fixed wing
 
 <img src="./images/planes.gif" width="640" height="360" />  
 
-10. VTOL
+VTOL
 
 <img src="./images/vtols.gif" width="640" height="360" />  
 
-11. UGV
+UGV
 
 <img src="./images/ugv.gif" width="640" height="360" />  
 
-12. USV
+USV
 
 <img src="./images/usv.gif" width="640" height="360" />  
 

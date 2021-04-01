@@ -21,54 +21,58 @@ Xiao, K., Ma, L., Tan, S., Cong, Y., Wang, X.: Implementation of UAV Coordinatio
 
 在这个平台上，开发者可以快速验证算法。如：
 
-1. 双目SLAM
+双目SLAM
 
 <img src="./images/vslam.gif" width="640" height="360" /> 
 
-2. 视觉惯性导航
+视觉惯性导航
 
 <img src="./images/vio.gif" width="640" height="360" />  
 
-3. 三维稠密重建
+三维稠密重建
 
 <img src="./images/dense_reconstruction.gif" width="640" height="360" /> 
 
-4. 2D激光SLAM
+2D激光SLAM
 
 <img src="./images/laser_slam_2d.gif" width="640" height="360" /> 
 
-5. 3D激光SLAM
+3D激光SLAM
 
 <img src="./images/laser_slam_3d.gif" width="640" height="360"/>  
 
-6. 运动规划
+2D运动规划
 
-<img src="./images/motion_planning.gif" width="640" height="360" />  
+<img src="./images/2d_motion_planning.gif" width="640" height="360" />  
 
-7. 目标检测与追踪
+3D运动规划
+
+<img src="./images/3d_motion_planning.gif" width="640" height="360" />  
+
+目标检测与追踪
 
 <img src="./images/human_tracking.gif" width="640" height="360" /> 
 
-8. 多机协同
+多机协同
 
 <img src="./images/formation_1.gif" width="640" height="360" />  
 
 <img src="./images/formation_2.gif" width="640" height="360" />  
 
-9. 固定翼
+固定翼
 
 <img src="./images/planes.gif" width="640" height="360" />  
 
-10. 复合翼
+复合翼
 
 <img src="./images/vtols.gif" width="640" height="360" />  
 
 
-11. 无人车
+无人车
 
 <img src="./images/ugv.gif" width="640" height="360" />  
 
-12. 无人船
+无人船
 
 <img src="./images/usv.gif" width="640" height="360" />  
 

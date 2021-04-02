@@ -6,6 +6,7 @@ import tf
 import sys
 
 vehicle_type = sys.argv[1]
+vehicle_id = sys.argv[2]
 local_pose = PoseStamped()
 local_pose.header.frame_id = 'world'
 quaternion = tf.transformations.quaternion_from_euler(-math.pi/2, 0, -math.pi/2)
@@ -22,9 +23,9 @@ def vision_callback(data):
     local_pose.pose.orientation.y = q_[2]
     local_pose.pose.orientation.z = q_[3]
     
-rospy.init_node('ego_transfer')
-rospy.Subscriber(vehicle_type+"_0/mavros/vision_pose/pose", PoseStamped, vision_callback)
-position_pub = rospy.Publisher(vehicle_type+"_0/camera_pose", PoseStamped, queue_size=2)
+rospy.init_node(vehicle_type+"_"+vehicle_id+'/ego_transfer')
+rospy.Subscriber(vehicle_type+"_"+vehicle_id+"/mavros/vision_pose/pose", PoseStamped, vision_callback)
+position_pub = rospy.Publisher(vehicle_type+"_"+vehicle_id+"/camera_pose", PoseStamped, queue_size=2)
 rate = rospy.Rate(60) 
 
 while True:

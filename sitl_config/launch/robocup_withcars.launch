@@ -22,7 +22,7 @@
     <arg name="obstaclestopper" default="false"/>
     <group ns="ugv_0">
         <param name="robot_description"
-                command="$(find xacro)/xacro.py '$(find catvehicle)/urdf/catvehicle.xacro' roboname:='ugv_0'" />
+                command="$(find xacro)/xacro.py '$(find catvehicle)/urdf/catvehicle1-3.xacro' roboname:='ugv_0'" />
         <include file="$(find catvehicle)/launch/catvehicle.launch">
             <arg name="robot_name" value="ugv_0"/>
             <arg name="init_pose" value="-x -15 -y 93 -z 0 -R 0 -P 0 -Y -1.57"/>
@@ -37,7 +37,7 @@
 
     <group ns="ugv_1">
         <param name="robot_description"
-                command="$(find xacro)/xacro.py '$(find catvehicle)/urdf/catvehicle.xacro' roboname:='ugv_1'" />
+                command="$(find xacro)/xacro.py '$(find catvehicle)/urdf/catvehicle4-6.xacro' roboname:='ugv_1'" />
         <include file="$(find catvehicle)/launch/catvehicle.launch">
             <arg name="robot_name" value="ugv_1"/>
             <arg name="init_pose" value="-x -15 -y 100 -z 0 -R 0 -P 0 -Y -1.57"/>

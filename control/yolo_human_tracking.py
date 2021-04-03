@@ -65,12 +65,12 @@ if __name__ == "__main__":
     rospy.Subscriber("/uav_"+vehicle_id+"/darknet_ros/bounding_boxes", BoundingBoxes, darknet_callback)
     rospy.Subscriber(vehicle_type+'_'+vehicle_id+"/mavros/local_position/pose", PoseStamped, local_pose_callback)
     rospy.Subscriber('/xtdrone/'+vehicle_type+'_'+vehicle_id+'/cam_pose', PoseStamped, cam_pose_callback)
-    vel_pub = rospy.Publisher('/xtdrone/'+vehicle_type+'_'+vehicle_id+'/cmd_vel_flu', Twist, queue_size=2)
+    cmd_vel_pub = rospy.Publisher('/xtdrone/'+vehicle_type+'_'+vehicle_id+'/cmd_vel_flu', Twist, queue_size=2)
     cmd_pub = rospy.Publisher('/xtdrone/'+vehicle_type+'_'+vehicle_id+'/cmd', String, queue_size=2)
     rate = rospy.Rate(60) 
-    while(True):
+    while not rospy.is_shutdown():
         rate.sleep()
-        vel_pub.publish(twist)
+        cmd_vel_pub.publish(twist)
         cmd_pub.publish(cmd)
         if find_cnt - find_cnt_last == 0:
             if not get_time:

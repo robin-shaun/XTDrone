@@ -676,7 +676,7 @@ http://www.car-engineer.com/vehicle-inertia-calculation-tool/
             <visual>
               <origin xyz="0 -0.5 0.05" rpy="0 1.57 1.57"/>
               <geometry>
-                <mesh filename="model://qrcode4-6/meshes/qrcode4-6.dae" scale="2 5 2"/>
+                <mesh filename="model://apriltag3-5/meshes/apriltag3-5.dae" scale="2 5 2"/>
               </geometry>
             </visual>
 

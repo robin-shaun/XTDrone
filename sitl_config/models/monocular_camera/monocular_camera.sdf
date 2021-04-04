@@ -1,12 +1,12 @@
 <?xml version='1.0'?>
 <sdf version='1.0'>
     <model name='monocular_camera'>
-    <pose>0.0 0.0 -0.05 0 0 0</pose>
+    <pose>0.0 0.0 0 0 0 0</pose>
       <link name='link'>
         <inertial>
           <mass>0.001</mass>
           <inertia>
-            <ixx>4.15e-6</ixx>
+          <ixx>4.15e-6</ixx>
           <ixy>0</ixy>
           <ixz>0</ixz>
           <iyy>2.407e-6</iyy>
@@ -51,15 +51,15 @@
           </camera>
           <always_on>1</always_on>
           <update_rate>30</update_rate>
-          <visualize>1</visualize>
+          <visualize>0</visualize>
           <plugin name='camera_plugin' filename='libgazebo_ros_camera.so'>
-              <robotNamespace>/xtdrone</robotNamespace>
+              <robotNamespace></robotNamespace>
               <alwaysOn>true</alwaysOn>
               <imageTopicName>image_raw</imageTopicName>
               <cameraInfoTopicName>camera_info</cameraInfoTopicName>
               <updateRate>30.0</updateRate>
               <cameraName>camera</cameraName>
-              <frameName>/monocular_link</frameName>
+              <frameName>/camera_link</frameName>
               <CxPrime>640</CxPrime>
               <Cx>640</Cx>
               <Cy>360</Cy>

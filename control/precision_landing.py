@@ -24,13 +24,12 @@ if __name__ == '__main__':
         try:
             tfstamped = tfBuffer.lookup_transform('tag_'+vehicle_id, 'map', rospy.Time(0))
         except:
-            cmd_vel_enu.linear.z = 0.0
             continue
         # print('tf:',tfstamped.transform.translation.x)
         # print(local_pose.pose.position.x)
         cmd_vel_enu.linear.x = Kp * (tfstamped.transform.translation.x - local_pose.pose.position.x)
         cmd_vel_enu.linear.y = Kp * (tfstamped.transform.translation.y - local_pose.pose.position.y)
-        cmd_vel_enu.linear.z = - land_vel
+        cmd_vel_enu.linear.z = -land_vel
         # print(cmd_vel_enu)
         cmd_vel_pub.publish(cmd_vel_enu)
         rate.sleep()

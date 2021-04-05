@@ -53,11 +53,15 @@ Xiao, K., Ma, L., Tan, S., Cong, Y., Wang, X.: Implementation of UAV Coordinatio
 
 <img src="./images/human_tracking.gif" width="640" height="360" /> 
 
-多机协同
+多机编队
 
 <img src="./images/formation_1.gif" width="640" height="360" />  
 
 <img src="./images/formation_2.gif" width="640" height="360" />  
+
+多机精准降落
+
+<img src="./images/multi_precision_landing.gif" width="640" height="360" />  
 
 固定翼
 

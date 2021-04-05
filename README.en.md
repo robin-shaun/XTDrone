@@ -60,6 +60,10 @@ Formation
 
 <img src="./images/formation_2.gif" width="640" height="360" />  
 
+Multi-UAV Precision Landing
+
+<img src="./images/multi_precision_landing.gif" width="640" height="360" />  
+
 Fixed wing
 
 <img src="./images/planes.gif" width="640" height="360" />  

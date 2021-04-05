@@ -29,7 +29,7 @@ Xiao, K., Ma, L., Tan, S., Cong, Y., Wang, X.: Implementation of UAV Coordinatio
 
 <img src="./images/vio.gif" width="640" height="360" />  
 
-三维稠密重建
+视觉稠密重建
 
 <img src="./images/dense_reconstruction.gif" width="640" height="360" /> 
 

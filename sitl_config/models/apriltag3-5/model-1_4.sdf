@@ -1,11 +1,11 @@
-<?xml version="1.0" ?><sdf version="1.5">
-  <model name="qrcode4-6">
+<?xml version="1.0" ?><sdf version="1.4">
+  <model name="apriltag3-5">
     <static>true</static>
     <link name="link">
       <visual name="visual">
         <geometry>
           <mesh>
-            <uri>model://qrcode4-6/meshes/qrcode4-6.dae</uri>
+            <uri>model://apriltag3-5/meshes/apriltag3-5.dae</uri>
           <scale>1.0 1.0 1.0</scale></mesh>
         </geometry>
       </visual>

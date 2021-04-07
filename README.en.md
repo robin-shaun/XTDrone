@@ -26,11 +26,11 @@ Stereo SLAM
 
 <img src="./images/vslam.gif" width="640" height="360" /> 
 
-VIO 
+Visual Inertial Navigation
 
 <img src="./images/vio.gif" width="640" height="360" />  
 
-Dense Reconstruction
+Visual Dense Reconstruction
 
 <img src="./images/dense_reconstruction.gif" width="640" height="360" /> 
 

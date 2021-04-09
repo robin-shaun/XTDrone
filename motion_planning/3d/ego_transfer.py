@@ -28,7 +28,7 @@ rospy.Subscriber(vehicle_type+"_"+vehicle_id+"/mavros/vision_pose/pose", PoseSta
 position_pub = rospy.Publisher(vehicle_type+"_"+vehicle_id+"/camera_pose", PoseStamped, queue_size=2)
 rate = rospy.Rate(60) 
 
-while True:
+while not rospy.is_shutdown():
     local_pose.header.stamp = rospy.Time.now()
     position_pub.publish(local_pose) 
     rate.sleep()

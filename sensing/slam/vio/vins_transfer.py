@@ -29,7 +29,7 @@ rospy.Subscriber("/vins_estimator/camera_pose", Odometry, vins_callback)
 position_pub = rospy.Publisher(vehicle_type+"_"+vehicle_id+"/mavros/vision_pose/pose", PoseStamped, queue_size=2)
 rate = rospy.Rate(60) 
 
-while True:
+while not rospy.is_shutdown():
     local_pose.header.stamp = rospy.Time.now()
     position_pub.publish(local_pose) 
     rate.sleep()

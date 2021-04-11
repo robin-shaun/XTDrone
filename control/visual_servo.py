@@ -5,6 +5,7 @@ from sensor_msgs.msg import Image, CameraInfo
 from tf2_ros import TransformListener, Buffer
 import sys
 import cv2
+import math
 import numpy as np
 from scipy.spatial.transform import Rotation as R
 from cv_bridge import CvBridge
@@ -16,9 +17,10 @@ ax = fig.add_subplot(111, projection='3d')
 
 class Tracker():
     def __init__(self, vehicle_type, vehicle_id):
-        self.K = np.eye(3)
+        self.K = []
         self.E = np.hstack((np.eye(3),np.array([[0.25],[0.25],[1]])))
-        self.lines_3d = 6*np.array([[[0.05,0,0],[0.05,0.05,0]],[[0.05,0.05,0],[0.05,0.05,0.05]],[[0.05,0.05,0.05],[0.05,0,0.05]],[[0.05,0,0.05],[0.05,0,0]],[[0,0,0],[0,0.05,0]],[[0,0.05,0],[0,0.05,0.05]],[[0,0.05,0.05],[0,0,0.05]],[[0,0,0.05],[0,0,0]],[[0,0,0],[0.05,0,0]],[[0,0.05,0],[0.05,0.05,0]],[[0,0,0.05],[0.05,0,0.05]],[[0,0.05,0.05],[0.05,0.05,0.05]]])
+        self.lines_3d = np.array([[[0.05,0,0],[0.05,0.05,0]],[[0.05,0.05,0],[0.05,0.05,0.05]],[[0.05,0.05,0.05],[0.05,0,0.05]],[[0.05,0,0.05],[0.05,0,0]],[[0,0,0],[0,0.05,0]],[[0,0.05,0],[0,0.05,0.05]],[[0,0.05,0.05],[0,0,0.05]],[[0,0,0.05],[0,0,0]],[[0,0,0],[0.05,0,0]],[[0,0.05,0],[0.05,0.05,0]],[[0,0,0.05],[0.05,0,0.05]],[[0,0.05,0.05],[0.05,0.05,0.05]]])
+        self.lines_3d = self.lines_3d - np.array([0.025,0.025,0.025])
         self.points_2d = []
         self.box_pose = Pose()
         self.camera_pose = Pose()
@@ -76,11 +78,11 @@ class Tracker():
             box_pose = np.vstack((box_pose,np.array([0,0,0,1])))
             camera_pose = msg.pose[camera_id]
             camera_R = R.from_quat([camera_pose.orientation.x, camera_pose.orientation.y, camera_pose.orientation.z, camera_pose.orientation.w]).as_dcm()
+            camera_R = camera_R.dot(R.from_euler('z',-90,degrees=True).as_dcm()).dot(R.from_euler('x',-90,degrees=True).as_dcm())
             camera_t = np.array([[camera_pose.position.x],[camera_pose.position.y],[camera_pose.position.z]])
             camera_pose = np.hstack((camera_R,camera_t))
             camera_pose = np.vstack((camera_pose,np.array([0,0,0,1])))
-            self.E = box_pose.dot(np.linalg.inv(camera_pose))
-            self.E = self.E[:3,:]
+            self.E = np.linalg.inv(camera_pose).dot(box_pose)[:3,:]
         except ValueError:
             pass 
 
@@ -106,12 +108,12 @@ class Tracker():
         # )
         # if lines is None:
         #     return
-        if self.points_2d == []:
+        if not self.K == [] and self.points_2d == []:
             self.project()
-        line_image = self.draw_lines(cv_image,self.points_2d,thickness=5)
-
-        img_ros = bridge.cv2_to_imgmsg(line_image)
-        self.image_pub.publish(img_ros)
+        if not self.points_2d == []:
+            line_image = self.draw_lines(cv_image,self.points_2d,thickness=5)
+            img_ros = bridge.cv2_to_imgmsg(line_image)
+            self.image_pub.publish(img_ros)
     
 
 if __name__ == '__main__':

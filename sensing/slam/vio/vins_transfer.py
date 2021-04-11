@@ -24,7 +24,7 @@ def vins_callback(data):
     local_pose.pose.orientation.y = q_[2]
     local_pose.pose.orientation.z = q_[3]
     
-rospy.init_node(vehicle_type+"_"+vehicle_id+'/vins_transfer')
+rospy.init_node(vehicle_type+"_"+vehicle_id+'_vins_transfer')
 rospy.Subscriber("/vins_estimator/camera_pose", Odometry, vins_callback)
 position_pub = rospy.Publisher(vehicle_type+"_"+vehicle_id+"/mavros/vision_pose/pose", PoseStamped, queue_size=2)
 rate = rospy.Rate(60) 

@@ -20,7 +20,7 @@ class Tracker():
         self.K = []
         self.E = np.hstack((np.eye(3),np.array([[0.25],[0.25],[1]])))
         self.lines_3d = np.array([[[0.05,0,0],[0.05,0.05,0]],[[0.05,0.05,0],[0.05,0.05,0.05]],[[0.05,0.05,0.05],[0.05,0,0.05]],[[0.05,0,0.05],[0.05,0,0]],[[0,0,0],[0,0.05,0]],[[0,0.05,0],[0,0.05,0.05]],[[0,0.05,0.05],[0,0,0.05]],[[0,0,0.05],[0,0,0]],[[0,0,0],[0.05,0,0]],[[0,0.05,0],[0.05,0.05,0]],[[0,0,0.05],[0.05,0,0.05]],[[0,0.05,0.05],[0.05,0.05,0.05]]])
-        self.lines_3d = self.lines_3d - np.array([0.025,0.025,0.025])
+        self.lines_3d = self.lines_3d - np.array([0.02,0.02,0.02])
         self.points_2d = []
         self.box_pose = Pose()
         self.camera_pose = Pose()
@@ -29,7 +29,7 @@ class Tracker():
         rospy.Subscriber(vehicle_type+'_'+vehicle_id+'/realsense/depth_camera/color/image_raw', Image, self.image_callback)
         rospy.Subscriber(vehicle_type+'_'+vehicle_id+'/realsense/depth_camera/color/camera_info', CameraInfo, self.camera_info_callback)
         rospy.Subscriber("/gazebo/link_states", LinkStates, self.link_states_callback)
-        self.image_pub = rospy.Publisher(vehicle_type+'_'+vehicle_id+'/le_arm/visual_servo/image', Image, queue_size=2)
+        self.image_pub = rospy.Publisher(vehicle_type+'_'+vehicle_id+'/visual_servo/image', Image, queue_size=2)
 
         rate = rospy.Rate(20) 
         
@@ -55,7 +55,7 @@ class Tracker():
             (
                 img.shape[0],
                 img.shape[1],
-                3
+                1
             ),
             dtype=np.uint8
         )
@@ -111,7 +111,7 @@ class Tracker():
         if not self.K == [] and self.points_2d == []:
             self.project()
         if not self.points_2d == []:
-            line_image = self.draw_lines(cv_image,self.points_2d,thickness=5)
+            line_image = self.draw_lines(cannyed_image,self.points_2d,thickness=5)
             img_ros = bridge.cv2_to_imgmsg(line_image)
             self.image_pub.publish(img_ros)
     

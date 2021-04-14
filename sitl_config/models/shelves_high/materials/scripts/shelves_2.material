@@ -1,0 +1,14 @@
+material Shelves_2/Diffuse
+{
+  receive_shadows off
+}
+
+material Shelves_2/Specular
+{
+  receive_shadows off
+}
+
+material Shelves_2/Normal
+{
+  receive_shadows off
+}

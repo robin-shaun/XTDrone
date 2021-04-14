@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name="Shelves high">
+    <static>true</static>
+    <link name="link">
+      <collision name="collision">
+        <geometry>
+          <mesh>
+            <uri>model://shelves_high/meshes/shelves_high_collision.dae</uri>
+            <scale>1 1.2 1.2</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>model://shelves_high/meshes/shelves_high.dae</uri>
+            <scale>1 1.2 1.2</scale>
+          </mesh>
+        </geometry>
+        <!--<material>
+          <script>
+            <uri>model://shelves_2/materials/scripts</uri>
+            <uri>model://shelves_2/materials/textures</uri>
+            <name>Shelves_2/Diffuse</name>
+          </script>
+          <shader type="normal_map_object_space">
+            <normal_map>Shelves_2_Normal.png</normal_map>
+          </shader>
+        </material>-->
+      </visual>
+    </link>
+  </model>
+</sdf>

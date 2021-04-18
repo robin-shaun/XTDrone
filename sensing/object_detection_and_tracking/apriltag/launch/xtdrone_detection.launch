@@ -17,7 +17,7 @@
     <param name="camera_frame" type="str" value="iris_0/camera_link" />
     <param name="publish_tag_detections_image" type="bool" value="true" />      <!-- default: false -->
   </node>
-  <node pkg="tf" type="static_transform_publisher" name="base_link_frd_to_camera_link"
+  <node pkg="tf" type="static_transform_publisher" name="base_link_to_camera_link"
     args="0 0 -0.05 1.5707963 3.1415927 0 iris_0/base_link iris_0/camera_link 100" />
   </group>
 
@@ -30,7 +30,7 @@
     <param name="camera_frame" type="str" value="iris_1/camera_link)" />
     <param name="publish_tag_detections_image" type="bool" value="true" />      <!-- default: false -->
   </node>
-  <node pkg="tf" type="static_transform_publisher" name="base_link_frd_to_camera_link"
+  <node pkg="tf" type="static_transform_publisher" name="base_link_to_camera_link"
     args="0 0 -0.05 1.5707963 3.1415927 0 iris_1/base_link iris_1/camera_link 100" />
   </group>
 
@@ -43,7 +43,7 @@
     <param name="camera_frame" type="str" value="iris_2/camera_link" />
     <param name="publish_tag_detections_image" type="bool" value="true" />      <!-- default: false -->
   </node>
-  <node pkg="tf" type="static_transform_publisher" name="base_link_frd_to_camera_link"
+  <node pkg="tf" type="static_transform_publisher" name="base_link_to_camera_link"
     args="0 0 -0.05 1.5707963 3.1415927 0 iris_2/base_link iris_2/camera_link 100" />
   </group>
 

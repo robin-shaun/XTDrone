@@ -1,7 +1,7 @@
   <launch>
-    <arg name="map_size_x" value="20.0"/>
-    <arg name="map_size_y" value="20.0"/>
-    <arg name="map_size_z" value=" 3.0"/>
+    <arg name="map_size_x" value="100"/>
+    <arg name="map_size_y" value="100"/>
+    <arg name="map_size_z" value=" 5"/>
 
     <arg name="odom_topic" value="vins_estimator/odometry" />
 

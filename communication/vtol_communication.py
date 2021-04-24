@@ -236,7 +236,7 @@ class Communication:
     def hover(self):
         self.coordinate_frame = 1
         self.motion_type = 0
-        self.target_motion = self.construct_target(x=self.local_pose.position.x,y=self.local_pose.position.y,z=self.local_pose.position.z,yaw=self.current_heading,yaw=self.current_yaw)
+        self.target_motion = self.construct_target(x=self.local_pose.position.x,y=self.local_pose.position.y,z=self.local_pose.position.z,yaw=self.current_yaw)
 
     def flight_mode_switch(self):
         if self.flight_mode == 'HOVER':

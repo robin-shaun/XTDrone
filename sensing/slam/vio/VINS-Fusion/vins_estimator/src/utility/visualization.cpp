@@ -336,7 +336,7 @@ void pubTF(const Estimator &estimator, const std_msgs::Header &header)
     q.setY(Quaterniond(estimator.ric[0]).y());
     q.setZ(Quaterniond(estimator.ric[0]).z());
     transform.setRotation(q);
-    br.sendTransform(tf::StampedTransform(transform, header.stamp, "body", "camera"));
+    br.sendTransform(tf::StampedTransform(transform, header.stamp, "body", "camera_link"));
 
     
     nav_msgs::Odometry odometry;

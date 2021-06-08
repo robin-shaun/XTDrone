@@ -115,4 +115,4 @@ Xiao, K., Ma, L., Tan, S., Cong, Y., Wang, X.: Implementation of UAV Coordinatio
 
 非常感谢你们对XTDrone团队的支持
 
-高多多 李照祥
+高多多 张宇翔 李照祥

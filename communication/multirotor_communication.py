@@ -53,7 +53,7 @@ class Communication:
 
     def start(self):
         rospy.init_node(self.vehicle_type+'_'+self.vehicle_id+"_communication")
-        rate = rospy.Rate(100)
+        rate = rospy.Rate(30)
         '''
         main ROS thread
         '''

@@ -119,8 +119,10 @@ class Follower:
 
                             self.change_id = self.KM()
                             # Get a new formation pattern of UAVs based on KM.
+                            #self.L_matrix = self.get_L_matrix(self.orig_formation)
                             self.new_formation=self.get_new_formation(self.change_id,formation_dict[self.formation_config])
-                            self.L_matrix = self.get_L_matrix(self.new_formation)
+                            #self.L_matrix = self.get_L_matrix(self.new_formation)
+                            self.L_matrix = self.get_L_central_matrix()
                             self.orig_formation=self.new_formation
                     if self.id == 3:
                         print(self.L_matrix)
@@ -238,7 +240,7 @@ class Follower:
     def get_L_matrix(self, rel_posi):
 
         #假设无论多少UAV，都假设尽可能3层通信（叶子节点除外）
-        c_num=int((self.uav_num-1)/3)
+        c_num=int((self.uav_num+1)/3)
         
         comm=[[]for i in range (self.uav_num)]
         w=numpy.ones((self.uav_num,self.uav_num))*0 # 定义邻接矩阵
@@ -272,7 +274,7 @@ class Follower:
                     
                 if i==next_node or i in node_flag:
                         
-                    rel_d[i]=2000   #这个2000是根据相对位置和整个地图的大小决定的，要比最大可能相对距离大
+                    rel_d[i]=1e10  #要比最大可能相对距离大
                 else:
 
                     rel_d[i]=pow((rel_posi[0][i]-rel_posi[0][next_node]),2)+pow((rel_posi[1][i]-rel_posi[1][next_node]),2)+pow((rel_posi[2][i]-rel_posi[2][next_node]),2)

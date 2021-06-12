@@ -1,5 +1,5 @@
 #!/bin/bash
-iris_num=3
+iris_num=9
 typhoon_h480_num=0
 solo_num=0
 plane_num=0
@@ -11,14 +11,14 @@ tailsitter_num=0
 vehicle_num=0
 while(( $vehicle_num< iris_num)) 
 do
-    python multirotor_communication.py iris $vehicle_num&
+    python2.7 multirotor_communication.py iris $vehicle_num&
     let "vehicle_num++"
 done
 
 vehicle_num=0
 while(( $vehicle_num< typhoon_h480_num)) 
 do
-    python multirotor_communication.py typhoon_h480 $vehicle_num&
+    python2.7 multirotor_communication.py typhoon_h480 $vehicle_num&
     let "vehicle_num++"
 done
 

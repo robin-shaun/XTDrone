@@ -9,6 +9,8 @@ import rospy
 from geometry_msgs.msg import Twist, Vector3, PoseStamped, TwistStamped
 from std_msgs.msg import String 
 import sys
+import heapq
+import copy
 
 # formation patterns
 if sys.argv[3] == '6':
@@ -53,6 +55,8 @@ class Follower:
         self.vel_enu_pub = rospy.Publisher('/xtdrone/'+self.uav_type+'_'+str(self.id)+'/cmd_vel_enu', Twist, queue_size=10)
         self.info_pub = rospy.Publisher('/xtdrone/'+self.uav_type+'_'+str(self.id)+'/info', String, queue_size=10)
         self.cmd_pub = rospy.Publisher('/xtdrone/'+self.uav_type+'_'+str(self.id)+'/cmd',String,queue_size=10)
+        for i in range(self.uav_num):
+            self.following_local_pose_sub[i] = rospy.Subscriber(self.uav_type+'_'+str(i)+"/mavros/local_position/pose", PoseStamped , self.following_local_pose_callback,i)
         self.first_formation = True
         self.orig_formation = None
         self.new_formation = None
@@ -116,18 +120,17 @@ class Follower:
                             self.change_id = self.KM()
                             # Get a new formation pattern of UAVs based on KM.
                             self.new_formation=self.get_new_formation(self.change_id,formation_dict[self.formation_config])
-                            self.L_matrix = self.get_L_central_matrix()
+                            self.L_matrix = self.get_L_matrix(self.new_formation)
                             self.orig_formation=self.new_formation
                     if self.id == 3:
                         print(self.L_matrix)
                     # Get the followers of this uav based on the Laplacian matrix, and update the position of the followers.
                     self.following_ids = numpy.argwhere(self.L_matrix[self.id,:] == 1)
                     self.following_count = 0
-                    for i in range(self.uav_num):
-                        if not self.following_local_pose_sub[i] == None:
-                            self.following_local_pose_sub[i].unregister()
+                    # for i in range(self.uav_num):
+                    #     if not self.following_local_pose_sub[i] == None:
+                    #         self.following_local_pose_sub[i].unregister()
                     for following_id in self.following_ids:
-                        self.following_local_pose_sub[following_id[0]] = rospy.Subscriber(self.uav_type+'_'+str(following_id[0])+"/mavros/local_position/pose", PoseStamped , self.following_local_pose_callback,following_id[0])
                         self.following_count += 1
                       
             self.cmd_vel_enu.linear = Vector3(0, 0, 0)
@@ -231,6 +234,95 @@ class Follower:
         return new_formation
 
     # Laplacian matrix 
+
+    def get_L_matrix(self, rel_posi):
+
+        #假设无论多少UAV，都假设尽可能3层通信（叶子节点除外）
+        c_num=int((self.uav_num-1)/3)
+        
+        comm=[[]for i in range (self.uav_num)]
+        w=numpy.ones((self.uav_num,self.uav_num))*0 # 定义邻接矩阵
+        nodes_next=[]
+        node_flag = [self.uav_num-1]
+
+        rel_d=[0]*(self.uav_num-1)
+        # 规定每个无人机可以随机连接三台距离自己最近的无人机,且不能连接在flag中的无人机(即已经判断过连接点的无人机)。
+        # 计算第一层通信（leader）：获得离自己最近的三台无人机编号
+        
+        for i in range(0,self.uav_num-1):
+
+            rel_d[i]=pow(rel_posi[0][i],2)+pow(rel_posi[1][i],2)+pow(rel_posi[2][i],2)
+
+        min_num_index_list = map(rel_d.index, heapq.nsmallest(c_num, rel_d))
+        min_num_index_list=list(min_num_index_list)
+        #leader 连接的无人机编号：
+        comm[self.uav_num-1]=min_num_index_list
+
+        nodes_next.extend(comm[self.uav_num-1])    
+
+        size_=len(node_flag)
+
+        while (nodes_next!=[]) and (size_<(self.uav_num-1)):
+
+            next_node= nodes_next[0]
+            nodes_next=nodes_next[1:]
+
+            rel_d=[0]*(self.uav_num-1)
+            for i in range(0,self.uav_num-1):
+                    
+                if i==next_node or i in node_flag:
+                        
+                    rel_d[i]=2000   #这个2000是根据相对位置和整个地图的大小决定的，要比最大可能相对距离大
+                else:
+
+                    rel_d[i]=pow((rel_posi[0][i]-rel_posi[0][next_node]),2)+pow((rel_posi[1][i]-rel_posi[1][next_node]),2)+pow((rel_posi[2][i]-rel_posi[2][next_node]),2)
+
+            min_num_index_list =  map(rel_d.index, heapq.nsmallest(c_num, rel_d))
+            min_num_index_list=list(min_num_index_list)
+            node_flag.append(next_node)
+
+            size_=len(node_flag)                    
+
+            for j in range(0,c_num):
+
+                if min_num_index_list[j] in node_flag:
+                                
+                    nodes_next=nodes_next
+
+                else:
+                    if min_num_index_list[j] in nodes_next:
+                        nodes_next=nodes_next
+                    else:
+                        nodes_next.append(min_num_index_list[j])
+                        
+                    comm[next_node].append(min_num_index_list[j])
+        # comm为每个uav连接其他uav的编号，其中数组的最后一行为leader   
+        #print (comm)
+        #leader是拉普拉斯矩阵的第一行，为0
+        #第0号飞机（相对位置矩阵中的第一个位置）为第二行，以此类推
+
+        for i in range (0,self.uav_num):
+            for j in range(0,self.uav_num-1):
+
+                if i==0:
+                    if j in comm[self.uav_num-1]:
+                        w[j+1][i]=1
+                    else:
+                        w[j+1][i]=0
+                else:
+                    if j in comm[i-1]:
+                        w[j+1][i]=1
+                    else:
+                        w[j+1][i]=0
+                        
+        L=w  #定义拉普拉斯矩阵
+        for i in range (0,self.uav_num):
+
+            L[i][i]=-sum(w[i])
+                    
+        #print (L)               
+        return L
+
     def get_L_central_matrix(self):
         
         L=numpy.zeros((self.uav_num,self.uav_num))

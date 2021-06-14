@@ -1,0 +1,11 @@
+cd PX4_Firmware/launch/
+roslaunch px4 indoor6.launch
+
+cd XTDrone/control/sim_UDQcontrol/
+python communication.py
+
+cd XTDrone/control/sim_UDQcontrol/
+python tf_broadcaster.py
+
+cd XTDrone/control/sim_UDQcontrol/
+python udq_control.py

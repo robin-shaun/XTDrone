@@ -1,0 +1,7 @@
+
+#vrpn节点，相当于驱动，转换数据到ros话题
+roscd vrpn_client_ros/
+cd launch 
+roslaunch sample.launch
+
+

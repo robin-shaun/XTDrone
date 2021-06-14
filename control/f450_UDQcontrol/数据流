@@ -1,0 +1,19 @@
+vrpn节点--->vicon坐标系下的位姿速加速，左我上
+
+1。 让px4知道自己是什么状态
+vicon坐标系下的pose（vicon给的原始的） ---->  vrpn_transfer节点（与mavros通信demo） ----> tx2里的mavros节点
+
+2。 发布目标，顺便可视化跟踪过程
+vicon坐标系下的pose ----> tf_broadcaster节点，以0系虚拟建立tar系与0系的关系， 再建立0系与cur系的关系
+
+3。 速度指令求解与发布
+vicon坐标系下的pose+twist(来自mavros融合后的）， 听target -----> udq_control节点 -----> cur与tar误差求解速度控制量 ----> tx2里的mavros节点
+
+下一步工作：
+1。读取自身位姿速、目标速，听目标位姿
+2。整合communication和速度输出（包括键盘控制）
+3。发布速度控制话题给tx2运行的mavros，测试
+
+
+
+

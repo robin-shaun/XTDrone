@@ -43,7 +43,7 @@ class Follower:
         self.following_ids = []  # followers of this uav
         self.formation_config = 'waiting'
         self.following_count = 0  # the number of followers of this uav
-        self.Kp = 0.7
+        self.Kp = 0.2
         self.velxy_max = 1  # 0.8
         self.velz_max = 1
         self.following_local_pose = [PoseStamped() for i in range(
@@ -181,6 +181,9 @@ class Follower:
                                        following_id[0]].pose.position)
                     print(self.id , "'s  my pose:    ", self.local_pose.pose.position)
                     print(input_vel)
+            # self.cmd_vel_enu.linear.x = self.Kp * input_vel.x + self.avoid_vel.x
+            # self.cmd_vel_enu.linear.y = self.Kp * input_vel.y + self.avoid_vel.y
+            # self.cmd_vel_enu.linear.z = self.Kp * input_vel.z + self.avoid_vel.z
             if self.following_count >0:
                 self.cmd_vel_enu.linear.x = self.Kp * (input_vel.x/self.following_count) + self.avoid_vel.x
                 self.cmd_vel_enu.linear.y = self.Kp * (input_vel.y/self.following_count)  + self.avoid_vel.y
@@ -280,7 +283,7 @@ class Follower:
 
     def get_L_matrix(self, rel_posi):
 
-        c_num = int((self.uav_num - 1) / 2)
+        c_num = int((self.uav_num) / 2)
         min_num_index_list = [0] * c_num
 
         comm = [[] for i in range(self.uav_num)]
@@ -379,7 +382,10 @@ class Follower:
                         w[j + 1][i] = 1
                     else:
                         w[j + 1][i] = 0
-
+            
+        for i in range(1, self.uav_num):  # 防止某个无人机掉队
+            if sum(w[i]) == 0:
+                w[i][0] = 1
         L = w
         for i in range(0, self.uav_num):
             L[i][i] = -sum(w[i])

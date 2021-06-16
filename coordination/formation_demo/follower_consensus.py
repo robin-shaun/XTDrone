@@ -181,17 +181,12 @@ class Follower:
                                        following_id[0]].pose.position)
                     print(self.id , "'s  my pose:    ", self.local_pose.pose.position)
                     print(input_vel)
-            # self.cmd_vel_enu.linear.x = self.Kp * input_vel.x + self.avoid_vel.x
-            # self.cmd_vel_enu.linear.y = self.Kp * input_vel.y + self.avoid_vel.y
-            # self.cmd_vel_enu.linear.z = self.Kp * input_vel.z + self.avoid_vel.z
-            if self.following_count >0:
-                self.cmd_vel_enu.linear.x = self.Kp * (input_vel.x/self.following_count) + self.avoid_vel.x
-                self.cmd_vel_enu.linear.y = self.Kp * (input_vel.y/self.following_count)  + self.avoid_vel.y
-                self.cmd_vel_enu.linear.z = self.Kp * (input_vel.z/self.following_count)  + self.avoid_vel.z
-            else:
-                self.cmd_vel_enu.linear.x = self.Kp * input_vel.x+ self.avoid_vel.x
-                self.cmd_vel_enu.linear.y = self.Kp * input_vel.y + self.avoid_vel.y
-                self.cmd_vel_enu.linear.z = self.Kp * input_vel.z + self.avoid_vel.z
+                    
+            omega = self.Kp/self.following_count
+            self.cmd_vel_enu.linear.x = omega * input_vel.x + self.avoid_vel.x
+            self.cmd_vel_enu.linear.y = omega * input_vel.y + self.avoid_vel.y
+            self.cmd_vel_enu.linear.z = omega * input_vel.z + self.avoid_vel.z
+            
             if self.cmd_vel_enu.linear.x > self.velxy_max:
                 self.cmd_vel_enu.linear.x = self.velxy_max
             elif self.cmd_vel_enu.linear.x < - self.velxy_max:

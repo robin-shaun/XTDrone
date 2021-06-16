@@ -89,13 +89,13 @@ USV
 
 - Founders: Kun Xiao, Shaochang Tan
 - Adviser: Xiangke Wang
-- Developers: Kun Xiao, Shaochang Tan, Guanzheng Wang, Lan Ma, Qipeng Wang, Xinyu Hu, Wenxin Hu, Yi Bao, Ruoqiao Guan, Xinyu Hu, Keyan Chen, Gao Chen
+- Developers: Kun Xiao, Shaochang Tan, Guanzheng Wang, Lan Ma, Qipeng Wang, Xinyu Hu, Ruoqiao Guan, Wenxin Hu,  Feng Yi, Jiarun Yan, Yi Bao, Keyan Chen, Gao Chen
 
 ### Contributers
 
 Sincerely thank you for your contribution to XTDrone.
 
-Changhao Sun, Zihan Lin, Yao He
+Changhao Sun, Ying Nie, Fanjie Kong, Chaoran Li, Xudong Li, Zihan Lin, Yao He
 
 
 

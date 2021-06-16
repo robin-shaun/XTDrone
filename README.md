@@ -93,7 +93,7 @@ Xiao, K., Ma, L., Tan, S., Cong, Y., Wang, X.: Implementation of UAV Coordinatio
 
 - 创立者：肖昆，谭劭昌
 - 指导老师：王祥科
-- 开发团队：肖昆，谭劭昌，王冠政，马澜，王齐鹏，胡新雨，胡文信，鲍毅，管若乔，陈科研，陈皋
+- 开发团队：肖昆，谭劭昌，王冠政，马澜，王齐鹏，胡新雨，管若乔，胡文信，易丰，颜佳润，鲍毅，陈科研，陈皋
 
 ### 加入我们
 
@@ -103,7 +103,7 @@ Xiao, K., Ma, L., Tan, S., Cong, Y., Wang, X.: Implementation of UAV Coordinatio
 
 非常感谢你们为XTDrone的贡献
 
-孙长浩 林梓涵 何瑶 
+孙长浩，聂莹，孔凡杰，李超然，李旭东，林梓涵，何瑶 
 
 ### 捐赠
 

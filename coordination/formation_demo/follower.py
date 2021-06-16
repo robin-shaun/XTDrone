@@ -43,7 +43,7 @@ class Follower:
         self.following_ids = [] # followers of this uav
         self.formation_config = 'waiting'
         self.following_count = 0 # the number of followers of this uav
-        self.Kp = 1 
+        self.omega = 1 
         self.velxy_max = 1 #0.8
         self.velz_max = 1
         self.following_local_pose = [PoseStamped() for i in range(self.uav_num)] # local position of other uavs, and only the position of followers of this uav is not zero
@@ -146,9 +146,9 @@ class Follower:
                     self.cmd_vel_enu.linear.y -= self.new_formation[1, following_id[0]-1]
                     self.cmd_vel_enu.linear.z -= self.new_formation[2, following_id[0]-1]
 
-            self.cmd_vel_enu.linear.x = self.Kp * self.cmd_vel_enu.linear.x + self.avoid_vel.x
-            self.cmd_vel_enu.linear.y = self.Kp * self.cmd_vel_enu.linear.y + self.avoid_vel.y
-            self.cmd_vel_enu.linear.z = self.Kp * self.cmd_vel_enu.linear.z + self.avoid_vel.z
+            self.cmd_vel_enu.linear.x = self.omega * self.cmd_vel_enu.linear.x + self.avoid_vel.x
+            self.cmd_vel_enu.linear.y = self.omega * self.cmd_vel_enu.linear.y + self.avoid_vel.y
+            self.cmd_vel_enu.linear.z = self.omega * self.cmd_vel_enu.linear.z + self.avoid_vel.z
 
             if self.cmd_vel_enu.linear.x > self.velxy_max:
                 self.cmd_vel_enu.linear.x = self.velxy_max

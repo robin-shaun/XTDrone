@@ -8,3 +8,4 @@ sensing/slam/vio/VINS-Fusion/camera_models/camera_calib_example
 .gitee
 .vscode
 .idea
+sensing/slam/vslam/evaluate

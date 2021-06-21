@@ -7,6 +7,8 @@ from aco import ACO
 from geographiclib.geodesic import Geodesic
 import math
 geod = Geodesic.WGS84
+import json
+import os
 
 class Env():
     def __init__(self, vehicle_num, target_num, map_size, visualized=True, time_cost=None, repeat_cost=None):
@@ -97,7 +99,8 @@ class Env():
                     position = self.targets[self.assignment[i][j],:3]
                     trajectory = np.insert(trajectory,j+1,values=position,axis=0)  
                 plt.scatter(x=trajectory[1:,0],y=trajectory[1:,1],s=trajectory[1:,2]*10,c='b')
-                plt.plot(trajectory[:,0], trajectory[:,1]) 
+                plt.plot(trajectory[:,0], trajectory[:,1])
+            os.makedirs('task_pic/' + self.size, exist_ok=True) 
             plt.savefig('task_pic/'+self.size+'/'+self.algorithm+ "-%d-%d.png" % (self.play,self.rond))
             plt.cla()
             
@@ -110,19 +113,41 @@ def evaluate(vehicle_num, target_num, map_size):
         env = Env(vehicle_num,target_num,map_size,visualized=True)
         for j in range(1):
             aco = ACO(vehicle_num,target_num,env.vehicles_speed,env.targets,env.time_lim)
-            path_new, time = aco.run()
+            log, path_new, time = aco.run()
             env.run(path_new,'ACO',i+1,j+1)
             re_aco[i].append((env.total_reward,time))
             env.reset()
 
-    
+    return log
+
+def build_dir(json2dic, path):
+    for i in range(len(path)):
+        json2dic['mission']['items'].append(copy.deepcopy(json2dic['mission']['items'][0]))
+        json2dic['mission']['items'][i+1]['command'] = 16
+        json2dic['mission']['items'][i+1]['doJumpId'] = i+2
+        json2dic['mission']['items'][i+1]['params'][0] = 0
+        json2dic['mission']['items'][i+1]['params'][4] = path[i][0]
+        json2dic['mission']['items'][i+1]['params'][5] = path[i][1]
+    json2dic['mission']['items'].append(copy.deepcopy(json2dic['mission']['items'][0]))
+    json2dic['mission']['items'][-1]['Altitude'] = 0
+    json2dic['mission']['items'][-1]['command'] = 21
+    json2dic['mission']['items'][-1]['doJumpId'] = len(path) + 2
+    json2dic['mission']['items'][-1]['params'][0] = 0
+    json2dic['mission']['items'][-1]['params'][-1] = 0
+    return json2dic
     
 if __name__=='__main__':
-    '''
-    vehicle number: scalar
-    speeds of vehicles: array
-    target number: scalar
-    targets: array, the first line is depot, the first column is x position, the second column is y position, the third column is reward and the forth column is time consumption to finish the mission
-    time limit: scalar
-    '''
-    evaluate(6,30,1e3)
+    log = evaluate(6,30,1e3)
+
+    # 修改json
+    for i in range(len(log)):
+        json_name = '%d.json' % (i+1)
+        plan_name = '%d.plan' % (i+1)
+        if(os.path.isfile(plan_name)):
+            os.rename(plan_name, json_name)
+            with open(json_name, "r", encoding='utf-8') as f:
+                json2dic = json.load(f)
+                json2dic = build_dir(json2dic, log[i])
+            with open(json_name, "w", encoding='utf-8') as f:
+                json.dump(json2dic, f, indent=2, sort_keys=True)
+            os.rename(json_name, plan_name)

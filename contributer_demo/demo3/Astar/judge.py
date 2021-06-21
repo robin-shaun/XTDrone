@@ -54,7 +54,7 @@ def compute(all_paths):
 if __name__ == '__main__':
 
     all_paths = []
-    workbook = open_workbook(r'附件.xlsx')
+    workbook = open_workbook(r'路径点.xlsx')
     sheet = workbook.sheet_by_index(0)
     content = np.array([sheet.row_values(i) for i in range(1, 589)])
 

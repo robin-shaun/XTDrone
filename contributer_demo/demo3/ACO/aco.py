@@ -160,5 +160,5 @@ class ACO():
         print("ACO log: ", log)
         end_time = time.time()
         print("ACO time:", end_time - start_time)
-        return path_new, end_time - start_time
+        return log, path_new, end_time - start_time
 

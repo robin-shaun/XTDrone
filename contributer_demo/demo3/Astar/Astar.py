@@ -237,7 +237,7 @@ class Weighted_A_star(object):
 
 if __name__ == '__main__':
 
-    workbook = open_workbook(r'附件.xlsx')
+    workbook = open_workbook(r'路径点.xlsx')
     sheet = workbook.sheet_by_index(0)
     content = np.array([sheet.row_values(i) for i in range(2, 589)])
 
@@ -245,4 +245,4 @@ if __name__ == '__main__':
     sta = time.time()
     path = Astar.run()
     print(time.time() - sta)
-    draw_path(sheet, path)
+    #draw_path(sheet, path)

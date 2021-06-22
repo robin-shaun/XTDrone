@@ -8,9 +8,10 @@ def pose_publisher():
     pose_msg.model_name = 'iris_0'
     rate = rospy.Rate(30)
     while not rospy.is_shutdown():
-           pose_msg.pose.position.x = 0
-           pose_msg.pose.position.y = 0
+           pose_msg.pose.position.x = -2
+           pose_msg.pose.position.y = 7.5
            pose_msg.pose.position.z = 1
+           #同理也可以改orientation
            pub.publish(pose_msg)
            rate.sleep()
 

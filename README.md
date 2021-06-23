@@ -9,15 +9,19 @@ XTDrone是基于PX4、ROS与Gazebo的无人机仿真平台。支持多旋翼飞�
 
 单机仿真架构如下图所示，详见论文
 
-Xiao, K., Tan, S., Wang, G., An, X., Wang, X., Wang, X.: XTDrone: A Customizable Multi-rotor UAVs Simulation Platform. arXiv preprint **[ arXiv:2003.09700](https://arxiv.org/abs/2003.09700)** (2020)
+K. Xiao, S. Tan, G. Wang, X. An, X. Wang and X. Wang, "XTDrone: A Customizable Multi-rotor UAVs Simulation Platform," 2020 4th International Conference on Robotics and Automation Sciences (ICRAS), 2020, pp. 55-61, doi: 10.1109/ICRAS49812.2020.9134922. 
+
+预印版 **[ arXiv:2003.09700](https://arxiv.org/abs/2003.09700)** 
 
 <img src="./images/architecture_1_cn.png" width="640" height="480" /> 
 
 多机仿真架构如下图所示，详见论文 
 
-Xiao, K., Ma, L., Tan, S., Cong, Y., Wang, X.: Implementation of UAV Coordination Based on a Hierarchical Multi-UAV Simulation Platform. arXiv preprint **[ arXiv:2005.01125](https://arxiv.org/abs/2005.01125)** (2020)
+ K. Xiao, L. Ma, S. Tan, Y. Cong, X. Wang: Implementation of UAV Coordination Based on a Hierarchical Multi-UAV Simulation Platform. arXiv preprint **[ arXiv:2005.01125](https://arxiv.org/abs/2005.01125)** (2020)
 
 <img src="./images/architecture_2_cn.png" width="640" />
+
+如果使用XTDrone用于学术论文的仿真验证，希望可以引用上述的其中一篇论文。
 
 在这个平台上，开发者可以快速验证算法。如：
 

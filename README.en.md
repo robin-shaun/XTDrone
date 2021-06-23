@@ -8,15 +8,19 @@ XTDrone is a UAV simulation platform based on PX4, ROS and Gazebo. XTDrone suppo
 
 <img src="./images/vehicles.png" width="640"  /> 
 
-Architecture for single vehicle simulation is shown as the below figure.  For more details, see the paper
+Architecture for single vehicle simulation is shown as the below figure.  For more details, please see the paper
 
-Xiao, K., Tan, S., Wang, G., An, X., Wang, X., Wang, X.: XTDrone: A Customizable Multi-rotor UAVs Simulation Platform. arXiv preprint **[ arXiv:2003.09700](https://arxiv.org/abs/2003.09700)** (2020)
+K. Xiao, S. Tan, G. Wang, X. An, X. Wang and X. Wang, "XTDrone: A Customizable Multi-rotor UAVs Simulation Platform," 2020 4th International Conference on Robotics and Automation Sciences (ICRAS), 2020, pp. 55-61, doi: 10.1109/ICRAS49812.2020.9134922.
+
+ArXiv preprint **[ arXiv:2003.09700](https://arxiv.org/abs/2003.09700)** (2020)
 
 <img src="./images/architecture_1.png" width="640" height="480" />  
 
-Architecture for multiple vehicle simulation is shown as the below figure.  For more details, see the paper
+Architecture for multiple vehicle simulation is shown as the below figure.  For more details, please see the paper
 
-Xiao, K., Ma, L., Tan, S., Cong, Y., Wang, X.: Implementation of UAV Coordination Based on a Hierarchical Multi-UAV Simulation Platform. arXiv preprint **[ arXiv:2005.01125](https://arxiv.org/abs/2005.01125)** (2020)
+K. Xiao, L. Ma, S. Tan, Y. Cong, X. Wang: Implementation of UAV Coordination Based on a Hierarchical Multi-UAV Simulation Platform. arXiv preprint **[ arXiv:2005.01125](https://arxiv.org/abs/2005.01125)** (2020)
+
+If you use XTDrone for your academic research, please cite our related papers. 
 
 <img src="./images/architecture_2.png" width="640" />  
 

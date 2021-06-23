@@ -21,7 +21,7 @@ K. Xiao, S. Tan, G. Wang, X. An, X. Wang and X. Wang, "XTDrone: A Customizable M
 
 <img src="./images/architecture_2_cn.png" width="640" />
 
-如果使用XTDrone用于学术论文的仿真验证，希望可以引用上述的其中一篇论文。
+如果使用XTDrone用于学术论文的仿真验证，请引用上述的其中一篇论文。
 
 在这个平台上，开发者可以快速验证算法。如：
 

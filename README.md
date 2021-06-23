@@ -85,10 +85,6 @@ Xiao, K., Ma, L., Tan, S., Cong, Y., Wang, X.: Implementation of UAV Coordinatio
 
 见[XTDrone使用文档](https://www.yuque.com/xtdrone/manual_cn)
 
-### 中国机器人大赛无人机挑战赛仿真组
-
-2021年中国机器人大赛将于10月在青岛举办，比赛详情见http://robocup.drct-caa.org.cn/index.php/race/view?id=787，其中无人机挑战赛仿真组的平台使用XTDrone，欢迎大家积极报名，展示自己的风采。
-
 ### 项目团队
 
 - 创立者：肖昆，谭劭昌
@@ -104,6 +100,14 @@ Xiao, K., Ma, L., Tan, S., Cong, Y., Wang, X.: Implementation of UAV Coordinatio
 非常感谢你们为XTDrone的贡献
 
 孙长浩，聂莹，孔凡杰，李超然，李旭东，林梓涵，何瑶 
+
+### 中国机器人大赛无人机挑战赛仿真组
+
+2021年中国机器人大赛将于10月在青岛举办，比赛详情见http://robocup.drct-caa.org.cn/index.php/race/view?id=787，其中无人机挑战赛仿真组的平台使用XTDrone，欢迎大家积极报名，展示自己的风采。
+
+### 商业合作
+
+如果想与XTDrone团队建立商业合作，请联系肖昆<robin_shaun@foxmail.com>。
 
 ### 捐赠
 

@@ -97,6 +97,10 @@ Sincerely thank you for your contribution to XTDrone.
 
 Changhao Sun, Ying Nie, Fanjie Kong, Chaoran Li, Xudong Li, Zihan Lin, Yao He
 
+### Business cooperation
+
+For commercial inquiries, please contact Kun Xiao <robin_shaun@foxmail.com>.
+
 
 
 

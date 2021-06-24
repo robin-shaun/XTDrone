@@ -117,12 +117,11 @@ int main(int argc, char **argv)
 
     ros::NodeHandle nh;
         
-    //ros::Publisher pose_pub = nh.advertise<geometry_msgs::PoseStamped>("/orbslamv2/vision_pose/pose", 100);    
-	ros::Publisher pose_pub = nh.advertise<geometry_msgs::PoseStamped>("/iris_0/mavros/vision_pose/pose", 100);
+    ros::Publisher pose_pub = nh.advertise<geometry_msgs::PoseStamped>("/orbslam2/vision_pose/pose", 100);    
 	igb.SetPub(&pose_pub);
 
-    message_filters::Subscriber<sensor_msgs::Image> left_sub(nh, "/iris_0/stereo_camera/left/image_raw", 1);
-    message_filters::Subscriber<sensor_msgs::Image> right_sub(nh, "/iris_0/stereo_camera/right/image_raw", 1);
+    message_filters::Subscriber<sensor_msgs::Image> left_sub(nh, "/camera/left/image_raw", 1);
+    message_filters::Subscriber<sensor_msgs::Image> right_sub(nh, "/camera/right/image_raw", 1);
     typedef message_filters::sync_policies::ApproximateTime<sensor_msgs::Image, sensor_msgs::Image> sync_pol;
     message_filters::Synchronizer<sync_pol> sync(sync_pol(10), left_sub,right_sub);
     sync.registerCallback(boost::bind(&ImageGrabber::GrabStereo,&igb,_1,_2));

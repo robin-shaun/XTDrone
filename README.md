@@ -103,7 +103,7 @@ K. Xiao, S. Tan, G. Wang, X. An, X. Wang and X. Wang, "XTDrone: A Customizable M
 
 非常感谢你们为XTDrone的贡献
 
-孙长浩，聂莹，孔凡杰，李超然，李旭东，林梓涵，何瑶 
+孙长浩，聂莹，孔凡杰，李超然，李旭东，张华卿，林梓涵，何瑶 
 
 ### 中国机器人大赛无人机挑战赛仿真组
 

@@ -14,7 +14,7 @@ K. Xiao, S. Tan, G. Wang, X. An, X. Wang and X. Wang, "XTDrone: A Customizable M
 
 ArXiv preprint **[ arXiv:2003.09700](https://arxiv.org/abs/2003.09700)** (2020)
 
-<img src="./images/architecture_1.png" width="640" height="480" />  
+<img src="./images/architecture_1_en.png" width="640" height="480" />  
 
 Architecture for multiple vehicle simulation is shown as the below figure.  For more details, please see the paper
 
@@ -22,7 +22,7 @@ K. Xiao, L. Ma, S. Tan, Y. Cong, X. Wang: Implementation of UAV Coordination Bas
 
 If you use XTDrone for your academic research, please cite our related papers. 
 
-<img src="./images/architecture_2.png" width="640" />  
+<img src="./images/architecture_2_en.png" width="640" />  
 
 Developers can quickly verify algorithms with XTDrone, such as:
 
@@ -99,7 +99,7 @@ USV
 
 Sincerely thank you for your contribution to XTDrone.
 
-Changhao Sun, Ying Nie, Fanjie Kong, Chaoran Li, Xudong Li, Zihan Lin, Yao He
+Changhao Sun, Ying Nie, Fanjie Kong, Chaoran Li, Xudong Li, Huaqing Zhang, Zihan Lin, Yao He
 
 ### Business cooperation
 

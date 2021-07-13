@@ -24,7 +24,7 @@
       <visual name="visual">
         <geometry>
           <mesh>
-            <uri>model://hokuyo/meshes/hokuyo.dae</uri>
+            <uri>model://hokuyo_lidar/meshes/hokuyo.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -68,7 +68,7 @@
         <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
           <robotNamespace></robotNamespace>
           <topicName>scan</topicName>
-          <frameName>laser</frameName>
+          <frameName>laser_2d</frameName>
         </plugin>
         <always_on>1</always_on>
         <update_rate>500</update_rate>

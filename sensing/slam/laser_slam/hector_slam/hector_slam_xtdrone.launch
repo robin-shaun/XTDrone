@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <param name="/use_sim_time" value="true"/>
+
+  <node pkg="rviz" type="rviz" name="rviz"
+    args="-d $(find hector_slam_launch)/rviz_cfg/mapping_xtdrone.rviz"/>
+
+  <include file="$(find hector_mapping)/launch/hector_mapping_xtdrone.launch"/>
+
+  <include file="$(find hector_imu_attitude_to_tf)/launch/hector_imu_xtdrone.launch"/>
+
+</launch>

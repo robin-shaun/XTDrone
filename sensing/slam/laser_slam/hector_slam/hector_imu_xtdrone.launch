@@ -1,0 +1,8 @@
+<launch>
+  <node pkg="tf" type="static_transform_publisher" name="base_to_laser_broadcaster" args="0 0 0 0 0 0 base_link iris_0/laser_2d 100" />
+  <node pkg="hector_imu_attitude_to_tf" type="imu_attitude_to_tf_node" name="imu_attitude_to_tf_node" output="screen">
+    <remap from="imu_topic" to="/iris_0/mavros/imu/data" />
+    <param name="base_stabilized_frame" type="string" value="base_stabilized" />
+    <param name="base_frame" type="string" value="base_link" />
+  </node>
+</launch>

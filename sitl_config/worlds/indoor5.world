@@ -12,10 +12,6 @@
 </include>
 
 <include>
-<uri>model://asphalt_plane</uri>
-</include>
-
-<include>
 <uri>model://random_world</uri>
 </include>
 

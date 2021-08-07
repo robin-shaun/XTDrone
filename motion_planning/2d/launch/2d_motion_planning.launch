@@ -2,7 +2,7 @@
   <node pkg="tf" type="static_transform_publisher" name="odom_to_map"
   args="0.0 0.0 0 0.0 0.0 0.0 /odom /map 40" />
   <!-- Arguments -->
-  <arg name="motion_planning" default="/home/robin/px4/xtdrone/motion_planning"/>
+  <arg name="motion_planning" default="/home/robin/XTDrone/motion_planning/2d/"/>
   <arg name="move_forward_only" default="false"/>
   <arg name="open_rviz" default="true"/>
 

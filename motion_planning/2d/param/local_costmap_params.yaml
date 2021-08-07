@@ -1,6 +1,6 @@
 local_costmap:
   global_frame: map
-  robot_base_frame: iris_0/base_link
+  robot_base_frame: base_link
 
   update_frequency: 10.0
   publish_frequency: 10.0

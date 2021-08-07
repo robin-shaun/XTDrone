@@ -7,7 +7,7 @@
   <arg name="pub_map_odom_transform" default="true"/>
   <arg name="scan_subscriber_queue_size" default="5"/>
   <arg name="scan_topic" default="/iris_0/scan"/>
-  <arg name="map_size" default="2048"/>
+  <arg name="map_size" default="512"/>
   
   <node pkg="tf" type="static_transform_publisher" name="odom_to_map_broadcaster" args="0 0 0 0 0 0 map odom 100" />
 
@@ -26,8 +26,8 @@
     <!-- Map size / start point -->
     <param name="map_resolution" value="0.050"/>
     <param name="map_size" value="$(arg map_size)"/>
-    <param name="map_start_x" value="0.5"/>
-    <param name="map_start_y" value="0.5" />
+    <param name="map_start_x" value="0.2"/>
+    <param name="map_start_y" value="0.2" />
     <param name="map_multi_res_levels" value="2" />
     
     <!-- Map update parameters -->
@@ -53,6 +53,7 @@
     <param name="tf_map_scanmatch_transform_frame_name" value="$(arg tf_map_scanmatch_transform_frame_name)" />
 
     <remap from="/slam_out_pose" to="/iris_0/pose"/>
+    <!--remap from="/map" to="/map_new"/-->
   </node>
     
 </launch>

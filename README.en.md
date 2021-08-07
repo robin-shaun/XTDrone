@@ -50,6 +50,8 @@ Visual Dense Reconstruction
 
 <img src="./images/2d_motion_planning.gif" width="640" height="360" />  
 
+<img src="./images/2d_motion_planning_new.gif" width="640" height="360" />  
+
 3D Motion Planning
 
 <img src="./images/3d_motion_planning.gif" width="640" height="360" /> 

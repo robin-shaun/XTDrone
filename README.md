@@ -49,6 +49,8 @@ K. Xiao, S. Tan, G. Wang, X. An, X. Wang and X. Wang, "XTDrone: A Customizable M
 
 <img src="./images/2d_motion_planning.gif" width="640" height="360" />  
 
+<img src="./images/2d_motion_planning_new.gif" width="640" height="360" />  
+
 3D运动规划
 
 <img src="./images/3d_motion_planning.gif" width="640" height="360" />  

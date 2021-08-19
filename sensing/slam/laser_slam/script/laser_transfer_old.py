@@ -2,7 +2,7 @@ import rospy
 from gazebo_msgs.srv import GetModelState
 from geometry_msgs.msg import PoseStamped, Pose2D
 from nav_msgs.msg import Odometry
-import tf
+from tf2_ros import TransformListener, Buffer
 import sys
 
 vehicle_type = sys.argv[1]
@@ -18,11 +18,6 @@ def odm_groundtruth_callback(msg):
     global local_pose
     local_pose.header.stamp = msg.header.stamp
     local_pose.pose.position.z  = msg.pose.pose.position.z
-    
-def odm_aloam_callback(msg):
-    global local_pose
-    local_pose.header.stamp = msg.header.stamp
-    local_pose.pose = msg.pose.pose
 
 def laser_scan_matcher_callback(data):
     global laser_scan
@@ -46,8 +41,16 @@ def laser_scan_matcher():
         
 def aloam():
     global local_pose
-    rate = rospy.Rate(100)
-    while True:
+    rate = rospy.Rate(30)
+    while not rospy.is_shutdown():
+        try:
+            tfstamped = tfBuffer.lookup_transform('camera_init', 'aft_mapped', rospy.Time(0))
+        except:
+            continue
+        local_pose.header.stamp = rospy.Time().now()
+        local_pose.header.frame_id = 'map'
+        local_pose.pose.position = tfstamped.transform.translation
+        local_pose.pose.orientation = tfstamped.transform.rotation
         pose_pub.publish(local_pose)
         rate.sleep()
     
@@ -57,7 +60,6 @@ if __name__ == '__main__':
         odom_groundtruth_sub = rospy.Subscriber('/xtdrone/'+vehicle_type+'_'+ vehicle_id+'/ground_truth/odom', Odometry, odm_groundtruth_callback)
         laser_scan_matcher()
     elif laser_slam_type == '3d':
-        odom_aloam_sub = rospy.Subscriber('/laser_odom_to_init', Odometry, odm_aloam_callback)
         aloam()
     else:
         print('input error')

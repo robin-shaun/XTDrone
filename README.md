@@ -111,6 +111,11 @@ K. Xiao, S. Tan, G. Wang, X. An, X. Wang and X. Wang, "XTDrone: A Customizable M
 
 2021年中国机器人大赛将于10月在青岛举办，比赛详情见http://robocup.drct-caa.org.cn/index.php/race/view?id=787，其中无人机挑战赛仿真组的平台使用XTDrone，欢迎大家积极报名，展示自己的风采。
 
+### 无人机仿真开发课程
+
+XTDrone与开课吧合作，推出了无人机仿真开发，欢迎大家报名。
+<img src="./images/course_tag.jpg" width="360" height="360" /> 
+
 ### 商业合作
 
 如果想与XTDrone团队建立商业合作，请联系肖昆<robin_shaun@foxmail.com>。

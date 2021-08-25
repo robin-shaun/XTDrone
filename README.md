@@ -113,7 +113,7 @@ K. Xiao, S. Tan, G. Wang, X. An, X. Wang and X. Wang, "XTDrone: A Customizable M
 
 ### 无人机仿真开发课程
 
-XTDrone与开课吧合作，推出了无人机仿真开发，欢迎大家报名。
+XTDrone与开课吧合作，推出了无人机仿真开发课程，欢迎大家报名。
 <img src="./images/course_tag.jpg" width="360" height="360" /> 
 
 ### 商业合作

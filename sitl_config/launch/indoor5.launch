@@ -45,6 +45,7 @@
         <arg name="respawn_gazebo" value="$(arg respawn_gazebo)"/>
     </include>
     <!-- MAVROS -->
+    <group ns="iris_0">
     <include file="$(find mavros)/launch/px4.launch">
         <!-- GCS link is provided by SITL -->
         <arg name="gcs_url" value=""/>

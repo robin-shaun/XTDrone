@@ -139,7 +139,7 @@ class Communication:
             self.mission = msg.data
             print(self.vehicle_type+'_'+self.vehicle_id+": "+msg.data)
 
-        elif not msg.data == self.flight_mode:
+        else:
             self.flight_mode = msg.data
             self.flight_mode_switch()
 

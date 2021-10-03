@@ -1,4 +1,3 @@
-#! /usr/bin/env python
 import rospy
 from gazebo_msgs.msg import ModelState
 
@@ -11,7 +10,7 @@ def pose_publisher():
            pose_msg.pose.position.x = -2
            pose_msg.pose.position.y = 7.5
            pose_msg.pose.position.z = 1
-           #同理也可以改orientation
+           #same for orientation
            pub.publish(pose_msg)
            rate.sleep()
 

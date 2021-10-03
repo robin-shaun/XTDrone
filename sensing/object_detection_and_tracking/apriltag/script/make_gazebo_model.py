@@ -13,7 +13,7 @@ parser = argparse.ArgumentParser(
 )
 parser.add_argument(
     '-i', '--images-dir',
-    default="$HOME/gazebo_models/ar_tags/images",
+    default="$HOME//XTDrone/sensing/object_detection_and_tracking/apriltag/image/",
     help='directory where the marker images are located')
 parser.add_argument(
     '-g', '--gazebodir',

@@ -696,18 +696,14 @@
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-         <box>
-            <size>0.015 0.1 0.02</size>
-          </box>
+         <box size="0.015 0.1 0.02" />
         </geometry>
       </collision>
 
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <box>
-            <size>0.015 0.1 0.02</size>
-          </box>
+          <box size="0.015 0.1 0.02" />
         </geometry>
       </visual>
 

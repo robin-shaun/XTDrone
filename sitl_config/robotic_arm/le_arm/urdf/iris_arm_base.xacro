@@ -202,7 +202,10 @@
   </xacro:if>
 
   <!-- Instantiate a VI sensor. -->
-  <xacro:vi_sensor_macro namespace="$(arg name)" parent_link="base_link">
+  <!-- <xacro:vi_sensor_macro namespace="$(arg name)" parent_link="base_link">
   <origin xyz="0.2 0.0 0.0" rpy="0.0 0.0 0.0" />
-  </xacro:vi_sensor_macro>
+  </xacro:vi_sensor_macro> -->
+
+  <xacro:include filename="$(find le_arm)/urdf/sensors/camera.urdf.xacro"/>
+
 </robot>

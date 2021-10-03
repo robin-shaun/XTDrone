@@ -188,6 +188,7 @@ class Communication:
     def hover_state_transition(self,x,y,z,w):
         if abs(x) > 0.005 or abs(y) > 0.005 or abs(z) > 0.005 or abs(w) > 0.005:
             self.hover_flag = 0
+            self.flight_mode = 'OFFBOARD'
             
     def cmd_callback(self, msg):
         if msg.data == '':

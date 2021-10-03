@@ -4037,10 +4037,6 @@
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
-<<<<<<< HEAD
-=======
-
->>>>>>> f5abb49c166678aab83abf9f9a2d0649e4f4eead
       <model name='sidewalk_10'>
         <pose frame=''>0 0 0 0 -0 0</pose>
         <scale>1 1 1</scale>

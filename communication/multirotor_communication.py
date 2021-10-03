@@ -1,4 +1,5 @@
 import rospy
+import math
 from mavros_msgs.msg import State, PositionTarget
 from mavros_msgs.srv import CommandBool, SetMode
 from geometry_msgs.msg import PoseStamped, Pose, Twist
@@ -60,9 +61,9 @@ class Communication:
         while not rospy.is_shutdown():
             self.target_motion_pub.publish(self.target_motion)
             
-            if (self.flight_mode is "LAND") and (self.current_position.z < 0.15):
-                if(self.disarm()):
-                    self.flight_mode = "DISARMED"
+            # if (self.flight_mode is "LAND") and (self.current_position.z < 0.15):
+            #     if(self.disarm()):
+            #         self.arm_state = "DISARMED"
                     
             try:
                 response = self.gazeboModelstate (self.vehicle_type+'_'+self.vehicle_id,'ground_plane')
@@ -109,7 +110,7 @@ class Communication:
         if(self.motion_type == 1):
             target_raw_pose.type_mask = PositionTarget.IGNORE_PX + PositionTarget.IGNORE_PY + PositionTarget.IGNORE_PZ \
                             + PositionTarget.IGNORE_AFX + PositionTarget.IGNORE_AFY + PositionTarget.IGNORE_AFZ \
-                            + PositionTarget.IGNORE_YAW
+                            + PositionTarget.IGNORE_YAW_RATE
         if(self.motion_type == 2):
             target_raw_pose.type_mask = PositionTarget.IGNORE_PX + PositionTarget.IGNORE_PY + PositionTarget.IGNORE_PZ \
                             + PositionTarget.IGNORE_VX + PositionTarget.IGNORE_VY + PositionTarget.IGNORE_VZ \
@@ -134,7 +135,7 @@ class Communication:
         if self.hover_flag == 0:
             self.coordinate_frame = 8
             self.motion_type = 1     
-            self.target_motion = self.construct_target(vx=msg.linear.x,vy=msg.linear.y,vz=msg.linear.z,yaw_rate=msg.angular.z)       
+            self.target_motion = self.construct_target(vx=msg.linear.x,vy=msg.linear.y,vz=msg.linear.z,yaw = -math.pi/2)       
  
     def cmd_vel_enu_callback(self, msg):
         self.hover_state_transition(msg.linear.x, msg.linear.y, msg.linear.z, msg.angular.z)

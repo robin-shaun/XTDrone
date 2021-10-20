@@ -1,4 +1,4 @@
-# XTDrone
+<img src="./images/logo.jpg" width="256"  />
 
 <div id="sidebar"><a href="./README.md" target="_blank"><font color=#0000FF size=5px >[中文版]<font></center><a></div>
 

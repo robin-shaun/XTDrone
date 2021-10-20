@@ -135,7 +135,7 @@ class Communication:
         if self.hover_flag == 0:
             self.coordinate_frame = 8
             self.motion_type = 1     
-            self.target_motion = self.construct_target(vx=msg.linear.x,vy=msg.linear.y,vz=msg.linear.z,yaw = -math.pi/2)       
+            self.target_motion = self.construct_target(vx=msg.linear.x,vy=msg.linear.y,vz=msg.linear.z,yaw = msg.angular.z)       
  
     def cmd_vel_enu_callback(self, msg):
         self.hover_state_transition(msg.linear.x, msg.linear.y, msg.linear.z, msg.angular.z)

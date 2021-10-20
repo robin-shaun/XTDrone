@@ -60,14 +60,14 @@ def kinematic_analysis(x, y, z, Alpha):
         zf_flag = -1
     else:
         zf_flag = 1
-    theta5 = alpha * zf_flag + acos(bbb)
+    theta5 = alpha * zf_flag - acos(bbb)
     theta5 = theta5 * 180.0 / pi
     if theta5 > 180.0 or theta5 < 0:
         return False
 
-    theta3 = Alpha - theta5 + theta4
-    if theta3 > 90.0 or theta3 < -90.0:
-        return False
+    theta3 = theta5 + theta4 - Alpha
+    # if theta3 > 90.0 or theta3 < -90.0:
+    #     return False
     return theta3, theta4, theta5, theta6     # 运行成功返回数据
 
 
@@ -90,7 +90,7 @@ def ki_move(x, y, z, movetime):#x，y，z为给定坐标，movetime为舵机转�
         else:
             best_alpha = min(alpha_list)
         theta3, theta4, theta5, theta6 = kinematic_analysis(x, y, z, best_alpha)
-        print(theta3, theta4, theta5, theta6)
+        print(theta3, theta4, theta5, theta6, best_alpha)
         pwm_6 = int(2000.0 * theta6 / 180.0 + 500.0)
         pwm_5 = int(2000.0 * (90.0 - theta5) / 180.0 + 1500.0)
         pwm_4 = int(2000.0 * (135.0 - theta4) / 270.0 + 500.0)
@@ -103,6 +103,6 @@ def ki_move(x, y, z, movetime):#x，y，z为给定坐标，movetime为舵机转�
 
 if __name__ == '__main__':
      try:
-        ki_move(1250,0,200,1000)
+        ki_move(1250,0,1500,1000)
      except Exception as e:
          print(e)

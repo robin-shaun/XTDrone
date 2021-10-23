@@ -110,7 +110,7 @@ class Communication:
         if(self.motion_type == 1):
             target_raw_pose.type_mask = PositionTarget.IGNORE_PX + PositionTarget.IGNORE_PY + PositionTarget.IGNORE_PZ \
                             + PositionTarget.IGNORE_AFX + PositionTarget.IGNORE_AFY + PositionTarget.IGNORE_AFZ \
-                            + PositionTarget.IGNORE_YAW_RATE
+                            + PositionTarget.IGNORE_YAW
         if(self.motion_type == 2):
             target_raw_pose.type_mask = PositionTarget.IGNORE_PX + PositionTarget.IGNORE_PY + PositionTarget.IGNORE_PZ \
                             + PositionTarget.IGNORE_VX + PositionTarget.IGNORE_VY + PositionTarget.IGNORE_VZ \
@@ -135,7 +135,7 @@ class Communication:
         if self.hover_flag == 0:
             self.coordinate_frame = 8
             self.motion_type = 1     
-            self.target_motion = self.construct_target(vx=msg.linear.x,vy=msg.linear.y,vz=msg.linear.z,yaw = msg.angular.z)       
+            self.target_motion = self.construct_target(vx=msg.linear.x,vy=msg.linear.y,vz=msg.linear.z,yaw_rate=msg.angular.z)       
  
     def cmd_vel_enu_callback(self, msg):
         self.hover_state_transition(msg.linear.x, msg.linear.y, msg.linear.z, msg.angular.z)

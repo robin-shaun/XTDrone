@@ -27,13 +27,13 @@
         <!-- PX4 SITL and vehicle spawn -->
         <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
             <arg name="x" value="0"/>
-            <arg name="y" value="3"/>
+            <arg name="y" value="0"/>
             <arg name="z" value="0"/>
             <arg name="R" value="0"/>
             <arg name="P" value="0"/>
             <arg name="Y" value="0"/>
             <arg name="vehicle" value="iris"/>
-            <arg name="sdf" value="iris_3d_lidar_gpu"/>
+            <arg name="sdf" value="iris_3d_gpu_lidar"/>
             <arg name="mavlink_udp_port" value="18570"/>
             <arg name="mavlink_tcp_port" value="4560"/>
             <arg name="ID" value="$(arg ID)"/>

@@ -164,7 +164,7 @@ class Communication:
             self.flight_mode = 'OFFBOARD'
 
     def cmd_callback(self, msg):
-        if msg.data == '':
+        if msg.data == '' or msg.data == 'stop controlling':
             return
 
         elif msg.data == 'ARM':

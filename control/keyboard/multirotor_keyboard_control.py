@@ -100,7 +100,7 @@ if __name__=="__main__":
     cmd= String()
     twist = Twist()   
     
-    rospy.init_node(multirotor_type + '/multirotor_keyboard_control')
+    rospy.init_node(multirotor_type + '_multirotor_keyboard_control')
     
     if control_type == 'vel':
         multi_cmd_vel_flu_pub = [None]*multirotor_num

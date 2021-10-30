@@ -90,7 +90,7 @@ if __name__=="__main__":
     vehicle_num = int(sys.argv[2])
     control_type = sys.argv[3]
     
-    rospy.init_node('vtol_keyboard_multi_control')
+    rospy.init_node(vehicle_type + '/vtol_keyboard_control')
     multi_cmd_pose_enu_pub = [None]*vehicle_num
     multi_cmd_vel_flu_pub = [None]*vehicle_num
     multi_cmd_pub = [None]*vehicle_num

@@ -86,7 +86,7 @@ if __name__=="__main__":
     settings = termios.tcgetattr(sys.stdin)
 
     plane_num = int(sys.argv[1])
-    rospy.init_node('plane_keyboard_multi_control')
+    rospy.init_node('plane_keyboard_control')
     multi_cmd_vel_flu_pub = [None]*plane_num
     multi_cmd_pub = [None]*plane_num
     for i in range(plane_num):

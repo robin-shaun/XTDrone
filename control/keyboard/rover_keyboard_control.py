@@ -82,7 +82,7 @@ if __name__=="__main__":
     settings = termios.tcgetattr(sys.stdin)
 
     rover_num = int(sys.argv[1])
-    rospy.init_node('rover_keyboard_multi_control')
+    rospy.init_node('rover_keyboard_control')
     multi_cmd_vel_flu_pub = [None]*rover_num
     multi_cmd_pub = [None]*rover_num
     for i in range(rover_num):

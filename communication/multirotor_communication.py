@@ -67,8 +67,8 @@ class Communication:
                     
             try:
                 response = self.gazeboModelstate (self.vehicle_type+'_'+self.vehicle_id,'ground_plane')
-            except rospy.ServiceException, e:
-                print "Gazebo model state service call failed: %s"%e
+            except rospy.ServiceException as e:
+                print("Gazebo model state service call failed: %s"%e)
             odom = Odometry()
             odom.header = response.header
             odom.pose.pose = response.pose

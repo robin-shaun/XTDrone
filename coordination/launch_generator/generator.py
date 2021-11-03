@@ -28,6 +28,7 @@ input_msg=  """
 5.  tiltrotor
 6.  tailsitter
 7.  standard_vtol
+8.  plane_gimbal
 Enter the TYPE_ID to add a vehicle type.
 Then enter f to generate!
 (defalt type is "iris")
@@ -42,6 +43,7 @@ TYPE_ID_DICT = {
     "tiltrotor" : 5,
     "tailsitter" : 6,
     "standard_vtol" : 7,
+    "plane_gimbal" : 8
 }
 
 
@@ -92,7 +94,7 @@ with open('multi_vehicle.launch','w') as f:
         # While "iris_stereo_camera" is the model name,
         # and we only need the "iris" to publish those topics.
         
-        if "h480" in sdf_name or "vtol" in sdf_name:
+        if "h480" in sdf_name or "vtol" in sdf_name or "plane_gimbal" in sdf_name:
             type_name = sdf_name.split('_')[0]+'_'+sdf_name.split('_')[1]
         else:
             type_name = sdf_name.split('_')[0]

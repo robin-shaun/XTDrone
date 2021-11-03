@@ -1466,7 +1466,7 @@
 
         <include>
       <uri>model://stereo_camera</uri>
-      <pose>-0.1 0 0 0 0 0</pose>
+      <pose>0.1 0 0 0 0 0</pose>
     </include>
     <joint name="stereo_joint" type="fixed">
       <child>stereo_camera::link</child>

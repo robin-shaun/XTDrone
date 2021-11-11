@@ -22,8 +22,8 @@ def pose_callback(msg, id):
 
 rospy.init_node('avoid')
 for i in range(vehicle_num):
-    pose_sub[i] = rospy.Subscriber(vehicle_type+'_'+str(i)+'/mavros/local_position/pose',PoseStamped,pose_callback,i)
-    avoid_vel_pub[i] = rospy.Publisher("/xtdrone/"+vehicle_type+'_'+str(i)+"/avoid_vel", Vector3,queue_size=10)
+    pose_sub[i] = rospy.Subscriber(vehicle_type+'_'+str(i)+'/mavros/local_position/pose',PoseStamped,pose_callback,i,queue_size=1)
+    avoid_vel_pub[i] = rospy.Publisher("/xtdrone/"+vehicle_type+'_'+str(i)+"/avoid_vel", Vector3,queue_size=1)
 
 time.sleep(1)
 rate = rospy.Rate(50)

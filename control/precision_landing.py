@@ -17,8 +17,8 @@ if __name__ == '__main__':
     local_pose = PoseStamped()
     Kp = 1.0
     land_vel = 0.5
-    rospy.Subscriber(vehicle_type+'_'+vehicle_id+"/mavros/local_position/pose", PoseStamped, local_pose_callback)
-    cmd_vel_pub = rospy.Publisher('/xtdrone/'+vehicle_type+'_'+vehicle_id+'/cmd_vel_enu', Twist, queue_size=2)
+    rospy.Subscriber(vehicle_type+'_'+vehicle_id+"/mavros/local_position/pose", PoseStamped, local_pose_callback,queue_size=1)
+    cmd_vel_pub = rospy.Publisher('/xtdrone/'+vehicle_type+'_'+vehicle_id+'/cmd_vel_enu', Twist, queue_size=1)
     rate = rospy.Rate(50)
     while not rospy.is_shutdown():
         try:

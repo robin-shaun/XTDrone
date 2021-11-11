@@ -52,7 +52,7 @@ rospy.init_node('visualize')
 rate = rospy.Rate(1/step_time)
 
 for i in range(uav_num):
-    rospy.Subscriber(uav_type+'_'+str(i)+'/mavros/local_position/pose', PoseStamped, pose_sub_callback,i)  
+    rospy.Subscriber(uav_type+'_'+str(i)+'/mavros/local_position/pose', PoseStamped, pose_sub_callback,i, queue_size=1)  
 
 try:
     while not rospy.is_shutdown():

@@ -115,9 +115,9 @@ def img_callback(msg):
 if __name__ == "__main__":
     ugv_num = sys.argv[1]
     rospy.init_node("lane_detection_"+ugv_num)
-    img_sub = rospy.Subscriber("/ugv_"+ugv_num+"/triclops/triclops/left/image", Image, callback=img_callback)
-    img_processed_pub = rospy.Publisher("/ugv_"+ugv_num+"/image_lane", Image,queue_size=2)
-    lane_mid_error_pub = rospy.Publisher("/ugv_"+ugv_num+"/lane_mid_error",Int16,queue_size=2)
+    img_sub = rospy.Subscriber("/ugv_"+ugv_num+"/triclops/triclops/left/image", Image, callback=img_callback,queue_size=1)
+    img_processed_pub = rospy.Publisher("/ugv_"+ugv_num+"/image_lane", Image,queue_size=1)
+    lane_mid_error_pub = rospy.Publisher("/ugv_"+ugv_num+"/lane_mid_error",Int16,queue_size=1)
     img_processed = Image()
     lane_mid_error = Int16()
     rate = rospy.Rate(50)

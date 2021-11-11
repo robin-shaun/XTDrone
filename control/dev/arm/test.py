@@ -14,7 +14,7 @@ def link_states_callback(msg):
         pass 
 
 rospy.init_node('test')
-rospy.Subscriber("/gazebo/link_states", LinkStates, link_states_callback)
+rospy.Subscriber("/gazebo/link_states", LinkStates, link_states_callback,queue_size=1)
 
 rate = rospy.Rate(20) 
         

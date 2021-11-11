@@ -26,10 +26,10 @@ class Tracker():
         self.camera_pose = Pose()
         # self.plot_3d()
         rospy.init_node(vehicle_type+'_'+vehicle_id+'_visual_servo')
-        rospy.Subscriber(vehicle_type+'_'+vehicle_id+'/realsense/depth_camera/color/image_raw', Image, self.image_callback)
-        rospy.Subscriber(vehicle_type+'_'+vehicle_id+'/realsense/depth_camera/color/camera_info', CameraInfo, self.camera_info_callback)
-        rospy.Subscriber("/gazebo/link_states", LinkStates, self.link_states_callback)
-        self.image_pub = rospy.Publisher(vehicle_type+'_'+vehicle_id+'/visual_servo/image', Image, queue_size=2)
+        rospy.Subscriber(vehicle_type+'_'+vehicle_id+'/realsense/depth_camera/color/image_raw', Image, self.image_callback,queue_size=1)
+        rospy.Subscriber(vehicle_type+'_'+vehicle_id+'/realsense/depth_camera/color/camera_info', CameraInfo, self.camera_info_callback,queue_size=1)
+        rospy.Subscriber("/gazebo/link_states", LinkStates, self.link_states_callback,queue_size=1)
+        self.image_pub = rospy.Publisher(vehicle_type+'_'+vehicle_id+'/visual_servo/image', Image, queue_size=1)
 
         rate = rospy.Rate(20) 
         

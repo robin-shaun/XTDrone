@@ -21,8 +21,8 @@ def lane_mid_error_callback(msg):
 
 if __name__ == "__main__":
     rospy.init_node('rover_self_driving')
-    cmd_vel_flu_pub = rospy.Publisher('/xtdrone/rover_0/cmd_vel_flu', Twist, queue_size=2)
-    lane_mid_error_sub = rospy.Subscriber("/rover_0/lane_mid_error",Int16,callback=lane_mid_error_callback)                                   
+    cmd_vel_flu_pub = rospy.Publisher('/xtdrone/rover_0/cmd_vel_flu', Twist, queue_size=1)
+    lane_mid_error_sub = rospy.Subscriber("/rover_0/lane_mid_error",Int16,callback=lane_mid_error_callback,queue_size=1)                                   
     twist = Twist()
     rate = rospy.Rate(50)
     while not rospy.is_shutdown():

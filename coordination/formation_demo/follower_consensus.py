@@ -51,21 +51,16 @@ class Follower:
         self.following_local_pose_sub = [[] for i in range(
             self.uav_num)]
         self.arrive_count = 0
-        self.local_pose_sub = rospy.Subscriber(self.uav_type + '_' + str(self.id) + "/mavros/local_position/pose",
-                                               PoseStamped, self.local_pose_callback)
-        self.avoid_vel_sub = rospy.Subscriber("/xtdrone/" + self.uav_type + '_' + str(self.id) + "/avoid_vel", Vector3,
-                                              self.avoid_vel_callback)
-        self.formation_switch_sub = rospy.Subscriber("/xtdrone/formation_switch", String,
-                                                     self.formation_switch_callback)
-        self.vel_enu_pub = rospy.Publisher('/xtdrone/' + self.uav_type + '_' + str(self.id) + '/cmd_vel_enu', Twist,
-                                           queue_size=10)
-        self.info_pub = rospy.Publisher('/xtdrone/' + self.uav_type + '_' + str(self.id) + '/info', String,
-                                        queue_size=10)
-        self.cmd_pub = rospy.Publisher('/xtdrone/' + self.uav_type + '_' + str(self.id) + '/cmd', String, queue_size=10)
+        self.local_pose_sub = rospy.Subscriber(self.uav_type + '_' + str(self.id) + "/mavros/local_position/pose", PoseStamped, self.local_pose_callback,queue_size=1)
+        self.avoid_vel_sub = rospy.Subscriber("/xtdrone/" + self.uav_type + '_' + str(self.id) + "/avoid_vel", Vector3, self.avoid_vel_callback,queue_size=1)
+        self.formation_switch_sub = rospy.Subscriber("/xtdrone/formation_switch", String, self.formation_switch_callback, queue_size=1)
+        self.vel_enu_pub = rospy.Publisher('/xtdrone/' + self.uav_type + '_' + str(self.id) + '/cmd_vel_enu', Twist, queue_size=1)
+        self.info_pub = rospy.Publisher('/xtdrone/' + self.uav_type + '_' + str(self.id) + '/info', String, queue_size=1)
+        self.cmd_pub = rospy.Publisher('/xtdrone/' + self.uav_type + '_' + str(self.id) + '/cmd', String, queue_size=1)
         for i in range(self.uav_num):
             self.following_local_pose_sub[i] = rospy.Subscriber(
                 self.uav_type + '_' + str(i) + "/mavros/local_position/pose", PoseStamped,
-                self.following_local_pose_callback, i)
+                self.following_local_pose_callback, i, queue_size=1)
         self.first_formation = True
         self.orig_formation = None
         self.new_formation = None

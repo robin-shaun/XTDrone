@@ -106,19 +106,19 @@ if __name__=="__main__":
         multi_cmd_vel_flu_pub = [None]*multirotor_num
         multi_cmd_pub = [None]*multirotor_num
         for i in range(multirotor_num):
-            multi_cmd_vel_flu_pub[i] = rospy.Publisher('/xtdrone/'+multirotor_type+'_'+str(i)+'/cmd_vel_flu', Twist, queue_size=10)
-            multi_cmd_pub[i] = rospy.Publisher('/xtdrone/'+multirotor_type+'_'+str(i)+'/cmd',String,queue_size=10)
-        leader_cmd_vel_flu_pub = rospy.Publisher("/xtdrone/leader/cmd_vel_flu", Twist, queue_size=10)
-        leader_cmd_pub = rospy.Publisher("/xtdrone/leader/cmd", String, queue_size=10)
+            multi_cmd_vel_flu_pub[i] = rospy.Publisher('/xtdrone/'+multirotor_type+'_'+str(i)+'/cmd_vel_flu', Twist, queue_size=1)
+            multi_cmd_pub[i] = rospy.Publisher('/xtdrone/'+multirotor_type+'_'+str(i)+'/cmd',String,queue_size=1)
+        leader_cmd_vel_flu_pub = rospy.Publisher("/xtdrone/leader/cmd_vel_flu", Twist, queue_size=1)
+        leader_cmd_pub = rospy.Publisher("/xtdrone/leader/cmd", String, queue_size=1)
  
     else:
         multi_cmd_accel_flu_pub = [None]*multirotor_num
         multi_cmd_pub = [None]*multirotor_num
         for i in range(multirotor_num):
-            multi_cmd_accel_flu_pub[i] = rospy.Publisher('/xtdrone/'+multirotor_type+'_'+str(i)+'/cmd_accel_flu', Twist, queue_size=10)
-            multi_cmd_pub[i] = rospy.Publisher('/xtdrone/'+multirotor_type+'_'+str(i)+'/cmd',String,queue_size=10)
-        leader_cmd_accel_flu_pub = rospy.Publisher("/xtdrone/leader/cmd_accel_flu", Twist, queue_size=10)
-        leader_cmd_pub = rospy.Publisher("/xtdrone/leader/cmd", String, queue_size=10)
+            multi_cmd_accel_flu_pub[i] = rospy.Publisher('/xtdrone/'+multirotor_type+'_'+str(i)+'/cmd_accel_flu', Twist, queue_size=1)
+            multi_cmd_pub[i] = rospy.Publisher('/xtdrone/'+multirotor_type+'_'+str(i)+'/cmd',String,queue_size=1)
+        leader_cmd_accel_flu_pub = rospy.Publisher("/xtdrone/leader/cmd_accel_flu", Twist, queue_size=1)
+        leader_cmd_pub = rospy.Publisher("/xtdrone/leader/cmd", String, queue_size=1)
 
     forward  = 0.0
     leftward  = 0.0

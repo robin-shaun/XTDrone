@@ -85,10 +85,10 @@ if __name__=="__main__":
     multi_left_thrust_pub = [None]*usv_num
     multi_right_thrust_pub = [None]*usv_num
     for i in range(usv_num):
-        multi_left_thrust_pub[i] = rospy.Publisher('/usv_'+str(i)+'/thrusters/left_thrust_cmd', Float32, queue_size=10)
-        multi_right_thrust_pub[i] = rospy.Publisher('/usv_'+str(i)+'/thrusters/right_thrust_cmd', Float32, queue_size=10)
-    leader_left_thrust_pub = rospy.Publisher("/usv/leader/left_thrust_cmd", Float32, queue_size=10)
-    leader_right_thrust_pub = rospy.Publisher("/usv/leader/right_thrust_cmd", Float32, queue_size=10)
+        multi_left_thrust_pub[i] = rospy.Publisher('/usv_'+str(i)+'/thrusters/left_thrust_cmd', Float32, queue_size=1)
+        multi_right_thrust_pub[i] = rospy.Publisher('/usv_'+str(i)+'/thrusters/right_thrust_cmd', Float32, queue_size=1)
+    leader_left_thrust_pub = rospy.Publisher("/usv/leader/left_thrust_cmd", Float32, queue_size=1)
+    leader_right_thrust_pub = rospy.Publisher("/usv/leader/right_thrust_cmd", Float32, queue_size=1)
     left_thrust_cmd = Float32()
     right_thrust_cmd = Float32()
 

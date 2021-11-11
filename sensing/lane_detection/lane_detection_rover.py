@@ -113,9 +113,9 @@ def img_callback(msg):
 
 if __name__ == "__main__":
     rospy.init_node("lane_detection")
-    img_sub = rospy.Subscriber("/rover_0/front_cam/left/image_raw", Image, callback=img_callback)
-    img_processed_pub = rospy.Publisher("/rover_0/image_lane", Image,queue_size=2)
-    lane_mid_error_pub = rospy.Publisher("/rover_0/lane_mid_error",Int16,queue_size=2)
+    img_sub = rospy.Subscriber("/rover_0/front_cam/left/image_raw", Image, callback=img_callback,queue_size=1)
+    img_processed_pub = rospy.Publisher("/rover_0/image_lane", Image,queue_size=1)
+    lane_mid_error_pub = rospy.Publisher("/rover_0/lane_mid_error",Int16,queue_size=1)
     img_processed = Image()
     lane_mid_error = Int16()
     rate = rospy.Rate(50)

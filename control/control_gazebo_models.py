@@ -2,7 +2,7 @@ import rospy
 from gazebo_msgs.msg import ModelState
 
 def pose_publisher():
-    pub = rospy.Publisher('gazebo/set_model_state', ModelState, queue_size=10)
+    pub = rospy.Publisher('gazebo/set_model_state', ModelState, queue_size=1)
     pose_msg = ModelState()
     pose_msg.model_name = 'iris_0'
     rate = rospy.Rate(30)

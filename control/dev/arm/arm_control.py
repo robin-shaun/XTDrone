@@ -91,8 +91,8 @@ if __name__ == '__main__':
     local_pose = PoseStamped()
     time_cnt = 0
     z_cnt = 0
-    cmd_vel_pub = rospy.Publisher('/xtdrone/'+vehicle_type+'_'+vehicle_id+'/cmd_vel_flu', Twist, queue_size=2)
-    rospy.Subscriber(vehicle_type+'_'+vehicle_id+"/mavros/vision_pose/pose", PoseStamped, local_pose_callback)
+    cmd_vel_pub = rospy.Publisher('/xtdrone/'+vehicle_type+'_'+vehicle_id+'/cmd_vel_flu', Twist, queue_size=1)
+    rospy.Subscriber(vehicle_type+'_'+vehicle_id+"/mavros/vision_pose/pose", PoseStamped, local_pose_callback,queue_size=1)
     tfBuffer = Buffer()
     tflistener = TransformListener(tfBuffer)
     rate = rospy.Rate(1)

@@ -24,8 +24,8 @@ def vision_callback(data):
     local_pose.pose.orientation.z = q_[3]
     
 rospy.init_node(vehicle_type+"_"+vehicle_id+'_ego_transfer')
-rospy.Subscriber(vehicle_type+"_"+vehicle_id+"/mavros/vision_pose/pose", PoseStamped, vision_callback)
-position_pub = rospy.Publisher(vehicle_type+"_"+vehicle_id+"/camera_pose", PoseStamped, queue_size=2)
+rospy.Subscriber(vehicle_type+"_"+vehicle_id+"/mavros/vision_pose/pose", PoseStamped, vision_callback,queue_size=1)
+position_pub = rospy.Publisher(vehicle_type+"_"+vehicle_id+"/camera_pose", PoseStamped, queue_size=1)
 rate = rospy.Rate(60) 
 
 while not rospy.is_shutdown():

@@ -83,8 +83,8 @@ class Px4Controller:
         self.gcs_cmd_sub = rospy.Subscriber("/formation_gcs/cmd", String, self.gcs_cmd_callback)
 
         # ros publishers
-        self.local_target_pub = rospy.Publisher(self.namespace + '/mavros/setpoint_raw/local', PositionTarget, queue_size=10)
-        self.twist_target_pub = rospy.Publisher(self.namespace + '/mavros/setpoint_velocity/cmd_vel', TwistStamped, queue_size=10)
+        self.local_target_pub = rospy.Publisher(self.namespace + '/mavros/setpoint_raw/local', PositionTarget, queue_size=1)
+        self.twist_target_pub = rospy.Publisher(self.namespace + '/mavros/setpoint_velocity/cmd_vel', TwistStamped, queue_size=1)
 
         # ros services
         self.armService = rospy.ServiceProxy(self.namespace + '/mavros/cmd/arming', CommandBool)

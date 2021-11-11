@@ -14,7 +14,7 @@ if __name__ == "__main__":
     actor_id = sys.argv[1]
     rospy.init_node('control_actor_'+actor_id)
     cmd_motion = ActorMotion(x=float(sys.argv[2]),y=int(sys.argv[3]),v=int(sys.argv[4]))
-    cmd_motion_pub = rospy.Publisher('/actor_' + actor_id + '/cmd_motion', ActorMotion, queue_size=2)
+    cmd_motion_pub = rospy.Publisher('/actor_' + actor_id + '/cmd_motion', ActorMotion, queue_size=1)
     rate = rospy.Rate(20)
     while not rospy.is_shutdown():
         cmd_motion_pub.publish(cmd_motion)

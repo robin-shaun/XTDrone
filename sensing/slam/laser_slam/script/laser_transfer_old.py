@@ -9,7 +9,7 @@ vehicle_type = sys.argv[1]
 vehicle_id = sys.argv[2]
 laser_slam_type = sys.argv[3]
 rospy.init_node(vehicle_type+vehicle_id+'_'+laser_slam_type+'_laser_transfer')
-pose_pub = rospy.Publisher(vehicle_type+'_'+ vehicle_id+"/mavros/vision_pose/pose", PoseStamped, queue_size=2)
+pose_pub = rospy.Publisher(vehicle_type+'_'+ vehicle_id+"/mavros/vision_pose/pose", PoseStamped, queue_size=1)
 local_pose = PoseStamped()
 local_pose.header.frame_id = 'map'
 laser_scan = Pose2D()
@@ -25,7 +25,7 @@ def laser_scan_matcher_callback(data):
     
 def laser_scan_matcher():
     global local_pose
-    pose2d_sub = rospy.Subscriber(vehicle_type+'_'+ vehicle_id+"/pose2D", Pose2D, laser_scan_matcher_callback)
+    pose2d_sub = rospy.Subscriber(vehicle_type+'_'+ vehicle_id+"/pose2D", Pose2D, laser_scan_matcher_callback,queue_size=1)
     rate = rospy.Rate(100)
     while True:
         local_pose.header.stamp = rospy.Time.now()

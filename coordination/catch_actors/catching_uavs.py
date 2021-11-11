@@ -29,9 +29,8 @@ class CatchingPlan:
         self.target_position = Twist()
         self.target_yaw = 0.0
         self.arrive_count = 0
-        self.local_pose_sub = rospy.Subscriber(self.uav_type + '_' + str(self.id) + "/mavros/local_position/pose",
-                                               PoseStamped, self.local_pose_callback)
-        self.vel_enu_pub = rospy.Publisher('/xtdrone/'+self.uav_type+'_'+str(self.id)+'/cmd_vel_enu', Twist, queue_size=10)
+        self.local_pose_sub = rospy.Subscriber(self.uav_type + '_' + str(self.id) + "/mavros/local_position/pose",PoseStamped, self.local_pose_callback,queue_size=1)
+        self.vel_enu_pub = rospy.Publisher('/xtdrone/'+self.uav_type+'_'+str(self.id)+'/cmd_vel_enu', Twist, queue_size=1)
 
     def local_pose_callback(self, msg):
         self.local_pose = msg

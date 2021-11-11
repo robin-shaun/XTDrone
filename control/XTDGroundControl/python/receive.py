@@ -33,9 +33,9 @@ class Ros2Gui(QThread):
         count = 0
         for i in multi_select:
             for k in range(multi_num[i]):
-                self.multi_odom_groundtruth_sub[count] = rospy.Subscriber('/xtdrone/'+self.multirotor_type[count]+'_'+str(k)+'/ground_truth/odom', Odometry, self.odm_groundtruth_callback, count)
+                self.multi_odom_groundtruth_sub[count] = rospy.Subscriber('/xtdrone/'+self.multirotor_type[count]+'_'+str(k)+'/ground_truth/odom', Odometry, self.odm_groundtruth_callback, count,queue_size=1)
                 self.local_vel_sub[count] = rospy.Subscriber(
-                    self.multirotor_type[count] + '_' + str(k) + "/mavros/local_position/velocity_body", TwistStamped, self.local_vel_callback, count)
+                    self.multirotor_type[count] + '_' + str(k) + "/mavros/local_position/velocity_body", TwistStamped, self.local_vel_callback, count,queue_size=1)
                 count += 1
                 
 

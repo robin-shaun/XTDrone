@@ -51,7 +51,7 @@ class GroundControler:
         self.gcs_cmd = 'start'
         self.formation_mode = {'FORM_0':'search', 'FORM_1':'straight', 'FORM_2':'triangle'}
         # ros publishers
-        self.gcs_cmd_pub = rospy.Publisher("/formation_gcs/cmd", String, queue_size=10)
+        self.gcs_cmd_pub = rospy.Publisher("/formation_gcs/cmd", String, queue_size=1)
 
         #ga
         self.map_size_x = 80
@@ -71,7 +71,7 @@ class GroundControler:
             rospy.Subscriber(uav_type+ '_' + str(i) + "/mavros/local_position/pose", PoseStamped, self.local_pose_callback, i, queue_size = 2)
 
         # ros publishers
-        self.local_target_pub = [rospy.Publisher(uav_type + '_' + str(i) + '/mavros/setpoint_position/local', PoseStamped, queue_size=10) for i in range(self.vehicle_num)]
+        self.local_target_pub = [rospy.Publisher(uav_type + '_' + str(i) + '/mavros/setpoint_position/local', PoseStamped, queue_size=1) for i in range(self.vehicle_num)]
 
         self.global_pose = [PoseStamped() for i in range(self.vehicle_num)]
 

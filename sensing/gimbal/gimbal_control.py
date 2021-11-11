@@ -10,7 +10,7 @@ if __name__ == "__main__":
     vehicle_type = sys.argv[1]
     vehicle_id = sys.argv[2]
     rospy.init_node('gimbal_control'+'_'+vehicle_type+'_'+vehicle_id)
-    mountCnt = rospy.Publisher(vehicle_type+'_'+vehicle_id+'/mavros/mount_control/command', MountControl, queue_size=10)
+    mountCnt = rospy.Publisher(vehicle_type+'_'+vehicle_id+'/mavros/mount_control/command', MountControl, queue_size=1)
     mountConfig = rospy.ServiceProxy(vehicle_type+'_'+vehicle_id+'/mavros/mount_control/configure', MountConfigure)
     rate=rospy.Rate(100)
     gimbal_pitch_ = -60
@@ -19,7 +19,7 @@ if __name__ == "__main__":
     srvheader=std_msgs.msg.Header()
     srvheader.stamp=rospy.Time.now()
     srvheader.frame_id="map"
-    cam_pose_pub = rospy.Publisher('/xtdrone/'+vehicle_type+'_'+vehicle_id+'/cam_pose', PoseStamped, queue_size=2)
+    cam_pose_pub = rospy.Publisher('/xtdrone/'+vehicle_type+'_'+vehicle_id+'/cam_pose', PoseStamped, queue_size=1)
     cam_pose = PoseStamped()
     gazeboLinkstate = rospy.ServiceProxy('gazebo/get_link_state', GetLinkState)
 

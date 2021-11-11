@@ -9,7 +9,7 @@ vehicle_type = sys.argv[1]
 vehicle_id = sys.argv[2]
 laser_slam_type = sys.argv[3]
 rospy.init_node(vehicle_type+vehicle_id+'_'+laser_slam_type+'_laser_transfer')
-pose_pub = rospy.Publisher(vehicle_type+'_'+ vehicle_id+"/mavros/vision_pose/pose", PoseStamped, queue_size=2)
+pose_pub = rospy.Publisher(vehicle_type+'_'+ vehicle_id+"/mavros/vision_pose/pose", PoseStamped, queue_size=1)
 tfBuffer = Buffer()
 tflistener = TransformListener(tfBuffer)
 local_pose = PoseStamped()
@@ -26,7 +26,7 @@ def hector_callback(data):
     
 def hector_slam():
     global local_pose, height
-    pose2d_sub = rospy.Subscriber(vehicle_type+'_'+ vehicle_id+"/pose", PoseStamped, hector_callback)
+    pose2d_sub = rospy.Subscriber(vehicle_type+'_'+ vehicle_id+"/pose", PoseStamped, hector_callback,queue_size=1)
     rate = rospy.Rate(100)
     while True:
         local_pose = hector
@@ -51,7 +51,7 @@ def aloam():
     
 if __name__ == '__main__':
     if laser_slam_type == '2d':
-        odom_groundtruth_sub = rospy.Subscriber('/xtdrone/'+vehicle_type+'_'+ vehicle_id+'/ground_truth/odom', Odometry, odm_groundtruth_callback)
+        odom_groundtruth_sub = rospy.Subscriber('/xtdrone/'+vehicle_type+'_'+ vehicle_id+'/ground_truth/odom', Odometry, odm_groundtruth_callback,queue_size=1)
         hector_slam()
     elif laser_slam_type == '3d':
         aloam()

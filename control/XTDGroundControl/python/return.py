@@ -45,10 +45,9 @@ class ReturnHome:
         self.change_task_flag = False
          #variables of rostopic
         rospy.init_node('uav'+str(self.id))
-        self.local_pose_sub = rospy.Subscriber(self.uav_type + '_' + str(self.id) + "/mavros/local_position/pose",
-                                               PoseStamped, self.local_pose_callback)
-        self.vel_enu_pub = rospy.Publisher('/xtdrone/'+self.uav_type+'_'+str(self.id)+'/cmd_vel_flu', Twist, queue_size=10)
-        self.cmd_pub = rospy.Publisher('/xtdrone/'+self.uav_type+'_'+str(self.id)+'/cmd',String,queue_size=10)
+        self.local_pose_sub = rospy.Subscriber(self.uav_type + '_' + str(self.id) + "/mavros/local_position/pose",PoseStamped, self.local_pose_callback,queue_size=1)
+        self.vel_enu_pub = rospy.Publisher('/xtdrone/'+self.uav_type+'_'+str(self.id)+'/cmd_vel_flu', Twist, queue_size=1)
+        self.cmd_pub = rospy.Publisher('/xtdrone/'+self.uav_type+'_'+str(self.id)+'/cmd',String,queue_size=1)
         self.gazeboModelstate = rospy.ServiceProxy('gazebo/get_model_state', GetModelState)
         
     def local_pose_callback(self, msg):
@@ -85,7 +84,7 @@ class ReturnHome:
         count_situ_one = 0
         for i in range(self.uav_num):
             if not i == self.id:
-                self.following_local_pose_sub[i] = rospy.Subscriber(self.uav_type + '_' + str(i) + "/mavros/local_position/pose", PoseStamped, self.following_local_pose_callback, i)
+                self.following_local_pose_sub[i] = rospy.Subscriber(self.uav_type + '_' + str(i) + "/mavros/local_position/pose", PoseStamped, self.following_local_pose_callback, i,queue_size=1)
         while not rospy.is_shutdown():
             self.count += 1
             self.velxy_max = 4.0

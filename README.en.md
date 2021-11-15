@@ -18,7 +18,7 @@ ArXiv preprint **[ arXiv:2003.09700](https://arxiv.org/abs/2003.09700)** (2020)
 
 Architecture for multiple vehicle simulation is shown as the below figure.  For more details, please see the paper
 
-K. Xiao, L. Ma, S. Tan, Y. Cong , X. Wang, "Implementation of UAV Coordination Based on a Hierarchical Multi-UAV Simulation Platform," Advances in Guidance, Navigation and Control. Lecture Notes in Electrical Engineering, vol 644. Springer, Singapore. doi: 10.1007/978-981-15-8155-7_423
+K. Xiao, L. Ma, S. Tan, Y. Cong , X. Wang, "Implementation of UAV Coordination Based on a Hierarchical Multi-UAV Simulation Platform," Advances in Guidance, Navigation and Control. Lecture Notes in Electrical Engineering, 2022, vol 644. Springer, Singapore. doi: 10.1007/978-981-15-8155-7_423
 
 ArXiv preprint **[ arXiv:2005.01125](https://arxiv.org/abs/2005.01125)** (2020)
 

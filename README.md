@@ -17,7 +17,7 @@ K. Xiao, S. Tan, G. Wang, X. An, X. Wang and X. Wang, "XTDrone: A Customizable M
 
 多机仿真架构如下图所示，详见论文 
 
-Xiao K., Ma L., Tan S., Cong Y., Wang X. "Implementation of UAV Coordination Based on a Hierarchical Multi-UAV Simulation Platform," Advances in Guidance, Navigation and Control. Lecture Notes in Electrical Engineering, vol 644. Springer, Singapore. doi: 10.1007/978-981-15-8155-7_423
+K. Xiao, L. Ma, S. Tan, Y. Cong , X. Wang, "Implementation of UAV Coordination Based on a Hierarchical Multi-UAV Simulation Platform," Advances in Guidance, Navigation and Control. Lecture Notes in Electrical Engineering, vol 644. Springer, Singapore. doi: 10.1007/978-981-15-8155-7_423
 
 预印版 **[ arXiv:2005.01125](https://arxiv.org/abs/2005.01125)** (2020)
 

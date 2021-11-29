@@ -178,8 +178,8 @@ class Follower:
                 #                        following_id[0]].pose.position)
                 #     print(self.id , "'s  my pose:    ", self.local_pose.pose.position)
                 #     print(input_vel)
-                    
-            omega = self.Kp/(self.following_count+0.001)
+            #omega = self.Kp*5
+            omega = self.Kp/(self.following_count+0.2)
             self.cmd_vel_enu.linear.x = omega * input_vel.x + self.avoid_vel.x
             self.cmd_vel_enu.linear.y = omega * input_vel.y + self.avoid_vel.y
             self.cmd_vel_enu.linear.z = omega * input_vel.z + self.avoid_vel.z

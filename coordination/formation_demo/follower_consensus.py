@@ -42,8 +42,8 @@ class Follower:
         self.arrive_print = True  # determine whether the target position has been reached
         self.following_ids = []  # followers of this uav
         self.formation_config = 'waiting'
-        self.following_count = 0  # the number of followers of this uav
-        self.Kp = 0.2
+        self.following_count = 1  # the number of followers of this uav
+        self.Kp = 1.0
         self.velxy_max = 1  # 0.8
         self.velz_max = 1
         self.following_local_pose = [PoseStamped() for i in range(
@@ -51,6 +51,7 @@ class Follower:
         self.following_local_pose_sub = [[] for i in range(
             self.uav_num)]
         self.arrive_count = 0
+        self.omega = 1
         self.local_pose_sub = rospy.Subscriber(self.uav_type + '_' + str(self.id) + "/mavros/local_position/pose", PoseStamped, self.local_pose_callback,queue_size=1)
         self.avoid_vel_sub = rospy.Subscriber("/xtdrone/" + self.uav_type + '_' + str(self.id) + "/avoid_vel", Vector3, self.avoid_vel_callback,queue_size=1)
         self.formation_switch_sub = rospy.Subscriber("/xtdrone/formation_switch", String, self.formation_switch_callback, queue_size=1)
@@ -140,19 +141,22 @@ class Follower:
                         print(self.L_matrix)
                     # Get the followers of this uav based on the Laplacian matrix, and update the position of the followers.
                     self.following_ids = numpy.argwhere(self.L_matrix[self.id, :] == 1)
-                    self.following_count = 0
-                    # for i in range(self.uav_num):
-                    #     if not self.following_local_pose_sub[i] == None:
-                    #         self.following_local_pose_sub[i].unregister()
-                    #
-                    # self.following_count = len(self.following_ids)
-                    # print(self.id, "UAV's following count:   ",self.following_count)
+                    #self.following_count = 0
+                    #for i in range(self.uav_num):
+                    #    if not self.following_local_pose_sub[i] == None:
+                    #        self.following_local_pose_sub[i].unregister()
+                   
+                    self.following_count = len(self.following_ids)
+                    print(self.id, "UAV's following count:   ",self.following_count)
+                    print(self.id, "UAV's following count:   ",self.following_ids)
 
             self.cmd_vel_enu.linear = Vector3(0, 0, 0)
             input_vel = Vector3(0, 0, 0)
             # Code of the consensus protocol, see details on the paper.
             for following_id in self.following_ids:
-
+                if self.id == 4 and self.arrive_count<50:
+                    print(self.id, "UAV's following id:   ",self.following_ids)
+                    print(self.id, "UAV's following count:   ",self.following_count)
                 if following_id[0] == 0:
                     input_vel.x += self.following_local_pose[
                                        following_id[0]].pose.position.x - self.local_pose.pose.position.x + \
@@ -178,11 +182,14 @@ class Follower:
                 #                        following_id[0]].pose.position)
                 #     print(self.id , "'s  my pose:    ", self.local_pose.pose.position)
                 #     print(input_vel)
-            #omega = self.Kp*5
-            omega = self.Kp/(self.following_count+0.2)
-            self.cmd_vel_enu.linear.x = omega * input_vel.x + self.avoid_vel.x
-            self.cmd_vel_enu.linear.y = omega * input_vel.y + self.avoid_vel.y
-            self.cmd_vel_enu.linear.z = omega * input_vel.z + self.avoid_vel.z
+            self.omega = self.Kp/self.following_count
+            
+            self.cmd_vel_enu.linear.x = self.omega * input_vel.x + self.avoid_vel.x
+            self.cmd_vel_enu.linear.y = self.omega * input_vel.y + self.avoid_vel.y
+            self.cmd_vel_enu.linear.z = self.omega * input_vel.z + self.avoid_vel.z
+            if self.id == 4 and self.arrive_count<50:
+                print(self.id, "UAV's following vel:   ",self.cmd_vel_enu)
+                print(self.id, "UAV's following omega:   ",self.omega)
             
             if self.cmd_vel_enu.linear.x > self.velxy_max:
                 self.cmd_vel_enu.linear.x = self.velxy_max

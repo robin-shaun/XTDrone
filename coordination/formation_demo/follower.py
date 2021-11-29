@@ -30,7 +30,7 @@ class Follower:
         self.uav_type = uav_type
         self.id = uav_id
         self.uav_num = uav_num
-        self.f = 100 # control/communication rate
+        self.f = 30 # control/communication rate
         self.local_pose = PoseStamped()
         self.local_pose_queue = Queue.Queue(self.f/10)
         for i in range(self.f/10):
@@ -102,28 +102,9 @@ class Follower:
                     if self.formation_config=='waiting': 
                         self.L_matrix = self.get_L_central_matrix()
                     else:
-                        # Change from the original pattern to the first pattern without KM.
-                        if self.first_formation: 
-                            self.first_formation=False
-                            self.orig_formation=formation_dict[self.formation_config]
-                            self.L_matrix = self.get_L_central_matrix()
-                        else:
-                            self.adj_matrix = self.build_graph(self.orig_formation,formation_dict[self.formation_config])
-                            # These variables are determined for KM algorithm, see examples of KM algorithm on Github.
-                            self.label_left = numpy.max(self.adj_matrix, axis=1)  # init label for the left 
-                            self.label_right = numpy.array([0]*(self.uav_num-1)) # init label for the right set
-                            self.match_right = numpy.array([-1] *(self.uav_num-1))
-                            self.visit_left = numpy.array([0]*(self.uav_num-1))
-                            self.visit_right = numpy.array([0]*(self.uav_num-1))
-                            self.slack_right = numpy.array([100]*(self.uav_num-1)) 
-
-                            self.change_id = self.KM()
-                            # Get a new formation pattern of UAVs based on KM.
-                            #self.L_matrix = self.get_L_matrix(self.orig_formation)
-                            self.new_formation=self.get_new_formation(self.change_id,formation_dict[self.formation_config])
-                            #self.L_matrix = self.get_L_matrix(self.new_formation)
-                            self.L_matrix = self.get_L_central_matrix()
-                            self.orig_formation=self.new_formation
+                        self.new_formation=formation_dict[self.formation_config]
+                        #self.L_matrix = self.get_L_matrix(self.new_formation)
+                        self.L_matrix = self.get_L_central_matrix()
                     if self.id == 3:
                         print(self.L_matrix)
                     # Get the followers of this uav based on the Laplacian matrix, and update the position of the followers.
@@ -170,160 +151,6 @@ class Follower:
             else:
                 self.arrive_count = 0
             rate.sleep()
-
-    # 'build_graph',  'find_path' and 'KM' functions are all determined for KM algorithm.
-    # A graph of UAVs is established based on distances between them in 'build_graph' function.
-    def build_graph(self,orig_formation,change_formation):
-        distance=[[0 for i in range(self.uav_num-1)]for j in range(self.uav_num-1)]
-        for i in range(self.uav_num-1):
-            for j in range(self.uav_num-1):
-                distance[i][j]=numpy.linalg.norm(orig_formation[:,i]-change_formation[:,j])
-                distance[i][j]=int(50-distance[i][j])
-        return distance
-
-    # Determine whether a path has been found.
-    def find_path(self,i):
-        self.visit_left[i] = True
-        for j, match_weight in enumerate(self.adj_matrix[i],start=0): 
-            if self.visit_right[j]: 
-                continue  
-            gap = self.label_left[i] + self.label_right[j] - match_weight 
-            if gap == 0 :            
-                self.visit_right[j] = True   
-                if self.match_right[j]==-1 or self.find_path(self.match_right[j]): 
-                    self.match_right[j] = i     
-                    return True            
-            else:      
-                self.slack_right[j]=min(gap,self.slack_right[j])          
-        return False 
-
-    # Main body of KM algorithm.
-    def KM(self):  
-        for i in range(self.uav_num-1):   
-            self.slack_right = numpy.array([100]*(self.uav_num-1))      
-            while True:        
-                self.visit_left = numpy.array([0]*(self.uav_num-1))                
-                self.visit_right = numpy.array([0]*(self.uav_num-1))               
-                if self.find_path(i):    
-                    break       
-                d = numpy.inf
-                for j, slack in enumerate(self.slack_right):         
-                    if not self.visit_right[j] :           
-                        d = min(d,slack)  
-                for k in range(self.uav_num-1):          
-                    if self.visit_left[k]: 
-                        self.label_left[k] -= d                 
-                    if self.visit_right[k]: 
-                        self.label_right[k] += d   
-                    else:
-                        self.slack_right[k] -=d 
-        return self.match_right
-    
-    # The formation patterns designed in the formation dictionaries are random (the old ones), 
-    # and a new formation pattern based on the distances of UAVs of the current pattern is designed as follows.
-    # Note that only the desired position of each UAV has changed, while the form of the new pattern is the same as the one in the dictionary.
-    def get_new_formation(self,change_id,change_formation):
-        new_formation=numpy.zeros((3,self.uav_num-1))
-        position=numpy.zeros((3,self.uav_num-1))
-        change_id=[i + 1 for i in change_id] 
-        for i in range(0,self.uav_num-1):
-            position[:,i]=change_formation[:,i]
-
-        for i in range(0,self.uav_num-1):
-            for j in range(0,self.uav_num-1):
-                if (j+1)==change_id[i]:
-                    new_formation[:,i]=position[:,j]
-        return new_formation
-
-    # Laplacian matrix 
-
-    def get_L_matrix(self, rel_posi):
-
-        #假设无论多少UAV，都假设尽可能3层通信（叶子节点除外）
-        c_num=int((self.uav_num+1)/3)
-        
-        comm=[[]for i in range (self.uav_num)]
-        w=numpy.ones((self.uav_num,self.uav_num))*0 # 定义邻接矩阵
-        nodes_next=[]
-        node_flag = [self.uav_num-1]
-
-        rel_d=[0]*(self.uav_num-1)
-        # 规定每个无人机可以随机连接三台距离自己最近的无人机,且不能连接在flag中的无人机(即已经判断过连接点的无人机)。
-        # 计算第一层通信（leader）：获得离自己最近的三台无人机编号
-        
-        for i in range(0,self.uav_num-1):
-
-            rel_d[i]=pow(rel_posi[0][i],2)+pow(rel_posi[1][i],2)+pow(rel_posi[2][i],2)
-
-        min_num_index_list = map(rel_d.index, heapq.nsmallest(c_num, rel_d))
-        min_num_index_list=list(min_num_index_list)
-        #leader 连接的无人机编号：
-        comm[self.uav_num-1]=min_num_index_list
-
-        nodes_next.extend(comm[self.uav_num-1])    
-
-        size_=len(node_flag)
-
-        while (nodes_next!=[]) and (size_<(self.uav_num-1)):
-
-            next_node= nodes_next[0]
-            nodes_next=nodes_next[1:]
-
-            rel_d=[0]*(self.uav_num-1)
-            for i in range(0,self.uav_num-1):
-                    
-                if i==next_node or i in node_flag:
-                        
-                    rel_d[i]=1e10  #要比最大可能相对距离大
-                else:
-
-                    rel_d[i]=pow((rel_posi[0][i]-rel_posi[0][next_node]),2)+pow((rel_posi[1][i]-rel_posi[1][next_node]),2)+pow((rel_posi[2][i]-rel_posi[2][next_node]),2)
-
-            min_num_index_list =  map(rel_d.index, heapq.nsmallest(c_num, rel_d))
-            min_num_index_list=list(min_num_index_list)
-            node_flag.append(next_node)
-
-            size_=len(node_flag)                    
-
-            for j in range(0,c_num):
-
-                if min_num_index_list[j] in node_flag:
-                                
-                    nodes_next=nodes_next
-
-                else:
-                    if min_num_index_list[j] in nodes_next:
-                        nodes_next=nodes_next
-                    else:
-                        nodes_next.append(min_num_index_list[j])
-                        
-                    comm[next_node].append(min_num_index_list[j])
-        # comm为每个uav连接其他uav的编号，其中数组的最后一行为leader   
-        #print (comm)
-        #leader是拉普拉斯矩阵的第一行，为0
-        #第0号飞机（相对位置矩阵中的第一个位置）为第二行，以此类推
-
-        for i in range (0,self.uav_num):
-            for j in range(0,self.uav_num-1):
-
-                if i==0:
-                    if j in comm[self.uav_num-1]:
-                        w[j+1][i]=1
-                    else:
-                        w[j+1][i]=0
-                else:
-                    if j in comm[i-1]:
-                        w[j+1][i]=1
-                    else:
-                        w[j+1][i]=0
-                        
-        L=w  #定义拉普拉斯矩阵
-        for i in range (0,self.uav_num):
-
-            L[i][i]=-sum(w[i])
-                    
-        #print (L)               
-        return L
 
     def get_L_central_matrix(self):
         

@@ -132,6 +132,8 @@ class Follower:
                             self.new_formation = self.get_new_formation(self.change_id,
                                                                         formation_dict[self.formation_config])
                             self.L_matrix = self.get_L_matrix(self.new_formation)
+                            # if self.id == 3:
+                            #     print(self.L_matrix)
                             # self.L_matrix = self.get_L_central_matrix()
                             self.orig_formation = self.new_formation
                     if self.id == 3:
@@ -142,9 +144,9 @@ class Follower:
                     # for i in range(self.uav_num):
                     #     if not self.following_local_pose_sub[i] == None:
                     #         self.following_local_pose_sub[i].unregister()
-
-                    self.following_count = len(self.following_ids)
-                    print(self.id, "UAV's following count:   ",self.following_count)
+                    #
+                    # self.following_count = len(self.following_ids)
+                    # print(self.id, "UAV's following count:   ",self.following_count)
 
             self.cmd_vel_enu.linear = Vector3(0, 0, 0)
             input_vel = Vector3(0, 0, 0)
@@ -171,13 +173,13 @@ class Follower:
                     input_vel.z += self.following_local_pose[
                                                  following_id[0]].pose.position.z - self.local_pose.pose.position.z + \
                                              self.new_formation[2, self.id - 1] - self.new_formation[2, following_id[0] - 1]
-                if self.id == 4:
-                    print(following_id[0],"'s pose:   ", self.following_local_pose[
-                                       following_id[0]].pose.position)
-                    print(self.id , "'s  my pose:    ", self.local_pose.pose.position)
-                    print(input_vel)
+                # if self.id == 4:
+                #     print(following_id[0],"'s pose:   ", self.following_local_pose[
+                #                        following_id[0]].pose.position)
+                #     print(self.id , "'s  my pose:    ", self.local_pose.pose.position)
+                #     print(input_vel)
                     
-            omega = self.Kp/self.following_count
+            omega = self.Kp/(self.following_count+0.001)
             self.cmd_vel_enu.linear.x = omega * input_vel.x + self.avoid_vel.x
             self.cmd_vel_enu.linear.y = omega * input_vel.y + self.avoid_vel.y
             self.cmd_vel_enu.linear.z = omega * input_vel.z + self.avoid_vel.z
@@ -379,6 +381,7 @@ class Follower:
         L = w
         for i in range(0, self.uav_num):
             L[i][i] = -sum(w[i])
+        print("get in")
 
         return L
 

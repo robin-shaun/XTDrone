@@ -1,8 +1,6 @@
 import rospy
-from geometry_msgs.msg import Twist, Vector3, PoseStamped
-from std_msgs.msg import String 
+from geometry_msgs.msg import Vector3, PoseStamped
 import time
-import math
 import numpy 
 import sys
 
@@ -11,7 +9,6 @@ vehicle_num = int(sys.argv[2])
 pose = [None]*vehicle_num
 pose_sub = [None]*vehicle_num
 avoid_vel_pub = [None]*vehicle_num
-avoid_kp = 0.5
 avoid_radius = 1.5
 aid_vec1 = [1, 0, 0]
 aid_vec2 = [0, 1, 0]
@@ -37,9 +34,9 @@ while not rospy.is_shutdown():
                 cos1 = dir_vec.dot(aid_vec1)/(numpy.linalg.norm(dir_vec) * numpy.linalg.norm(aid_vec1))
                 cos2 = dir_vec.dot(aid_vec2)/(numpy.linalg.norm(dir_vec) * numpy.linalg.norm(aid_vec2))
                 if  abs(cos1) < abs(cos2):
-                    avoid_vel = avoid_kp * numpy.cross(dir_vec, aid_vec1)/numpy.linalg.norm(numpy.cross(dir_vec, aid_vec1))
+                    avoid_vel = numpy.cross(dir_vec, aid_vec1)/numpy.linalg.norm(numpy.cross(dir_vec, aid_vec1))
                 else:
-                    avoid_vel = avoid_kp * numpy.cross(dir_vec, aid_vec2)/numpy.linalg.norm(numpy.cross(dir_vec, aid_vec2))
+                    avoid_vel = numpy.cross(dir_vec, aid_vec2)/numpy.linalg.norm(numpy.cross(dir_vec, aid_vec2))
                 if dir_vec[2] * avoid_vel[2] > 0:
                     vehicles_avoid_vel[i] = Vector3(vehicles_avoid_vel[i].x+avoid_vel[0],vehicles_avoid_vel[i].y+avoid_vel[1],vehicles_avoid_vel[i].z+avoid_vel[2])
                     vehicles_avoid_vel[i+j] = Vector3(vehicles_avoid_vel[i+j].x-avoid_vel[0],vehicles_avoid_vel[i+j].y-avoid_vel[1],vehicles_avoid_vel[i+j].z-avoid_vel[2])

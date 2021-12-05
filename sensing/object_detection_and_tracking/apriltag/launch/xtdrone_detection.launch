@@ -27,7 +27,7 @@
     <remap from="image_rect" to="/iris_1/camera/image_raw" />
     <remap from="camera_info" to="/iris_1/camera/camera_info" />
 
-    <param name="camera_frame" type="str" value="iris_1/camera_link)" />
+    <param name="camera_frame" type="str" value="iris_1/camera_link" />
     <param name="publish_tag_detections_image" type="bool" value="true" />      <!-- default: false -->
   </node>
   <node pkg="tf" type="static_transform_publisher" name="base_link_to_camera_link"

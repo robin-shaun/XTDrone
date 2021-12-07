@@ -25,7 +25,7 @@ if __name__ == '__main__':
         multi_odom_groundtruth_sub[i] = rospy.Subscriber('/xtdrone/'+vehicle_type+'_'+str(i)+'/ground_truth/odom', Odometry, odm_groundtruth_callback, i,queue_size=1)
         multi_pose_pub[i] = rospy.Publisher(vehicle_type+'_'+str(i)+'/mavros/vision_pose/pose', PoseStamped, queue_size=1)
         multi_speed_pub[i] = rospy.Publisher(vehicle_type+'_'+str(i)+'/mavros/vision_speed/speed', Vector3Stamped, queue_size=1)
-    rate = rospy.Rate(50)
+    rate = rospy.Rate(30)
     while True:
         for i in range(vehicle_num):
             multi_pose_pub[i].publish(multi_local_pose[i])

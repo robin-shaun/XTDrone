@@ -29,7 +29,6 @@ class Follower:
         self.kp = 1 
         self.vel_max = 1
         self.leader_local_pose = PoseStamped()
-        self.arrive_count = 0
         self.local_pose_sub = rospy.Subscriber(self.uav_type+'_'+str(self.id)+"/mavros/local_position/pose", PoseStamped, self.local_pose_callback, queue_size=1)
         self.avoid_vel_sub = rospy.Subscriber("/xtdrone/"+self.uav_type+'_'+str(self.id)+"/avoid_vel", Vector3, self.avoid_vel_callback, queue_size=1)
         self.formation_switch_sub = rospy.Subscriber("/xtdrone/formation_switch",String, self.formation_switch_callback, queue_size=1)
@@ -39,6 +38,7 @@ class Follower:
         self.leader_local_pose_sub = rospy.Subscriber(self.uav_type+"_0/mavros/local_position/pose", PoseStamped, self.leader_local_pose_callback, queue_size=1)
         self.first_formation = True
         self.formation_position = None
+        self.wait_cmd = 'Hover'
 
     def local_pose_callback(self, msg):
         self.local_pose = msg
@@ -54,7 +54,6 @@ class Follower:
             print("Follower"+str(self.id-1)+": Switch to Formation " + msg.data)
             if not self.formation_config == "waiting":
                 self.formation_position = formation_dict[self.formation_config]
-                self.arrive_count = 0
 
     def avoid_vel_callback(self, msg):
         self.avoid_vel = msg
@@ -63,7 +62,9 @@ class Follower:
         rospy.init_node('follower'+str(self.id-1))
         rate = rospy.Rate(self.f)
         while not rospy.is_shutdown():
-            if not self.formation_config == 'waiting':
+            if self.formation_config == 'waiting':
+                self.cmd_pub.publish(self.wait_cmd)
+            else:
                 self.cmd_vel_enu.linear.x = self.kp * ((self.leader_local_pose.pose.position.x + self.formation_position[0, self.id - 1]) - self.local_pose.pose.position.x)
                 self.cmd_vel_enu.linear.y = self.kp * ((self.leader_local_pose.pose.position.y + self.formation_position[1, self.id - 1]) - self.local_pose.pose.position.y) 
                 self.cmd_vel_enu.linear.z = self.kp * ((self.leader_local_pose.pose.position.z + self.formation_position[2, self.id - 1]) - self.local_pose.pose.position.z) 

@@ -27,17 +27,18 @@ class Follower:
         self.f = 30  # control/communication rate
         self.cmd_vel_enu = Twist()
         self.avoid_vel = Vector3()
-        self.following_switch = False  # determine whether the formation pattern is required to be changed
         self.following_ids = []  # followers of this uav
         self.formation_config = 'waiting'
         self.following_count = 1  # the number of followers of this uav
+        self.L_matrix = None
         self.Kp = 1.0
         self.vel_max = 1
-        self.local_pose = [PoseStamped() for i in range(
-            self.uav_num)]  # local position of other uavs, and only the position of followers of this uav is not zero
-        self.local_pose_sub = [[] for i in range(
-            self.uav_num)]
-        self.omega = 1
+        self.local_pose = [PoseStamped() for i in range(self.uav_num)]
+        self.local_velocity = [TwistStamped() for i in range(self.uav_num)]
+        self.local_pose_sub = [[] for i in range(self.uav_num)]
+        self.local_velocity_sub = [[] for i in range(self.uav_num)]
+        self.omega = 1.0
+        self.gamma = 1.0
         self.avoid_vel_sub = rospy.Subscriber("/xtdrone/" + self.uav_type + '_' + str(self.id) + "/avoid_vel", Vector3, self.avoid_vel_callback,queue_size=1)
         self.formation_switch_sub = rospy.Subscriber("/xtdrone/formation_switch", String, self.formation_switch_callback, queue_size=1)
         self.vel_enu_pub = rospy.Publisher('/xtdrone/' + self.uav_type + '_' + str(self.id) + '/cmd_vel_enu', Twist, queue_size=1)
@@ -47,12 +48,19 @@ class Follower:
             self.local_pose_sub[i] = rospy.Subscriber(
                 self.uav_type + '_' + str(i) + "/mavros/local_position/pose", PoseStamped,
                 self.local_pose_callback, i, queue_size=1)
+        for i in range(self.uav_num):
+            self.local_velocity_sub[i] = rospy.Subscriber(
+                self.uav_type + '_' + str(i) + "/mavros/local_position/velocity_local", TwistStamped,
+                self.local_twist_callback, i, queue_size=1)
         self.wait_cmd = 'HOVER'
         self.orig_formation = formation_dict["origin"]
         self.new_formation = None
 
     def local_pose_callback(self, msg, id):
         self.local_pose[id] = msg
+    
+    def local_twist_callback(self, msg, id):
+        self.local_velocity[id] = msg
 
         # the order of changing the formation pattern
 
@@ -63,14 +71,6 @@ class Follower:
             if self.formation_config == 'waiting':
                 self.cmd_pub.publish(self.wait_cmd)
             else:
-                # Change from the original pattern to the first pattern without KM.
-                # if self.first_formation:
-                #     self.first_formation = False
-                #     self.orig_formation = formation_dict[self.formation_config]
-                #     self.new_formation = self.orig_formation
-                #     self.L_matrix = self.get_L_central_matrix()
-                #     print(self.L_matrix)
-                # else:
                 self.adj_matrix = self.build_graph(self.orig_formation,
                                                     formation_dict[self.formation_config])
                 # These variables are determined for KM algorithm
@@ -87,11 +87,6 @@ class Follower:
                 self.L_matrix = self.get_L_matrix(self.new_formation)
                 self.orig_formation = self.new_formation
 
-                # Get the followers of this uav based on the Laplacian matrix
-                self.following_ids = numpy.argwhere(self.L_matrix[self.id, :] == 1)
-                self.following_ids = self.following_ids.reshape(self.following_ids.shape[0])
-                self.following_count = len(self.following_ids)
-
     def avoid_vel_callback(self, msg):
         self.avoid_vel = msg
 
@@ -99,36 +94,43 @@ class Follower:
         rospy.init_node('follower' + str(self.id - 1))
         rate = rospy.Rate(self.f)
         while not rospy.is_shutdown():
-            if not self.formation_config == 'waiting':
-                input_vel = Vector3(0, 0, 0)
-                # Code of the consensus protocol, see details on the paper.
+            if not self.formation_config == 'waiting' and not self.L_matrix is None:
+                input = Vector3(0, 0, 0)
+                # Get the local leaders of this UAV based on the Laplacian matrix
+                self.following_ids = numpy.argwhere(self.L_matrix[self.id, :] == 1)
+                self.following_ids = self.following_ids.reshape(self.following_ids.shape[0])
+                self.following_count = len(self.following_ids)
+                self.gamma = (4.0/self.following_count)**0.5
                 for following_id in self.following_ids:
                     if following_id == 0: # following leader
-                        input_vel.x += self.local_pose[
+                        input.x += self.local_pose[
                                         following_id].pose.position.x - self.local_pose[self.id].pose.position.x + \
-                                    self.new_formation[0, self.id - 1]
-                        input_vel.y += self.local_pose[
+                                    self.new_formation[0, self.id - 1] + self.gamma * (self.local_velocity[following_id].twist.linear.x - self.local_velocity[self.id].twist.linear.x)
+                        input.y += self.local_pose[
                                         following_id].pose.position.y - self.local_pose[self.id].pose.position.y + \
-                                    self.new_formation[1, self.id - 1]
-                        input_vel.z += self.local_pose[
+                                    self.new_formation[1, self.id - 1] + self.gamma * (self.local_velocity[following_id].twist.linear.y - self.local_velocity[self.id].twist.linear.y)
+                        input.z += self.local_pose[
                                         following_id].pose.position.z - self.local_pose[self.id].pose.position.z + \
-                                    self.new_formation[2, self.id - 1]
+                                    self.new_formation[2, self.id - 1] + self.gamma * (self.local_velocity[following_id].twist.linear.z - self.local_velocity[self.id].twist.linear.z)
                     else:
-                        input_vel.x += self.local_pose[
+                        input.x += self.local_pose[
                                                     following_id].pose.position.x - self.local_pose[self.id].pose.position.x + \
-                                                self.new_formation[0, self.id - 1] - self.new_formation[0, following_id - 1]
-                        input_vel.y += self.local_pose[
+                                                self.new_formation[0, self.id - 1] - self.new_formation[0, following_id - 1] + self.gamma * (self.local_velocity[following_id].twist.linear.x - self.local_velocity[self.id].twist.linear.x)
+                        input.y += self.local_pose[
                                                     following_id].pose.position.y - self.local_pose[self.id].pose.position.y + \
-                                                self.new_formation[1, self.id - 1] - self.new_formation[1, following_id - 1]
-                        input_vel.z += self.local_pose[
+                                                self.new_formation[1, self.id - 1] - self.new_formation[1, following_id - 1] + self.gamma * (self.local_velocity[following_id].twist.linear.y - self.local_velocity[self.id].twist.linear.y)
+                        input.z += self.local_pose[
                                                     following_id].pose.position.z - self.local_pose[self.id].pose.position.z + \
-                                                self.new_formation[2, self.id - 1] - self.new_formation[2, following_id - 1]
+                                                self.new_formation[2, self.id - 1] - self.new_formation[2, following_id - 1] + self.gamma * (self.local_velocity[following_id].twist.linear.z - self.local_velocity[self.id].twist.linear.z)
 
-                self.omega = self.Kp/self.following_count
+                # self.omega = self.Kp/self.following_count
+                # self.cmd_vel_enu.linear.x = self.omega * input_vel.x+ 1**0.5 * self.vel_max * self.avoid_vel.x
+                # self.cmd_vel_enu.linear.y = self.omega * input_vel.y + 1**0.5 * self.vel_max * self.avoid_vel.y
+                # self.cmd_vel_enu.linear.z = self.omega * input_vel.z + 1**0.5 * self.vel_max * self.avoid_vel.z 
 
-                self.cmd_vel_enu.linear.x = self.omega * input_vel.x+ 1**0.5 * self.vel_max * self.avoid_vel.x
-                self.cmd_vel_enu.linear.y = self.omega * input_vel.y + 1**0.5 * self.vel_max * self.avoid_vel.y
-                self.cmd_vel_enu.linear.z = self.omega * input_vel.z + 1**0.5 * self.vel_max * self.avoid_vel.z 
+                self.cmd_vel_enu.linear.x = self.local_velocity[self.id].twist.linear.x + 1.0/self.f * input.x + 1**0.5 * self.vel_max * self.avoid_vel.x
+                self.cmd_vel_enu.linear.y = self.local_velocity[self.id].twist.linear.y + 1.0/self.f * input.y + 1**0.5 * self.vel_max * self.avoid_vel.y
+                self.cmd_vel_enu.linear.z = self.local_velocity[self.id].twist.linear.z + 1.0/self.f * input.z + 1**0.5 * self.vel_max * self.avoid_vel.z 
                 cmd_vel_magnitude = (self.cmd_vel_enu.linear.x**2 + self.cmd_vel_enu.linear.y**2 + self.cmd_vel_enu.linear.z**2)**0.5
                 if cmd_vel_magnitude > 3**0.5 * self.vel_max:
                     self.cmd_vel_enu.linear.x = self.cmd_vel_enu.linear.x / cmd_vel_magnitude * self.vel_max

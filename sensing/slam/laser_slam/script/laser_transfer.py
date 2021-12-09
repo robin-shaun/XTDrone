@@ -13,6 +13,7 @@ pose_pub = rospy.Publisher(vehicle_type+'_'+ vehicle_id+"/mavros/vision_pose/pos
 tfBuffer = Buffer()
 tflistener = TransformListener(tfBuffer)
 local_pose = PoseStamped()
+local_pose.header.frame_id = 'map'
 hector = PoseStamped()
 height = 0
 
@@ -43,7 +44,6 @@ def aloam():
         except:
             continue
         local_pose.header.stamp = rospy.Time().now()
-        local_pose.header.frame_id = 'map'
         local_pose.pose.position = tfstamped.transform.translation
         local_pose.pose.orientation = tfstamped.transform.rotation
         pose_pub.publish(local_pose)

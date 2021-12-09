@@ -1,13 +1,15 @@
 import rospy
-import math
 from mavros_msgs.msg import State, PositionTarget
 from mavros_msgs.srv import CommandBool, SetMode
 from geometry_msgs.msg import PoseStamped, Pose, Twist
-from gazebo_msgs.srv import GetModelState
+from gazebo_msgs.msg import ModelStates
 from nav_msgs.msg import Odometry
 from std_msgs.msg import String
 from pyquaternion import Quaternion
 import sys
+
+rospy.init_node(sys.argv[1]+'_'+sys.argv[2]+"_communication")
+rate = rospy.Rate(30)
 
 class Communication:
 
@@ -21,6 +23,8 @@ class Communication:
         self.target_motion = PositionTarget()
         self.arm_state = False
         self.motion_type = 0
+        self.odom_groundtruth = Odometry()
+        self.odom_groundtruth.header.frame_id = 'map'
         self.flight_mode = None
         self.mission = None
             
@@ -36,6 +40,7 @@ class Communication:
         self.cmd_vel_enu_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+'_'+self.vehicle_id+"/cmd_vel_enu", Twist, self.cmd_vel_enu_callback,queue_size=1)
         self.cmd_accel_flu_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+'_'+self.vehicle_id+"/cmd_accel_flu", Twist, self.cmd_accel_flu_callback,queue_size=1)
         self.cmd_accel_enu_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+'_'+self.vehicle_id+"/cmd_accel_enu", Twist, self.cmd_accel_enu_callback,queue_size=1)
+        self.gazebo_model_state_sub = rospy.Subscriber("/gazebo/model_states", ModelStates, self.gazebo_model_state_callback,queue_size=1)
             
         ''' 
         ros publishers
@@ -48,32 +53,16 @@ class Communication:
         '''
         self.armService = rospy.ServiceProxy(self.vehicle_type+'_'+self.vehicle_id+"/mavros/cmd/arming", CommandBool)
         self.flightModeService = rospy.ServiceProxy(self.vehicle_type+'_'+self.vehicle_id+"/mavros/set_mode", SetMode)
-        self.gazeboModelstate = rospy.ServiceProxy('gazebo/get_model_state', GetModelState)
 
         print(self.vehicle_type+'_'+self.vehicle_id+": "+"communication initialized")
 
     def start(self):
-        rospy.init_node(self.vehicle_type+'_'+self.vehicle_id+"_communication")
-        rate = rospy.Rate(30)
         '''
         main ROS thread
         '''
         while not rospy.is_shutdown():
             self.target_motion_pub.publish(self.target_motion)
-            
-            # if (self.flight_mode is "LAND") and (self.current_position.z < 0.15):
-            #     if(self.disarm()):
-            #         self.arm_state = "DISARMED"
-                    
-            try:
-                response = self.gazeboModelstate (self.vehicle_type+'_'+self.vehicle_id,'ground_plane')
-            except rospy.ServiceException as e:
-                print("Gazebo model state service call failed: %s"%e)
-            odom = Odometry()
-            odom.header = response.header
-            odom.pose.pose = response.pose
-            odom.twist.twist = response.twist
-            self.odom_groundtruth_pub.publish(odom)
+            self.odom_groundtruth_pub.publish(self.odom_groundtruth)
 
             rate.sleep()
 
@@ -83,6 +72,12 @@ class Communication:
 
     def mavros_state_callback(self, msg):
         self.mavros_state = msg.mode
+
+    def gazebo_model_state_callback(self, msg):
+        id = msg.name.index(self.vehicle_type+'_'+self.vehicle_id)
+        self.odom_groundtruth.header.stamp = rospy.Time().now()
+        self.odom_groundtruth.pose.pose = msg.pose[id]
+        self.odom_groundtruth.twist.twist = msg.twist[id]
 
     def construct_target(self, x=0, y=0, z=0, vx=0, vy=0, vz=0, afx=0, afy=0, afz=0, yaw=0, yaw_rate=0):
         target_raw_pose = PositionTarget()

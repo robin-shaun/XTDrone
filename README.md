@@ -111,7 +111,7 @@ K. Xiao, L. Ma, S. Tan, Y. Cong , X. Wang, "Implementation of UAV Coordination B
 
 ### 中国机器人大赛无人机挑战赛仿真组
 
-2021年中国机器人大赛将于11月在洛阳举办，比赛详情见http://robocup.drct-caa.org.cn/index.php/race/view?id=787，其中无人机挑战赛仿真组的平台使用XTDrone，欢迎大家积极报名，展示自己的风采。
+2021年中国机器人大赛由于疫情延期到了2022年3月，比赛详情见http://robocup.drct-caa.org.cn/index.php/race/view?id=787，其中无人机挑战赛仿真组的平台使用XTDrone，欢迎大家积极报名，展示自己的风采。
 
 ### 商业合作
 

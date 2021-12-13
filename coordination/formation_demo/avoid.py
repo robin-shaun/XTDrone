@@ -36,19 +36,18 @@ while not rospy.is_shutdown():
         for j in range(1, vehicle_num-i):
             position2 = numpy.array([pose[i+j].pose.position.x, pose[i+j].pose.position.y, pose[i+j].pose.position.z])
             dir_vec = position1-position2
-            if numpy.linalg.norm(dir_vec) < avoid_radius:
+            k = 1 - numpy.linalg.norm(dir_vec) / avoid_radius
+            if k > 0:
                 cos1 = dir_vec.dot(aid_vec1)/(numpy.linalg.norm(dir_vec) * numpy.linalg.norm(aid_vec1))
                 cos2 = dir_vec.dot(aid_vec2)/(numpy.linalg.norm(dir_vec) * numpy.linalg.norm(aid_vec2))
                 if  abs(cos1) < abs(cos2):
-                    avoid_control = numpy.cross(dir_vec, aid_vec1)/numpy.linalg.norm(numpy.cross(dir_vec, aid_vec1))
+                    avoid_control = k * numpy.cross(dir_vec, aid_vec1)/numpy.linalg.norm(numpy.cross(dir_vec, aid_vec1))
                 else:
-                    avoid_control = numpy.cross(dir_vec, aid_vec2)/numpy.linalg.norm(numpy.cross(dir_vec, aid_vec2))
-                if dir_vec[2] * avoid_control[2] > 0:
-                    vehicles_avoid_control[i] = Vector3(vehicles_avoid_control[i].x+avoid_control[0],vehicles_avoid_control[i].y+avoid_control[1],vehicles_avoid_control[i].z+avoid_control[2])
-                    vehicles_avoid_control[i+j] = Vector3(vehicles_avoid_control[i+j].x-avoid_control[0],vehicles_avoid_control[i+j].y-avoid_control[1],vehicles_avoid_control[i+j].z-avoid_control[2])
-                else:
-                    vehicles_avoid_control[i] = Vector3(vehicles_avoid_control[i].x-avoid_control[0],vehicles_avoid_control[i].y-avoid_control[1],vehicles_avoid_control[i].z-avoid_control[2])
-                    vehicles_avoid_control[i+j] = Vector3(vehicles_avoid_control[i+j].x+avoid_control[0],vehicles_avoid_control[i+j].y+avoid_control[1],vehicles_avoid_control[i+j].z+avoid_control[2])
+                    avoid_control = k * numpy.cross(dir_vec, aid_vec2)/numpy.linalg.norm(numpy.cross(dir_vec, aid_vec2))
+
+                vehicles_avoid_control[i] = Vector3(vehicles_avoid_control[i].x+avoid_control[0],vehicles_avoid_control[i].y+avoid_control[1],vehicles_avoid_control[i].z+avoid_control[2])
+                vehicles_avoid_control[i+j] = Vector3(vehicles_avoid_control[i+j].x-avoid_control[0],vehicles_avoid_control[i+j].y-avoid_control[1],vehicles_avoid_control[i+j].z-avoid_control[2])
+
     for i in range(vehicle_num):
         avoid_control_pub[i].publish(vehicles_avoid_control[i])
     vehicles_avoid_control = [Vector3()] * vehicle_num

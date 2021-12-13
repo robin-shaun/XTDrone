@@ -3,6 +3,6 @@ python leader.py $1 $2 &
 uav_num=1
 while(( $uav_num< $2 )) 
 do
-    python follower.py $1 $uav_num $2 &
+    python follower_consensus.py $1 $uav_num $2 $3 &
     let "uav_num++"
 done

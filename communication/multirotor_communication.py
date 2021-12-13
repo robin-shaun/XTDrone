@@ -27,6 +27,7 @@ class Communication:
         self.odom_groundtruth.header.frame_id = 'map'
         self.flight_mode = None
         self.mission = None
+        self.last_cmd = None
             
         '''
         ros subscribers
@@ -159,7 +160,7 @@ class Communication:
             self.flight_mode = 'OFFBOARD'
 
     def cmd_callback(self, msg):
-        if msg.data == '' or msg.data == 'stop controlling':
+        if msg.data == self.last_cmd or msg.data == '' or msg.data == 'stop controlling':
             return
 
         elif msg.data == 'ARM':
@@ -177,7 +178,8 @@ class Communication:
         else:
             self.flight_mode = msg.data
             self.flight_mode_switch()
-            
+
+        self.last_cmd = msg.data
 
     def q2yaw(self, q):
         if isinstance(q, Quaternion):

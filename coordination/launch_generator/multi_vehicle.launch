@@ -33,7 +33,7 @@
             <arg name="P" value="0"/>
             <arg name="Y" value="0"/>
             <arg name="vehicle" value="iris"/>
-            <arg name="sdf" value="iris_stereo_camera"/>
+            <arg name="sdf" value="iris"/>
             <arg name="mavlink_udp_port" value="18570"/>
             <arg name="mavlink_tcp_port" value="4560"/>
             <arg name="ID" value="$(arg ID)"/>
@@ -62,7 +62,7 @@
             <arg name="P" value="0"/>
             <arg name="Y" value="0"/>
             <arg name="vehicle" value="iris"/>
-            <arg name="sdf" value="iris_stereo_camera"/>
+            <arg name="sdf" value="iris"/>
             <arg name="mavlink_udp_port" value="18571"/>
             <arg name="mavlink_tcp_port" value="4561"/>
             <arg name="ID" value="$(arg ID)"/>
@@ -91,7 +91,7 @@
             <arg name="P" value="0"/>
             <arg name="Y" value="0"/>
             <arg name="vehicle" value="iris"/>
-            <arg name="sdf" value="iris_stereo_camera"/>
+            <arg name="sdf" value="iris"/>
             <arg name="mavlink_udp_port" value="18572"/>
             <arg name="mavlink_tcp_port" value="4562"/>
             <arg name="ID" value="$(arg ID)"/>
@@ -120,7 +120,7 @@
             <arg name="P" value="0"/>
             <arg name="Y" value="0"/>
             <arg name="vehicle" value="iris"/>
-            <arg name="sdf" value="iris_stereo_camera"/>
+            <arg name="sdf" value="iris"/>
             <arg name="mavlink_udp_port" value="18573"/>
             <arg name="mavlink_tcp_port" value="4563"/>
             <arg name="ID" value="$(arg ID)"/>
@@ -149,7 +149,7 @@
             <arg name="P" value="0"/>
             <arg name="Y" value="0"/>
             <arg name="vehicle" value="iris"/>
-            <arg name="sdf" value="iris_stereo_camera"/>
+            <arg name="sdf" value="iris"/>
             <arg name="mavlink_udp_port" value="18574"/>
             <arg name="mavlink_tcp_port" value="4564"/>
             <arg name="ID" value="$(arg ID)"/>
@@ -178,7 +178,7 @@
             <arg name="P" value="0"/>
             <arg name="Y" value="0"/>
             <arg name="vehicle" value="iris"/>
-            <arg name="sdf" value="iris_stereo_camera"/>
+            <arg name="sdf" value="iris"/>
             <arg name="mavlink_udp_port" value="18575"/>
             <arg name="mavlink_tcp_port" value="4565"/>
             <arg name="ID" value="$(arg ID)"/>
@@ -207,7 +207,7 @@
             <arg name="P" value="0"/>
             <arg name="Y" value="0"/>
             <arg name="vehicle" value="iris"/>
-            <arg name="sdf" value="iris_stereo_camera"/>
+            <arg name="sdf" value="iris"/>
             <arg name="mavlink_udp_port" value="18576"/>
             <arg name="mavlink_tcp_port" value="4566"/>
             <arg name="ID" value="$(arg ID)"/>
@@ -236,7 +236,7 @@
             <arg name="P" value="0"/>
             <arg name="Y" value="0"/>
             <arg name="vehicle" value="iris"/>
-            <arg name="sdf" value="iris_stereo_camera"/>
+            <arg name="sdf" value="iris"/>
             <arg name="mavlink_udp_port" value="18577"/>
             <arg name="mavlink_tcp_port" value="4567"/>
             <arg name="ID" value="$(arg ID)"/>
@@ -265,7 +265,7 @@
             <arg name="P" value="0"/>
             <arg name="Y" value="0"/>
             <arg name="vehicle" value="iris"/>
-            <arg name="sdf" value="iris_stereo_camera"/>
+            <arg name="sdf" value="iris"/>
             <arg name="mavlink_udp_port" value="18578"/>
             <arg name="mavlink_tcp_port" value="4568"/>
             <arg name="ID" value="$(arg ID)"/>
@@ -294,7 +294,7 @@
             <arg name="P" value="0"/>
             <arg name="Y" value="0"/>
             <arg name="vehicle" value="iris"/>
-            <arg name="sdf" value="iris_stereo_camera"/>
+            <arg name="sdf" value="iris"/>
             <arg name="mavlink_udp_port" value="18579"/>
             <arg name="mavlink_tcp_port" value="4569"/>
             <arg name="ID" value="$(arg ID)"/>
@@ -323,7 +323,7 @@
             <arg name="P" value="0"/>
             <arg name="Y" value="0"/>
             <arg name="vehicle" value="iris"/>
-            <arg name="sdf" value="iris_stereo_camera"/>
+            <arg name="sdf" value="iris"/>
             <arg name="mavlink_udp_port" value="18580"/>
             <arg name="mavlink_tcp_port" value="4570"/>
             <arg name="ID" value="$(arg ID)"/>
@@ -352,7 +352,7 @@
             <arg name="P" value="0"/>
             <arg name="Y" value="0"/>
             <arg name="vehicle" value="iris"/>
-            <arg name="sdf" value="iris_stereo_camera"/>
+            <arg name="sdf" value="iris"/>
             <arg name="mavlink_udp_port" value="18581"/>
             <arg name="mavlink_tcp_port" value="4571"/>
             <arg name="ID" value="$(arg ID)"/>
@@ -381,7 +381,7 @@
             <arg name="P" value="0"/>
             <arg name="Y" value="0"/>
             <arg name="vehicle" value="iris"/>
-            <arg name="sdf" value="iris_stereo_camera"/>
+            <arg name="sdf" value="iris"/>
             <arg name="mavlink_udp_port" value="18582"/>
             <arg name="mavlink_tcp_port" value="4572"/>
             <arg name="ID" value="$(arg ID)"/>
@@ -410,7 +410,7 @@
             <arg name="P" value="0"/>
             <arg name="Y" value="0"/>
             <arg name="vehicle" value="iris"/>
-            <arg name="sdf" value="iris_stereo_camera"/>
+            <arg name="sdf" value="iris"/>
             <arg name="mavlink_udp_port" value="18583"/>
             <arg name="mavlink_tcp_port" value="4573"/>
             <arg name="ID" value="$(arg ID)"/>
@@ -439,7 +439,7 @@
             <arg name="P" value="0"/>
             <arg name="Y" value="0"/>
             <arg name="vehicle" value="iris"/>
-            <arg name="sdf" value="iris_stereo_camera"/>
+            <arg name="sdf" value="iris"/>
             <arg name="mavlink_udp_port" value="18584"/>
             <arg name="mavlink_tcp_port" value="4574"/>
             <arg name="ID" value="$(arg ID)"/>
@@ -468,7 +468,7 @@
             <arg name="P" value="0"/>
             <arg name="Y" value="0"/>
             <arg name="vehicle" value="iris"/>
-            <arg name="sdf" value="iris_stereo_camera"/>
+            <arg name="sdf" value="iris"/>
             <arg name="mavlink_udp_port" value="18585"/>
             <arg name="mavlink_tcp_port" value="4575"/>
             <arg name="ID" value="$(arg ID)"/>
@@ -497,7 +497,7 @@
             <arg name="P" value="0"/>
             <arg name="Y" value="0"/>
             <arg name="vehicle" value="iris"/>
-            <arg name="sdf" value="iris_stereo_camera"/>
+            <arg name="sdf" value="iris"/>
             <arg name="mavlink_udp_port" value="18586"/>
             <arg name="mavlink_tcp_port" value="4576"/>
             <arg name="ID" value="$(arg ID)"/>
@@ -526,7 +526,7 @@
             <arg name="P" value="0"/>
             <arg name="Y" value="0"/>
             <arg name="vehicle" value="iris"/>
-            <arg name="sdf" value="iris_stereo_camera"/>
+            <arg name="sdf" value="iris"/>
             <arg name="mavlink_udp_port" value="18587"/>
             <arg name="mavlink_tcp_port" value="4577"/>
             <arg name="ID" value="$(arg ID)"/>

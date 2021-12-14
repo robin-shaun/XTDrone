@@ -1,8 +1,11 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
+### This code is about the distributed formation control with a consensus protocol and the task allocation by KM algorithm
+### For more details, please see the paper on https://arxiv.org/abs/2005.01125
+
 import rospy
 from geometry_msgs.msg import Twist, Vector3, PoseStamped
-from std_msgs.msg import String, Int64MultiArray
+from std_msgs.msg import String, Int32MultiArray, Float32MultiArray
 import sys
 import numpy
 if sys.argv[2] == '6':
@@ -18,7 +21,7 @@ class Leader:
 
     def __init__(self, uav_type, leader_id, uav_num):
         self.id = leader_id
-        self.local_pose = PoseStamped()
+        self.pose = PoseStamped()
         self.cmd_vel_enu = Twist()
         self.uav_num = uav_num
         self.avoid_vel = Vector3(0,0,0)
@@ -32,20 +35,19 @@ class Leader:
         self.cmd = String()
         self.f = 200
         self.Kz = 0.5
-        self.local_pose_sub = rospy.Subscriber(uav_type+'_'+str(self.id)+"/mavros/local_position/pose", PoseStamped , self.local_pose_callback, queue_size=1)
+        self.pose_sub = rospy.Subscriber(uav_type+'_'+str(self.id)+"/mavros/local_position/pose", PoseStamped , self.pose_callback, queue_size=1)
         self.cmd_vel_sub = rospy.Subscriber("/xtdrone/leader/cmd_vel_flu", Twist, self.cmd_vel_callback, queue_size=1)
         self.avoid_vel_sub = rospy.Subscriber("/xtdrone/"+uav_type+'_'+str(self.id)+"/avoid_vel", Vector3, self.avoid_vel_callback, queue_size=1)
         self.leader_cmd_sub = rospy.Subscriber("/xtdrone/leader/cmd",String, self.cmd_callback, queue_size=1)
 
-        self.local_pose_pub = rospy.Publisher("/xtdrone/leader/pose", PoseStamped , queue_size=1)
-        # self.formation_switch_pub = rospy.Publisher("/xtdrone/formation_switch",String, queue_size=1)
-        self.changed_id_pub = rospy.Publisher('/xtdrone/changed_id', Int64MultiArray, queue_size=1)
-        self.communication_topology_pub = rospy.Publisher('/xtdrone/communication_topology', Int64MultiArray, queue_size=1)
+        self.pose_pub = rospy.Publisher("/xtdrone/leader/pose", PoseStamped , queue_size=1)
+        self.formation_pattern_pub = rospy.Publisher('/xtdrone/formation_pattern', Float32MultiArray, queue_size=1)
+        self.communication_topology_pub = rospy.Publisher('/xtdrone/communication_topology', Int32MultiArray, queue_size=1)
         self.vel_enu_pub =  rospy.Publisher('/xtdrone/'+uav_type+'_'+str(self.id)+'/cmd_vel_enu', Twist, queue_size=1)
         self.cmd_pub = rospy.Publisher('/xtdrone/'+uav_type+'_'+str(self.id)+'/cmd', String, queue_size=1)
 
-    def local_pose_callback(self, msg):
-        self.local_pose = msg
+    def pose_callback(self, msg):
+        self.pose = msg
 
     def cmd_vel_callback(self, msg):
         self.cmd_vel_enu = msg
@@ -53,6 +55,7 @@ class Leader:
     def cmd_callback(self, msg):
         if msg.data in formation_dict.keys():
             self.formation_config = msg.data
+            print("Formation pattern: ", self.formation_config)
             # These variables are determined for KM algorithm
             self.adj_matrix = self.build_graph(self.origin_formation, formation_dict[self.formation_config])
             self.label_left = numpy.max(self.adj_matrix, axis=1)  # init label for the left set
@@ -99,7 +102,6 @@ class Leader:
         return False
 
     # Main body of KM algorithm.
-
     def KM(self):
         for i in range(self.uav_num - 1):
             self.slack_right = numpy.array([100] * (self.uav_num - 1))
@@ -252,15 +254,15 @@ class Leader:
             self.cmd_vel_enu.linear.x = self.cmd_vel_enu.linear.x 
             self.cmd_vel_enu.linear.y = self.cmd_vel_enu.linear.y
             self.cmd_vel_enu.linear.z = self.cmd_vel_enu.linear.z
-            self.formation_switch_pub.publish(self.formation_config)
-            changed_id = Int64MultiArray()
-            changed_id.data = self.changed_id.tolist()
-            self.changed_id_pub.publish(changed_id)
-            communication_topology = Int64MultiArray()
-            communication_topology.data = self.communication_topology.tolist()
-            self.communication_topology_pub.publish(communication_topology)
+            formation_pattern = Float32MultiArray()
+            formation_pattern.data = self.new_formation.flatten().tolist()
+            self.formation_pattern_pub.publish(formation_pattern)
+            if(not self.communication_topology is None):
+                communication_topology = Int32MultiArray()
+                communication_topology.data = self.communication_topology.flatten().tolist()
+                self.communication_topology_pub.publish(communication_topology)
             self.vel_enu_pub.publish(self.cmd_vel_enu)
-            self.local_pose_pub.publish(self.local_pose)
+            self.pose_pub.publish(self.pose)
             self.cmd_pub.publish(self.cmd)
             rate.sleep()
 

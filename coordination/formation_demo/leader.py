@@ -53,7 +53,7 @@ class Leader:
         self.cmd_vel_enu = msg
 
     def cmd_callback(self, msg):
-        if msg.data in formation_dict.keys():
+        if (msg.data in formation_dict.keys() and not msg.data == self.formation_config):
             self.formation_config = msg.data
             print("Formation pattern: ", self.formation_config)
             # These variables are determined for KM algorithm
@@ -67,7 +67,9 @@ class Leader:
             self.changed_id = self.KM()
             # Get a new formation pattern of UAVs based on KM.
             self.new_formation = self.get_new_formation(self.changed_id, formation_dict[self.formation_config])
+            print(self.new_formation)
             self.communication_topology = self.get_communication_topology(self.new_formation)
+            print(self.communication_topology)
             self.orig_formation = self.new_formation
         else:
             self.cmd = msg.data

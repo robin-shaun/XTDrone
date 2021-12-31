@@ -117,7 +117,7 @@ int main(int argc, char **argv)
 
     ros::NodeHandle nh;
         
-    ros::Publisher pose_pub = nh.advertise<geometry_msgs::PoseStamped>("/orbslam2/vision_pose/pose", 100);    
+    ros::Publisher pose_pub = nh.advertise<geometry_msgs::PoseStamped>("/orbslam2/vision_pose/pose", 1);    
 	igb.SetPub(&pose_pub);
 
     message_filters::Subscriber<sensor_msgs::Image> left_sub(nh, "/camera/left/image_raw", 1);

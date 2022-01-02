@@ -293,7 +293,7 @@ void ImageGrabber::SyncWithImu()
       if (Tcw.empty())
             return;
       geometry_msgs::PoseStamped pose;
-      pose.header.stamp = ros::Time::now();
+      pose.header.stamp = ros::Time(tImLeft);
       pose.header.frame_id ="map";
 
       Rwc = Tcw.rowRange(0,3).colRange(0,3).t(); // Rotation information

@@ -191,7 +191,7 @@ void ImageGrabber::GrabStereo(const sensor_msgs::ImageConstPtr& msgLeft,const se
     if (Tcw.empty())
 	    return;
     geometry_msgs::PoseStamped pose;
-    pose.header.stamp = ros::Time::now();
+    pose.header.stamp = cv_ptrLeft->header.stamp;
     pose.header.frame_id ="map";
 
     Rwc = Tcw.rowRange(0,3).colRange(0,3).t(); // Rotation information

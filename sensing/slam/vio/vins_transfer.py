@@ -1,5 +1,5 @@
 import rospy
-from geometry_msgs.msg import PoseStamped
+from geometry_msgs.msg import PoseStamped, Point
 from nav_msgs.msg import Odometry
 import math
 from pyquaternion import Quaternion
@@ -27,10 +27,13 @@ def vins_callback(data):
 rospy.init_node(vehicle_type+"_"+vehicle_id+'_vins_transfer')
 rospy.Subscriber("/vins_estimator/camera_pose", Odometry, vins_callback,queue_size=1)
 position_pub = rospy.Publisher(vehicle_type+"_"+vehicle_id+"/mavros/vision_pose/pose", PoseStamped, queue_size=1)
-rate = rospy.Rate(60) 
+rate = rospy.Rate(30) 
 
 while not rospy.is_shutdown():
-    local_pose.header.stamp = rospy.Time.now()
-    position_pub.publish(local_pose) 
+    if (local_pose.pose.position == Point()):
+        print("No vins pose received")
+    else:
+        local_pose.header.stamp = rospy.Time.now()
+        position_pub.publish(local_pose) 
     rate.sleep()
   

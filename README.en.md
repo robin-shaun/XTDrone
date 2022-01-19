@@ -97,7 +97,7 @@ USV
 
 - Founders: Kun Xiao, Shaochang Tan
 - Adviser: Xiangke Wang
-- Developers: Kun Xiao, Shaochang Tan, Guanzheng Wang, Lan Ma, Yuke Li, Qipeng Wang, Xinyu Hu, Ruoqiao Guan, Wenxin Hu, Feng Yi, Jiarun Yan, Yi Bao
+- Developers: Kun Xiao, Shaochang Tan, Guanzheng Wang, Lan Ma, Yuke Li, Qipeng Wang, Xinyu Hu, Jiayi Zheng, Ruoqiao Guan, Wenxin Hu, Feng Yi, Jiarun Yan, Yi Bao
 
 ### Contributers
 

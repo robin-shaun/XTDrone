@@ -1,0 +1,17 @@
+material Mark/Diffuse4
+{
+	receive_shadows off
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				
+				filtering anistropic
+				max_anisotropy 16
+                		texture tanke.png
+			}
+		}
+	}
+}

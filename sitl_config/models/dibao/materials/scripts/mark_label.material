@@ -1,0 +1,16 @@
+material Mark/Diffuse1
+{
+	receive_shadows off
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture dibao.png
+				filtering anistropic
+				max_anisotropy 16            	
+			}
+		}
+	}
+}

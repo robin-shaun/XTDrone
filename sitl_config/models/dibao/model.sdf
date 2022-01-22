@@ -1,0 +1,42 @@
+<?xml version='1.0'?>
+<sdf version='1.6'>
+  <model name="dibao">
+    <link name='link'>
+      <pose>0 0 0.115 0 0 0</pose>
+      <inertial>
+        <mass>3.390</mass>
+        <inertia>
+          <ixx>0.58</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.58</iyy>
+          <iyz>0</iyz>
+          <izz>0.19</izz>
+        </inertia>
+      </inertial>
+      <collision name='collision'>
+        <geometry>
+                <box>
+                  <size>.496 .496 .005</size>
+                </box>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+                <box>
+                  <size>1 1 .005</size>
+                </box>
+        </geometry>
+
+        <material>
+          <script>
+            <uri>model://dibao/materials/scripts</uri>
+            <uri>model://dibao/materials/textures</uri>
+            <name>Mark/Diffuse1</name>
+          </script>
+        </material>
+      </visual>
+    </link>     
+  </model>
+</sdf>

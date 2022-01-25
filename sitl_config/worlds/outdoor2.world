@@ -6,6 +6,18 @@
         <pose>-5 0 1 0 0.2 0</pose>
       </camera>
     </gui>
+    <scene>
+      <grid>0</grid>
+      <origin_visual>0</origin_visual>
+      <ambient>0.592 0.624 0.635 1</ambient>
+      <sky>
+        <clouds>
+          <speed>12</speed>
+        </clouds>
+      </sky>
+      <background>0.35 0.35 0.35 1</background>
+      <shadows>1</shadows>
+    </scene>
     <physics name='default_physics' default='0' type='ode'>
       <gravity>0 0 -9.8066</gravity>
       <ode>
@@ -42,14 +54,14 @@
               <size>5000 5000</size>
             </plane>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>100</mu>
                 <mu2>50</mu2>
               </ode>
             </friction>
-           
+
         </collision>
 
         <visual name="runway">

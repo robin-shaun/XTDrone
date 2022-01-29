@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 """
-* This is the version that leader can hover, last modify on 26th May by Lan
+* This is the version that leader can hover, last modify on 2022.1.27 by Lan
 
 Framework for Parallel Simulation
 
@@ -13,7 +13,7 @@ $ roslaunch px4 iris10_parallel_simulation.launch   # 10 UAVs in simulation
 And then, you can run this code via:
 $ mpiexec -n 3 python px4_control_sim_addleader.py            # 3 UAVs in simulation
 $ mpiexec -n 10 python px4_control_sim_addleader.py           # 10 UAVs in simulation
-"""+
+"""
 
 import tf
 import time
@@ -38,7 +38,7 @@ uav_num_real = 0
 uav_num = uav_num_sim + uav_num_real0
 uav_bias = [[0,0,0],[1.2,-1.2,0],[-1.2,-1.2,0],[1.2,1.2,0],[-1.2,1.2,0],[2.4,-2.4,0],[0,-2.4,0],[-2.4,-2.4,0],[2.4,0,0],[-2.4,0,0],[2.4,2.4,0],[0,2.4,0],[-2.4,2.4,0],[-7,-7,0],[-6,-7,0],[-5,-7,0],[-4,-7,0],[3,6,0],[4,6,0],[5,6,0]]
 #uav_bias = [[2,-6,0],[-2,-6,0],[2,2,0],[-2,2,0],[4,-6,0],[4,-8,0],[2,-8,0],[3,-7,0],[-4,-6,0],[-4,-8,0],[-2,-8,0],[-3,-7,0],[4,2,0],[4,4,0],[2,4,0],[3,3,0],[-4,2,0],[-4,4,0],[-2,4,0],[-3,3,0]]
-
+formation_keys = ['waiting', 'FORM_1', 'FORM_2', 'FORM_3', 'AUTO.TAKEOFF', 'OFFBOARD', 'HOVER', 'AUTO.LAND']
 class Px4Controller:
     def __init__(self):
         self.uav_id = uav_id + uav_num_real
@@ -70,6 +70,7 @@ class Px4Controller:
         self.mavros_state = None
         self.received_imu = False
         self.frame = "BODY"
+        self.formation_config = 'waiting'
 
         self.cmd = None
         self.gcs_cmd = String()
@@ -117,6 +118,7 @@ class Px4Controller:
         self.gps_sub = rospy.Subscriber(self.namespace + "/mavros/global_position/global", NavSatFix, self.gps_callback)
         self.imu_sub = rospy.Subscriber(self.namespace + "/mavros/imu/data", Imu, self.imu_callback)
         self.gcs_cmd_sub = rospy.Subscriber("/xtdrone_gcs/cmd", String, self.gcs_cmd_callback)
+        self.keyboard_cmd_sub = rospy.Subscriber("/xtdrone/leader/cmd", String, self.cmd_callback)
         self.all_uav_data_sub = rospy.Subscriber("/xtdrone_gcs/all_uav_data", AllUAVData,
                                                      self.all_uav_data_callback)
         self.communication_verify_sub = rospy.Subscriber("/communication_verify", CommVerify, self.communication_verify_callback)
@@ -511,6 +513,12 @@ class Px4Controller:
 
     def gps_callback(self, msg):
         self.gps = msg
+
+    def cmd_callback(self, msg):
+        if (msg.data in formation_keys and not msg.data == self.formation_config):
+            self.formation_config = msg.data
+            print("keyboard cmd: ", self.formation_config)
+            self.gcs_cmd = self.formation_config
 
     def q2yaw(self, q):
         if isinstance(q, Quaternion):

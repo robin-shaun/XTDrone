@@ -21,14 +21,7 @@ if [ $? != 0 ]; then
     $cmd splitw -h -p 50 -t $winName
     $cmd selectp -t 0
     $cmd splitw -h -p 50 -t $winName
-    $cmd selectp -t 1
-    $cmd splitw -v -p 50 -t $winName
-    $cmd selectp -t 2
-    $cmd splitw -h -p 50 -t $winName
-    $cmd selectp -t 1
-    $cmd splitw -h -p 50 -t $winName
-    $cmd selectp -t 2
-    $cmd splitw -h -p 50 -t $winName
+
 fi
 
 $cmd selectp -t 0

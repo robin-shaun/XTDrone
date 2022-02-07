@@ -20,8 +20,6 @@ class Communication:
         self.target_motion = PositionTarget()
         self.arm_state = False
         self.motion_type = 0
-        self.odom_groundtruth = Odometry()
-        self.odom_groundtruth.header.frame_id = 'map'
         self.flight_mode = None
         self.mission = None
             
@@ -32,13 +30,11 @@ class Communication:
         self.cmd_pose_flu_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+'_'+self.vehicle_id+"/cmd_pose_flu", Pose, self.cmd_pose_flu_callback,queue_size=1)
         self.cmd_pose_enu_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+'_'+self.vehicle_id+"/cmd_pose_enu", Pose, self.cmd_pose_enu_callback,queue_size=1)     
         self.cmd_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+'_'+self.vehicle_id+"/cmd",String,self.cmd_callback,queue_size=1)
-        self.gazebo_model_state_sub = rospy.Subscriber("/gazebo/model_states", ModelStates, self.gazebo_model_state_callback,queue_size=1)
 
         ''' 
         ros publishers
         '''
         self.target_motion_pub = rospy.Publisher(self.vehicle_type+'_'+self.vehicle_id+"/mavros/setpoint_raw/local", PositionTarget, queue_size=1)
-        self.odom_groundtruth_pub = rospy.Publisher('/xtdrone/'+self.vehicle_type+'_'+self.vehicle_id+'/ground_truth/odom', Odometry, queue_size=1)
 
         '''
         ros services
@@ -54,17 +50,10 @@ class Communication:
         '''
         while not rospy.is_shutdown():
             self.target_motion_pub.publish(self.target_motion)
-            self.odom_groundtruth_pub.publish(self.odom_groundtruth)
             rate.sleep()
 
     def local_pose_callback(self, msg):
         self.local_pose = msg
-
-    def gazebo_model_state_callback(self, msg):
-        id = msg.name.index(self.vehicle_type+'_'+self.vehicle_id)
-        self.odom_groundtruth.header.stamp = rospy.Time().now()
-        self.odom_groundtruth.pose.pose = msg.pose[id]
-        self.odom_groundtruth.twist.twist = msg.twist[id]
 
     def construct_target(self, x=0, y=0, z=0):
         target_raw_pose = PositionTarget()

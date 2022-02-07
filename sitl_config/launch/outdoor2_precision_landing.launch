@@ -62,7 +62,7 @@
             <arg name="gcs_url" value=""/>
             <arg name="tgt_system" value="$(eval 1 + arg('ID'))"/>
             <arg name="tgt_component" value="1"/>
-            <arg name="config_yaml" value="$(find mavros)/launch/px4_config_0.yaml"/>
+            <arg name="config_yaml" value="$(find mavros)/launch/px4_config_iris_0.yaml"/>
         </include>
     </group>
 
@@ -93,7 +93,7 @@
             <arg name="gcs_url" value=""/>
             <arg name="tgt_system" value="$(eval 1 + arg('ID'))"/>
             <arg name="tgt_component" value="1"/>
-            <arg name="config_yaml" value="$(find mavros)/launch/px4_config_1.yaml"/>
+            <arg name="config_yaml" value="$(find mavros)/launch/px4_config_iris_1.yaml"/>
         </include>
     </group>
 
@@ -124,7 +124,7 @@
             <arg name="gcs_url" value=""/>
             <arg name="tgt_system" value="$(eval 1 + arg('ID'))"/>
             <arg name="tgt_component" value="1"/>
-            <arg name="config_yaml" value="$(find mavros)/launch/px4_config_2.yaml"/>
+            <arg name="config_yaml" value="$(find mavros)/launch/px4_config_iris_2.yaml"/>
         </include>
     </group>
 

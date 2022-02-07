@@ -2,7 +2,6 @@ import rospy
 from mavros_msgs.msg import State, PositionTarget
 from mavros_msgs.srv import CommandBool, SetMode
 from geometry_msgs.msg import PoseStamped, Pose, Twist
-from nav_msgs.msg import Odometry
 from std_msgs.msg import String
 from pyquaternion import Quaternion
 import sys

@@ -1,6 +1,5 @@
 import rospy
 from geometry_msgs.msg import PoseStamped, Vector3Stamped
-from nav_msgs.msg import Odometry
 import sys
 from gazebo_msgs.msg import ModelStates
 

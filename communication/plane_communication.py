@@ -2,8 +2,6 @@ import rospy
 from mavros_msgs.msg import PositionTarget
 from mavros_msgs.srv import CommandBool, SetMode
 from geometry_msgs.msg import PoseStamped, Pose
-from nav_msgs.msg import Odometry
-from gazebo_msgs.msg import ModelStates
 from std_msgs.msg import String
 import sys
 

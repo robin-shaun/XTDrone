@@ -99,14 +99,14 @@ if __name__=="__main__":
         if control_type == 'vel':
             multi_cmd_vel_flu_pub[i] = rospy.Publisher('/xtdrone/'+vehicle_type+'_'+str(i)+'/cmd_vel_flu', Twist, queue_size=1)
         else:
-            multi_cmd_accel_flu_pub[i] = rospy.Publisher('/xtdrone/'+multirotor_type+'_'+str(i)+'/cmd_accel_flu', Twist, queue_size=1)
-        multi_cmd_pub[i] = rospy.Publisher('/xtdrone/'+vehicle_type+'_'+str(i)+'/cmd',String,queue_size=1)
+            multi_cmd_accel_flu_pub[i] = rospy.Publisher('/xtdrone/'+vehicle_type+'_'+str(i)+'/cmd_accel_flu', Twist, queue_size=1)
+        multi_cmd_pub[i] = rospy.Publisher('/xtdrone/'+vehicle_type+'_'+str(i)+'/cmd',String,queue_size=3)
     leader_cmd_pose_enu_pub = rospy.Publisher("/xtdrone/leader/cmd_pose_enu", Pose, queue_size=1)
     if control_type == 'vel':
         leader_cmd_vel_flu_pub = rospy.Publisher("/xtdrone/leader/cmd_vel_flu", Twist, queue_size=1)
     else:
         leader_cmd_accel_flu_pub = rospy.Publisher("/xtdrone/leader/cmd_accel_flu", Twist, queue_size=1)
-    leader_cmd_pub = rospy.Publisher("/xtdrone/leader_cmd", String, queue_size=1)
+    leader_cmd_pub = rospy.Publisher("/xtdrone/leader_cmd", String, queue_size=3)
     cmd= String()
     pose = Pose()    
     twist = Twist()
@@ -282,7 +282,7 @@ if __name__=="__main__":
                     if control_type == 'vel':
                         leader_cmd_vel_flu_pub.publish(twist)
                     else:
-                        leader_cmd_aceel_flu_pub.publish(twist)
+                        leader_cmd_accel_flu_pub.publish(twist)
                 leader_cmd_pub.publish(cmd)
             else:
                 if transition_state == 'plane':

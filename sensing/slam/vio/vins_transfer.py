@@ -31,8 +31,9 @@ rate = rospy.Rate(30)
 
 while not rospy.is_shutdown():
     if (local_pose.pose.position == Point()):
-        print("No vins pose received")
+        continue
     else:
+        print("Vins pose received")
         local_pose.header.stamp = rospy.Time.now()
         position_pub.publish(local_pose) 
     rate.sleep()

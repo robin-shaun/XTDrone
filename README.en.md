@@ -58,6 +58,10 @@ Visual Dense Reconstruction
 
 <img src="./images/3d_motion_planning.gif" width="640" height="360" /> 
 
+Swarm Motion Planning
+
+<img src="./images/swarm_motion_planning.gif" width="640" height="306" />  
+
 Object Detection and Tracking
 
 <img src="./images/human_tracking.gif" width="640" height="360" /> 

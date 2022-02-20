@@ -5,6 +5,7 @@ from geometry_msgs.msg import PoseStamped, Pose, Twist
 from std_msgs.msg import String
 from pyquaternion import Quaternion
 import sys
+import math
 
 rospy.init_node(sys.argv[1]+'_'+sys.argv[2]+"_communication")
 rate = rospy.Rate(30)
@@ -15,7 +16,7 @@ class Communication:
         
         self.vehicle_type = vehicle_type
         self.vehicle_id = vehicle_id
-        self.local_pose = None
+        self.current_position = None
         self.current_yaw = 0
         self.current_state = None
         self.target_motion = PositionTarget()
@@ -25,6 +26,15 @@ class Communication:
         self.motion_type = 0
         self.flight_mode = None
         self.plane_mission = None
+        self.hold_position_x = 0
+        self.hold_position_y = 0
+        self.hold_position_z = 0
+        self.hold_yaw = 0
+        self.hold_flag = 0
+        self.hold_x_flag = 0
+        self.hold_y_flag = 0
+        self.hold_z_flag = 0
+        self.hold_yaw_flag = 0
             
         '''
         ros subscribers
@@ -36,7 +46,7 @@ class Communication:
         self.cmd_vel_enu_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+'_'+self.vehicle_id+"/cmd_vel_enu", Twist, self.cmd_vel_enu_callback,queue_size=1)
         self.cmd_accel_flu_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+'_'+self.vehicle_id+"/cmd_accel_flu", Twist, self.cmd_accel_flu_callback,queue_size=1)
         self.cmd_accel_enu_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+'_'+self.vehicle_id+"/cmd_accel_enu", Twist, self.cmd_accel_enu_callback,queue_size=1)    
-        self.cmd_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+'_'+self.vehicle_id+"/cmd",String,self.cmd_callback,queue_size=1)
+        self.cmd_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+'_'+self.vehicle_id+"/cmd",String,self.cmd_callback,queue_size=3)
 
         ''' 
         ros publishers
@@ -66,7 +76,7 @@ class Communication:
             rate.sleep()
 
     def local_pose_callback(self, msg):
-        self.local_pose = msg.pose
+        self.current_position = msg.pose.position
         self.current_yaw = self.q2yaw(msg.pose.orientation)
 
     def q2yaw(self, q):
@@ -131,51 +141,193 @@ class Communication:
             if(self.motion_type == 2):
                 target_raw_pose.type_mask = PositionTarget.IGNORE_PX + PositionTarget.IGNORE_PY + PositionTarget.IGNORE_PZ \
                                 + PositionTarget.IGNORE_VX + PositionTarget.IGNORE_VY + PositionTarget.IGNORE_VZ \
-                                + PositionTarget.IGNORE_YAW             
+                                + PositionTarget.IGNORE_YAW
+            if (self.motion_type == 3):
+                target_raw_pose.type_mask = PositionTarget.IGNORE_PX + PositionTarget.IGNORE_PY + PositionTarget.IGNORE_PZ \
+                                            + PositionTarget.IGNORE_AFX + PositionTarget.IGNORE_AFY + PositionTarget.IGNORE_AFZ \
+                                            + PositionTarget.IGNORE_YAW_RATE
+            if (self.motion_type == 4):
+                target_raw_pose.type_mask = PositionTarget.IGNORE_PX + PositionTarget.IGNORE_PY + PositionTarget.IGNORE_PZ \
+                                + PositionTarget.IGNORE_VX + PositionTarget.IGNORE_VY + PositionTarget.IGNORE_VZ \
+                                + PositionTarget.IGNORE_YAW_RATE
 
         return target_raw_pose
 
     def cmd_pose_flu_callback(self, msg):
         self.coordinate_frame = 9
-        self.target_motion = self.construct_target(x=msg.position.x,y=msg.position.y,z=msg.position.z)
+        yaw = self.q2yaw(msg.orientation)
+        self.target_motion = self.construct_target(x=msg.position.x,y=msg.position.y,z=msg.position.z,yaw=yaw)
  
     def cmd_pose_enu_callback(self, msg):
         self.coordinate_frame = 1
-        self.target_motion = self.construct_target(x=msg.position.x,y=msg.position.y,z=msg.position.z)
+        yaw = self.q2yaw(msg.orientation)
+        self.target_motion = self.construct_target(x=msg.position.x,y=msg.position.y,z=msg.position.z,yaw=yaw)
         
     def cmd_vel_flu_callback(self, msg):
         self.hover_state_transition(msg.linear.x, msg.linear.y, msg.linear.z, msg.angular.z)
         if self.hover_flag == 0:
+            self.hold_state_transition(msg.linear.x, msg.linear.y, msg.linear.z, msg.angular.z, 'flu')
+        if self.hover_flag == 0 and self.hold_flag == 0:
             self.coordinate_frame = 8
-            self.motion_type = 1     
-            self.target_motion = self.construct_target(vx=msg.linear.x,vy=msg.linear.y,vz=msg.linear.z,yaw_rate=msg.angular.z)       
- 
+            self.motion_type = 1
+            self.target_motion = self.construct_target(vx=msg.linear.x, vy=msg.linear.y, vz=msg.linear.z,
+                                                       yaw_rate=msg.angular.z)
     def cmd_vel_enu_callback(self, msg):
         self.hover_state_transition(msg.linear.x, msg.linear.y, msg.linear.z, msg.angular.z)
         if self.hover_flag == 0:
+            self.hold_state_transition(msg.linear.x, msg.linear.y, msg.linear.z, msg.angular.z, 'enu')
+        if self.hover_flag == 0 and self.hold_flag == 0:
             self.coordinate_frame = 1
             self.motion_type = 1
-            self.target_motion = self.construct_target(vx=msg.linear.x,vy=msg.linear.y,vz=msg.linear.z,yaw_rate=msg.angular.z)
-
+            self.target_motion = self.construct_target(vx=msg.linear.x, vy=msg.linear.y, vz=msg.linear.z,
+                                                       yaw_rate=msg.angular.z)
     def cmd_accel_flu_callback(self, msg):
         self.hover_state_transition(msg.linear.x, msg.linear.y, msg.linear.z, msg.angular.z)
         if self.hover_flag == 0:
             self.coordinate_frame = 8
-            self.motion_type = 2
-            self.target_motion = self.construct_target(afx=msg.linear.x,afy=msg.linear.y,afz=msg.linear.z,yaw_rate=msg.angular.z)
-            
+            if msg.angular.z == 0:
+                self.motion_type = 4
+                self.target_motion = self.construct_target(afx=msg.linear.x, afy=msg.linear.y, afz=msg.linear.z,
+                                                           yaw=self.current_yaw)
+            else:
+                self.motion_type = 2
+                self.target_motion = self.construct_target(afx=msg.linear.x, afy=msg.linear.y, afz=msg.linear.z,
+                                                           yaw_rate=msg.angular.z)
+
     def cmd_accel_enu_callback(self, msg):
         self.hover_state_transition(msg.linear.x, msg.linear.y, msg.linear.z, msg.angular.z)
         if self.hover_flag == 0:
             self.coordinate_frame = 1 
-            self.motion_type = 2
-            self.target_motion = self.construct_target(afx=msg.linear.x,afy=msg.linear.y,afz=msg.linear.z,yaw_rate=msg.angular.z)
+            if msg.angular.z == 0:
+                self.motion_type = 4
+                self.target_motion = self.construct_target(afx=msg.linear.x, afy=msg.linear.y, afz=msg.linear.z,
+                                                           yaw=self.current_yaw)
+            else:
+                self.motion_type = 2
+                self.target_motion = self.construct_target(afx=msg.linear.x, afy=msg.linear.y, afz=msg.linear.z,
+                                                           yaw_rate=msg.angular.z)
             
     def hover_state_transition(self,x,y,z,w):
         if abs(x) > 0.005 or abs(y) > 0.005 or abs(z) > 0.005 or abs(w) > 0.005:
             self.hover_flag = 0
             self.flight_mode = 'OFFBOARD'
-            
+
+    def hold_state_transition(self, x, y, z, w, vel_type):
+        if vel_type == 'flu':
+            if abs(x) < 0.02 and abs(y) < 0.02:
+                if self.hold_x_flag == 0 or self.hold_y_flag == 0:
+                    self.hold_position_x = self.current_position.x
+                    self.hold_position_y = self.current_position.y
+                    self.hold_x_flag = 1
+                    self.hold_y_flag = 1
+            if abs(x) < 0.02:
+                if self.hold_x_flag == 0:
+                    self.hold_position_x = self.current_position.x
+                    self.hold_position_y = self.current_position.y
+                    self.hold_x_flag = 1
+            else:
+                self.hold_x_flag = 0
+            if abs(y) < 0.02:
+                if self.hold_y_flag == 0:
+                    self.hold_position_x = self.current_position.x
+                    self.hold_position_y = self.current_position.y
+                    self.hold_y_flag = 1
+            else:
+                self.hold_y_flag = 0
+            if abs(z) < 0.02:
+                if self.hold_z_flag == 0:
+                    self.hold_position_z = self.current_position.z
+                    self.hold_z_flag = 1
+                    z = -1 * (self.current_position.z - self.hold_position_z)
+            else:
+                self.hold_z_flag = 0
+            if abs(w) < 0.005:
+                if self.hold_yaw_flag == 0:
+                    self.hold_yaw = self.current_yaw
+                    self.hold_yaw_flag = 1
+            else:
+                self.hold_yaw_flag = 0
+
+            if self.hold_x_flag and self.hold_y_flag and (self.hold_z_flag != 1):
+                self.hold_flag = 1
+                self.coordinate_frame = 8
+                x = -1 * ((self.current_position.x - self.hold_position_x) * math.cos(self.current_yaw) +
+                          (self.current_position.y - self.hold_position_y) * math.sin(self.current_yaw))
+                y = -1 * (-(self.current_position.x - self.hold_position_x) * math.sin(self.current_yaw) +
+                          (self.current_position.y - self.hold_position_y) * math.cos(self.current_yaw))
+                if self.hold_yaw_flag == 0:
+                    self.motion_type = 1
+                    self.target_motion = self.construct_target(vx=x, vy=y, vz=z, yaw_rate=w)
+                else:
+                    self.motion_type = 3
+                    self.target_motion = self.construct_target(vx=x, vy=y, vz=z, yaw=self.hold_yaw)
+            elif self.hold_x_flag and self.hold_yaw_flag:
+                self.hold_flag = 1
+                self.coordinate_frame = 8
+                x = -1 * ((self.current_position.x - self.hold_position_x) * math.cos(self.current_yaw) +
+                          (self.current_position.y - self.hold_position_y) * math.sin(self.current_yaw))
+                self.motion_type = 3
+                self.target_motion = self.construct_target(vx=x, vy=y, vz=z, yaw=self.hold_yaw)
+            elif self.hold_y_flag and self.hold_yaw_flag:
+                self.hold_flag = 1
+                self.coordinate_frame = 8
+                y = -1 * (-(self.current_position.x - self.hold_position_x) * math.sin(self.current_yaw) +
+                          (self.current_position.y - self.hold_position_y) * math.cos(self.current_yaw))
+                self.motion_type = 3
+                self.target_motion = self.construct_target(vx=x, vy=y, vz=z, yaw=self.hold_yaw)
+            elif self.hold_z_flag:
+                self.hold_flag = 1
+                self.coordinate_frame = 8
+                if self.hold_yaw_flag == 0:
+                    self.motion_type = 1
+                    self.target_motion = self.construct_target(vx=x, vy=y, vz=z, yaw_rate=w)
+                else:
+                    self.motion_type = 3
+                    self.target_motion = self.construct_target(vx=x, vy=y, vz=z, yaw=self.hold_yaw)
+            else:
+                self.hold_flag = 0
+
+        elif vel_type == 'enu':
+            if abs(x) < 0.02:
+                if self.hold_x_flag == 0:
+                    self.hold_position_x = self.current_position.x
+                    self.hold_x_flag = 1
+                x = -1 * (self.current_position.x - self.hold_position_x)
+            else:
+                self.hold_x_flag = 0
+            if abs(y) < 0.02:
+                if self.hold_y_flag == 0:
+                    self.hold_position_y = self.current_position.y
+                    self.hold_y_flag = 1
+                y = -1 * (self.current_position.y - self.hold_position_y)
+            else:
+                self.hold_y_flag = 0
+            if abs(z) < 0.02:
+                if self.hold_z_flag == 0:
+                    self.hold_position_z = self.current_position.z
+                    self.hold_z_flag = 1
+                z = -1 * (self.current_position.z - self.hold_position_z)
+            else:
+                self.hold_z_flag = 0
+            if abs(w) < 0.005:
+                if self.hold_yaw_flag == 0:
+                    self.hold_yaw = self.current_yaw
+                    self.hold_yaw_flag = 1
+            else:
+                self.hold_yaw_flag = 0
+
+            if self.hold_x_flag or self.hold_y_flag or self.hold_z_flag:
+                self.hold_flag = 1
+                self.coordinate_frame = 1
+                if self.hold_yaw_flag == 0:
+                    self.motion_type = 1
+                    self.target_motion = self.construct_target(vx=x, vy=y, vz=z, yaw_rate=w)
+                else:
+                    self.motion_type = 3
+                    self.target_motion = self.construct_target(vx=x, vy=y, vz=z, yaw=self.hold_yaw)
+            else:
+                self.hold_flag = 0
+
     def cmd_callback(self, msg):
         if msg.data == '':
             return
@@ -223,7 +375,7 @@ class Communication:
     def hover(self):
         self.coordinate_frame = 1
         self.motion_type = 0
-        self.target_motion = self.construct_target(x=self.local_pose.position.x,y=self.local_pose.position.y,z=self.local_pose.position.z,yaw=self.current_yaw)
+        self.target_motion = self.construct_target(x=self.current_position.x, y=self.current_position.y, z=self.current_position.z, yaw=self.current_yaw)
 
     def flight_mode_switch(self):
         if self.flight_mode == 'HOVER':

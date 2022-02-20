@@ -57,6 +57,10 @@ K. Xiao, L. Ma, S. Tan, Y. Cong , X. Wang, "Implementation of UAV Coordination B
 
 <img src="./images/3d_motion_planning.gif" width="640" height="360" />  
 
+集群运动规划
+
+<img src="./images/swarm_motion_planning.gif" width="640" height="306" />  
+
 目标检测与追踪
 
 <img src="./images/human_tracking.gif" width="640" height="360" /> 

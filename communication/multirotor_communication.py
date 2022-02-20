@@ -141,6 +141,7 @@ class Communication:
             self.hover_flag = 0
             self.flight_mode = 'OFFBOARD'
         elif not self.flight_mode == "HOVER":
+            self.hover_flag = 1
             self.flight_mode = 'HOVER'
             self.hover()
     def cmd_callback(self, msg):

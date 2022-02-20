@@ -16,7 +16,7 @@ class Communication:
         
         self.vehicle_type = vehicle_type
         self.vehicle_id = vehicle_id
-        self.local_pose = None
+        self.current_position = None
         self.current_yaw = 0
         self.current_state = None
         self.target_motion = PositionTarget()
@@ -76,7 +76,7 @@ class Communication:
             rate.sleep()
 
     def local_pose_callback(self, msg):
-        self.local_pose = msg.pose
+        self.current_position = msg.pose.position
         self.current_yaw = self.q2yaw(msg.pose.orientation)
 
     def q2yaw(self, q):
@@ -375,7 +375,7 @@ class Communication:
     def hover(self):
         self.coordinate_frame = 1
         self.motion_type = 0
-        self.target_motion = self.construct_target(x=self.local_pose.position.x,y=self.local_pose.position.y,z=self.local_pose.position.z,yaw=self.current_yaw)
+        self.target_motion = self.construct_target(x=self.current_position.x, y=self.current_position.y, z=self.current_position.z, yaw=self.current_yaw)
 
     def flight_mode_switch(self):
         if self.flight_mode == 'HOVER':

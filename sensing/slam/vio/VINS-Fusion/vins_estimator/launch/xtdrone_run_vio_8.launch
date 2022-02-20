@@ -1,0 +1,50 @@
+<launch>
+    <!-- iris_0 -->
+    <group ns="iris_0">
+        <!-- VINS-Fusion -->
+        <node pkg="vins" type="vins_node" name="vins_estimator" args="$(find vins)/../config/xtdrone_sitl/iris_0_px4_sitl_config.yaml" />
+    </group>
+
+    <!-- iris_1 -->
+    <group ns="iris_1">
+        <!-- VINS-Fusion -->
+        <node pkg="vins" type="vins_node" name="vins_estimator" args="$(find vins)/../config/xtdrone_sitl/iris_1_px4_sitl_config.yaml" />
+    </group>
+
+    <!-- iris_2 -->
+    <group ns="iris_2">
+        <!-- VINS-Fusion -->
+        <node pkg="vins" type="vins_node" name="vins_estimator" args="$(find vins)/../config/xtdrone_sitl/iris_2_px4_sitl_config.yaml" />
+    </group>
+
+    <!-- iris_3 -->
+    <group ns="iris_3">
+        <!-- VINS-Fusion -->
+        <node pkg="vins" type="vins_node" name="vins_estimator" args="$(find vins)/../config/xtdrone_sitl/iris_3_px4_sitl_config.yaml" />
+    </group>
+
+    <!-- iris_4 -->
+    <group ns="iris_4">
+        <!-- VINS-Fusion -->
+        <node pkg="vins" type="vins_node" name="vins_estimator" args="$(find vins)/../config/xtdrone_sitl/iris_4_px4_sitl_config.yaml" />
+    </group>
+
+    <!-- iris_5 -->
+    <group ns="iris_5">
+        <!-- VINS-Fusion -->
+        <node pkg="vins" type="vins_node" name="vins_estimator" args="$(find vins)/../config/xtdrone_sitl/iris_5_px4_sitl_config.yaml" />
+    </group>
+
+    <!-- iris_6 -->
+    <group ns="iris_6">
+        <!-- VINS-Fusion -->
+        <node pkg="vins" type="vins_node" name="vins_estimator" args="$(find vins)/../config/xtdrone_sitl/iris_6_px4_sitl_config.yaml" />
+    </group>
+
+    <!-- iris_7 -->
+    <group ns="iris_7">
+        <!-- VINS-Fusion -->
+        <node pkg="vins" type="vins_node" name="vins_estimator" args="$(find vins)/../config/xtdrone_sitl/iris_7_px4_sitl_config.yaml" />
+    </group> 
+
+</launch>

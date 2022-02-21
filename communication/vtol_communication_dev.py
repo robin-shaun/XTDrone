@@ -7,13 +7,14 @@ from pyquaternion import Quaternion
 import sys
 import math
 
-rospy.init_node(sys.argv[1]+'_'+sys.argv[2]+"_communication")
+rospy.init_node(sys.argv[1] + '_' + sys.argv[2] + "_communication")
 rate = rospy.Rate(30)
+
 
 class Communication:
 
     def __init__(self, vehicle_type, vehicle_id):
-        
+
         self.vehicle_type = vehicle_type
         self.vehicle_id = vehicle_id
         self.current_position = None
@@ -35,30 +36,49 @@ class Communication:
         self.hold_y_flag = 0
         self.hold_z_flag = 0
         self.hold_yaw_flag = 0
-            
+
         '''
         ros subscribers
         '''
-        self.local_pose_sub = rospy.Subscriber(self.vehicle_type+'_'+self.vehicle_id+"/mavros/local_position/pose", PoseStamped, self.local_pose_callback,queue_size=1)
-        self.cmd_pose_flu_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+'_'+self.vehicle_id+"/cmd_pose_flu", Pose, self.cmd_pose_flu_callback,queue_size=1)
-        self.cmd_pose_enu_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+'_'+self.vehicle_id+"/cmd_pose_enu", Pose, self.cmd_pose_enu_callback,queue_size=1)
-        self.cmd_vel_flu_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+'_'+self.vehicle_id+"/cmd_vel_flu", Twist, self.cmd_vel_flu_callback,queue_size=1)
-        self.cmd_vel_enu_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+'_'+self.vehicle_id+"/cmd_vel_enu", Twist, self.cmd_vel_enu_callback,queue_size=1)
-        self.cmd_accel_flu_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+'_'+self.vehicle_id+"/cmd_accel_flu", Twist, self.cmd_accel_flu_callback,queue_size=1)
-        self.cmd_accel_enu_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+'_'+self.vehicle_id+"/cmd_accel_enu", Twist, self.cmd_accel_enu_callback,queue_size=1)    
-        self.cmd_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+'_'+self.vehicle_id+"/cmd",String,self.cmd_callback,queue_size=3)
+        self.local_pose_sub = rospy.Subscriber(
+            self.vehicle_type + '_' + self.vehicle_id + "/mavros/local_position/pose", PoseStamped,
+            self.local_pose_callback, queue_size=1)
+        self.cmd_pose_flu_sub = rospy.Subscriber(
+            "/xtdrone/" + self.vehicle_type + '_' + self.vehicle_id + "/cmd_pose_flu", Pose, self.cmd_pose_flu_callback,
+            queue_size=1)
+        self.cmd_pose_enu_sub = rospy.Subscriber(
+            "/xtdrone/" + self.vehicle_type + '_' + self.vehicle_id + "/cmd_pose_enu", Pose, self.cmd_pose_enu_callback,
+            queue_size=1)
+        self.cmd_vel_flu_sub = rospy.Subscriber(
+            "/xtdrone/" + self.vehicle_type + '_' + self.vehicle_id + "/cmd_vel_flu", Twist, self.cmd_vel_flu_callback,
+            queue_size=1)
+        self.cmd_vel_enu_sub = rospy.Subscriber(
+            "/xtdrone/" + self.vehicle_type + '_' + self.vehicle_id + "/cmd_vel_enu", Twist, self.cmd_vel_enu_callback,
+            queue_size=1)
+        self.cmd_accel_flu_sub = rospy.Subscriber(
+            "/xtdrone/" + self.vehicle_type + '_' + self.vehicle_id + "/cmd_accel_flu", Twist,
+            self.cmd_accel_flu_callback, queue_size=1)
+        self.cmd_accel_enu_sub = rospy.Subscriber(
+            "/xtdrone/" + self.vehicle_type + '_' + self.vehicle_id + "/cmd_accel_enu", Twist,
+            self.cmd_accel_enu_callback, queue_size=1)
+        self.cmd_sub = rospy.Subscriber("/xtdrone/" + self.vehicle_type + '_' + self.vehicle_id + "/cmd", String,
+                                        self.cmd_callback, queue_size=3)
 
         ''' 
         ros publishers
         '''
-        self.target_motion_pub = rospy.Publisher(self.vehicle_type+'_'+self.vehicle_id+"/mavros/setpoint_raw/local", PositionTarget, queue_size=1)
+        self.target_motion_pub = rospy.Publisher(
+            self.vehicle_type + '_' + self.vehicle_id + "/mavros/setpoint_raw/local", PositionTarget, queue_size=1)
 
         '''
         ros services
         '''
-        self.armService = rospy.ServiceProxy(self.vehicle_type+'_'+self.vehicle_id+"/mavros/cmd/arming", CommandBool)
-        self.flightModeService = rospy.ServiceProxy(self.vehicle_type+'_'+self.vehicle_id+"/mavros/set_mode", SetMode)
-        self.transition = rospy.ServiceProxy(self.vehicle_type+'_'+self.vehicle_id+'/mavros/cmd/vtol_transition', CommandVtolTransition)
+        self.armService = rospy.ServiceProxy(self.vehicle_type + '_' + self.vehicle_id + "/mavros/cmd/arming",
+                                             CommandBool)
+        self.flightModeService = rospy.ServiceProxy(self.vehicle_type + '_' + self.vehicle_id + "/mavros/set_mode",
+                                                    SetMode)
+        self.transition = rospy.ServiceProxy(self.vehicle_type + '_' + self.vehicle_id + '/mavros/cmd/vtol_transition',
+                                             CommandVtolTransition)
         self.transition_state = 'multirotor'
         print(self.transition_state)
         print(self.transition(state=3))
@@ -66,7 +86,7 @@ class Communication:
         print("communication initialized")
 
     def start(self):
-        rospy.init_node(self.vehicle_type+'_'+self.vehicle_id+"_communication")
+        rospy.init_node(self.vehicle_type + '_' + self.vehicle_id + "_communication")
         rate = rospy.Rate(100)
         '''
         main ROS thread
@@ -110,11 +130,11 @@ class Communication:
             else:
                 target_raw_pose.type_mask = 16384
         else:
-            if self.coordinate_frame == 1: 
+            if self.coordinate_frame == 1:
                 target_raw_pose.velocity.x = vx
                 target_raw_pose.velocity.y = vy
                 target_raw_pose.velocity.z = vz
-                
+
                 target_raw_pose.acceleration_or_force.x = afx
                 target_raw_pose.acceleration_or_force.y = afy
                 target_raw_pose.acceleration_or_force.z = afz
@@ -122,7 +142,7 @@ class Communication:
                 target_raw_pose.velocity.x = -vy
                 target_raw_pose.velocity.y = vx
                 target_raw_pose.velocity.z = vz
-                
+
                 target_raw_pose.acceleration_or_force.x = -afy
                 target_raw_pose.acceleration_or_force.y = afx
                 target_raw_pose.acceleration_or_force.z = afz
@@ -130,39 +150,35 @@ class Communication:
             target_raw_pose.yaw = yaw
             target_raw_pose.yaw_rate = yaw_rate
 
-            if(self.motion_type == 0):
+            if (self.motion_type == 0):
                 target_raw_pose.type_mask = PositionTarget.IGNORE_VX + PositionTarget.IGNORE_VY + PositionTarget.IGNORE_VZ \
-                                + PositionTarget.IGNORE_AFX + PositionTarget.IGNORE_AFY + PositionTarget.IGNORE_AFZ \
-                                + PositionTarget.IGNORE_YAW_RATE
-            if(self.motion_type == 1):
+                                            + PositionTarget.IGNORE_AFX + PositionTarget.IGNORE_AFY + PositionTarget.IGNORE_AFZ \
+                                            + PositionTarget.IGNORE_YAW_RATE
+            if (self.motion_type == 1):
                 target_raw_pose.type_mask = PositionTarget.IGNORE_PX + PositionTarget.IGNORE_PY + PositionTarget.IGNORE_PZ \
-                                + PositionTarget.IGNORE_AFX + PositionTarget.IGNORE_AFY + PositionTarget.IGNORE_AFZ \
-                                + PositionTarget.IGNORE_YAW
-            if(self.motion_type == 2):
+                                            + PositionTarget.IGNORE_AFX + PositionTarget.IGNORE_AFY + PositionTarget.IGNORE_AFZ \
+                                            + PositionTarget.IGNORE_YAW
+            if (self.motion_type == 2):
                 target_raw_pose.type_mask = PositionTarget.IGNORE_PX + PositionTarget.IGNORE_PY + PositionTarget.IGNORE_PZ \
-                                + PositionTarget.IGNORE_VX + PositionTarget.IGNORE_VY + PositionTarget.IGNORE_VZ \
-                                + PositionTarget.IGNORE_YAW
+                                            + PositionTarget.IGNORE_VX + PositionTarget.IGNORE_VY + PositionTarget.IGNORE_VZ \
+                                            + PositionTarget.IGNORE_YAW
             if (self.motion_type == 3):
                 target_raw_pose.type_mask = PositionTarget.IGNORE_PX + PositionTarget.IGNORE_PY + PositionTarget.IGNORE_PZ \
                                             + PositionTarget.IGNORE_AFX + PositionTarget.IGNORE_AFY + PositionTarget.IGNORE_AFZ \
                                             + PositionTarget.IGNORE_YAW_RATE
-            if (self.motion_type == 4):
-                target_raw_pose.type_mask = PositionTarget.IGNORE_PX + PositionTarget.IGNORE_PY + PositionTarget.IGNORE_PZ \
-                                + PositionTarget.IGNORE_VX + PositionTarget.IGNORE_VY + PositionTarget.IGNORE_VZ \
-                                + PositionTarget.IGNORE_YAW_RATE
 
         return target_raw_pose
 
     def cmd_pose_flu_callback(self, msg):
         self.coordinate_frame = 9
         yaw = self.q2yaw(msg.orientation)
-        self.target_motion = self.construct_target(x=msg.position.x,y=msg.position.y,z=msg.position.z,yaw=yaw)
- 
+        self.target_motion = self.construct_target(x=msg.position.x, y=msg.position.y, z=msg.position.z, yaw=yaw)
+
     def cmd_pose_enu_callback(self, msg):
         self.coordinate_frame = 1
         yaw = self.q2yaw(msg.orientation)
-        self.target_motion = self.construct_target(x=msg.position.x,y=msg.position.y,z=msg.position.z,yaw=yaw)
-        
+        self.target_motion = self.construct_target(x=msg.position.x, y=msg.position.y, z=msg.position.z, yaw=yaw)
+
     def cmd_vel_flu_callback(self, msg):
         self.hover_state_transition(msg.linear.x, msg.linear.y, msg.linear.z, msg.angular.z)
         if self.hover_flag == 0:
@@ -172,6 +188,7 @@ class Communication:
             self.motion_type = 1
             self.target_motion = self.construct_target(vx=msg.linear.x, vy=msg.linear.y, vz=msg.linear.z,
                                                        yaw_rate=msg.angular.z)
+
     def cmd_vel_enu_callback(self, msg):
         self.hover_state_transition(msg.linear.x, msg.linear.y, msg.linear.z, msg.angular.z)
         if self.hover_flag == 0:
@@ -181,33 +198,24 @@ class Communication:
             self.motion_type = 1
             self.target_motion = self.construct_target(vx=msg.linear.x, vy=msg.linear.y, vz=msg.linear.z,
                                                        yaw_rate=msg.angular.z)
+
     def cmd_accel_flu_callback(self, msg):
         self.hover_state_transition(msg.linear.x, msg.linear.y, msg.linear.z, msg.angular.z)
         if self.hover_flag == 0:
             self.coordinate_frame = 8
-            if msg.angular.z == 0:
-                self.motion_type = 4
-                self.target_motion = self.construct_target(afx=msg.linear.x, afy=msg.linear.y, afz=msg.linear.z,
-                                                           yaw=self.current_yaw)
-            else:
-                self.motion_type = 2
-                self.target_motion = self.construct_target(afx=msg.linear.x, afy=msg.linear.y, afz=msg.linear.z,
-                                                           yaw_rate=msg.angular.z)
+            self.motion_type = 2
+            self.target_motion = self.construct_target(afx=msg.linear.x, afy=msg.linear.y, afz=msg.linear.z,
+                                                       yaw_rate=msg.angular.z)
 
     def cmd_accel_enu_callback(self, msg):
         self.hover_state_transition(msg.linear.x, msg.linear.y, msg.linear.z, msg.angular.z)
         if self.hover_flag == 0:
-            self.coordinate_frame = 1 
-            if msg.angular.z == 0:
-                self.motion_type = 4
-                self.target_motion = self.construct_target(afx=msg.linear.x, afy=msg.linear.y, afz=msg.linear.z,
-                                                           yaw=self.current_yaw)
-            else:
-                self.motion_type = 2
-                self.target_motion = self.construct_target(afx=msg.linear.x, afy=msg.linear.y, afz=msg.linear.z,
-                                                           yaw_rate=msg.angular.z)
-            
-    def hover_state_transition(self,x,y,z,w):
+            self.coordinate_frame = 1
+            self.motion_type = 2
+            self.target_motion = self.construct_target(afx=msg.linear.x, afy=msg.linear.y, afz=msg.linear.z,
+                                                       yaw_rate=msg.angular.z)
+
+    def hover_state_transition(self, x, y, z, w):
         if abs(x) > 0.005 or abs(y) > 0.005 or abs(z) > 0.005 or abs(w) > 0.005:
             self.hover_flag = 0
             self.flight_mode = 'OFFBOARD'
@@ -259,21 +267,24 @@ class Communication:
                 if self.hold_yaw_flag == 0:
                     self.target_motion = self.construct_target(vx=x, vy=y, vz=z, yaw_rate=w)
                 else:
-                    self.target_motion = self.construct_target(vx=x, vy=y, vz=z, yaw_rate=-1*(self.current_yaw-self.hold_yaw))
+                    self.target_motion = self.construct_target(vx=x, vy=y, vz=z,
+                                                               yaw_rate=-1 * (self.current_yaw - self.hold_yaw))
             elif self.hold_x_flag and self.hold_yaw_flag:
                 self.hold_flag = 1
                 self.coordinate_frame = 8
                 self.motion_type = 1
                 x = -1 * ((self.current_position.x - self.hold_position_x) * math.cos(self.current_yaw) +
                           (self.current_position.y - self.hold_position_y) * math.sin(self.current_yaw))
-                self.target_motion = self.construct_target(vx=x, vy=y, vz=z, yaw_rate=-1*(self.current_yaw-self.hold_yaw))
+                self.target_motion = self.construct_target(vx=x, vy=y, vz=z,
+                                                           yaw_rate=-1 * (self.current_yaw - self.hold_yaw))
             elif self.hold_y_flag and self.hold_yaw_flag:
                 self.hold_flag = 1
                 self.coordinate_frame = 8
                 self.motion_type = 1
                 y = -1 * (-(self.current_position.x - self.hold_position_x) * math.sin(self.current_yaw) +
                           (self.current_position.y - self.hold_position_y) * math.cos(self.current_yaw))
-                self.target_motion = self.construct_target(vx=x, vy=y, vz=z, yaw_rate=-1*(self.current_yaw-self.hold_yaw))
+                self.target_motion = self.construct_target(vx=x, vy=y, vz=z,
+                                                           yaw_rate=-1 * (self.current_yaw - self.hold_yaw))
             elif self.hold_z_flag:
                 self.hold_flag = 1
                 self.coordinate_frame = 8
@@ -281,7 +292,8 @@ class Communication:
                 if self.hold_yaw_flag == 0:
                     self.target_motion = self.construct_target(vx=x, vy=y, vz=z, yaw_rate=w)
                 else:
-                    self.target_motion = self.construct_target(vx=x, vy=y, vz=z, yaw_rate=-1*(self.current_yaw-self.hold_yaw))
+                    self.target_motion = self.construct_target(vx=x, vy=y, vz=z,
+                                                               yaw_rate=-1 * (self.current_yaw - self.hold_yaw))
             else:
                 self.hold_flag = 0
 
@@ -331,27 +343,27 @@ class Communication:
             return
 
         elif msg.data == 'ARM':
-            self.arm_state =self.arm()
-            print(self.vehicle_type+'_'+self.vehicle_id+": Armed "+str(self.arm_state))
+            self.arm_state = self.arm()
+            print(self.vehicle_type + '_' + self.vehicle_id + ": Armed " + str(self.arm_state))
 
         elif msg.data == 'DISARM':
             self.arm_state = not self.disarm()
-            print(self.vehicle_type+'_'+self.vehicle_id+": Armed "+str(self.arm_state))
-            
-        elif  msg.data == 'multirotor':
+            print(self.vehicle_type + '_' + self.vehicle_id + ": Armed " + str(self.arm_state))
+
+        elif msg.data == 'multirotor':
             self.transition_state = msg.data
-            print(self.vehicle_type+'_'+self.vehicle_id+':'+msg.data)
+            print(self.vehicle_type + '_' + self.vehicle_id + ':' + msg.data)
             print(self.transition(state=3))
-            
-        elif  msg.data == 'plane':
+
+        elif msg.data == 'plane':
             self.transition_state = msg.data
-            print(self.vehicle_type+'_'+self.vehicle_id+':'+msg.data)
+            print(self.vehicle_type + '_' + self.vehicle_id + ':' + msg.data)
             print(self.transition(state=4))
 
         elif msg.data in ['loiter', 'idle']:
-            self.plane_mission = msg.data   
-            print(self.vehicle_type+'_'+self.vehicle_id+':'+self.plane_mission)
-            
+            self.plane_mission = msg.data
+            print(self.vehicle_type + '_' + self.vehicle_id + ':' + self.plane_mission)
+
         else:
             self.flight_mode = msg.data
             self.flight_mode_switch()
@@ -360,35 +372,36 @@ class Communication:
         if self.armService(True):
             return True
         else:
-            print(self.vehicle_type+'_'+self.vehicle_id+": arming failed!")
+            print(self.vehicle_type + '_' + self.vehicle_id + ": arming failed!")
             return False
 
     def disarm(self):
         if self.armService(False):
             return True
         else:
-            print(self.vehicle_type+'_'+self.vehicle_id+": disarming failed!")
+            print(self.vehicle_type + '_' + self.vehicle_id + ": disarming failed!")
             return False
-        
+
     def hover(self):
         self.coordinate_frame = 1
         self.motion_type = 0
-        self.target_motion = self.construct_target(x=self.current_position.x, y=self.current_position.y, z=self.current_position.z, yaw=self.current_yaw)
+        self.target_motion = self.construct_target(x=self.current_position.x, y=self.current_position.y,
+                                                   z=self.current_position.z, yaw=self.current_yaw)
 
     def flight_mode_switch(self):
         if self.flight_mode == 'HOVER':
             self.hover_flag = 1
             self.hover()
-            print(self.vehicle_type+'_'+self.vehicle_id+": Hover")
+            print(self.vehicle_type + '_' + self.vehicle_id + ": Hover")
         elif self.flightModeService(custom_mode=self.flight_mode):
             self.hover_flag = 0
-            print(self.vehicle_type+'_'+self.vehicle_id+": "+self.flight_mode)
+            print(self.vehicle_type + '_' + self.vehicle_id + ": " + self.flight_mode)
             return True
         else:
-            print(self.vehicle_type+'_'+self.vehicle_id+": "+self.flight_mode+"Failed")
+            print(self.vehicle_type + '_' + self.vehicle_id + ": " + self.flight_mode + "Failed")
             return False
 
-if __name__ == '__main__':
-    communication = Communication(sys.argv[1],sys.argv[2])
-    communication.start()
 
+if __name__ == '__main__':
+    communication = Communication(sys.argv[1], sys.argv[2])
+    communication.start()

@@ -126,10 +126,6 @@ class Communication:
             target_raw_pose.type_mask = PositionTarget.IGNORE_PX + PositionTarget.IGNORE_PY + PositionTarget.IGNORE_PZ \
                                         + PositionTarget.IGNORE_AFX + PositionTarget.IGNORE_AFY + PositionTarget.IGNORE_AFZ \
                                         + PositionTarget.IGNORE_YAW_RATE
-        if (self.motion_type == 4):
-            target_raw_pose.type_mask = PositionTarget.IGNORE_PX + PositionTarget.IGNORE_PY + PositionTarget.IGNORE_PZ \
-                                        + PositionTarget.IGNORE_VX + PositionTarget.IGNORE_VY + PositionTarget.IGNORE_VZ \
-                                        + PositionTarget.IGNORE_YAW_RATE
 
         return target_raw_pose
 
@@ -169,27 +165,17 @@ class Communication:
         self.hover_state_transition(msg.linear.x, msg.linear.y, msg.linear.z, msg.angular.z)
         if self.hover_flag == 0:
             self.coordinate_frame = 8
-            if msg.angular.z == 0:
-                self.motion_type = 4
-                self.target_motion = self.construct_target(afx=msg.linear.x, afy=msg.linear.y, afz=msg.linear.z,
-                                                           yaw=self.current_yaw)
-            else:
-                self.motion_type = 2
-                self.target_motion = self.construct_target(afx=msg.linear.x, afy=msg.linear.y, afz=msg.linear.z,
-                                                           yaw_rate=msg.angular.z)
+            self.motion_type = 2
+            self.target_motion = self.construct_target(afx=msg.linear.x, afy=msg.linear.y, afz=msg.linear.z,
+                                                       yaw_rate=msg.angular.z)
 
     def cmd_accel_enu_callback(self, msg):
         self.hover_state_transition(msg.linear.x, msg.linear.y, msg.linear.z, msg.angular.z)
         if self.hover_flag == 0:
             self.coordinate_frame = 1
-            if msg.angular.z == 0:
-                self.motion_type = 4
-                self.target_motion = self.construct_target(afx=msg.linear.x, afy=msg.linear.y, afz=msg.linear.z,
-                                                           yaw=self.current_yaw)
-            else:
-                self.motion_type = 2
-                self.target_motion = self.construct_target(afx=msg.linear.x, afy=msg.linear.y, afz=msg.linear.z,
-                                                           yaw_rate=msg.angular.z)
+            self.motion_type = 2
+            self.target_motion = self.construct_target(afx=msg.linear.x, afy=msg.linear.y, afz=msg.linear.z,
+                                                       yaw_rate=msg.angular.z)
 
     def hover_state_transition(self, x, y, z, w):
         if abs(x) > 0.02 or abs(y) > 0.02 or abs(z) > 0.02 or abs(w) > 0.005:
@@ -247,21 +233,24 @@ class Communication:
                 if self.hold_yaw_flag == 0:
                     self.target_motion = self.construct_target(vx=x, vy=y, vz=z, yaw_rate=w)
                 else:
-                    self.target_motion = self.construct_target(vx=x, vy=y, vz=z, yaw_rate=-1*(self.current_yaw-self.hold_yaw))
+                    self.target_motion = self.construct_target(vx=x, vy=y, vz=z,
+                                                               yaw_rate=-1 * (self.current_yaw - self.hold_yaw))
             elif self.hold_x_flag and self.hold_yaw_flag:
                 self.hold_flag = 1
                 self.coordinate_frame = 8
                 self.motion_type = 1
                 x = -1 * ((self.current_position.x - self.hold_position_x) * math.cos(self.current_yaw) +
                           (self.current_position.y - self.hold_position_y) * math.sin(self.current_yaw))
-                self.target_motion = self.construct_target(vx=x, vy=y, vz=z, yaw_rate=-1*(self.current_yaw-self.hold_yaw))
+                self.target_motion = self.construct_target(vx=x, vy=y, vz=z,
+                                                           yaw_rate=-1 * (self.current_yaw - self.hold_yaw))
             elif self.hold_y_flag and self.hold_yaw_flag:
                 self.hold_flag = 1
                 self.coordinate_frame = 8
                 self.motion_type = 1
                 y = -1 * (-(self.current_position.x - self.hold_position_x) * math.sin(self.current_yaw) +
                           (self.current_position.y - self.hold_position_y) * math.cos(self.current_yaw))
-                self.target_motion = self.construct_target(vx=x, vy=y, vz=z, yaw_rate=-1*(self.current_yaw-self.hold_yaw))
+                self.target_motion = self.construct_target(vx=x, vy=y, vz=z,
+                                                           yaw_rate=-1 * (self.current_yaw - self.hold_yaw))
             elif self.hold_z_flag:
                 self.hold_flag = 1
                 self.coordinate_frame = 8
@@ -269,7 +258,8 @@ class Communication:
                 if self.hold_yaw_flag == 0:
                     self.target_motion = self.construct_target(vx=x, vy=y, vz=z, yaw_rate=w)
                 else:
-                    self.target_motion = self.construct_target(vx=x, vy=y, vz=z, yaw_rate=-1*(self.current_yaw-self.hold_yaw))
+                    self.target_motion = self.construct_target(vx=x, vy=y, vz=z,
+                                                               yaw_rate=-1 * (self.current_yaw - self.hold_yaw))
             else:
                 self.hold_flag = 0
 

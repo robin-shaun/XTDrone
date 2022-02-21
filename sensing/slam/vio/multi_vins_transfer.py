@@ -16,7 +16,7 @@ multi_odom = [Odometry() for i in range(vehicle_num)]
 quaternion = tf.transformations.quaternion_from_euler(0, -math.pi/2, math.pi/2)
 q = Quaternion([quaternion[3],quaternion[0],quaternion[1],quaternion[2]])
 
-bias = np.array([[-5,-2,0],[5,4,0],[-7,-8,0],[-9,8,0]])
+bias = np.array([[-7,5,0],[-7,1.2,0],[-7,-1.2,0],[-7,-4,0]])
 # bias = np.array([[-7,7,0],[-7,5,0],[-7,3,0],[-7,1,0],[-7,-1,0],[-7,-3,0],[-7,-5,0],[-7,-7,0]])
 
 def multi_vins_callback(data, i):

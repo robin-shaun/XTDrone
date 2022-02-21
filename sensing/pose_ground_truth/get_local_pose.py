@@ -32,5 +32,8 @@ if __name__ == '__main__':
         for i in range(vehicle_num):
             multi_pose_pub[i].publish(multi_local_pose[i])
             multi_speed_pub[i].publish(multi_speed[i])
-        rate.sleep()
+        try:
+            rate.sleep()
+        except:
+            continue
 

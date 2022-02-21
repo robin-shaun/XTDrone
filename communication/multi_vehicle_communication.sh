@@ -1,5 +1,5 @@
 #!/bin/bash
-iris_num=3
+iris_num=4
 typhoon_h480_num=0
 solo_num=0
 plane_num=0

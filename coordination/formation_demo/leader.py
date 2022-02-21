@@ -266,7 +266,10 @@ class Leader:
             self.vel_enu_pub.publish(self.cmd_vel_enu)
             self.pose_pub.publish(self.pose)
             self.cmd_pub.publish(self.cmd)
-            rate.sleep()
+            try:
+                rate.sleep()
+            except:
+                continue
 
 if __name__ == '__main__':
     leader = Leader(sys.argv[1], 0, int(sys.argv[2]))

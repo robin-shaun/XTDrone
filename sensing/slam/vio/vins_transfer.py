@@ -36,5 +36,8 @@ while not rospy.is_shutdown():
         print("Vins pose received")
         local_pose.header.stamp = rospy.Time.now()
         position_pub.publish(local_pose) 
-    rate.sleep()
+    try:
+        rate.sleep()
+    except:
+        continue
   

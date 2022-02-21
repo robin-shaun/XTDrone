@@ -64,7 +64,10 @@ class Follower:
                 
                 self.vel_enu_pub.publish(self.cmd_vel_enu)
 
-            rate.sleep()
+            try:
+                rate.sleep()
+            except:
+                continue
 
 if __name__ == '__main__':
     follower = Follower(sys.argv[1],int(sys.argv[2]), int(sys.argv[3]))

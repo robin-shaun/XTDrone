@@ -216,7 +216,7 @@ class Communication:
                 if self.hold_z_flag == 0:
                     self.hold_position_z = self.current_position.z
                     self.hold_z_flag = 1
-                    z = -self.hold_kp_z * (self.current_position.z - self.hold_position_z)
+                z = -self.hold_kp_z * (self.current_position.z - self.hold_position_z)
             else:
                 self.hold_z_flag = 0
             if abs(w) < 0.005:

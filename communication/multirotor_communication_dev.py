@@ -196,6 +196,7 @@ class Communication:
             self.hover_flag = 0
             self.flight_mode = 'OFFBOARD'
         elif not self.flight_mode == "HOVER":
+            self.hover_flag = 1
             self.flight_mode = 'HOVER'
             self.hover()
 
@@ -238,39 +239,37 @@ class Communication:
             if self.hold_x_flag and self.hold_y_flag and (self.hold_z_flag != 1):
                 self.hold_flag = 1
                 self.coordinate_frame = 8
+                self.motion_type = 1
                 x = -1 * ((self.current_position.x - self.hold_position_x) * math.cos(self.current_yaw) +
                           (self.current_position.y - self.hold_position_y) * math.sin(self.current_yaw))
                 y = -1 * (-(self.current_position.x - self.hold_position_x) * math.sin(self.current_yaw) +
                           (self.current_position.y - self.hold_position_y) * math.cos(self.current_yaw))
                 if self.hold_yaw_flag == 0:
-                    self.motion_type = 1
                     self.target_motion = self.construct_target(vx=x, vy=y, vz=z, yaw_rate=w)
                 else:
-                    self.motion_type = 3
-                    self.target_motion = self.construct_target(vx=x, vy=y, vz=z, yaw=self.hold_yaw)
+                    self.target_motion = self.construct_target(vx=x, vy=y, vz=z, yaw_rate=-1*(self.current_yaw-self.hold_yaw))
             elif self.hold_x_flag and self.hold_yaw_flag:
                 self.hold_flag = 1
                 self.coordinate_frame = 8
+                self.motion_type = 1
                 x = -1 * ((self.current_position.x - self.hold_position_x) * math.cos(self.current_yaw) +
                           (self.current_position.y - self.hold_position_y) * math.sin(self.current_yaw))
-                self.motion_type = 3
-                self.target_motion = self.construct_target(vx=x, vy=y, vz=z, yaw=self.hold_yaw)
+                self.target_motion = self.construct_target(vx=x, vy=y, vz=z, yaw_rate=-1*(self.current_yaw-self.hold_yaw))
             elif self.hold_y_flag and self.hold_yaw_flag:
                 self.hold_flag = 1
                 self.coordinate_frame = 8
+                self.motion_type = 1
                 y = -1 * (-(self.current_position.x - self.hold_position_x) * math.sin(self.current_yaw) +
                           (self.current_position.y - self.hold_position_y) * math.cos(self.current_yaw))
-                self.motion_type = 3
-                self.target_motion = self.construct_target(vx=x, vy=y, vz=z, yaw=self.hold_yaw)
+                self.target_motion = self.construct_target(vx=x, vy=y, vz=z, yaw_rate=-1*(self.current_yaw-self.hold_yaw))
             elif self.hold_z_flag:
                 self.hold_flag = 1
                 self.coordinate_frame = 8
+                self.motion_type = 1
                 if self.hold_yaw_flag == 0:
-                    self.motion_type = 1
                     self.target_motion = self.construct_target(vx=x, vy=y, vz=z, yaw_rate=w)
                 else:
-                    self.motion_type = 3
-                    self.target_motion = self.construct_target(vx=x, vy=y, vz=z, yaw=self.hold_yaw)
+                    self.target_motion = self.construct_target(vx=x, vy=y, vz=z, yaw_rate=-1*(self.current_yaw-self.hold_yaw))
             else:
                 self.hold_flag = 0
 

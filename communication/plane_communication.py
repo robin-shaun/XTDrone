@@ -48,7 +48,10 @@ class Communication:
         '''
         while not rospy.is_shutdown():
             self.target_motion_pub.publish(self.target_motion)
-            rate.sleep()
+            try:
+                rate.sleep()
+            except:
+                continue
 
     def local_pose_callback(self, msg):
         self.local_pose = msg

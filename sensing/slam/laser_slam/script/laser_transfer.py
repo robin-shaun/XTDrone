@@ -1,9 +1,9 @@
 import rospy
-from gazebo_msgs.srv import GetModelState
 from geometry_msgs.msg import PoseStamped
 from nav_msgs.msg import Odometry
 from tf2_ros import TransformListener, Buffer
 import sys
+from gazebo_msgs.msg import ModelStates
 
 vehicle_type = sys.argv[1]
 vehicle_id = sys.argv[2]
@@ -17,13 +17,15 @@ local_pose.header.frame_id = 'map'
 hector = PoseStamped()
 height = 0
 
-def odm_groundtruth_callback(msg):
-    global height
-    height = msg.pose.pose.position.z
 
 def hector_callback(data):
     global hector
     hector = data
+
+def gazebo_model_state_callback(msg):
+    global height
+    id = msg.name.index(vehicle_type+'_'+str(vehicle_id))
+    height = msg.pose[id].position.z
     
 def hector_slam():
     global local_pose, height
@@ -51,7 +53,7 @@ def aloam():
     
 if __name__ == '__main__':
     if laser_slam_type == '2d':
-        odom_groundtruth_sub = rospy.Subscriber('/xtdrone/'+vehicle_type+'_'+ vehicle_id+'/ground_truth/odom', Odometry, odm_groundtruth_callback,queue_size=1)
+        gazebo_model_state_sub = rospy.Subscriber("/gazebo/model_states", ModelStates, gazebo_model_state_callback,queue_size=1)
         hector_slam()
     elif laser_slam_type == '3d':
         aloam()

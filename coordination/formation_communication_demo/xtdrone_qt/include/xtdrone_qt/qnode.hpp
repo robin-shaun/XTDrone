@@ -75,7 +75,7 @@ public:
     bool cmd_change_flag;
     bool cmd_buffer;
     std::string control_type;
-    int real_num = 3;
+    int real_num = 0;
     // init functions
     bool init(const LISTINT multi_select, const int *multi_num, const LISTSTR multi_type, std::string control_type);
     bool init2(const std::string &master_url, const std::string &host_url, const LISTINT multi_select, const int *multi_num, const LISTSTR multi_type, std::string control_type);
@@ -121,7 +121,8 @@ private:
     char** init_argv;
     ros::Publisher chatter_publisher;
     control::UAVDataMsg uav_state;
-    control::AllUAVData all_uav_state;
+    control::AllUAVData virtual_uav_state;
+    control::AllUAVData physical_uav_state;
     std_msgs::Header header;
 //    ros::Publisher chatter_publisher_2;
     QStringListModel logging_model;
@@ -136,7 +137,8 @@ private:
     ros::Publisher leader_cmd_accel_flu_pub;
     ros::Publisher leader_cmd_pub;
     ros::Publisher path_pub;
-    ros::Publisher uav_state_pub;
+    ros::Publisher virtual_uav_state_pub;
+    ros::Publisher physical_uav_state_pub;
     ros::Publisher cmd_pub;
     void publish();
     ros::Subscriber goal_sub;

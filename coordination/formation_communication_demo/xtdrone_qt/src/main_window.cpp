@@ -110,7 +110,7 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     // FixFrame
     QTreeWidgetItem* Fixed_frame = new QTreeWidgetItem(QStringList()<<"Fixed Frame");
     fixed_box = new QComboBox();
-    fixed_box->addItem("state_0");
+    fixed_box->addItem("map");
     fixed_box->addItem("base_footprint");
     fixed_box->addItem("laser");
     fixed_box->setMaximumWidth(120);
@@ -268,9 +268,9 @@ void MainWindow::init_uisettings()
     ui.checkBox_tiltrotor->setCheckable(false);
     ui.checkBox_tailsitter->setCheckable(false);
     ui.button_goal->setEnabled(false);
-    ui.checkbox_use_environment->setChecked(true);
     once_flag = 0;
     twice_flag = 0;
+
 }
 
 void MainWindow::slot_btn_stop_click(bool)

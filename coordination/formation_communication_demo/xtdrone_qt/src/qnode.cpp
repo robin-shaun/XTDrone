@@ -120,7 +120,8 @@ bool QNode::init(const LISTINT multi_select, const int *multi_num, const LISTSTR
     goal_sub = n.subscribe("/move_base_simple/goal", 1000, &QNode::goal_callback, this);
     path_pub = n.advertise<nav_msgs::Path>("trajectory", 1, true);
     cmd_pub = n.advertise<std_msgs::String>("xtdrone_gcs/cmd", 1000);
-    uav_state_pub = n.advertise<control::AllUAVData>("xtdrone_gcs/all_uav_data", 1000);
+    physical_uav_state_pub = n.advertise<control::AllUAVData>("xtdrone_gcs/all_uav_data/real", 1000);
+    virtual_uav_state_pub = n.advertise<control::AllUAVData>("xtdrone_gcs/all_uav_data/sim", 1000);
     if (control_type == "vel")
     {
         for (int i = 0; i < leng_select; i ++)
@@ -173,10 +174,15 @@ bool QNode::init(const LISTINT multi_select, const int *multi_num, const LISTSTR
     }
     for (int i = 0; i <multirotor_num; i++)
     {
-        all_uav_state.data.push_back(control::UAVDataMsg());
-//        buffer_uav_global_pub.push_back(n.advertise<geometry_msgs::PoseStamped>("/UAV"+std::to_string(i)+"/global/uav_data",1000));
+        if (i<real_num)
+            physical_uav_state.data.push_back(control::UAVDataMsg());
+        else
+            virtual_uav_state.data.push_back(control::UAVDataMsg());
+        buffer_uav_global_pub.push_back(n.advertise<geometry_msgs::PoseStamped>("/UAV"+std::to_string(i)+"/global/uav_data",1000));
         buffer_uav_state_sub.push_back(n.subscribe("/UAV"+std::to_string(i)+"/formation/uav_data",1000, &QNode::uavstate_callback, this));
     }
+    int a = sizeof(physical_uav_state);
+    ROS_INFO_STREAM(a);
 //    ROS_INFO_STREAM(physical_uav_state);
     start();
 //    qDebug()<<"size"<<sizee;
@@ -228,7 +234,8 @@ bool QNode::init2(const std::string &master_url, const std::string &host_url, co
     goal_sub = n.subscribe("/move_base_simple/goal", 1000, &QNode::goal_callback, this);
     path_pub = n.advertise<nav_msgs::Path>("trajectory", 1, true);
     cmd_pub = n.advertise<std_msgs::String>("xtdrone_gcs/cmd", 1000);
-    uav_state_pub = n.advertise<control::AllUAVData>("xtdrone_gcs/all_uav_state", 1000);
+    physical_uav_state_pub = n.advertise<control::AllUAVData>("xtdrone_gcs/all_uav_state/real", 1000);
+    virtual_uav_state_pub = n.advertise<control::AllUAVData>("xtdrone_gcs/all_uav_state/sim", 1000);
     if (control_type == "vel")
     {
         for (int i = 0; i < leng_select; i ++)
@@ -281,8 +288,11 @@ bool QNode::init2(const std::string &master_url, const std::string &host_url, co
     }
     for (int i = 0; i <multirotor_num; i++)
     {
-        all_uav_state.data.push_back(control::UAVDataMsg());
-//        buffer_uav_global_pub.push_back(n.advertise<geometry_msgs::PoseStamped>("/UAV"+std::to_string(i)+"/global/uav_data",1000));
+        if (i<real_num)
+            physical_uav_state.data.push_back(control::UAVDataMsg());
+        else
+            virtual_uav_state.data.push_back(control::UAVDataMsg());
+        buffer_uav_global_pub.push_back(n.advertise<geometry_msgs::PoseStamped>("/UAV"+std::to_string(i)+"/global/uav_data",1000));
         buffer_uav_state_sub.push_back(n.subscribe("/UAV"+std::to_string(i)+"/formation/uav_data",1000, &QNode::uavstate_callback, this));
     }
     start();
@@ -312,7 +322,7 @@ void QNode::set_cmd(double q_forward, double q_upward, double q_leftward, double
     cmd_change_flag = true;
 
     if (q_cmd != last_cmd.data)
-    {
+    { 
         xtdrone_cmd.data = q_cmd;
         if ((xtdrone_cmd.data == "AUTO.TAKEOFF") || (xtdrone_cmd.data =="AUTO.LAND" )|| (xtdrone_cmd.data == "HOVER"))
         {
@@ -378,7 +388,17 @@ void QNode::start_control(bool q_start_control_flag)
 void QNode::uavstate_callback(const control::UAVDataMsg& msg)
 {
     uav_state = msg;
-    all_uav_state.data[uav_state.uav_id]= uav_state;
+    global_pose.header.stamp = ros::Time::now();
+    global_pose.header.frame_id = "map";
+    global_pose.pose = uav_state.pose;
+    buffer_uav_global_pub[uav_state.uav_id].publish(global_pose);
+    if(!uav_state.is_sim)
+        physical_uav_state.data[uav_state.uav_id]= uav_state;
+    else
+    {
+        int kk = uav_state.uav_id-real_num;
+        virtual_uav_state.data[kk]= uav_state;
+    }
 }
 void QNode::goal_callback(const geometry_msgs::PoseStamped &msg)
 {
@@ -428,8 +448,10 @@ void QNode::run() {
             this_pose_stamped.header.frame_id = "odom";
             path.poses.push_back(this_pose_stamped);
             path_pub.publish(path);
-            all_uav_state.header.stamp = current_time;
-            uav_state_pub.publish(all_uav_state);
+            physical_uav_state.header.stamp = current_time;
+            virtual_uav_state.header.stamp = current_time;
+            physical_uav_state_pub.publish(physical_uav_state);
+            virtual_uav_state_pub.publish(virtual_uav_state);
         }
 
         text_all = "";

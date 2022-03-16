@@ -1,6 +1,6 @@
 #!/bin/bash
-iris_num=4
-typhoon_h480_num=0
+iris_num=0
+typhoon_h480_num=6
 solo_num=0
 plane_num=0
 rover_num=0

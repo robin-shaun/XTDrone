@@ -7,10 +7,6 @@ from pyquaternion import Quaternion
 import sys
 import math
 
-rospy.init_node(sys.argv[1] + '_' + sys.argv[2] + "_communication")
-rate = rospy.Rate(30)
-
-
 class Communication:
 
     def __init__(self, vehicle_type, vehicle_id):
@@ -91,7 +87,7 @@ class Communication:
 
     def start(self):
         rospy.init_node(self.vehicle_type + '_' + self.vehicle_id + "_communication")
-        rate = rospy.Rate(100)
+        rate = rospy.Rate(30)
         '''
         main ROS thread
         '''

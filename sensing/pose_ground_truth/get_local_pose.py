@@ -11,7 +11,6 @@ multi_local_pose = [PoseStamped() for i in range(vehicle_num)]
 multi_speed = [Vector3Stamped() for i in range(vehicle_num)]
 
 def gazebo_model_state_callback(msg):
-    global odom_groundtruth
     for vehicle_id in range(vehicle_num):
         id = msg.name.index(vehicle_type+'_'+str(vehicle_id))
         multi_local_pose[vehicle_id].header.stamp = rospy.Time().now()

@@ -4,11 +4,8 @@ import sys, select, os
 import tty, termios
 from std_msgs.msg import String
 
-
-MAX_LINEAR = 1000
-MAX_ANG_VEL = 0.5
-LIN_VEL_STEP_SIZE = 0.1
-ANG_VEL_STEP_SIZE = 0.01
+LIN_STEP_SIZE = 0.1
+ANG_STEP_SIZE = 0.01
 
 
 ctrl_leader = False
@@ -87,12 +84,12 @@ if __name__=="__main__":
 
     plane_num = int(sys.argv[1])
     rospy.init_node('plane_keyboard_control')
-    multi_cmd_vel_flu_pub = [None]*plane_num
+    multi_cmd_pose_enu_pub = [None]*plane_num
     multi_cmd_pub = [None]*plane_num
     for i in range(plane_num):
-        multi_cmd_vel_flu_pub[i] = rospy.Publisher('/xtdrone/plane_'+str(i)+'/cmd_pose_flu', Pose, queue_size=1)
+        multi_cmd_pose_enu_pub[i] = rospy.Publisher('/xtdrone/plane_'+str(i)+'/cmd_pose_enu', Pose, queue_size=1)
         multi_cmd_pub[i] = rospy.Publisher('/xtdrone/plane_'+str(i)+'/cmd',String,queue_size=1)
-    leader_cmd_vel_pub = rospy.Publisher("/xtdrone/leader/cmd_pose", Pose, queue_size=1)
+    leader_pose_pub = rospy.Publisher("/xtdrone/leader/cmd_pose", Pose, queue_size=1)
     leader_cmd_pub = rospy.Publisher("/xtdrone/leader_cmd", String, queue_size=3)
     cmd= String()
     pose = Pose()    
@@ -106,35 +103,35 @@ if __name__=="__main__":
     while(1):
         key = getKey()
         if key == 'w' :
-            forward = forward + LIN_VEL_STEP_SIZE
+            forward = forward + LIN_STEP_SIZE
             print_msg()
             print("currently:\t north %.2f\t east %.2f\t upward %.2f\t angular %.2f " % (forward, leftward, upward, angular))
         elif key == 'x' :
-            forward = forward - LIN_VEL_STEP_SIZE
+            forward = forward - LIN_STEP_SIZE
             print_msg()
             print("currently:\t north %.2f\t east %.2f\t upward %.2f\t angular %.2f " % (forward, leftward, upward, angular))
         elif key == 'a' :
-            leftward = leftward + LIN_VEL_STEP_SIZE
+            leftward = leftward + LIN_STEP_SIZE
             print_msg()
             print("currently:\t north %.2f\t east %.2f\t upward %.2f\t angular %.2f " % (forward, leftward, upward, angular))
         elif key == 'd' :
-            leftward = leftward - LIN_VEL_STEP_SIZE
+            leftward = leftward - LIN_STEP_SIZE
             print_msg()
             print("currently:\t north %.2f\t east %.2f\t upward %.2f\t angular %.2f " % (forward, leftward, upward, angular))
         elif key == 'i' :
-            upward = upward + LIN_VEL_STEP_SIZE
+            upward = upward + LIN_STEP_SIZE
             print_msg()
             print("currently:\t north %.2f\t east %.2f\t upward %.2f\t angular %.2f " % (forward, leftward, upward, angular))
         elif key == ',' :
-            upward = upward - LIN_VEL_STEP_SIZE
+            upward = upward - LIN_STEP_SIZE
             print_msg()
             print("currently:\t north %.2f\t east %.2f\t upward %.2f\t angular %.2f " % (forward, leftward, upward, angular))
         elif key == 'j':
-            angular = angular + ANG_VEL_STEP_SIZE
+            angular = angular + ANG_STEP_SIZE
             print_msg()
             print("currently:\t north %.2f\t east %.2f\t upward %.2f\t angular %.2f " % (forward, leftward, upward, angular))
         elif key == 'l':
-            angular = angular - ANG_VEL_STEP_SIZE
+            angular = angular - ANG_STEP_SIZE
             print_msg()
             print("currently:\t north %.2f\t east %.2f\t upward %.2f\t angular %.2f " % (forward, leftward, upward, angular))
         elif key == 'r':
@@ -185,22 +182,6 @@ if __name__=="__main__":
             if (key == '\x03'):
                 break
             
-        if forward > MAX_LINEAR:
-            forward = MAX_LINEAR
-        elif forward < -MAX_LINEAR:
-            forward = -MAX_LINEAR
-        if leftward > MAX_LINEAR:
-            leftward = MAX_LINEAR
-        elif leftward < -MAX_LINEAR:
-            leftward = -MAX_LINEAR
-        if upward > MAX_LINEAR:
-            upward = MAX_LINEAR
-        elif upward < -MAX_LINEAR:
-            upward = -MAX_LINEAR
-        if angular > MAX_ANG_VEL:
-            angular = MAX_ANG_VEL
-        elif angular < -MAX_ANG_VEL:
-            angular = - MAX_ANG_VEL
 
         pose.position.x = forward; pose.position.y = leftward; pose.position.z = upward
         
@@ -209,11 +190,11 @@ if __name__=="__main__":
         for i in range(plane_num):
             if ctrl_leader:
                 if send_flag:
-                    leader_cmd_vel_pub.publish(pose)
+                    leader_pose_pub.publish(pose)
                 leader_cmd_pub.publish(cmd)
             else:
                 if send_flag:
-                    multi_cmd_vel_flu_pub[i].publish(pose)    
+                    multi_cmd_pose_enu_pub[i].publish(pose)    
                 multi_cmd_pub[i].publish(cmd)
                 
         cmd = ''

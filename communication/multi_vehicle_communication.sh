@@ -1,8 +1,8 @@
 #!/bin/bash
-iris_num=4
+iris_num=0
 typhoon_h480_num=0
 solo_num=0
-plane_num=0
+plane_num=3
 rover_num=0
 standard_vtol_num=0
 tiltrotor_num=0

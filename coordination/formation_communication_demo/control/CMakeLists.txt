@@ -15,6 +15,8 @@ add_message_files(
    NeighborMsg.msg
    AllUAVData.msg
    AllNeighborMsg.msg
+   CommVerify.msg
+   UavComm.msg
 )
 
 generate_messages(

@@ -35,7 +35,7 @@ comm = MPI.COMM_WORLD
 uav_id = comm.Get_rank()
 uav_num_sim = comm.Get_size()
 uav_num_real = 0
-uav_num = uav_num_sim + uav_num_real0
+uav_num = uav_num_sim + uav_num_real
 uav_bias = [[0,0,0],[1.2,-1.2,0],[-1.2,-1.2,0],[1.2,1.2,0],[-1.2,1.2,0],[2.4,-2.4,0],[0,-2.4,0],[-2.4,-2.4,0],[2.4,0,0],[-2.4,0,0],[2.4,2.4,0],[0,2.4,0],[-2.4,2.4,0],[-7,-7,0],[-6,-7,0],[-5,-7,0],[-4,-7,0],[3,6,0],[4,6,0],[5,6,0]]
 #uav_bias = [[2,-6,0],[-2,-6,0],[2,2,0],[-2,2,0],[4,-6,0],[4,-8,0],[2,-8,0],[3,-7,0],[-4,-6,0],[-4,-8,0],[-2,-8,0],[-3,-7,0],[4,2,0],[4,4,0],[2,4,0],[3,3,0],[-4,2,0],[-4,4,0],[-2,4,0],[-3,3,0]]
 formation_keys = ['waiting', 'FORM_1', 'FORM_2', 'FORM_3', 'AUTO.TAKEOFF', 'OFFBOARD', 'HOVER', 'AUTO.LAND']
@@ -119,6 +119,7 @@ class Px4Controller:
         self.imu_sub = rospy.Subscriber(self.namespace + "/mavros/imu/data", Imu, self.imu_callback)
         self.gcs_cmd_sub = rospy.Subscriber("/xtdrone_gcs/cmd", String, self.gcs_cmd_callback)
         self.keyboard_cmd_sub = rospy.Subscriber("/xtdrone/leader/cmd", String, self.cmd_callback)
+        self.keyboard_cmd_sub2 = rospy.Subscriber("/xtdrone/iris_1/cmd", String, self.cmd_callback)
         self.all_uav_data_sub = rospy.Subscriber("/xtdrone_gcs/all_uav_data", AllUAVData,
                                                      self.all_uav_data_callback)
         self.communication_verify_sub = rospy.Subscriber("/communication_verify", CommVerify, self.communication_verify_callback)
@@ -195,7 +196,7 @@ class Px4Controller:
                         self.last_form = 1
                         self.first_form1_flag = False
                     if self.uav_id == 0:
-                        self.leader_desire_pose.pose.position.y += 0.02
+                        self.leader_desire_pose.pose.position.y += 0.04
                     self.leader_formation_control()
                     self.target_pose = self.construct_target(vx=self.target_vel.twist.linear.x,
                                                              vy=self.target_vel.twist.linear.y,
@@ -225,7 +226,7 @@ class Px4Controller:
                         self.last_form = 2
                         self.first_form2_flag = False
                     if self.uav_id == 0:
-                        self.leader_desire_pose.pose.position.y -= 0.02
+                        self.leader_desire_pose.pose.position.y -= 0.04
                     self.leader_formation_control()
                     self.target_pose = self.construct_target(vx=self.target_vel.twist.linear.x,
                                                              vy=self.target_vel.twist.linear.y,
@@ -333,8 +334,8 @@ class Px4Controller:
             [self.uav_data.pose.position.x, self.uav_data.pose.position.y, self.uav_data.pose.position.z])
         self.data_velocity.append(
             [self.uav_data.velocity.linear.x, self.uav_data.velocity.linear.y, self.uav_data.velocity.linear.z])
-        np.save('data/'+str(self.uav_id) + ' data_position_demo1.txt', self.data_position)
-        np.save('data/'+str(self.uav_id) + ' data_velocity_demo1.txt', self.data_velocity)
+        #np.save('data/'+str(self.uav_id) + ' data_position_demo1.txt', self.data_position)
+        #np.save('data/'+str(self.uav_id) + ' data_velocity_demo1.txt', self.data_velocity)
 
     def leader_formation_control(self):
         self.target_vel.twist.angular.x = 0
@@ -353,8 +354,8 @@ class Px4Controller:
             [self.uav_data.pose.position.x, self.uav_data.pose.position.y, self.uav_data.pose.position.z])
         self.data_velocity.append(
             [self.uav_data.velocity.linear.x, self.uav_data.velocity.linear.y, self.uav_data.velocity.linear.z])
-        np.save('data/' + str(self.uav_id) + ' data_position_demo1.txt', self.data_position)
-        np.save('data/' + str(self.uav_id) + ' data_velocity_demo1.txt', self.data_velocity)
+        #np.save('data/' + str(self.uav_id) + ' data_position_demo1.txt', self.data_position)
+        #np.save('data/' + str(self.uav_id) + ' data_velocity_demo1.txt', self.data_velocity)
 
     def trans_flu2enu(self):
         self.q = np.array(
@@ -517,7 +518,7 @@ class Px4Controller:
     def cmd_callback(self, msg):
         if (msg.data in formation_keys and not msg.data == self.formation_config):
             self.formation_config = msg.data
-            print("keyboard cmd: ", self.formation_config)
+            #print("keyboard cmd: ", self.formation_config)
             self.gcs_cmd = self.formation_config
 
     def q2yaw(self, q):

@@ -27,7 +27,7 @@ fi
 $cmd selectp -t 0
 $cmd send-keys "roslaunch px4 iris20_exam1.launch" C-m
 $cmd selectp -t 1
-$cmd send-keys "sleep 1;python multirotor_keyboard_control iris 20 vel" C-m
+$cmd send-keys "sleep 1;python multirotor_keyboard_control.py iris 20 vel" C-m
 $cmd selectp -t 2
 $cmd send-keys "sleep 5;python communication_verify_1.py" C-m
 $cmd selectp -t 3

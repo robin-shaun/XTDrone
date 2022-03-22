@@ -1,0 +1,14 @@
+# Service which takes in:
+#
+#   full_path_to_image : full path to a .jpg image
+#
+# and returns:
+#
+#                 pose : the pose of the tag in the camera frame
+#  tag_detection_image : an image with the detected tag's border highlighted and payload value printed
+
+string full_path_where_to_get_image
+string full_path_where_to_save_image
+sensor_msgs/CameraInfo camera_info
+---
+apriltag_ros/AprilTagDetectionArray tag_detections

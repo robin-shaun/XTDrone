@@ -107,7 +107,8 @@ if __name__ == "__main__":
     while not rospy.is_shutdown():
         for i in range(6):
             uav_pos_tmp = get_model_state('typhoon_h480_' + str(i), 'ground_plane').pose.position
-            if uav_pos_tmp.z > 6:
+            print(uav_pos_tmp.z)
+            if uav_pos_tmp.z > 6.5:
                 print("Warning: higher than 6 meter")
                 sys.exit(0)
         for i in left_actors:

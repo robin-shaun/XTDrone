@@ -8,6 +8,7 @@ from gazebo_msgs.srv import DeleteModel,GetModelState
 import time
 import cv2
 
+uav_type = sys.argv[1]
 actor_num = 6
 uav_num = 6
 err_threshold = 1
@@ -106,8 +107,7 @@ if __name__ == "__main__":
 
     while not rospy.is_shutdown():
         for i in range(6):
-            uav_pos_tmp = get_model_state('typhoon_h480_' + str(i), 'ground_plane').pose.position
-            print(uav_pos_tmp.z)
+            uav_pos_tmp = get_model_state(uav_type+ '_' + str(i), 'ground_plane').pose.position
             if uav_pos_tmp.z > 6.5:
                 print("Warning: higher than 6 meter")
                 sys.exit(0)

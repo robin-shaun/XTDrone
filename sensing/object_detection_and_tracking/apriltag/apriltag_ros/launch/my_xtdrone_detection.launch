@@ -1,0 +1,20 @@
+<launch>
+  <arg name="launch_prefix" default="" /> <!-- set to value="gdbserver localhost:10000" for remote debugging -->
+  <!-- Set parameters -->
+  <rosparam command="load" file="$(find apriltag_ros)/config/settings.yaml" ns="iris_0/apriltag_ros_continuous_node" />
+  <rosparam command="load" file="$(find apriltag_ros)/config/tags_1.yaml" ns="iris_0/apriltag_ros_continuous_node" />
+
+  <group ns='iris_0'>
+  <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="apriltag_ros_continuous_node" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" >
+    <!-- Remap topics from those used in code to those on the ROS network -->
+    <remap from="image_rect" to="/iris_0/camera/image_raw" />
+    <remap from="camera_info" to="/iris_0/camera/camera_info" />
+
+    <param name="camera_frame" type="str" value="iris_0/camera_link" />
+    <param name="publish_tag_detections_image" type="bool" value="true" />      <!-- default: false -->
+  </node>
+  <node pkg="tf" type="static_transform_publisher" name="base_link_to_camera_link"
+    args="0 0 -0.05 1.5707963 3.1415927 0 iris_0/base_link iris_0/camera_link 100" />
+  </group>
+
+</launch>

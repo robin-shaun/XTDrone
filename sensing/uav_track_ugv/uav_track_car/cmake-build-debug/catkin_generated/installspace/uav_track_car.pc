@@ -1,0 +1,8 @@
+prefix=/usr/local
+
+Name: uav_track_car
+Description: Description of uav_track_car
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

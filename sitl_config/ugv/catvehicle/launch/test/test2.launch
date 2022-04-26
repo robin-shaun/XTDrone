@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+    <arg name="paused" default="false"/>
+    <arg name="use_sim_time" default="true"/>
+    <arg name="gui" default="false"/>
+    <arg name="headless" default="false"/>
+    <arg name="debug" default="false"/>
+    <arg name="obstaclestopper" default="true"/>
+
+    <group ns="catvehicle">
+	    <!--<param name="robot_description"
+	       command="$(find xacro)/xacro.py '$(find catvehicle)/urdf/catvehicle.xacro' roboname:='cat'" /> -->
+
+       <param name="robot_description" command="$(find xacro)/xacro.py '$(find catvehicle)/urdf/catvehicle.xacro' roboname:='catvehicle' front_laser_points:='$(arg front_laser_points)' velodyne_points:='$(arg velodyne_points)' camera_right:='$(arg camera_right)' camera_left:='$(arg camera_left)' velodyne_max_angle:='$(arg velodyne_max_angle)' velodyne_min_angle:='$(arg velodyne_min_angle)'" />
+       <include file="$(find catvehicle)/launch/catvehicle.launch">
+           <arg name="robot_name" value="catvehicle"/>
+           <arg name="init_pose" value="-x 1 -y 1 -z 0"/>
+           <arg name="obstaclestopper" value="$(arg obstaclestopper)"/>
+           <arg name="config_file" value="catvehicle_control.yaml"/>
+       </include>
+    </group>
+
+</launch>

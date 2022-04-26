@@ -1,0 +1,15 @@
+<launch>
+<arg name="obstaclestopper" default="true"/>
+<group ns="catvehicle">
+ <param name="robot_description"
+         command="$(find xacro)/xacro.py '$(find catvehicle)/urdf/my_catvehicle.xacro' roboname:='ugv_0'" />
+
+<include file="$(find catvehicle)/launch/catvehicle.launch">
+    <arg name="robot_name" value="catvehicle"/>
+    <arg name="init_pose" value="-x 1 -y 1 -z 0"/>
+    <arg name="obstaclestopper" value="$(arg obstaclestopper)"/>
+    <arg name="config_file" value="catvehicle_control.yaml"/>
+</include>
+</group>
+
+</launch>

@@ -1,8 +1,0 @@
-prefix=/home/max/work_space/pyf3_ws/src/uav_track_car/cmake-build-debug/devel
-
-Name: uav_track_car
-Description: Description of uav_track_car
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

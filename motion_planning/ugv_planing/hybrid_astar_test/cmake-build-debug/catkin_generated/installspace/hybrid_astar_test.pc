@@ -1,0 +1,8 @@
+prefix=/usr/local
+
+Name: hybrid_astar_test
+Description: Description of hybrid_astar_test
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

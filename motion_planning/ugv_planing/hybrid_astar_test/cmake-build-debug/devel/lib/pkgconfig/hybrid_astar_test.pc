@@ -1,0 +1,8 @@
+prefix=/home/max/StudyFile/astar_ws/src/hybrid_astar_test/cmake-build-debug/devel
+
+Name: hybrid_astar_test
+Description: Description of hybrid_astar_test
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

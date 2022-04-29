@@ -33,12 +33,12 @@ bool end_flag = false;
 bool get_localization = false;
 
 /********************************************pure pursuit*********************************************/
-float pure_pursuit_k = 0.1;         // 前视距离系数
-float pure_pursuit_Lfc = 2;         // 前视距离 ，单位：m
-float pure_pursuit_Kp = 1.0;        // 速度P控制器系数
-float dt = 0.1;                     // 时间间隔，单位：s
-float pure_pursuit_L = 2.7;         // 车辆轴距，单位：m
-float pure_pursuit_liner_v = 3.5;   // 车辆期望速度，单位：m/s
+float pure_pursuit_k = 0.1;          
+float pure_pursuit_Lfc = 2;         // l_d
+float pure_pursuit_Kp = 1.0;         
+float dt = 0.1;                      
+float pure_pursuit_L = 2.7;         
+float pure_pursuit_liner_v = 3.5;   
 /*****************************************************************************************************/
 
 float get_yaw(const geometry_msgs::Quaternion& q){
@@ -224,7 +224,7 @@ int calculation_current_index(){
         }
     }
 
-    float  Lf = pure_pursuit_k * robot_localization(3) + pure_pursuit_Lfc;  // 前视距离
+    float  Lf = pure_pursuit_k * robot_localization(3) + pure_pursuit_Lfc;  
     float L = 0.0;
     while(Lf > L && (index+1) < Trajectory.size()){
         Eigen::Vector2f diff_pts = Trajectory[index+1].block<2,1>(0,0) - Trajectory[index].block<2,1>(0,0);
@@ -259,7 +259,7 @@ float calculation_control_angle_acceleration(int& current_index){
     if(robot_localization(3) < 0){
         alpha = PI - alpha;
     }
-    float Lf = pure_pursuit_k * robot_localization(3) + pure_pursuit_Lfc;  // 前视距离
+    float Lf = pure_pursuit_k * robot_localization(3) + pure_pursuit_Lfc;  
     float delta = std::atan2(2.0 * pure_pursuit_L * sin(alpha) / Lf, 1.0);
     current_index = index;
     static float delta_ = 0.0;
@@ -291,9 +291,9 @@ void zero_velocity(){
 }
 
 bool arrived_goal(){
-    std::cout << "\e[1;33;49m >>> 距离目标点距离" << (Trajectory.back().block<2,1>(0,0) - robot_localization.block<2,1>(0,0)).norm() << "m \e[0m"<< std::endl;
+    std::cout << "\e[1;33;49m >>> to the goal" << (Trajectory.back().block<2,1>(0,0) - robot_localization.block<2,1>(0,0)).norm() << "m \e[0m"<< std::endl;
     if((Trajectory.back().block<2,1>(0,0) - robot_localization.block<2,1>(0,0)).norm() < 1.0) {
-        std::cout << "\e[1;33;49m >>> 到达目标点 \e[0m"<< std::endl;
+        std::cout << "\e[1;33;49m >>> reached \e[0m"<< std::endl;
         return true;
     }
     else
@@ -304,7 +304,7 @@ void pure_pursuit(){
 
     bool new_trajectory_flag = false;
     while(true){
-        std::cout << "\e[1;33;49m >>> 等待轨迹轨迹 \e[0m"<< std::endl;
+        std::cout << "\e[1;33;49m >>> wait for the path \e[0m"<< std::endl;
         while(true) {
             if(end_flag)
                 break;
@@ -313,13 +313,13 @@ void pure_pursuit(){
                 break;
             }
             if (path_subscriber_ptr_->GetPath(Trajectory) && get_localization) {
-                std::cout << "\e[1;33;49m >>> 有新的轨迹 \e[0m"<< std::endl;
+                std::cout << "\e[1;33;49m >>> new path! \e[0m"<< std::endl;
                 // get_new_trajectory = false;
                 break;
             }
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }
-        std::cout << "\e[1;33;49m >>> 轨迹跟踪 \e[0m"<< std::endl;
+        std::cout << "\e[1;33;49m >>> tracking \e[0m"<< std::endl;
         int index = calculation_current_index();
         ros::Time t_0 = ros::Time::now();
         std::cout << "\e[1;33;49m >>> Trajectory.size() : "<< Trajectory.size() << "\e[0m"<< std::endl;

@@ -33,7 +33,7 @@ HybridAStarGraphSearcher::~HybridAStarGraphSearcher(){
 bool HybridAStarGraphSearcher::Run(){
 
 
-    // 第一步 ： 地图操作
+    
     nav_msgs::OccupancyGrid map;
     if(!costmap_subscriber_ptr_->GetCostMap(map, x_origin_, y_origin_))
         return false;
@@ -66,7 +66,7 @@ bool HybridAStarGraphSearcher::Run(){
     voronoiDiagram.visualize();
 
     delete[] binMap;
-    // 第二步 ： 获取起始点
+    
     static Eigen::Vector3f start_point;
     static bool get_start_point = false;
     if(!get_start_point || !HybridAStar::Constants::manual) {
@@ -75,7 +75,7 @@ bool HybridAStarGraphSearcher::Run(){
             if (!est_start_subscriber_ptr_->GetStart(start_point)) {
                 if (start_error_flag) {
                     start_error_flag = false;
-                    std::cout << "\e[1;39;49m>>> 请给定起始点\e[0m" << std::endl;
+                    std::cout << "\e[1;39;49m>>> please set the start\e[0m" << std::endl;
                 }
                 return false;
             } else
@@ -85,14 +85,14 @@ bool HybridAStarGraphSearcher::Run(){
             if (!start_subscriber_ptr_->GetStart(start_point)) {
                 if (start_error_flag) {
                     start_error_flag = false;
-//                    std::cout << "\e[1;39;49m>>> 请给定起始点\e[0m" << std::endl;
+//                    std::cout << "\e[1;39;49m>>> please set the starte[0m" << std::endl;
                 }
                 return false;
             } else
                 get_start_point = true;
         }
         if(get_start_point) {
-            std::cout << "\e[1;39;49m>>> 运动起点已经更新！！！\e[0m" << std::endl;
+            std::cout << "\e[1;39;49m>>> got the start！！！\e[0m" << std::endl;
             start_point -= Eigen::Vector3f(x_origin_, y_origin_, 0);
         }
         start_error_flag = true;
@@ -103,41 +103,41 @@ bool HybridAStarGraphSearcher::Run(){
     if ( !(grid->info.height >= start_y && start_y >= 0 && grid->info.width >= start_x && start_x >= 0 &&
             binMap[int(start_x)][int(start_y)] == false) ) {
         get_start_point = false;
-        std::cout << "\e[1;31;49m>>> 起始点无效\e[0m" << std::endl;
+        std::cout << "\e[1;31;49m>>> false start\e[0m" << std::endl;
         return false;
     }
 
-    // 第三步 ： 获取终点
+    
     static Eigen::Vector3f goal_point = Eigen::Vector3f::Zero();
     static bool have_goal = false;
     if(!re_plan_flag) {
         static bool goal_error_flag = true;
         bool get_goal_flag;
-        // 没有得到目标点，或者没有到达目标点
+        
         if (!(get_goal_flag = goal_subscriber_ptr_->GetGoal(goal_point)) || !arrived_flag) {
             if(get_goal_flag)
                 have_goal = true;
             if(have_goal) {
-                // 到达目标点，还没有给定新的目标点
+                
                 if (arrived_flag && !get_goal_flag) {
                     if (goal_error_flag) {
                         goal_error_flag = false;
-                        std::cout << "\e[1;39;49m>>> 请给定新的目标点\e[0m" << std::endl;
+                        std::cout << "\e[1;39;49m>>> please set the new goal\e[0m" << std::endl;
                         std::cout << "\e[1;38;49m************************************************ \e[0m" << std::endl;
                     }
                     arrived_flag = false;
                     return false;
                 }
-                // 没有到达目标点，也有给定新的目标点，继续运动
+                
                 Eigen::Vector3f judge_start_point = start_point + Eigen::Vector3f(x_origin_, y_origin_, 0);
                 Eigen::Vector3f judge_goal_point  = goal_point  + Eigen::Vector3f(x_origin_, y_origin_, 0);
                 if (!get_goal_flag && !arrived_flag) {
                     if ((judge_start_point - judge_goal_point).block<2, 1>(0, 0).norm() > 1.0)
-                        std::cout << "\e[1;33;49m>>> 继续运动\e[0m" << std::endl;
+                        std::cout << "\e[1;33;49m>>> continue\e[0m" << std::endl;
                     else {
                         if (goal_error_flag) {
                             goal_error_flag = false;
-                            std::cout << "\e[1;39;49m>>> 请给定目标点\e[0m" << std::endl;
+                            std::cout << "\e[1;39;49m>>> please set the goal\e[0m" << std::endl;
                         }
                         arrived_flag = true;
                         return false;
@@ -147,11 +147,11 @@ bool HybridAStarGraphSearcher::Run(){
             else{
                 if (goal_error_flag) {
                     goal_error_flag = false;
-                    std::cout << "\e[1;39;49m>>> 请给定起目标点\e[0m" << std::endl;
+                    std::cout << "\e[1;39;49m>>> please set the goal\e[0m" << std::endl;
                 }
                 return false;
             }
-            // 没有到达目标点，给定新的目标点
+            
         }
         if(get_goal_flag) {
             goal_point -= Eigen::Vector3f(x_origin_, y_origin_, 0);
@@ -165,7 +165,7 @@ bool HybridAStarGraphSearcher::Run(){
     float goal_y = goal_point.y() / Constants::cellSize;
     float goal_t = goal_point.z();
     if ( !(grid->info.height >= goal_y && goal_y >= 0 && grid->info.width >= goal_x && goal_x >= 0) ) {
-        std::cout << "\e[1;31;49m>>> 终点无效\e[0m" << std::endl;
+        std::cout << "\e[1;31;49m>>> false goal\e[0m" << std::endl;
         return false;
     }
     std::cout << "\e[1;34;49m>>> start_point : \e[1;33;49m[" << start_point.x()  << "\t" <<
@@ -177,17 +177,17 @@ bool HybridAStarGraphSearcher::Run(){
     start_point_publisher_ptr_->Publish(start_point + Eigen::Vector3f(x_origin_, y_origin_, 0));
     goal_point_publisher_ptr_ ->Publish(goal_point  + Eigen::Vector3f(x_origin_, y_origin_, 0));
 
-    // 第四步 ： 运动规划
+    
     Eigen::Vector3f judge_start_point = start_point + Eigen::Vector3f(x_origin_, y_origin_, 0);
     Eigen::Vector3f judge_goal_point  = goal_point  + Eigen::Vector3f(x_origin_, y_origin_, 0);
     ROS_WARN("Bug 2");
     if((judge_start_point - judge_goal_point).block<2,1>(0,0).norm() < 2.0) {
         start_point = goal_point;
-        std::cout << "\e[1;32;49m>>> 到达终点\e[0m" << std::endl;
+        std::cout << "\e[1;32;49m>>> reached the goal\e[0m" << std::endl;
         return true;
     }
     if(!Plan(start_point, goal_point)) {
-        std::cout << "\e[1;31;49m>>> 运动规划失败\e[0m" << std::endl;
+        std::cout << "\e[1;31;49m>>> failed\e[0m" << std::endl;
         return false;
     }
 //    std::cout << vis_smooth_path.front().transpose() << ", start_point : " << start_point.transpose() << std::endl;
@@ -196,7 +196,7 @@ bool HybridAStarGraphSearcher::Run(){
     if(Constants::manual)
         start_point = vis_smooth_path.back() - Eigen::Vector3f(x_origin_, y_origin_, 0);
     judge_start_point = start_point + Eigen::Vector3f(x_origin_, y_origin_, 0);
-    // 第五步 ： 发送轨迹
+    
     if((judge_start_point - judge_goal_point).block<2,1>(0,0).norm() < 2.0) {
         start_point = goal_point;
         arrived_flag = true;
@@ -205,7 +205,7 @@ bool HybridAStarGraphSearcher::Run(){
         }
         std::cout << "\e[1;34;49m>>> Get Goal : " << vis_smooth_path.back().transpose() << "]\e[0m" << std::endl;
         PublishPath();
-        std::cout << "\e[1;32;49m>>> 到达目标点\e[0m" << std::endl;
+        std::cout << "\e[1;32;49m>>> reached the goal\e[0m" << std::endl;
         return true;
     }
     else {
@@ -213,7 +213,7 @@ bool HybridAStarGraphSearcher::Run(){
         std::cout << judge_start_point.transpose() << std::endl;
         std::cout << judge_goal_point.transpose() << std::endl;
         std::cout << (judge_start_point - judge_goal_point).block<2,1>(0,0).norm() << std::endl;
-        std::cout << "\e[1;39;49m>>> 继续运动规划\e[0m" << std::endl;
+        std::cout << "\e[1;39;49m>>> continue\e[0m" << std::endl;
         if(!HybridAStar::Constants::manual)
             std::this_thread::sleep_for(std::chrono::seconds(10));
         return false;
@@ -234,12 +234,12 @@ bool HybridAStarGraphSearcher::Plan(const Eigen::Vector3f& start_pt, const Eigen
     Node3D nStart(start_pt.x(), start_pt.y(), Helper::normalizeHeadingRad(start_pt.z()), 0, 0, nullptr);
     ros::Time t0 = ros::Time::now();
     std::cout << "\e[1;38;49m************************************************ \e[0m" << std::endl;
-    std::cout << "\e[1;32;49m>>> 开始寻路!!! \e[0m" << std::endl;
+    std::cout << "\e[1;32;49m>>> start!!! \e[0m" << std::endl;
     Node3D* nSolution = Algorithm::hybridAStar(nStart, nGoal, nodes3D, nodes2D, width, height, configurationSpace, dubinsLookup, visualization);
     GetPath(nSolution);
     ros::Time t1 = ros::Time::now();
     ros::Duration d(t1 - t0);
-    std::cout << "\e[1;35;49m>>> 时间花费 : " << d * 1000 << " ms\e[0m" << std::endl;
+    std::cout << "\e[1;35;49m>>> time_cost : " << d * 1000 << " ms\e[0m" << std::endl;
 
     for(int i = 0 ; i < path.size(); i++){
         path[i].setX(path[i].getX());
@@ -253,7 +253,7 @@ bool HybridAStarGraphSearcher::Plan(const Eigen::Vector3f& start_pt, const Eigen
     if(vis_path.empty())
         return false;
 
-    // 第六步 ： 后端优化轨迹
+    
     smoother_ptr_->tracePath(nSolution);
     smoother_ptr_->smoothPath(voronoiDiagram);
 

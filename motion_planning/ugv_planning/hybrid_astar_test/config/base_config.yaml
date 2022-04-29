@@ -1,12 +1,12 @@
-# 车辆基本参数
-vehicle_width: 2.2     # 车宽
-vehicle_length: 4.58    # 车长
-vehicle_wheelbase: 2.7  # 车辆前后轮轴长
-vehicle_max_rudder: 35  # 车辆前轮方向舵最大角度 【deg】
+# vehicle
+vehicle_width: 2.2     
+vehicle_length: 4.58    
+vehicle_wheelbase: 2.7  
+vehicle_max_rudder: 35  
 
-# 地图基本参数
-vehicle_safe_distance: 0.5 # 车辆安全距离 [m]
-map_resolution: 1.0        # 地图分辨率
+# map
+vehicle_safe_distance: 0.5 
+map_resolution: 1.0        
 
-# 运行环境 false ： 真实/仿真车辆    true ： 算法实验
+
 robot_environment: false

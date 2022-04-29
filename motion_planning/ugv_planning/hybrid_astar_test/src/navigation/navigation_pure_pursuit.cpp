@@ -9,12 +9,12 @@ PurePursuitControl::PurePursuitControl(ros::NodeHandle& nh) : nh_(nh){
 
 bool PurePursuitControl::Run(){
 
-    // 第一步 ： 获取定位
+    
     static Eigen::Vector3f start_point;
     if(!localization_subscriber_ptr_->GetStart(start_point))
         return false;
 
-    // 第二步 ： 轨迹
+    
     static std::vector<Eigen::Vector3f> trajectory;
     if(!path_subscriber_ptr_->GetPath(trajectory))
         return false;

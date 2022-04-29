@@ -3,9 +3,10 @@ Panels:
     Help Height: 0
     Name: Displays
     Property Tree Widget:
-      Expanded: ~
+      Expanded:
+        - /vehicle_path1
       Splitter Ratio: 0.5
-    Tree Height: 287
+    Tree Height: 660
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -24,7 +25,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: Image
+    SyncSource: ""
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -63,7 +64,7 @@ Visualization Manager:
     - Class: rviz/MarkerArray
       Enabled: true
       Marker Topic: /sPathVehicle
-      Name: 车辆路径
+      Name: vehicle_path
       Namespaces:
         {}
       Queue Size: 100
@@ -77,7 +78,7 @@ Visualization Manager:
       Enabled: true
       Head Length: 0.44999998807907104
       Head Radius: 0.75
-      Name: 混合A*运动规划轨迹
+      Name: hybrid_astar_path
       Shaft Length: 0.5
       Shaft Radius: 0.25
       Shape: Arrow (3D)
@@ -89,7 +90,7 @@ Visualization Manager:
       Color: 239; 41; 41
       Enabled: true
       History Length: 1
-      Name: 起始点
+      Name: start
       Radius: 0.5
       Topic: /hybrid_a_star_node/start_point
       Unreliable: false
@@ -99,7 +100,7 @@ Visualization Manager:
       Color: 32; 74; 135
       Enabled: true
       History Length: 1
-      Name: 目标点
+      Name: goal
       Radius: 0.5
       Topic: /hybrid_a_star_node/goal_point
       Unreliable: false
@@ -112,7 +113,7 @@ Visualization Manager:
       Enabled: true
       Head Length: 0.44999998807907104
       Head Radius: 0.75
-      Name: 起始向量
+      Name: start_vector
       Shaft Length: 1
       Shaft Radius: 0.5
       Shape: Arrow
@@ -127,7 +128,7 @@ Visualization Manager:
       Enabled: true
       Head Length: 0.44999998807907104
       Head Radius: 0.75
-      Name: 目标向量
+      Name: goal_vector
       Shaft Length: 1
       Shaft Radius: 0.5
       Shape: Arrow
@@ -144,70 +145,6 @@ Visualization Manager:
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
-        back_left_wheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        back_right_wheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        camera_left_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        camera_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        camera_right_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        front_laser_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        front_left_steering_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        front_left_wheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        front_right_steering_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        front_right_wheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        main_mass:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        velodyne_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
       Name: RobotModel
       Robot Description: catvehicle/robot_description
       TF Prefix: catvehicle
@@ -217,23 +154,11 @@ Visualization Manager:
     - Class: rviz/MarkerArray
       Enabled: false
       Marker Topic: /visualizeNodes2DCosts
-      Name: 代价
+      Name: cost
       Namespaces:
         {}
       Queue Size: 10000
       Value: false
-    - Class: rviz/Image
-      Enabled: true
-      Image Topic: /iris_0/tag_detections_image
-      Max Value: 1
-      Median window: 5
-      Min Value: 0
-      Name: Image
-      Normalize Range: true
-      Queue Size: 2
-      Transport Hint: raw
-      Unreliable: false
-      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -285,12 +210,10 @@ Visualization Manager:
 Window Geometry:
   Displays:
     collapsed: false
-  Height: 750
+  Height: 879
   Hide Left Dock: false
   Hide Right Dock: false
-  Image:
-    collapsed: false
-  QMainWindow State: 000000ff00000000fd00000004000000000000024400000250fc0200000009fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d0000015c000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000000a0049006d006100670065010000019f000000ee0000001600ffffff000000010000010f00000250fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073010000003d00000250000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000007c00000003efc0100000002fb0000000800540069006d00650100000000000007c0000002eb00fffffffb0000000800540069006d00650100000000000004500000000000000000000004610000025000000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd000000040000000000000244000002d1fc0200000009fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d000002d1000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000000a0049006d00610067006501000001ec000001220000000000000000000000010000010f000002d1fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073010000003d000002d1000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000007c00000003efc0100000002fb0000000800540069006d00650100000000000007c0000002eb00fffffffb0000000800540069006d0065010000000000000450000000000000000000000461000002d100000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:
@@ -300,5 +223,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1984
-  X: 68
-  Y: 772
+  X: 336
+  Y: 461

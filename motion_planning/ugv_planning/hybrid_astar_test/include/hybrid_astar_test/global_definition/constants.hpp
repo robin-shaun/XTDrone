@@ -8,30 +8,30 @@
 
 namespace HybridAStar {
 namespace Constants {
-extern bool coutDEBUG;                          // 调试模式， 是否打印输出
-extern bool manual;                             // true : 静态地图   false ： 动态地图
-extern bool visualization;                      // 3D节点可视化
-extern bool visualization2D;                    // 2D节点可视化
-extern bool reverse;                            // 车辆是否能够倒退
-extern bool dubinsShot;                         // 使用杜宾斯曲线
-extern bool dubins;                             // 使用杜宾斯代价函数 （如果车辆可倒退，使用true或false，否则使用false）
-extern bool dubinsLookup;                       // 杜宾斯曲线前向查路
-extern bool twoD;                               // 2D 贪心算法
+extern bool coutDEBUG;                          
+extern bool manual;                             
+extern bool visualization;                      
+extern bool visualization2D;                    
+extern bool reverse;                            
+extern bool dubinsShot;                         
+extern bool dubins;                             
+extern bool dubinsLookup;                       
+extern bool twoD;                               
 
 
-extern int iterations;                          // A*算法最大叠代层数
-extern double bloating;                         // 车辆安全距离膨胀[m]
-extern double width;                            // 车辆宽度[m]
-extern double length;                           // 车辆长度[m]
-extern float r;                                 // 车辆最小转弯半径[m]     车辆前后轮轴长 / tan(最大前轮转角)   (rad)
-extern float vehicle_wheelbase;                 // 车辆前后轮轴长
-extern float vehicle_max_rudder;                // 车辆前轮方向舵最大角度 【deg】
-static const int headings = 72;                            // 前向离散点的个数
-extern float deltaHeadingDeg;                   // [°] --- The discretization value of the heading (goal condition)
+extern int iterations;                          
+extern double bloating;                         
+extern double width;                            
+extern double length;                           
+extern float r;                                 
+extern float vehicle_wheelbase;                 
+extern float vehicle_max_rudder;                
+static const int headings = 72;                           
+extern float deltaHeadingDeg;                   
 extern float deltaHeadingRad;
 extern float deltaHeadingNegRad;
-extern float cellSize;                          // 地图珊格分辨率
-extern float tieBreaker;                        // tieBreaker
+extern float cellSize;                          
+extern float tieBreaker;                        
 
 // HEURISTIC CONSTANTS
 extern float factor2D;
@@ -67,8 +67,7 @@ struct config {
 };
 
 // _________________
-// 轨迹优化
-static const float minRoadWidth = 2;        // 最小道路的宽度
+static const float minRoadWidth = 2;        
 
 struct color {
   float red;

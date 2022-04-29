@@ -19,7 +19,7 @@ void MapSubscriber::GetCostMap(){
 }
 
 void MapSubscriber::ClearCostMap(const std_msgs::Bool::ConstPtr &msg){
-    // 清除历史代价层
+    
     if(msg->data == true){
         boost::unique_lock<costmap_2d::Costmap2D::mutex_t> lock_controller(*(costmap_ros_->getCostmap()->getMutex()));
         costmap_ros_->resetLayers();

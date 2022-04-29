@@ -24,7 +24,7 @@ public:
     }
 
 public:
-    // 读取参数
+    // get params
     float getX() const { return x; }
     float getY() const { return y; }
     float getT() const { return t; }
@@ -38,7 +38,7 @@ public:
     const Node3D* getPred() const { return pred; }
 
 public:
-    // 写入参数
+    // write params
     void setX(const float& x) { this->x = x; }
     void setY(const float& y) { this->y = y; }
     void setT(const float& t) { this->t = t; }
@@ -51,7 +51,7 @@ public:
 
     // UPDATE METHODS
     void updateG();
-    bool operator == (const Node3D& rhs) const;   // 判断是否为相同珊格点
+    bool operator == (const Node3D& rhs) const;   
 
     // RANGE CHECKING
     bool isInRange(const Node3D& goal) const;
@@ -67,13 +67,13 @@ private:
     float x;        // x
     float y;        // y
     float t;        // theta
-    float g;        // the cost-so-far  当前点到预备扩展点的代价值
-    float h;        // the cost-to-go   预备扩展点到终点的代价值
-    int idx;        // 珊格坐标  x + map_width * y
-    bool o;         // 在openSet中
-    bool c;         // 在closeSet中
-    int prim;           // 行使方向
-    const Node3D* pred; // 父节点指针对象点
+    float g;        // the cost-so-far  
+    float h;        // the cost-to-go   
+    int idx;        //   x + map_width * y
+    bool o;         
+    bool c;         
+    int prim;           
+    const Node3D* pred; 
 };
 }
 #endif // NODE3D_H

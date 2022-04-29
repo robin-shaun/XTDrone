@@ -88,6 +88,9 @@ UGV
 
 <img src="./images/ugv.gif" width="640" height="360" />  
 
+<img src="./images/ugv.gif" width="640" height="398" /> 
+
+
 USV
 
 <img src="./images/usv.gif" width="640" height="360" />  
@@ -101,7 +104,7 @@ USV
 
 - Founders: Kun Xiao, Shaochang Tan
 - Adviser: Xiangke Wang
-- Developers: Kun Xiao, Shaochang Tan, Guanzheng Wang, Lan Ma, Yuke Li, Qipeng Wang, Xinyu Hu, Jiayi Zheng, Ruoqiao Guan, Wenxin Hu, Feng Yi, Jiarun Yan, Yi Bao
+- Developers: Kun Xiao, Shaochang Tan, Guanzheng Wang, Lan Ma, Yuke Li, Qipeng Wang, Xinyu Hu, Jiayi Zheng, Yufan Peng, Zijun Zheng, Jiarun Yan, Feng Yi, Ruoqiao Guan, Wenxin Hu, Yi Bao
 
 ### Contributers
 

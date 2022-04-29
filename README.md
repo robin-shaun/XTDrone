@@ -88,6 +88,8 @@ K. Xiao, L. Ma, S. Tan, Y. Cong , X. Wang, "Implementation of UAV Coordination B
 
 <img src="./images/ugv.gif" width="640" height="360" />  
 
+<img src="./images/ugv.gif" width="640" height="398" /> 
+
 无人船
 
 <img src="./images/usv.gif" width="640" height="360" />  
@@ -101,7 +103,7 @@ K. Xiao, L. Ma, S. Tan, Y. Cong , X. Wang, "Implementation of UAV Coordination B
 
 - 创立者：肖昆，谭劭昌
 - 指导老师：王祥科
-- 开发团队：肖昆，谭劭昌，王冠政，马澜，李玙珂，王齐鹏，胡新雨，郑家驿，管若乔，胡文信，易丰，颜佳润，鲍毅
+- 开发团队：肖昆，谭劭昌，王冠政，马澜，李玙珂，王齐鹏，胡新雨，郑家驿，彭羽凡，郑子君，颜佳润，易丰，管若乔，胡文信，鲍毅
 
 ### 加入我们
 

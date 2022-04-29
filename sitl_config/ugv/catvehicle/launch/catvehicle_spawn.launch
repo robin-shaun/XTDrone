@@ -55,7 +55,7 @@ roslaunch catvehicle catvehicle_spawn.launch robot:=acar_sim X:=0 Y:=0 Z:=0 roll
     <arg name="camera_right" default="false"/>
     <arg name="triclops" default="false"/>
     <arg name="velodyne_points" default="false"/>
-    <arg name="laser_sensor" default="false"/>
+    <arg name="laser_sensor" default="true"/>
     <arg name="obstaclestopper" default="false"/>
     <group ns="$(arg robot)">
         <param name="robot_description" command="$(find xacro)/xacro.py '$(find catvehicle)/urdf/catvehicle.xacro' roboname:='$(arg robot)' camera_left:='$(arg camera_left)'  camera_right:='$(arg camera_right)' triclops:='$(arg triclops)' velodyne_points:='$(arg velodyne_points)' laser_points:='$(arg laser_sensor)'" />

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+	<arg name="robot_name" default="catvehicle"/>
+	<arg name="scan_topic" default="/$(arg robot_name)/front_laser_points" />
+	<arg name="base_frame" default="$(arg robot_name)/base_link"/>//机器人的坐标系
+	<!-- <arg name="odom_frame" default="$(arg robot_name)/odom"/> -->
+	<arg name="odom_frame" default="catvehicle/odom"/>//世界坐标
+
+	<node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">//启动slam的节点
+		<param name="base_frame" value="$(arg base_frame)"/>
+		<param name="odom_frame" value="$(arg odom_frame)"/>
+		<param name="map_update_interval" value="0.01"/>//地图更新的一个间隔，两次scanmatch的间隔，地图更新也受scanmach的影响，如果scanmatch没有成功的话，是不会更新地图的
+		<param name="maxUrange" value="40.0"/>
+		<param name="maxRange" value="50.0"/>
+		<param name="sigma" value="0.05"/>
+		<param name="kernelSize" value="3"/>
+		<param name="lstep" value="0.5"/>optimize机器人移动的初始值（距离）
+		<param name="astep" value="0.5"/>//optimize机器人移动的初始值（角度）
+		<param name="iterations" value="5"/>//icp的迭代次数
+		<param name="lsigma" value="0.075"/>
+		<param name="ogain" value="3.0"/>
+		<param name="lskip" value="0"/>//为0,表示所有的激光都处理，尽可能为零，如果计算压力过大，可以改成1
+		<param name="minimumScore" value="30"/>//很重要，判断scanmatch是否成功的阈值，过高的话会使scanmatch失败，从而影响地图更新速率
+		<param name="srr" value="0.01"/>//以下四个参数是运动模型的噪声参数
+		<param name="srt" value="0.02"/>
+		<param name="str" value="0.01"/>
+		<param name="stt" value="0.02"/>
+		<param name="linearUpdate" value="0.5"/>//机器人移动linearUpdate距离，进行scanmatch
+		<param name="angularUpdate" value="0.1"/>机器人选装angularUpdate角度，进行scanmatch
+		<param name="temporalUpdate" value="-1.0"/>
+		<param name="resampleThreshold" value="0.5"/>
+		<param name="particles" value="8"/>//很重要，粒子个数
+		<param name="xmin" value="-1.0"/>//map初始化的大小
+		<param name="ymin" value="-1.0"/>
+		<param name="xmax" value="1.0"/>
+		<param name="ymax" value="1.0"/>
+		<param name="delta" value="1.0"/>
+		<param name="llsamplerange" value="0.01"/>
+		<param name="llsamplestep" value="0.01"/>
+		<param name="lasamplerange" value="0.005"/>
+		<param name="lasamplestep" value="0.005"/>
+		<remap from="scan" to="$(arg scan_topic)"/>
+		<!--<remap from="/map" to="/test_map"/> -->
+	</node>
+</launch>

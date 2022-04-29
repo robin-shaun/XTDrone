@@ -48,7 +48,7 @@ This launch file loads the worlds and models for the catvehicle
 
 <group ns="catvehicle">
  <param name="robot_description"
-         command="$(find xacro)/xacro.py '$(find catvehicle)/urdf/catvehicle.xacro' roboname:='catvehicle'" />
+         command="$(find xacro)/xacro.py '$(find catvehicle)/urdf/catvehicle.xacro' roboname:='ugv_0'" />
 
 <include file="$(find catvehicle)/launch/catvehicle.launch">
     <arg name="robot_name" value="catvehicle"/>

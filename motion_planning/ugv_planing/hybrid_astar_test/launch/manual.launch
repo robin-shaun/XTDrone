@@ -1,0 +1,4 @@
+<launch>
+    <node name="hybrid_astar_test_node" pkg="hybrid_astar_test" type="hybrid_astar_test_node" output="screen" />
+   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find hybrid_astar_test)/rviz/hybrid_a_star.rviz" />
+</launch>

@@ -88,7 +88,7 @@ K. Xiao, L. Ma, S. Tan, Y. Cong , X. Wang, "Implementation of UAV Coordination B
 
 <img src="./images/ugv.gif" width="640" height="360" />  
 
-<img src="./images/ugv.gif" width="640" height="398" /> 
+<img src="./images/ugv_planning.gif" width="640" height="398" /> 
 
 无人船
 

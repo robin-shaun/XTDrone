@@ -88,7 +88,7 @@ UGV
 
 <img src="./images/ugv.gif" width="640" height="360" />  
 
-<img src="./images/ugv.gif" width="640" height="398" /> 
+<img src="./images/ugv_planning.gif" width="640" height="398" /> 
 
 
 USV

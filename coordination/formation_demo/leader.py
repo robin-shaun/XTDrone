@@ -43,7 +43,7 @@ class Leader:
         self.pose_pub = rospy.Publisher("/xtdrone/leader/pose", PoseStamped , queue_size=1)
         self.formation_pattern_pub = rospy.Publisher('/xtdrone/formation_pattern', Float32MultiArray, queue_size=1)
         self.communication_topology_pub = rospy.Publisher('/xtdrone/communication_topology', Int32MultiArray, queue_size=1)
-        self.vel_enu_pub =  rospy.Publisher('/xtdrone/'+uav_type+'_'+str(self.id)+'/cmd_vel_enu', Twist, queue_size=1)
+        self.vel_enu_pub =  rospy.Publisher('/xtdrone/'+uav_type+'_'+str(self.id)+'/cmd_vel_flu', Twist, queue_size=1)
         self.cmd_pub = rospy.Publisher('/xtdrone/'+uav_type+'_'+str(self.id)+'/cmd', String, queue_size=1)
 
     def pose_callback(self, msg):

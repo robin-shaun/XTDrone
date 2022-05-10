@@ -70,7 +70,7 @@ class Leader:
             print(self.new_formation)
             self.communication_topology = self.get_communication_topology(self.new_formation)
             print(self.communication_topology)
-            self.orig_formation = self.new_formation
+            self.origin_formation = self.new_formation
         else:
             self.cmd = msg.data
 

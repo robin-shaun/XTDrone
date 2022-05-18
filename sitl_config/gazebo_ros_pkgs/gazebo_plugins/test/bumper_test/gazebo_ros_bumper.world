@@ -1,0 +1,108 @@
+<gazebo version="1.0">
+  <world name="world_1">
+    <scene>
+      <ambient rgba="0.5 0.5 0.5 1.0"/>
+      <background rgba="0.5 0.5 0.5 1.0">
+        <sky material="Gazebo/CloudySky"/>
+      </background>
+      <shadows enabled="true" rgba="0.0 0.0 0.5 0.5" type="texture_gpu"/>
+      <fog rgba="0.0 0.0 0.5 0.5" type="linear" start="2.0" end="10.0" density="0.5"/>
+    </scene>
+
+    <physics type="ode">
+      <gravity xyz="0.0 0.0 -9.81"/>
+      <max_contacts>250</max_contacts>
+      <ode>
+        <solver type="quick" dt="0.001" iters="20" sor="1.3"/>
+        <constraints cfm="0" erp="0.2" contact_max_correcting_vel="100.0" contact_surface_layer="0.0"/>
+      </ode>
+    </physics>
+
+    <model name="model_1" static="false">
+
+      <origin pose="0.0 0.0 1.0 0.0 0.0 0.0"/>
+
+      <link name="link_1" self_collide="true" gravity="true" kinematic="false">
+        <origin pose="0.0 0.0 0.0 0.0 0.0 0.0"/>
+        <inertial mass="10.0">
+          <origin pose="0.0 0.0 0.0 0.0 0.0 0.0"/>
+          <damping linear="0.0" angular="0.0" />
+          <inertia ixx="1.0" ixy="0.0" ixz="0.0"
+                   iyy="1.0" iyz="0.0"
+                   izz="1.0"/>
+        </inertial>
+
+        <visual cast_shadows="true" name="visual_box" laser_retro="100.0">
+          <origin pose="0.0 0.0 0.0 0.0 0.0 0.0"/>
+          <geometry>
+            <box size="1.0 1.0 2.0"/>
+          </geometry>
+          <material script="Gazebo/Green">
+            <ambient rgba="0.03 0.5 0.5 1.0"/>
+          </material>
+        </visual>
+
+        <collision name="collision_box" laser_retro="100.0">
+          <origin pose="0.0 0.0 0.0 0.0 0.0 0.0"/>
+          <max_contacts>250</max_contacts>
+          <geometry>
+            <box size="1.0 1.0 2.0"/>
+          </geometry>
+          <surface>
+            <friction>
+              <ode mu="0.5" mu2="0.2" fdir1="1.0 0 0" slip1="0" slip2="0"/>
+            </friction>
+            <bounce restitution_coefficient="0" threshold="1000000.0"/>
+            <contact>
+              <ode soft_cfm="0" soft_erp="0.2" kp="1e15" kd="1e13" max_vel="100.0" min_depth="0.0001"/>
+            </contact>
+          </surface>
+        </collision>
+
+        <sensor name="contact_sensor" type="contact" always_on="true" update_rate="2.0">
+          <origin pose="0.0 0.0 0.0 0.0 0.0 0.0"/>
+          <contact>
+            <collision name="collision_box"/>
+          </contact>
+
+          <plugin name="plugin_1" filename="libgazebo_ros_bumper.so">
+            <alwaysOn>true</alwaysOn>
+            <updateRate>100.0</updateRate>
+            <frameName>world</frameName>
+            <bumperTopicName>test_bumper</bumperTopicName>
+          </plugin>
+        </sensor>
+
+      </link>
+    </model>
+
+    <model name='gplane' static='1'>
+      <origin pose='0 0 0 0 -0 0'/>
+      <link name='plane' gravity='1' self_collide='0' kinematic='0'>
+        <origin pose='0 0 0 0 -0 0'/>
+        <collision name='plane' laser_retro='0'>
+          <origin pose='0 0 0 0 -0 0'/>
+          <geometry>
+            <plane normal='0 0 1'/>
+          </geometry>
+          <surface>
+            <friction>
+              <ode mu='50' mu2='50' fdir1='0 0 0' slip1='0' slip2='0'/>
+            </friction>
+            <bounce restitution_coefficient='0' threshold='0'/>
+            <contact>
+              <ode soft_cfm='0' soft_erp='0' kp='1000000000' kd='1' max_vel='-1' min_depth='0'/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name='old_gazebo_xml_visual' cast_shadows='1' laser_retro='0' transparency='0'>
+          <origin pose='0 0 0 0 -0 0'/>
+          <geometry>
+            <plane normal='0 0 1'/>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+  </world>
+</gazebo>

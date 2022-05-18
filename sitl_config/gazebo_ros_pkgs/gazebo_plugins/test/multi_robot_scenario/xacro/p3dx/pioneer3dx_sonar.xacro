@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:property name="M_PI" value="3.1415926535897931" />
+
+  <xacro:macro name="pioneer_sonar" params="name parent xyz rpy meshes">
+
+  <!-- Front Sonar -->
+  <joint name="${parent}_${name}_joint" type="fixed">
+    <origin xyz="${xyz}" rpy="${rpy}"/>
+    <parent link="${parent}"/>
+    <child link="${name}"/>
+  </joint>
+  <link name="${name}">
+    <inertial>
+      <mass value="0.0001"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+    <visual name="front_sonar_vis">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry name="pioneer_geom">
+        <mesh filename="${meshes}/back_sonar.stl"/>
+      </geometry>
+      <material name="SonarYellow">
+        <color rgba="0.715 0.583 0.210 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0 0 0"/>
+      </geometry>
+    </collision>
+  </link>
+  <gazebo reference="${name}">
+    <material value="Gazebo/Yellow"/>
+  </gazebo>
+
+  </xacro:macro>
+
+</robot>

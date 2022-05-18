@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:property name="M_PI" value="3.1415926535897931" />
+
+  <xacro:macro name="pioneer_swivel" params="parent xyz rpy meshes">
+
+  <!-- Swivel -->
+  <joint name="chassis_swivel_joint" type="continuous">
+    <origin xyz="${xyz}" rpy="${rpy}"/>
+    <axis xyz="0 0 1"/>
+    <anchor xyz="0 0 0"/>
+    <limit effort="100" velocity="100" k_velocity="0"/>
+    <joint_properties damping="0.0" friction="0.0"/>
+    <parent link="${parent}"/>
+    <child link="swivel"/>
+  </joint>
+  <link name="swivel">
+    <inertial>
+      <mass value="0.1"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+    </inertial>
+    <visual name="base_visual">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry name="pioneer_geom">
+        <mesh filename="${meshes}/swivel.stl"/>
+      </geometry>
+      <material name="swivel">
+        <color rgba="0.5 0.5 0.5 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0 0 0"/>
+      </geometry>
+    </collision>
+  </link>
+  <gazebo reference="swivel">
+    <material value="Gazebo/Grey"/>
+  </gazebo>
+
+  <!-- Center Wheel -->
+  <joint name="swivel_wheel_joint" type="continuous">
+    <origin xyz="-0.026 0 -0.016" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <anchor xyz="0 0 0"/>
+    <limit effort="100" velocity="100" k_velocity="0"/>
+    <joint_properties damping="0.0" friction="0.0"/>
+    <parent link="swivel"/>
+    <child link="center_wheel"/>
+  </joint>
+  <link name="center_wheel">
+    <inertial>
+      <mass value="0.1"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.012411765597" ixy="-0.000711733678" ixz="0.00050272983" iyy="0.015218160428" iyz="-0.000004273467" izz="0.011763977943"/>
+    </inertial>
+    <visual name="base_visual">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry name="pioneer_geom">
+        <mesh filename="${meshes}/center_wheel.stl"/>
+      </geometry>
+      <material name="WheelBlack">
+        <color rgba="0.117 0.117 0.117 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="${-3.1415927/2.0} 0 0"/>
+      <geometry>
+        <!--<mesh filename="${meshes}/center_wheel.stl"/>-->
+        <cylinder radius="0.0375" length="0.01"/>
+      </geometry>
+    </collision>
+  </link>
+  <gazebo reference="center_wheel">
+    <material value="Gazebo/Black"/>
+  </gazebo>
+
+  <!-- Center Hubcap -->
+  <joint name="wheel_hubcap_joint" type="fixed">
+    <origin xyz="-0.0035 0 -0.001" rpy="0 0 0"/>
+    <parent link="center_wheel"/>
+    <child link="center_hubcap"/>
+  </joint>
+  <link name="center_hubcap">
+    <inertial>
+      <mass value="0.01"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.012411765597" ixy="-0.000711733678" ixz="0.00050272983" iyy="0.015218160428" iyz="-0.000004273467" izz="0.011763977943"/>
+    </inertial>
+    <visual name="base_visual">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry name="pioneer_geom">
+        <mesh filename="${meshes}/center_hubcap.stl"/>
+      </geometry>
+      <material name="swivel">
+        <color rgba="0.5 0.5 0.5 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0 0 0"/>
+      </geometry>
+    </collision>
+  </link>
+  <gazebo reference="center_hubcap">
+    <material value="Gazebo/Grey"/>
+  </gazebo>
+
+  </xacro:macro>
+
+</robot>

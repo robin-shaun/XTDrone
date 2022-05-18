@@ -1,0 +1,22 @@
+#!/bin/sh
+final="$@"
+
+EXT=so
+if [ $(uname) = "Darwin" ]; then
+    EXT=dylib
+fi
+
+# add ros path plugin if it does not already exist in the passed in arguments
+if [ `expr "$final" : ".*libgazebo_ros_paths_plugin\.$EXT.*"` -eq 0 ]
+then
+    final="$final -s `catkin_find --first-only libgazebo_ros_paths_plugin.$EXT`"
+fi
+
+# add ros api plugin if it does not already exist in the passed in arguments
+if [ `expr "$final" : ".*libgazebo_ros_api_plugin\.$EXT.*"` -eq 0 ]
+then
+    final="$final -s `catkin_find --first-only libgazebo_ros_api_plugin.$EXT`"
+fi
+
+setup_path=$(pkg-config --variable=prefix gazebo)/share/gazebo/
+. $setup_path/setup.sh && rosrun gazebo_ros gdbrun gzserver $final

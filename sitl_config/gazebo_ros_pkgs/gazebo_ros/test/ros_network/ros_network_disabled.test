@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="paused"   value="false"/>
+    <arg name="gui"      value="false"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug"    value="false"/>
+    <arg name="enable_ros_network" value="false"/>
+  </include>
+
+  <!-- the long timeout is just in case that gazebo needs to download models -->
+  <test pkg="gazebo_ros" type="ros_api_checker" test-name="ros_network_by_default"
+      args="$(find gazebo_ros)/test/ros_network/no_gazebo_network_api.yaml"
+      time-limit="100.0"/>
+</launch>

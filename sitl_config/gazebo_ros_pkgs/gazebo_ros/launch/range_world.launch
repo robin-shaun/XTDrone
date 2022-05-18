@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- these are the arguments you can pass this launch file, for example paused:=true -->
+  <arg name="paused" default="false"/>
+  <arg name="use_sim_time" default="true"/>
+  <arg name="extra_gazebo_args" default=""/>
+  <arg name="gui" default="true"/>
+  <arg name="debug" default="false"/>
+  <arg name="physics" default="ode"/>
+  <arg name="verbose" default="true"/>
+  <arg name="output" default="screen"/>
+  <arg name="world" default="gazebo_ros_range"/>
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find gazebo_plugins)/test/test_worlds/$(arg world).world"/>
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+    <arg name="extra_gazebo_args" value="$(arg extra_gazebo_args)"/>
+    <arg name="gui" value="$(arg gui)"/>
+    <arg name="debug" value="$(arg debug)"/>
+    <arg name="physics" value="$(arg physics)"/>
+    <arg name="verbose" value="$(arg verbose)"/>
+    <arg name="output" value="$(arg output)"/>
+  </include>
+
+</launch>
+

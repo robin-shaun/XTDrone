@@ -1,0 +1,4 @@
+string model_name                 # name of the Gazebo Model to be deleted
+---
+bool success                      # return true if deletion is successful
+string status_message             # comments if available

@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<robot
+  xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:property name="M_PI" value="3.1415926535897931" />
+
+  <xacro:macro name="pioneer_wheel" params="side parent xyz rpy radius meshes">
+
+  <!-- Hubcap -->
+  <joint name="${side}_hub_joint" type="continuous">
+    <origin xyz="${xyz}" rpy="${rpy}"/>
+    <parent link="${parent}"/>
+    <child link="${side}_hub"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+  <link name="${side}_hub">
+    <inertial>
+      <mass value="0.01"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.012411765597" ixy="0" ixz="0" iyy="0.015218160428" iyz="0" izz="0.011763977943"/>
+    </inertial>
+    <visual name="base_visual">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry name="pioneer_geom">
+        <mesh filename="${meshes}/${side}_hubcap.stl"/>
+      </geometry>
+      <material name="HubcapYellow">
+        <color rgba="1.0 0.811 0.151 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0 0 0"/>
+      </geometry>
+    </collision>
+  </link>
+  <gazebo reference="${side}_hub">
+    <material value="Gazebo/Yellow"/>
+  </gazebo>
+
+  <!-- Wheel -->
+  <joint name="${side}_wheel_joint" type="fixed">
+    <axis xyz="0 1 0"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="${side}_hub"/>
+    <child link="${side}_wheel"/>
+  </joint>
+  <link name="${side}_wheel">
+    <inertial>
+      <mass value="0.5"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.012411765597" ixy="0" ixz="0" iyy="0.015218160428" iyz="0" izz="0.011763977943"/>
+    </inertial>
+    <visual name="base_visual">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry name="pioneer_geom">
+        <mesh filename="${meshes}/${side}_wheel.stl"/>
+      </geometry>
+      <material name="WheelBlack">
+        <color rgba="0.117 0.117 0.117 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="${-3.1415927/2} 0 0"/>
+      <geometry>
+        <!--<mesh filename="${meshes}/${side}_wheel.stl"/>-->
+        <cylinder radius="${radius}" length="0.01"/>
+      </geometry>
+    </collision>
+  </link>
+  <gazebo reference="${side}_wheel">
+    <material value="Gazebo/Black"/>
+  </gazebo>
+
+
+  </xacro:macro>
+
+</robot>

@@ -1,0 +1,11 @@
+<!-- Launch file for ekf_localization_node_test-interfaces -->
+
+<launch>
+    <param name="/use_sim_time" value="true" />
+
+    <!-- gazebo server-->
+    <node name="gazebo" pkg="gazebo_ros" type="gzserver" respawn="false" output="screen"
+          args="--verbose $(find gazebo_plugins)/test/set_model_state_test/set_model_state_test_p2dx.world" />
+
+    <test test-name="set_model_state_test" pkg="gazebo_plugins" type="set_model_state-test" clear_params="true" time-limit="100.0" />
+</launch>

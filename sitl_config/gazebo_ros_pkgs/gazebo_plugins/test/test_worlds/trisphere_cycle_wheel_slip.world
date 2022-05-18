@@ -1,0 +1,111 @@
+<?xml version="1.0" ?>
+
+<sdf version="1.6">
+  <world name="default">
+    <gravity>-2 0 -9.8</gravity>
+
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <include>
+      <uri>model://trisphere_cycle</uri>
+      <name>trisphere_cycle_slip0</name>
+      <pose>0 0 0  0 0 0</pose>
+      <plugin name="wheel_slip_front" filename="libgazebo_ros_wheel_slip.so">
+        <robotNamespace>wheel_slip_front</robotNamespace>
+        <wheel link_name="wheel_front">
+          <slip_compliance_lateral>0</slip_compliance_lateral>
+          <slip_compliance_longitudinal>0</slip_compliance_longitudinal>
+          <wheel_normal_force>77</wheel_normal_force>
+        </wheel>
+      </plugin>
+      <plugin name="wheel_slip_rear" filename="libgazebo_ros_wheel_slip.so">
+        <robotNamespace>wheel_slip_rear</robotNamespace>
+        <wheel link_name="wheel_rear_left">
+          <slip_compliance_lateral>0</slip_compliance_lateral>
+          <slip_compliance_longitudinal>0</slip_compliance_longitudinal>
+          <wheel_normal_force>32</wheel_normal_force>
+        </wheel>
+        <wheel link_name="wheel_rear_right">
+          <slip_compliance_lateral>0</slip_compliance_lateral>
+          <slip_compliance_longitudinal>0</slip_compliance_longitudinal>
+          <wheel_normal_force>32</wheel_normal_force>
+        </wheel>
+      </plugin>
+      <plugin name="joint_control" filename="libJointControlPlugin.so">
+        <controller type="position">
+          <joint>wheel_front_steer</joint>
+          <target>0</target>
+          <pid_gains>9 0 0.1</pid_gains>
+        </controller>
+        <controller type="velocity">
+          <joint>wheel_rear_left_spin</joint>
+          <joint>wheel_rear_right_spin</joint>
+          <target>6.0</target>
+          <pid_gains>9 0 0</pid_gains>
+        </controller>
+        <controller type="force">
+          <joint>wheel_rear_left_spin</joint>
+          <joint>wheel_rear_right_spin</joint>
+          <target>2.15</target>
+        </controller>
+      </plugin>
+    </include>
+
+    <include>
+      <uri>model://trisphere_cycle</uri>
+      <name>trisphere_cycle_slip1</name>
+      <pose>0 2 0  0 0 0</pose>
+      <plugin name="wheel_slip_front" filename="libgazebo_ros_wheel_slip.so">
+        <robotNamespace>wheel_slip_front</robotNamespace>
+        <wheel link_name="wheel_front">
+          <slip_compliance_lateral>1</slip_compliance_lateral>
+          <slip_compliance_longitudinal>1</slip_compliance_longitudinal>
+          <wheel_normal_force>77</wheel_normal_force>
+        </wheel>
+      </plugin>
+      <plugin name="wheel_slip_rear" filename="libgazebo_ros_wheel_slip.so">
+        <robotNamespace>wheel_slip_rear</robotNamespace>
+        <wheel link_name="wheel_rear_left">
+          <slip_compliance_lateral>1</slip_compliance_lateral>
+          <slip_compliance_longitudinal>1</slip_compliance_longitudinal>
+          <wheel_normal_force>32</wheel_normal_force>
+        </wheel>
+        <wheel link_name="wheel_rear_right">
+          <slip_compliance_lateral>1</slip_compliance_lateral>
+          <slip_compliance_longitudinal>1</slip_compliance_longitudinal>
+          <wheel_normal_force>32</wheel_normal_force>
+        </wheel>
+      </plugin>
+      <plugin name="joint_control" filename="libJointControlPlugin.so">
+        <controller type="position">
+          <joint>wheel_front_steer</joint>
+          <target>0</target>
+          <pid_gains>9 0 0.1</pid_gains>
+        </controller>
+        <controller type="velocity">
+          <joint>wheel_rear_left_spin</joint>
+          <joint>wheel_rear_right_spin</joint>
+          <target>6.0</target>
+          <pid_gains>9 0 0</pid_gains>
+        </controller>
+        <controller type="force">
+          <joint>wheel_rear_left_spin</joint>
+          <joint>wheel_rear_right_spin</joint>
+          <target>2.15</target>
+        </controller>
+      </plugin>
+    </include>
+
+    <gui fullscreen='0'>
+      <camera name='user_camera'>
+        <pose>1.5 -4 2.5  0 0.5 1.6</pose>
+        <view_controller>orbit</view_controller>
+      </camera>
+    </gui>
+  </world>
+</sdf>

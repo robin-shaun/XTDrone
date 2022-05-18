@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<kml xmlns='http://earth.google.com/kml/2.1'>
+<Folder>
+    <name>Chair</name>
+    <description><![CDATA[Created with <a href="http://sketchup.google.com/">Google SketchUp 7.0.8657</a>]]></description>
+    <DocumentSource>SketchUp</DocumentSource>
+<visibility>1</visibility>
+<LookAt>
+<heading>320.223</heading>
+<tilt>64.7271</tilt>
+<latitude>40.01698901172049</latitude>
+<longitude>-105.2829857471169</longitude>
+<range>2.891488298910991</range>
+<altitude>1.320883614486943</altitude>
+</LookAt>
+<Folder>
+<name>Tour</name>
+<Placemark>
+<name><![CDATA[Camera]]></name>
+<visibility>1</visibility>
+<LookAt>
+<heading>320.223</heading>
+<tilt>64.7271</tilt>
+<latitude>40.01698901172049</latitude>
+<longitude>-105.2829857471169</longitude>
+<range>2.891488298910991</range>
+<altitude>1.320883614486943</altitude>
+</LookAt>
+</Placemark>
+</Folder>
+  <Placemark>
+    <name>Model</name>
+    <description><![CDATA[]]></description>
+    <Style id='default'>
+    </Style>
+    <Model>
+        <altitudeMode>relativeToGround</altitudeMode>
+        <Location>
+            <longitude>-105.283000000000</longitude>
+            <latitude>40.017000000000</latitude>
+            <altitude>0.000000000000</altitude>
+        </Location>
+        <Orientation>
+            <heading>0</heading>
+            <tilt>0</tilt>
+            <roll>0</roll>
+        </Orientation>
+        <Scale>
+            <x>1.0</x>
+            <y>1.0</y>
+            <z>1.0</z>
+        </Scale>
+        <Link>
+            <href>models/Chair.dae</href>
+        </Link>
+    </Model>
+  </Placemark></Folder>
+</kml>

@@ -1,0 +1,138 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+
+  <world name="default">
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <!-- Global light source -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <!-- Focus camera on tall pendulum -->
+    <gui fullscreen='0'>
+      <camera name='user_camera'>
+        <pose>4.927360 -4.376610 3.740080 0.000000 0.275643 2.356190</pose>
+        <view_controller>orbit</view_controller>
+      </camera>
+    </gui>
+
+  <model name="model_1">
+    <static>false</static>
+    <pose>2.0 0.0 4.0 0.0 0.0 0.0</pose>
+    <link name="link_1">
+      <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+      <inertial>
+        <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+        <inertia>
+          <ixx>1.0</ixx>
+          <ixy>0.0</ixy>
+          <ixz>0.0</ixz>
+          <iyy>1.0</iyy>
+          <iyz>0.0</iyz>
+          <izz>1.0</izz>
+        </inertia>
+        <mass>10.0</mass>
+      </inertial>
+      <visual name="visual_sphere">
+        <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.5</radius>
+          </sphere>
+        </geometry>
+        <material>
+          <ambient>0.03 0.5 0.5 1.0</ambient>
+          <script>Gazebo/Green</script>
+        </material>
+        <cast_shadows>true</cast_shadows>
+        <laser_retro>100.0</laser_retro>
+      </visual>
+      <collision name="collision_sphere">
+        <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+        <max_contacts>250</max_contacts>
+        <geometry>
+          <sphere>
+            <radius>0.5</radius>
+          </sphere>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.5</mu>
+              <mu2>0.2</mu2>
+              <fdir1>1.0 0 0</fdir1>
+              <slip1>0</slip1>
+              <slip2>0</slip2>
+            </ode>
+          </friction>
+          <bounce>
+            <restitution_coefficient>0</restitution_coefficient>
+            <threshold>1000000.0</threshold>
+          </bounce>
+          <contact>
+            <ode>
+              <soft_cfm>0</soft_cfm>
+              <soft_erp>0.2</soft_erp>
+              <kp>1e15</kp>
+              <kd>1e13</kd>
+              <max_vel>100.0</max_vel>
+              <min_depth>0.0001</min_depth>
+            </ode>
+          </contact>
+        </surface>
+        <laser_retro>100.0</laser_retro>
+      </collision>
+    </link>
+  </model>
+
+  <model name="camera_model">
+    <static>true</static>
+    <pose>0.0 0.0 0.5 0.0 0.0 0.0</pose>
+    <link name="camera_link">
+      <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+    <sensor type="camera" name="camera1">
+      <update_rate>0.5</update_rate>
+      <camera name="head">
+        <horizontal_fov>1.3962634</horizontal_fov>
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>R16G16B16</format>
+        </image>
+        <clip>
+          <near>0.02</near>
+          <far>300</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <!-- Noise is sampled independently per pixel on each frame.  
+               That pixel's noise value is added to each of its color
+               channels, which at that point lie in the range [0,1]. -->
+          <mean>0.0</mean>
+          <stddev>0.007</stddev>
+        </noise>
+      </camera>
+      <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+        <alwaysOn>true</alwaysOn>
+        <!-- Keep this zero, update_rate will control the frame rate -->
+        <updateRate>0.0</updateRate>
+        <cameraName>camera1</cameraName>
+        <imageTopicName>image_raw</imageTopicName>
+        <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+        <frameName>camera_link</frameName>
+        <hackBaseline>0.07</hackBaseline>
+        <distortionK1>0.0</distortionK1>
+        <distortionK2>0.0</distortionK2>
+        <distortionK3>0.0</distortionK3>
+        <distortionT1>0.0</distortionT1>
+        <distortionT2>0.0</distortionT2>
+      </plugin>
+    </sensor>
+    </link>
+  </model>
+
+  </world>
+</sdf>

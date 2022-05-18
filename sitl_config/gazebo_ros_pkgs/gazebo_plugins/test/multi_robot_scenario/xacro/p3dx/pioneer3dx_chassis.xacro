@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:property name="M_PI" value="3.1415926535897931" />
+
+  <xacro:macro name="pioneer_chassis" params="name parent xyz rpy meshes">
+
+  <!-- Chassis -->
+  <joint name="${parent}_${name}_joint" type="fixed">
+    <origin xyz="${xyz}" rpy="${rpy}"/>
+    <parent link="${parent}"/>
+    <child link="${name}"/>
+  </joint>
+  <link name="${name}">
+    <visual name="chassis_visual">
+      <origin xyz="-0.045 0 0.148" rpy="0 0 0"/>
+      <geometry name="pioneer_geom">
+        <mesh filename="${meshes}/chassis.stl"/>
+      </geometry>
+      <material name="ChassisRed">
+        <color rgba="0.851 0.0 0.0 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.045 0 0.148" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="${meshes}/chassis.stl"/>
+      </geometry>
+    </collision>
+    <xacro:box_inertial x="0.36" y="0.26"  z="0.18" mass="9.0" />
+  </link>
+  <gazebo reference="${name}">
+    <material value="Gazebo/Red"/>
+  </gazebo>
+
+  <!-- Top -->
+  <joint name="${name}_top_joint" type="fixed">
+    <origin xyz="-0.045 0 0.234" rpy="0 0 0"/>
+    <parent link="${name}"/>
+    <child link="top"/>
+  </joint>
+  <link name="top">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry name="top_geom">
+        <mesh filename="${meshes}/top.stl"/>
+      </geometry>
+      <material name="TopBlack">
+        <color rgba="0.038 0.038 0.038 1.0"/>
+      </material>
+    </visual>
+    <collision>
+    <origin xyz="0.0 0 0.0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="${meshes}/top.stl"/>
+      </geometry>
+    </collision>
+    <xacro:box_inertial x="0.445" y="0.38"  z="0.01" mass="1.0" />
+  </link>
+  <gazebo reference="top">
+    <material value="Gazebo/Black"/>
+  </gazebo>
+
+  </xacro:macro>
+
+</robot>

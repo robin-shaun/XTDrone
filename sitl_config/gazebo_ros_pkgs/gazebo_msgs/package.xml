@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>gazebo_msgs</name>
+  <version>2.8.7</version>
+  <description>
+    Message and service data structures for interacting with Gazebo from ROS.
+  </description>
+
+  <maintainer email="jrivero@osrfoundation.org">Jose Luis Rivero</maintainer>
+
+  <license>BSD</license>
+
+  <url type="website">http://gazebosim.org/tutorials?cat=connect_ros</url>
+  <url type="bugtracker">https://github.com/ros-simulation/gazebo_ros_pkgs/issues</url>
+  <url type="repository">https://github.com/ros-simulation/gazebo_ros_pkgs</url>
+
+  <author>John Hsu</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>geometry_msgs</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>trajectory_msgs</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>std_srvs</build_depend>
+  <build_depend>message_generation</build_depend>
+
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>trajectory_msgs</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>message_runtime</exec_depend>
+  <exec_depend>std_srvs</exec_depend>
+</package>
+
+

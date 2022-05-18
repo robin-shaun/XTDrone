@@ -1,0 +1,4 @@
+string light_name                 # name of the light to be deleted
+---
+bool success                      # return true if deletion is successful
+string status_message             # comments if available

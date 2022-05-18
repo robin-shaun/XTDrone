@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>gazebo_ros_control</name>
+  <version>2.8.7</version>
+  <description>gazebo_ros_control</description>
+
+  <maintainer email="jrivero@osrfoundation.org">Jose Luis Rivero</maintainer>
+
+  <license>BSD</license>
+
+  <url type="website">http://ros.org/wiki/gazebo_ros_control</url>
+  <url type="bugtracker">https://github.com/ros-simulation/gazebo_ros_pkgs/issues</url>
+  <url type="repository">https://github.com/ros-simulation/gazebo_ros_pkgs</url>
+
+  <author>Jonathan Bohren</author>
+  <author>Dave Coleman</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>gazebo_dev</build_depend>
+  <exec_depend>gazebo_ros</exec_depend>
+  <depend>roscpp</depend>
+  <depend>std_msgs</depend>
+  <depend>control_toolbox</depend>
+  <depend>controller_manager</depend>
+  <depend>pluginlib</depend>
+  <depend>hardware_interface</depend>
+  <depend>transmission_interface</depend>
+  <depend>joint_limits_interface</depend>
+  <depend>urdf</depend>
+  <depend>angles</depend>
+
+  <export>
+    <gazebo_ros_control plugin="${prefix}/robot_hw_sim_plugins.xml"/>
+  </export>
+</package>

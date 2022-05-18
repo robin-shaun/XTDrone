@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:property name="M_PI" value="3.1415926535897931" />
+  <xacro:property name="radius_actuated_wheel" value="0.135" />
+  <xacro:property name="radius_encoder_wheel" value="0.135" />
+
+  <xacro:include filename="inertia_tensors.xacro"/>
+  <xacro:include filename="tricycle_chassis.xacro"/>
+  <xacro:include filename="wheel.xacro"/>
+  <xacro:include filename="wheel_actuated.xacro"/>
+  <xacro:include filename="tricycle_plugins.xacro"/>
+
+  <xacro:macro name="tricycle_body" params="parent meshes">
+
+    <!-- base_link -->
+    <link name="${parent}"/>
+
+    <!-- Chassis -->
+    <xacro:tricycle_chassis name="chassis" parent="${parent}" xyz="0.5 0 0.3" rpy="0 0 0"  meshes="${meshes}"/>
+
+    <!-- Wheels  -->
+    <xacro:wheel name="right"   parent="${parent}"  xyz="0.0   0.274 ${radius_encoder_wheel}" rpy="${-M_PI/2} 0 0" radius="${radius_encoder_wheel}" length="0.05" meshes="${meshes}"/>
+    <xacro:wheel name="left"    parent="${parent}"  xyz="0.0  -0.274 ${radius_encoder_wheel}" rpy="${-M_PI/2} 0 0" radius="${radius_encoder_wheel}" length="0.05" meshes="${meshes}"/>
+    <xacro:wheel_actuated name="front"  parent="${parent}"  xyz="1.14  0.0   ${radius_actuated_wheel}" rpy="${-M_PI/2} 0 0" radius="${radius_actuated_wheel}" length="0.05" meshes="${meshes}"/>
+
+    <!-- Motor plugin -->
+    <xacro:tricycle_drive />
+
+  </xacro:macro>
+</robot>

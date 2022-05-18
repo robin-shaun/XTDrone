@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<robot
+  xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:property name="M_PI" value="3.1415926535897931" />
+
+  <xacro:macro name="wheel" params="name parent xyz rpy radius length meshes">
+
+  <!-- Wheel -->
+  <joint name="${name}_wheel_joint" type="continuous">
+    <origin xyz="${xyz}" rpy="${rpy}"/>
+    <parent link="${parent}"/>
+    <child link="${name}_wheel"/>
+    <axis xyz="0 0 1"/>
+    <anchor xyz="0 0 0"/>
+    <limit effort="100" velocity="100" k_velocity="0"/>
+    <joint_properties damping="0.0" friction="0.0"/>
+  </joint>
+  <link name="${name}_wheel">
+    <visual name="${name}_wheel_visual">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry name="{name}_wheel_geometry">
+        <cylinder radius="${radius}" length="${length}"/>
+      </geometry>
+      <material name="orange"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="${radius}" length="${length}"/>
+      </geometry>
+    </collision>
+    <xacro:cylinder_inertial radius="${radius}" length="${length}" mass="1.0" />
+  </link>
+  <gazebo reference="${name}_wheel">
+    <material value="Gazebo/Wood"/>
+  </gazebo>
+
+
+  </xacro:macro>
+
+</robot>

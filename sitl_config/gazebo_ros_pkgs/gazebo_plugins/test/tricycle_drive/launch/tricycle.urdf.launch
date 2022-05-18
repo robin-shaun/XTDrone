@@ -1,0 +1,17 @@
+<launch>
+
+  <arg name="robot_name" default="tricycle" />
+  <arg name="robot_position" default="-x 0.0 -y 0.0 -z 0.01 -R 0 -P 0 -Y 0" />
+
+  <group ns="$(arg robot_name)">
+	  <!-- Load the URDF into the ROS Parameter Server -->
+	  <param name="robot_description" command="$(find xacro)/xacro.py '$(find gazebo_plugins)/test/tricycle_drive/xacro/tricycle/tricycle.xacro'" />
+
+	  <node pkg="robot_state_publisher" type="state_publisher" name="robot_state_publisher">
+		  <param name="publish_frequency" type="double" value="30.0"/>
+		  <param name="tf_prefix" type="string" value="$(arg robot_name)"/>
+	  </node>
+  </group>
+
+
+</launch>

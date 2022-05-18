@@ -1,0 +1,6 @@
+<launch>
+
+  <!-- RVIZ -->
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find gazebo_plugins)/test/tricycle_drive/launch/tricycle.rviz" />
+
+</launch>

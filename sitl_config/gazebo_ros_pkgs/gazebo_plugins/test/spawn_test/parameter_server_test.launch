@@ -1,0 +1,9 @@
+<launch>
+
+  <!-- Convert an xacro and put on parameter server -->
+  <param name="robot_description" command="$(find xacro)/xacro.py $(find rrbot_description)/urdf/rrbot.xacro" />
+
+  <!-- Spawn a robot into Gazebo -->
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model rrbot3 -y 2" />
+
+</launch>

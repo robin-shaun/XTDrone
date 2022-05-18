@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:property name="M_PI" value="3.1415926535897931" />
+  <xacro:property name="DX" value="2.500" />
+  <xacro:property name="DY" value="0.60" />
+  <xacro:property name="DZ" value="0.1" />
+
+  <xacro:macro name="tricycle_chassis" params="name parent xyz rpy meshes">
+
+  <!-- Chassis -->
+  <joint name="${parent}_${name}_joint" type="fixed">
+    <origin xyz="${xyz}" rpy="${rpy}"/>
+    <parent link="${parent}"/>
+    <child link="${name}"/>
+  </joint>
+  <link name="${name}">
+    <visual name="${name}_visual">
+      <geometry name="${name}_geometry">
+        <box size="${DX} ${DY} ${DZ}"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="${DX} ${DY} ${DZ}"/>
+      </geometry>
+    </collision>
+    <xacro:box_inertial x="${DX}" y="${DY}"  z="${DZ}" mass="100.0"/>
+  </link>
+
+  <gazebo reference="${name}">
+    <material value="Gazebo/Grey"/>
+  </gazebo>
+
+  </xacro:macro>
+
+</robot>

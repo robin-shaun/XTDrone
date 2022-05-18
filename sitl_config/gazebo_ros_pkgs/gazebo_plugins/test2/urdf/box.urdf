@@ -1,0 +1,25 @@
+<robot name="simple_box">
+  <link name="my_box">
+    <inertial>
+      <mass value="1.0" />
+      <origin xyz="1 0 0" />
+      <inertia  ixx="1.0" ixy="0.0"  ixz="0.0"  iyy="100.0"  iyz="0.0"  izz="1.0" />
+    </inertial>
+    <visual>
+      <origin xyz="1 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="1.0 1.0 2.0" />
+      </geometry>
+    </visual>
+    <collision>
+      <!-- collision origin is defined w.r.t. link local coordinate system -->
+      <origin xyz="1 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="1.0 1.0 2.0" />
+      </geometry>
+    </collision>
+  </link>
+  <gazebo reference="my_box">
+    <material>Gazebo/Blue</material>
+  </gazebo>
+</robot>

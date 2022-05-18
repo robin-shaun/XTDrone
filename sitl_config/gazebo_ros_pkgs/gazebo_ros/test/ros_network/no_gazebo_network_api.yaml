@@ -1,0 +1,25 @@
+strict: true
+
+##########################################################
+# Published topics
+topics:
+  # System
+  - topic: /clock
+    type: rosgraph_msgs/Clock
+    num_publishers: 1
+    num_subscribers: -1
+
+  - topic: /rosout
+    type: rosgraph_msgs/Log
+    num_publishers: -1
+    num_subscribers: -1
+
+##########################################################
+# Published services
+services:
+  # System
+  - service: /gazebo/set_logger_level
+    type: roscpp/SetLoggerLevel
+
+  - service: /gazebo/get_loggers
+    type: roscpp/GetLoggers

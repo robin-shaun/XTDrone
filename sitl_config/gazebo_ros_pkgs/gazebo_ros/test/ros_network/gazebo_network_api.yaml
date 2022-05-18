@@ -1,0 +1,140 @@
+strict: true
+
+##########################################################
+# Published topics
+topics:
+  # System
+  - topic: /clock
+    type: rosgraph_msgs/Clock
+    num_publishers: 1
+    num_subscribers: -1
+
+  - topic: /rosout
+    type: rosgraph_msgs/Log
+    num_publishers: -1
+    num_subscribers: -1
+
+  # Gazebo
+  - topic: /gazebo/set_model_state
+    type: gazebo_msgs/ModelState
+    num_publishers: 0
+    num_subscribers: -1
+
+  - topic: /gazebo/set_link_state
+    type: gazebo_msgs/LinkState
+    num_publishers: 0
+    num_subscribers: -1
+
+  - topic: /gazebo/link_states
+    type: gazebo_msgs/LinkStates
+    num_publishers: 1
+    num_subscribers: -1
+
+  - topic: /gazebo/model_states
+    type: gazebo_msgs/ModelStates
+    num_publishers: 1
+    num_subscribers: -1
+
+  - topic: /gazebo/parameter_descriptions
+    type: dynamic_reconfigure/ConfigDescription
+    num_publishers: 1
+    num_subscribers: -1
+
+  - topic: /gazebo/parameter_updates
+    type: dynamic_reconfigure/Config
+    num_publishers: 1
+    num_subscribers: -1
+
+##########################################################
+# Published services
+services:
+  # Gazebo
+  - service: /gazebo/apply_joint_effort
+    type: gazebo_msgs/ApplyJointEffort
+
+  - service: /gazebo/get_physics_properties
+    type: gazebo_msgs/GetPhysicsProperties
+
+  - service: /gazebo/set_link_state
+    type: gazebo_msgs/SetLinkState
+
+  - service: /gazebo/set_joint_properties
+    type: gazebo_msgs/SetJointProperties
+
+  - service: /gazebo/reset_world
+    type: std_srvs/Empty
+
+  - service: /gazebo/set_model_configuration
+    type: gazebo_msgs/SetModelConfiguration
+
+  - service: /gazebo/get_world_properties
+    type: gazebo_msgs/GetWorldProperties
+
+  - service: /gazebo/delete_light
+    type: gazebo_msgs/DeleteLight
+
+  - service: /gazebo/set_parameters
+    type: dynamic_reconfigure/Reconfigure
+
+  - service: /gazebo/spawn_sdf_model
+    type: gazebo_msgs/SpawnModel
+
+  - service: /gazebo/unpause_physics
+    type: std_srvs/Empty
+
+  - service: /gazebo/pause_physics
+    type: std_srvs/Empty
+
+  - service: /gazebo/get_joint_properties
+    type: gazebo_msgs/GetJointProperties
+
+  - service: /gazebo/set_logger_level
+    type: roscpp/SetLoggerLevel
+
+  - service: /gazebo/get_light_properties
+    type: gazebo_msgs/GetLightProperties
+
+  - service: /gazebo/clear_body_wrenches
+    type: gazebo_msgs/BodyRequest
+
+  - service: /gazebo/clear_joint_forces
+    type: gazebo_msgs/JointRequest
+
+  - service: /gazebo/set_physics_properties
+    type: gazebo_msgs/SetPhysicsProperties
+
+  - service: /gazebo/get_model_state
+    type: gazebo_msgs/GetModelState
+
+  - service: /gazebo/reset_simulation
+    type: std_srvs/Empty
+
+  - service: /gazebo/delete_model
+    type: gazebo_msgs/DeleteModel
+
+  - service: /gazebo/spawn_urdf_model
+    type: gazebo_msgs/SpawnModel
+
+  - service: /gazebo/set_link_properties
+    type: gazebo_msgs/SetLinkProperties
+
+  - service: /gazebo/set_model_state
+    type: gazebo_msgs/SetModelState
+
+  - service: /gazebo/apply_body_wrench
+    type: gazebo_msgs/ApplyBodyWrench
+
+  - service: /gazebo/get_link_state
+    type: gazebo_msgs/GetLinkState
+
+  - service: /gazebo/get_loggers
+    type: roscpp/GetLoggers
+
+  - service: /gazebo/get_model_properties
+    type: gazebo_msgs/GetModelProperties
+
+  - service: /gazebo/set_light_properties
+    type: gazebo_msgs/SetLightProperties
+  
+  - service: /gazebo/get_link_properties
+    type: gazebo_msgs/GetLinkProperties

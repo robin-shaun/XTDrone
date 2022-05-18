@@ -1,0 +1,28 @@
+<launch>
+
+
+   <!-- Gazebo  -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch" />
+
+  <!-- Robot with diff drive -->
+  <include file="$(find gazebo_plugins)/test/multi_robot_scenario/launch/pioneer3dx.gazebo.launch">
+     <arg name="robot_name" value="r1" />
+     <arg name="robot_position" value="-x 0.0 -y -0.5 -z 0.01 -R 0 -P 0 -Y +1.57" />
+   </include>
+
+  <include file="$(find gazebo_plugins)/test/multi_robot_scenario/launch/pioneer3dx.gazebo.launch">
+     <arg name="robot_name" value="r2" />
+     <arg name="robot_position" value="-x 0.0 -y 0.5 -z 0.01 -R 0 -P 0 -Y -1.57" />
+   </include >
+
+
+  <node pkg="tf" type="static_transform_publisher" name="base_to_odom_r1"
+     args="0.0 -0.0 0.0 0.0 0.0 0.0 base_link r1/odom 200" />
+
+  <node pkg="tf" type="static_transform_publisher" name="base_to_odom_r2"
+     args="0.0  0.0 0.0 0.0 0.0 0.0 base_link r2/odom 200" />
+
+  <!-- RVIZ -->
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find gazebo_plugins)/test/multi_robot_scenario/launch/pioneer3dx.rviz" />
+
+</launch>

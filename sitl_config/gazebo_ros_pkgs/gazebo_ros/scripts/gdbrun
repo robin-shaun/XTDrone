@@ -1,0 +1,25 @@
+#!/bin/bash
+extra_text=""
+if [ "$1" = "--break-main" ]; then
+  extra_text="break main"
+  shift
+fi
+
+EXEC="$1"
+
+shift
+
+run_text="run"
+for a in "$@"; do
+  run_text="${run_text} \"$a\""
+done
+
+TMPFILE=/tmp/gdbrun.$$.$#.tmp
+cat > ${TMPFILE} <<EOF
+${extra_text}
+${run_text}
+EOF
+
+gdb -x ${TMPFILE} "${EXEC}"
+rm -f "${TMPFILE}"
+

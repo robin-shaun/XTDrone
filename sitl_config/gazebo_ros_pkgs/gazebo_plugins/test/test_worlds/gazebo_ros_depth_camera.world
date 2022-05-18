@@ -1,0 +1,223 @@
+<sdf version="1.3">
+    <world name="world_1">
+        <scene>
+            <ambient>0.5 0.5 0.5 1.0</ambient>
+            <background>0.5 0.5 0.5 1.0</background>
+            <shadows>true</shadows>
+            <fog>
+                <color>0.0 0.0 0.5 0.5</color>
+                <type>linear</type>
+                <start>2.0</start>
+                <end>10.0</end>
+                <density>0.5</density>
+            </fog>
+        </scene>
+        <physics type="ode">
+            <gravity>0.0 0.0 0.0</gravity>
+            <ode>
+                <solver>
+                    <type>quick</type>
+                    <dt>0.001</dt>
+                    <iters>20</iters>
+                    <sor>1.3</sor>
+                </solver>
+                <constraints>
+                    <cfm>0</cfm>
+                    <erp>0.2</erp>
+                    <contact_max_correcting_vel>100.0</contact_max_correcting_vel>
+                    <contact_surface_layer>0.0</contact_surface_layer>
+                </constraints>
+            </ode>
+            <max_contacts>250</max_contacts>
+        </physics>
+        <model name="model_1">
+            <pose>0.0 0.0 5.0 0.0 0.0 0.0</pose>
+            <link name="link_1">
+                <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+                <inertial>
+                    <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+                    <inertia>
+                        <ixx>0.0</ixx>
+                        <ixy>0.0</ixy>
+                        <ixz>0.0</ixz>
+                        <iyy>1.0</iyy>
+                        <iyz>0.0</iyz>
+                        <izz>1.0</izz>
+                    </inertia>
+                    <mass>10.0</mass>
+                </inertial>
+                <visual name="visual_sphere">
+                    <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+                    <geometry>
+                        <sphere>
+                            <radius>0.5</radius>
+                        </sphere>
+                    </geometry>
+                    <material>
+                        <ambient>0.05 0.3 0.3 1.0</ambient>
+                        <script>Gazebo/Red</script>
+                    </material>
+                    <cast_shadows>true</cast_shadows>
+                    <laser_retro>100.0</laser_retro>
+                </visual>
+                <collision name="collision_sphere">
+                    <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+                    <max_contacts>250</max_contacts>
+                    <geometry>
+                        <sphere>
+                            <radius>0.5</radius>
+                        </sphere>
+                    </geometry>
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>0.5</mu>
+                                <mu2>0.2</mu2>
+                                <fdir1>1.0 0 0</fdir1>
+                                <slip1>0</slip1>
+                                <slip2>0</slip2>
+                            </ode>
+                        </friction>
+                        <bounce>
+                            <restitution_coefficient>0</restitution_coefficient>
+                            <threshold>1000000.0</threshold>
+                        </bounce>
+                        <contact>
+                            <ode>
+                                <soft_cfm>0</soft_cfm>
+                                <soft_erp>0.2</soft_erp>
+                                <kp>1e15</kp>
+                                <kd>1e13</kd>
+                                <max_vel>100.0</max_vel>
+                                <min_depth>0.0001</min_depth>
+                            </ode>
+                        </contact>
+                    </surface>
+                    <laser_retro>100.0</laser_retro>
+                </collision>
+                <sensor name="sensor_camera" type="depth">
+                    <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+                    <camera>
+                        <horizontal_fov>1.578</horizontal_fov>
+                        <image>
+                            <width>640</width>
+                            <height>480</height>
+                            <format>R8G8B8</format>
+                        </image>
+                        <clip near="0.01" far="100.0" />
+                        <save enabled="false" path="/tmp" />
+                        <depth_camera output="points" />
+                    </camera>
+                    <plugin name="plugin_1" filename="libgazebo_ros_depth_camera.so">
+                        <alwaysOn>1</alwaysOn>
+                        <updateRate>10.0</updateRate>
+                        <imageTopicName>image_raw</imageTopicName>
+                        <pointCloudTopicName>points</pointCloudTopicName>
+                        <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+                        <cameraName>depth_cam</cameraName>
+                        <frameName>/base_link</frameName>
+                        <pointCloudCutoff>0.001</pointCloudCutoff>
+                        <distortionK1>0.00000001</distortionK1>
+                        <distortionK2>0.00000001</distortionK2>
+                        <distortionK3>0.00000001</distortionK3>
+                        <distortionT1>0.00000001</distortionT1>
+                        <distortionT2>0.00000001</distortionT2>
+                    </plugin>
+                    <always_on>true</always_on>
+                    <update_rate>10.0</update_rate>
+                </sensor>
+                <gravity>false</gravity>
+                <self_collide>true</self_collide>
+                <kinematic>false</kinematic>
+            </link>
+            <static>false</static>
+        </model>
+        <model name="model_2">
+            <pose>5.0 0.0 5.0 0.0 0.0 0.0</pose>
+            <link name="link_1">
+                <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+                <inertial>
+                    <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+                    <inertia>
+                        <ixx>1.0</ixx>
+                        <ixy>0.0</ixy>
+                        <ixz>0.0</ixz>
+                        <iyy>1.0</iyy>
+                        <iyz>0.0</iyz>
+                        <izz>1.0</izz>
+                    </inertia>
+                    <mass>10.0</mass>
+                </inertial>
+                <visual name="visual_box">
+                    <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+                    <geometry>
+                        <box>
+                            <size>1 2 2</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.00 0.9 0.1 1.0</ambient>
+                        <script>Gazebo/Green</script>
+                    </material>
+                    <cast_shadows>true</cast_shadows>
+                    <laser_retro>100.0</laser_retro>
+                </visual>
+                <collision name="collision_box">
+                    <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+                    <max_contacts>250</max_contacts>
+                    <geometry>
+                        <box>
+                            <size>1 2 2</size>
+                        </box>
+                    </geometry>
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>0.5</mu>
+                                <mu2>0.2</mu2>
+                                <fdir1>1.0 0 0</fdir1>
+                                <slip1>0</slip1>
+                                <slip2>0</slip2>
+                            </ode>
+                        </friction>
+                        <bounce>
+                            <restitution_coefficient>0</restitution_coefficient>
+                            <threshold>1000000.0</threshold>
+                        </bounce>
+                        <contact>
+                            <ode>
+                                <soft_cfm>0</soft_cfm>
+                                <soft_erp>0.2</soft_erp>
+                                <kp>1e15</kp>
+                                <kd>1e13</kd>
+                                <max_vel>100.0</max_vel>
+                                <min_depth>0.0001</min_depth>
+                            </ode>
+                        </contact>
+                    </surface>
+                    <laser_retro>100.0</laser_retro>
+                </collision>
+                <gravity>false</gravity>
+                <self_collide>true</self_collide>
+                <kinematic>false</kinematic>
+            </link>
+            <static>false</static>
+        </model>
+        <light type="point" name="light_1">
+            <pose>0.0 0.0 10.0 0.0 0.0 0.0</pose>
+            <diffuse>0.5 0.5 0.5 0.5</diffuse>
+            <attenuation>
+                <range>1000.0</range>
+                <constant>0.01</constant>
+                <quadratic>0.0001</quadratic>
+            </attenuation>
+            <direction>0 0 -1</direction>
+            <spot>
+                <inner_angle>1.57</inner_angle>
+                <outer_angle>1.57</outer_angle>
+                <falloff>1.0</falloff>
+            </spot>
+            <cast_shadows>true</cast_shadows>
+        </light>
+    </world>
+</sdf>

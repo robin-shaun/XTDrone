@@ -1,0 +1,10 @@
+<launch>
+
+  <!-- start gazebo with an empty plane -->
+  <param name="/use_sim_time" value="true" />
+
+  <node name="gazebo" pkg="gazebo" type="gazebo" args="$(find gazebo_tests)/test/worlds/empty.world" respawn="false" output="screen"/>
+
+  <test test-name="gazebo_tests" pkg="gazebo_tests" type="contact_tolerance" args="$(find gazebo_tests)/test/urdf/box.urdf" />
+
+</launch>

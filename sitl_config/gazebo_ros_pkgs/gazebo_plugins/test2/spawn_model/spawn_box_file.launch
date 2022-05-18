@@ -1,0 +1,13 @@
+<launch>
+
+  <!-- start gazebo with an empty plane -->
+  <param name="/use_sim_time" value="true" />
+
+  <node name="gazebo" pkg="gazebo_ros" type="gazebo" args="$(find gazebo_plugins)/test/worlds/empty.world" respawn="false" output="screen"/>
+
+  <!-- spawn in gazebo -->
+  <node name="spawn_box" pkg="gazebo_ros" type="spawn_model" args="-urdf -file $(find gazebo_plugins)/test2/urdf/box.urdf -z 1.0 -model box" respawn="false" output="screen" />
+
+  <!-- check for model -->
+  <test test-name="gazebo_plugins" pkg="gazebo_plugins" type="check_model" args="10 box" />
+</launch>

@@ -1,0 +1,123 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+  <world name="default">
+
+    <!-- Global light source -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <model name="camera_distorted">
+      <static>true</static>
+      <pose>0.0 0.0 2.5 0.0 1.5707 0.0</pose>
+      <link name="camera_link">
+        <pose>0 0 0 0 0 0</pose>
+        <visual name="camera_visual">
+          <geometry>
+            <box>
+              <size>0.1 0.1 0.1</size>
+            </box>
+          </geometry>
+        </visual>
+        <sensor type="camera" name="camera_distorted">
+          <update_rate>30.0</update_rate>
+          <camera name="head">
+            <horizontal_fov>0.927295218</horizontal_fov>
+            <image>
+              <width>1000</width>
+              <height>1000</height>
+              <format>R8G8B8</format>
+            </image>
+            <clip>
+              <near>0.02</near>
+              <far>300</far>
+            </clip>
+    <!-- CAUTION: Changing the distortion parameters for this test camera
+    may result in large black borders on the generated images, or in the
+    undistorted version of the images. This will likely skew and invalidate
+    the results of camera distortion tests. -->
+            <distortion>
+              <k1>-0.1</k1>
+              <k2>-0.1</k2>
+              <p1>0</p1>
+              <p2>0</p2>
+              <k3>-0.1</k3>
+              <center>0.5 0.5</center>
+            </distortion>
+          </camera>
+          <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+            <alwaysOn>true</alwaysOn>
+            <updateRate>0.0</updateRate>
+            <cameraName>camera_distorted</cameraName>
+            <imageTopicName>image_raw</imageTopicName>
+            <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+            <frameName>camera_distorted_link</frameName>
+            <hackBaseline>0.07</hackBaseline>
+    <!-- CAUTION: Changing the distortion parameters for this test camera
+    may result in large black borders on the generated images, or in the
+    undistorted version of the images. This will likely skew and invalidate
+    the results of camera distortion tests. -->
+            <autoDistortion>true</autoDistortion>
+            <borderCrop>false</borderCrop>
+          </plugin>
+        </sensor>
+      </link>
+    </model>
+
+    <model name="camera_undistorted">
+      <static>true</static>
+      <pose>0.0 0.0 2.5 0.0 1.5707 0.0</pose>
+      <link name="camera_link">
+        <pose>0 0 0 0 0 0</pose>
+        <visual name="camera_visual">
+          <geometry>
+            <box>
+              <size>0.1 0.1 0.1</size>
+            </box>
+          </geometry>
+        </visual>
+        <sensor type="camera" name="camera_undistorted">
+          <update_rate>30.0</update_rate>
+          <camera name="head">
+            <horizontal_fov>0.927295218</horizontal_fov>
+            <image>
+              <width>1000</width>
+              <height>1000</height>
+              <format>R8G8B8</format>
+            </image>
+            <clip>
+              <near>0.02</near>
+              <far>300</far>
+            </clip>
+            <distortion>
+              <k1>0.0</k1>
+              <k2>0.0</k2>
+              <p1>0.0</p1>
+              <p2>0.0</p2>
+              <k3>0.0</k3>
+              <center>0.5 0.5</center>
+            </distortion>
+          </camera>
+          <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+            <alwaysOn>true</alwaysOn>
+            <updateRate>0.0</updateRate>
+            <cameraName>camera_undistorted</cameraName>
+            <imageTopicName>image_raw</imageTopicName>
+            <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+            <frameName>camera_undistorted_link</frameName>
+            <hackBaseline>0.0</hackBaseline>
+            <distortionK1>0.0</distortionK1>
+            <distortionK2>0.0</distortionK2>
+            <distortionT1>0.0</distortionT1>
+            <distortionT2>0.0</distortionT2>
+            <distortionK3>0.0</distortionK3>
+          </plugin>
+        </sensor>
+      </link>
+    </model>
+
+    <include>
+      <uri>model://checkerboard_plane</uri>
+    </include>
+</world>
+</sdf>

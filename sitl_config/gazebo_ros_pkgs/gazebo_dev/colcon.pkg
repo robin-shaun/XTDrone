@@ -1,0 +1,8 @@
+# Configuration file for colcon (https://colcon.readthedocs.io).
+#
+# Please see the doc for the details of the spec:
+#   - https://colcon.readthedocs.io/en/released/user/configuration.html#colcon-pkg-files
+
+{
+  "dependencies": ["Gazebo"],
+}

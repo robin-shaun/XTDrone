@@ -1,19 +1,28 @@
 import rospy
-from gazebo_msgs.msg import ModelState
+from gazebo_msgs.msg import ModelStates
+from geometry_msgs.msg import Pose, Twist
+import sys
 
 def pose_publisher():
-    pub = rospy.Publisher('gazebo/set_model_state', ModelState, queue_size=1)
-    pose_msg = ModelState()
-    pose_msg.model_name = 'iris_0'
-    rate = rospy.Rate(30)
+    vehicle_type = sys.argv[1]
+    vehicle_num = int(sys.argv[2])
+    pub = rospy.Publisher('gazebo/set_model_states', ModelStates, queue_size=1)
+    poses_msg = ModelStates()
+    poses_msg.name = [None] * vehicle_num
+    poses_msg.pose = [Pose()for i in range(vehicle_num)]
+    poses_msg.twist = [Twist()for i in range(vehicle_num)]
+    for i in range(vehicle_num):
+        poses_msg.name[i] = vehicle_type + '_' + str(i)
+    f = 10
+    v = 0.5
+    rate = rospy.Rate(f)
     while not rospy.is_shutdown():
-           pose_msg.pose.position.x = -2
-           pose_msg.pose.position.y = 7.5
-           pose_msg.pose.position.z = 1
-           #same for orientation
-           pub.publish(pose_msg)
-           rate.sleep()
-
+        for i in range(vehicle_num):
+            poses_msg.pose[i].position.x = poses_msg.pose[i].position.x + 0.5 / f
+            poses_msg.pose[i].position.y = i
+            poses_msg.pose[i].position.z = 3
+        pub.publish(poses_msg)
+        rate.sleep()
 if __name__ == '__main__':
       rospy.init_node('pose_publisher')
       try:

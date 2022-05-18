@@ -1,0 +1,27 @@
+<launch>
+
+  <arg name="use_sim_time" default="true"/>
+  <arg name="gui" default="true"/>
+
+  <!-- set use_sim_time flag -->
+  <group if="$(arg use_sim_time)">
+    <param name="/use_sim_time" value="true" />
+  </group>
+
+  <!-- start empty world -->
+  <node name="empty_world_server" pkg="gazebo_ros" type="gazebo" args="-u $(find gazebo_plugins)/test/large_models/large_models.world" respawn="false" output="screen"/>
+
+  <!-- start gui -->
+  <group if="$(arg gui)">
+    <node name="gazebo_gui" pkg="gazebo_ros" type="gui" respawn="false" output="screen"/>
+  </group>
+
+  <!-- send urdf to param server -->
+  <!--
+  <param name="robot_description" textfile="$(find gazebo_plugins)/test/pendulum.model" />
+  -->
+  <param name="robot_description" command="$(find xacro)/xacro.py '$(find gazebo_plugins)/test2/large_models/large_model.urdf.xacro'" />
+  <!-- push robot_description to factory and spawn robot in gazebo -->
+  <node name="spawn_pr2_model" pkg="gazebo_ros" type="spawn_model" args="$(optenv ROBOT_INITIAL_POSE) -urdf -param robot_description -model pr2" respawn="false" output="screen" />
+
+</launch>

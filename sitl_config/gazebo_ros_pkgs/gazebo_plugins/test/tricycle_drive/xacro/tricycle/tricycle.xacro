@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="tricycle" >
+
+  <!-- Import Rviz colors -->
+  <xacro:include filename="$(find gazebo_plugins)/test/tricycle_drive/xacro/materials.xacro" />
+
+  <!-- Import robot  -->
+  <xacro:include filename="$(find gazebo_plugins)/test/tricycle_drive/xacro/tricycle/tricycle_body.xacro"/>
+  <xacro:tricycle_body parent="base_link" meshes="package://gazebo_plugins/test/tricycle_drive/meshes/tricycle"/>
+</robot>

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="gui" default="false" />
+
+  <param name="/use_sim_time" value="true" />
+
+  <node name="gazebo" pkg="gazebo_ros" type="gzserver"
+      respawn="false" output="screen"
+      args="--verbose $(find gazebo_plugins)/test/camera/camera.world" />
+
+  <group if="$(arg gui)">
+    <node name="gazebo_gui" pkg="gazebo_ros" type="gzclient" respawn="false" output="screen"/>
+  </group>
+
+  <test test-name="camera" pkg="gazebo_plugins" type="camera-test"
+      clear_params="true" time-limit="30.0" />
+</launch>

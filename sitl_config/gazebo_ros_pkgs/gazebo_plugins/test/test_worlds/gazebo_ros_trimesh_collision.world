@@ -1,0 +1,552 @@
+<?xml version="1.0" ?>
+<sdf version="1.3">
+    <world name="default">
+        <scene>
+            <ambient>0.2 0.2 0.2 1</ambient>
+            <background>0.5 0.5 0.5 1</background>
+            <shadows>false</shadows>
+        </scene>
+        <physics type="ode">
+            <max_contacts>250</max_contacts>
+            <ode>
+                <solver>
+                    <type>quick</type>
+                    <dt>0.001</dt>
+                    <iters>20</iters>
+                    <sor>1.3</sor>
+                </solver>
+                <constraints>
+                    <cfm>0</cfm>
+                    <erp>0.2</erp>
+                    <contact_max_correcting_vel>100.0</contact_max_correcting_vel>
+                    <contact_surface_layer>0.0</contact_surface_layer>
+                </constraints>
+            </ode>
+            <gravity>0.0000 0 0</gravity>
+        </physics>
+        <model name="model_1">
+            <pose>-1.5 1.8 0.0 0.0 0.0 0.0</pose>
+            <link name="link_1">
+                <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+                <inertial>
+                    <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+                    <damping linear="0.0" angular="0.0" />
+                    <inertia>
+                        <ixx>1.0</ixx>
+                        <ixy>0.0</ixy>
+                        <ixz>0.0</ixz>
+                        <iyy>1.0</iyy>
+                        <iyz>0.0</iyz>
+                        <izz>1.0</izz>
+                    </inertia>
+                    <mass>10.0</mass>
+                </inertial>
+                <visual name="visual_box">
+                    <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+                    <geometry>
+                        <box>
+                            <size>0.05 0.05 0.05</size>
+                        </box>
+                    </geometry>
+                    <material normal_map="normal_map.png">
+                        <ambient>0.03 0.5 0.5 1.0</ambient>
+                        <script>Gazebo/Red</script>
+                    </material>
+                    <cast_shadows>false</cast_shadows>
+                    <laser_retro>100.0</laser_retro>
+                </visual>
+                <collision name="collision_box">
+                    <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+                    <max_contacts>250</max_contacts>
+                    <geometry>
+                        <box>
+                            <size>0.05 0.05 0.05</size>
+                        </box>
+                    </geometry>
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>0.5</mu>
+                                <mu2>0.2</mu2>
+                                <fdir1>1.0 0 0</fdir1>
+                                <slip1>0</slip1>
+                                <slip2>0</slip2>
+                            </ode>
+                        </friction>
+                        <bounce>
+                            <restitution_coefficient>0</restitution_coefficient>
+                            <threshold>1000000.0</threshold>
+                        </bounce>
+                        <contact>
+                            <ode>
+                                <soft_cfm>0</soft_cfm>
+                                <soft_erp>0.2</soft_erp>
+                                <kp>1e15</kp>
+                                <kd>1e13</kd>
+                                <max_vel>100.0</max_vel>
+                                <min_depth>0.0001</min_depth>
+                            </ode>
+                        </contact>
+                    </surface>
+                    <laser_retro>100.0</laser_retro>
+                </collision>
+                <sensor name="sensor_ray" type="ray">
+                    <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+                    <ray>
+                        <scan display="true">
+                            <horizontal>
+                                <samples>300</samples>
+                                <resolution>1.0</resolution>
+                                <min_angle>-0.5236</min_angle>
+                                <max_angle>0.5236</max_angle>
+                            </horizontal>
+                            <vertical>
+                                <samples>100</samples>
+                                <resolution>1.0</resolution>
+                                <min_angle>-0.5236</min_angle>
+                                <max_angle>0.5236</max_angle>
+                            </vertical>
+                        </scan>
+                        <range>
+                            <min>0.05</min>
+                            <max>50.0</max>
+                        </range>
+                    </ray>
+                    <!-- test plugin -->
+                    <plugin name="plugin_1" filename="libgazebo_ros_block_laser.so">
+                        <gaussianNoise>0.00</gaussianNoise>
+                        <alwaysOn>true</alwaysOn>
+                        <updateRate>20</updateRate>
+                        <topicName>test_block_laser</topicName>
+                        <frameName>/base_link</frameName>
+                    </plugin>
+                    <always_on>true</always_on>
+                    <update_rate>10.0</update_rate>
+                </sensor>
+                <gravity>false</gravity>
+                <self_collide>true</self_collide>
+                <kinematic>false</kinematic>
+            </link>
+            <static>false</static>
+        </model>
+        <model name="camera_model">
+            <pose>-1.5 1.8 0.0 0.0 0.0 0.0</pose>
+            <link name="link_1">
+                <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+                <inertial>
+                    <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+                    <damping linear="0.0" angular="0.0" />
+                    <inertia>
+                        <ixx>1.0</ixx>
+                        <ixy>0.0</ixy>
+                        <ixz>0.0</ixz>
+                        <iyy>1.0</iyy>
+                        <iyz>0.0</iyz>
+                        <izz>1.0</izz>
+                    </inertia>
+                    <mass>10.0</mass>
+                </inertial>
+                <visual name="visual_box">
+                    <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+                    <geometry>
+                        <box>
+                            <size>0.05 0.05 0.05</size>
+                        </box>
+                    </geometry>
+                    <material normal_map="normal_map.png">
+                        <ambient>0.03 0.5 0.5 1.0</ambient>
+                        <script>Gazebo/Red</script>
+                    </material>
+                    <cast_shadows>false</cast_shadows>
+                    <laser_retro>100.0</laser_retro>
+                </visual>
+                <collision name="collision_box">
+                    <pose>-1.0 0.0 0.0 0.0 0.0 0.0</pose>
+                    <max_contacts>250</max_contacts>
+                    <geometry>
+                        <box>
+                            <size>0.05 0.05 0.05</size>
+                        </box>
+                    </geometry>
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>0.5</mu>
+                                <mu2>0.2</mu2>
+                                <fdir1>1.0 0 0</fdir1>
+                                <slip1>0</slip1>
+                                <slip2>0</slip2>
+                            </ode>
+                        </friction>
+                        <bounce>
+                            <restitution_coefficient>0</restitution_coefficient>
+                            <threshold>1000000.0</threshold>
+                        </bounce>
+                        <contact>
+                            <ode>
+                                <soft_cfm>0</soft_cfm>
+                                <soft_erp>0.2</soft_erp>
+                                <kp>1e15</kp>
+                                <kd>1e13</kd>
+                                <max_vel>100.0</max_vel>
+                                <min_depth>0.0001</min_depth>
+                            </ode>
+                        </contact>
+                    </surface>
+                    <laser_retro>100.0</laser_retro>
+                </collision>
+                <sensor name="sensor_camera" type="depth">
+                    <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+                    <camera>
+                        <horizontal_fov>0.9</horizontal_fov>
+                        <image>
+                            <width>640</width>
+                            <height>480</height>
+                            <format>R8G8B8</format>
+                        </image>
+                        <clip near="0.01" far="100.0" />
+                        <save enabled="false" path="/tmp" />
+                    </camera>
+                    <plugin name="plugin_1" filename="libgazebo_ros_depth_camera.so">
+                        <alwaysOn>1</alwaysOn>
+                        <updateRate>10.0</updateRate>
+                        <cameraName>/test_depth</cameraName>
+                        <imageTopicName>image_raw</imageTopicName>
+                        <pointCloudTopicName>points</pointCloudTopicName>
+                        <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+                        <frameName>/base_link</frameName>
+                    </plugin>
+                    <always_on>true</always_on>
+                    <update_rate>10.0</update_rate>
+                </sensor>
+                <gravity>false</gravity>
+                <self_collide>true</self_collide>
+                <kinematic>false</kinematic>
+            </link>
+            <static>false</static>
+        </model>
+        <model name="chair1_model">
+            <pose>1.4 1.8 0 0 0 0</pose>
+            <link name="chair1_link">
+                <inertial>
+                    <pose>0 0 0.0 0 0 0</pose>
+                    <inertia>
+                        <ixx>0.012</ixx>
+                        <ixy>0</ixy>
+                        <ixz>0</ixz>
+                        <iyy>0.015</iyy>
+                        <iyz>0</iyz>
+                        <izz>0.011</izz>
+                    </inertia>
+                    <mass>2.0</mass>
+                </inertial>
+                <collision name="chair1_collision">
+                    <geometry>
+                        <mesh>
+                            <filename>chair3/model/chair.stl</filename>
+                            <scale>0.008 0.008 0.01</scale>
+                        </mesh>
+                    </geometry>
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>0.0</mu>
+                                <mu2>0.0</mu2>
+                                <fdir1>0 0 0</fdir1>
+                                <slip1>0</slip1>
+                                <slip2>0</slip2>
+                            </ode>
+                        </friction>
+                        <bounce>
+                            <restitution_coefficient>0</restitution_coefficient>
+                            <threshold>1000000.0</threshold>
+                        </bounce>
+                        <contact>
+                            <ode>
+                                <soft_cfm>0</soft_cfm>
+                                <soft_erp>0.2</soft_erp>
+                                <kp>1e10</kp>
+                                <kd>1</kd>
+                                <max_vel>100.0</max_vel>
+                                <min_depth>0.0001</min_depth>
+                            </ode>
+                        </contact>
+                    </surface>
+                </collision>
+                <visual name="chair1_visual">
+                    <geometry>
+                        <mesh>
+                            <filename>chair3/model/chair.dae</filename>
+                            <scale>0.008 0.008 0.01</scale>
+                        </mesh>
+                    </geometry>
+                    <cast_shadows>false</cast_shadows>
+                </visual>
+            </link>
+            <static>true</static>
+        </model>
+        <model name="chair2_model">
+            <pose>1.9 1.8 0 0 0 0</pose>
+            <link name="chair2_link">
+                <inertial>
+                    <pose>0 0 0.0 0 0 0</pose>
+                    <inertia>
+                        <ixx>0.012</ixx>
+                        <ixy>0</ixy>
+                        <ixz>0</ixz>
+                        <iyy>0.015</iyy>
+                        <iyz>0</iyz>
+                        <izz>0.011</izz>
+                    </inertia>
+                    <mass>2.0</mass>
+                </inertial>
+                <collision name="chair2_collision">
+                    <geometry>
+                        <mesh>
+                            <filename>chair3/model/chair.stl</filename>
+                            <scale>0.008 0.008 0.01</scale>
+                        </mesh>
+                    </geometry>
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>0.0</mu>
+                                <mu2>0.0</mu2>
+                                <fdir1>0 0 0</fdir1>
+                                <slip1>0</slip1>
+                                <slip2>0</slip2>
+                            </ode>
+                        </friction>
+                        <bounce>
+                            <restitution_coefficient>0</restitution_coefficient>
+                            <threshold>1000000.0</threshold>
+                        </bounce>
+                        <contact>
+                            <ode>
+                                <soft_cfm>0</soft_cfm>
+                                <soft_erp>0.2</soft_erp>
+                                <kp>1e10</kp>
+                                <kd>1</kd>
+                                <max_vel>100.0</max_vel>
+                                <min_depth>0.0001</min_depth>
+                            </ode>
+                        </contact>
+                    </surface>
+                </collision>
+                <visual name="chair2_visual">
+                    <geometry>
+                        <mesh>
+                            <filename>chair3/model/chair.dae</filename>
+                            <scale>0.008 0.008 0.01</scale>
+                        </mesh>
+                    </geometry>
+                    <cast_shadows>false</cast_shadows>
+                </visual>
+            </link>
+            <static>true</static>
+        </model>
+        <model name="chair3_model">
+            <pose>1.6 1.5 0 0 0 3.1416</pose>
+            <link name="chair3_link">
+                <inertial>
+                    <pose>0 0 0.0 0 0 0</pose>
+                    <inertia>
+                        <ixx>0.012</ixx>
+                        <ixy>0</ixy>
+                        <ixz>0</ixz>
+                        <iyy>0.015</iyy>
+                        <iyz>0</iyz>
+                        <izz>0.011</izz>
+                    </inertia>
+                    <mass>2.0</mass>
+                </inertial>
+                <collision name="chair3_collision">
+                    <geometry>
+                        <mesh>
+                            <filename>chair3/model/chair.stl</filename>
+                            <scale>0.008 0.008 0.01</scale>
+                        </mesh>
+                    </geometry>
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>0.0</mu>
+                                <mu2>0.0</mu2>
+                                <fdir1>0 0 0</fdir1>
+                                <slip1>0</slip1>
+                                <slip2>0</slip2>
+                            </ode>
+                        </friction>
+                        <bounce>
+                            <restitution_coefficient>0</restitution_coefficient>
+                            <threshold>1000000.0</threshold>
+                        </bounce>
+                        <contact>
+                            <ode>
+                                <soft_cfm>0</soft_cfm>
+                                <soft_erp>0.2</soft_erp>
+                                <kp>1e10</kp>
+                                <kd>1</kd>
+                                <max_vel>100.0</max_vel>
+                                <min_depth>0.0001</min_depth>
+                            </ode>
+                        </contact>
+                    </surface>
+                </collision>
+                <visual name="chair3_visual">
+                    <geometry>
+                        <mesh>
+                            <filename>chair3/model/chair.dae</filename>
+                            <scale>0.008 0.008 0.01</scale>
+                        </mesh>
+                    </geometry>
+                    <cast_shadows>false</cast_shadows>
+                </visual>
+            </link>
+            <static>true</static>
+        </model>
+        <model name="chair4_model">
+            <pose>2.1 1.5 0 0 0 3.1416</pose>
+            <link name="chair4_link">
+                <inertial>
+                    <pose>0 0 0 0 0 0</pose>
+                    <inertia>
+                        <ixx>0.01</ixx>
+                        <ixy>0</ixy>
+                        <ixz>0</ixz>
+                        <iyy>0.01</iyy>
+                        <iyz>0</iyz>
+                        <izz>0.01</izz>
+                    </inertia>
+                    <mass>1.0</mass>
+                </inertial>
+                <collision name="chair4_collision">
+                    <geometry>
+                        <mesh>
+                            <filename>chair3/model/chair.stl</filename>
+                            <scale>0.008 0.008 0.01</scale>
+                        </mesh>
+                    </geometry>
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>0.0</mu>
+                                <mu2>0.0</mu2>
+                                <fdir1>0 0 0</fdir1>
+                                <slip1>0</slip1>
+                                <slip2>0</slip2>
+                            </ode>
+                        </friction>
+                        <bounce>
+                            <restitution_coefficient>0</restitution_coefficient>
+                            <threshold>1000000.0</threshold>
+                        </bounce>
+                        <contact>
+                            <ode>
+                                <soft_cfm>0</soft_cfm>
+                                <soft_erp>0.2</soft_erp>
+                                <kp>1e10</kp>
+                                <kd>1</kd>
+                                <max_vel>100.0</max_vel>
+                                <min_depth>0.0001</min_depth>
+                            </ode>
+                        </contact>
+                    </surface>
+                </collision>
+                <visual name="chair4_visual">
+                    <geometry>
+                        <mesh>
+                            <filename>chair3/model/chair.dae</filename>
+                            <scale>0.008 0.008 0.01</scale>
+                        </mesh>
+                    </geometry>
+                    <cast_shadows>false</cast_shadows>
+                </visual>
+            </link>
+            <static>false</static>
+        </model>
+        <model name="chair5_model">
+            <pose>2.3 1.8 0 0 0 -1.57</pose>
+            <link name="chair5_link">
+                <inertial>
+                    <pose>0 0 0 0 0 0</pose>
+                    <inertia>
+                        <ixx>0.01</ixx>
+                        <ixy>0</ixy>
+                        <ixz>0</ixz>
+                        <iyy>0.01</iyy>
+                        <iyz>0</iyz>
+                        <izz>0.01</izz>
+                    </inertia>
+                    <mass>1.0</mass>
+                </inertial>
+                <collision name="chair5_collision">
+                    <geometry>
+                        <mesh>
+                            <filename>chair3/model/chair.stl</filename>
+                            <scale>0.008 0.008 0.01</scale>
+                        </mesh>
+                    </geometry>
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>0.0</mu>
+                                <mu2>0.0</mu2>
+                                <fdir1>0 0 0</fdir1>
+                                <slip1>0</slip1>
+                                <slip2>0</slip2>
+                            </ode>
+                        </friction>
+                        <bounce>
+                            <restitution_coefficient>0</restitution_coefficient>
+                            <threshold>1000000.0</threshold>
+                        </bounce>
+                        <contact>
+                            <ode>
+                                <soft_cfm>0</soft_cfm>
+                                <soft_erp>0.2</soft_erp>
+                                <kp>1e10</kp>
+                                <kd>1</kd>
+                                <max_vel>100.0</max_vel>
+                                <min_depth>0.0001</min_depth>
+                            </ode>
+                        </contact>
+                    </surface>
+                </collision>
+                <visual name="chair5_visual">
+                    <geometry>
+                        <mesh>
+                            <filename>chair3/model/chair.dae</filename>
+                            <scale>0.008 0.008 0.01</scale>
+                        </mesh>
+                    </geometry>
+                    <cast_shadows>false</cast_shadows>
+                </visual>
+            </link>
+            <!-- this plugin moves the parent model
+      <plugin name="plugin_1" filename="libmove_model_test.so"/>
+     -->
+            <static>false</static>
+        </model>
+        <light type="point" name="light_1">
+            <pose>0.0 0.0 10.0 0.0 0.0 0.0</pose>
+            <diffuse>0.5 0.5 0.5 0.5</diffuse>
+            <attenuation>
+                <range>1000.0</range>
+                <constant>0.01</constant>
+                <quadratic>0.0001</quadratic>
+            </attenuation>
+            <direction>0 0 -1</direction>
+            <spot>
+                <inner_angle>1.57</inner_angle>
+                <outer_angle>1.57</outer_angle>
+                <falloff>1.0</falloff>
+            </spot>
+            <cast_shadows>false</cast_shadows>
+        </light>
+        <plugin name="gazebo_ros_api" filename="libgazebo_ros.so">
+            <alwaysOn>1</alwaysOn>
+            <updateRate>1000.0</updateRate>
+        </plugin>
+    </world>
+</sdf>

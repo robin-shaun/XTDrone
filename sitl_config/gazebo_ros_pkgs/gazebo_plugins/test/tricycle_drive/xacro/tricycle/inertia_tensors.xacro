@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+  <!-- Thanks to Martin Guenther
+  see https://github.com/uos/uos_tools/blob/fuerte/uos_common_urdf/common.xacro and
+  see http://answers.gazebosim.org/question/4372/the-inertia-matrix-explained/ -->
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:property name="M_PI" value="3.1415926535897931" />
+
+  <!-- see https://secure.wikimedia.org/wikipedia/en/wiki/List_of_moment_of_inertia_tensors -->
+
+  <!-- #################### versions without origin #################### -->
+  <xacro:macro name="sphere_inertial" params="radius mass">
+    <inertial>
+      <mass value="${mass}" />
+      <origin xyz="0 0 0" />
+      <inertia ixx="${0.4 * mass * radius * radius}" ixy="0.0" ixz="0.0"
+        iyy="${0.4 * mass * radius * radius}" iyz="0.0"
+        izz="${0.4 * mass * radius * radius}" />
+    </inertial>
+  </xacro:macro>
+
+  <xacro:macro name="cylinder_inertial" params="radius length mass">
+    <inertial>
+      <mass value="${mass}" />
+      <origin xyz="0 0 0" />
+      <inertia ixx="${0.0833333 * mass * (3 * radius * radius + length * length)}" ixy="0.0" ixz="0.0"
+        iyy="${0.0833333 * mass * (3 * radius * radius + length * length)}" iyz="0.0"
+        izz="${0.5 * mass * radius * radius}" />
+    </inertial>
+  </xacro:macro>
+
+  <xacro:macro name="box_inertial" params="x y z mass">
+    <inertial>
+      <mass value="${mass}" />
+      <origin xyz="0 0 0" />
+      <inertia ixx="${0.0833333 * mass * (y*y + z*z)}" ixy="0.0" ixz="0.0"
+        iyy="${0.0833333 * mass * (x*x + z*z)}" iyz="0.0"
+        izz="${0.0833333 * mass * (x*x + y*y)}" />
+    </inertial>
+  </xacro:macro>
+
+  <!-- #################### versions with origin #################### -->
+  <xacro:macro name="sphere_inertial_with_origin" params="radius mass *origin">
+    <inertial>
+      <mass value="${mass}" />
+      <xacro:insert_block name="origin" />
+      <inertia ixx="${0.4 * mass * radius * radius}" ixy="0.0" ixz="0.0"
+        iyy="${0.4 * mass * radius * radius}" iyz="0.0"
+        izz="${0.4 * mass * radius * radius}" />
+    </inertial>
+  </xacro:macro>
+
+  <xacro:macro name="cylinder_inertial_with_origin" params="radius length mass *origin">
+    <inertial>
+      <mass value="${mass}" />
+      <xacro:insert_block name="origin" />
+      <inertia ixx="${0.0833333 * mass * (3 * radius * radius + length * length)}" ixy="0.0" ixz="0.0"
+        iyy="${0.0833333 * mass * (3 * radius * radius + length * length)}" iyz="0.0"
+        izz="${0.5 * mass * radius * radius}" />
+    </inertial>
+  </xacro:macro>
+
+  <xacro:macro name="box_inertial_with_origin" params="x y z mass origin">
+    <inertial>
+      <mass value="${mass}" />
+      <origin xyz="${origin}" />
+      <inertia ixx="${0.0833333 * mass * (y*y + z*z)}" ixy="0.0" ixz="0.0"
+        iyy="${0.0833333 * mass * (x*x + z*z)}" iyz="0.0"
+        izz="${0.0833333 * mass * (x*x + y*y)}" />
+    </inertial>
+  </xacro:macro>
+
+</robot>

@@ -1,0 +1,12 @@
+<launch>
+
+  <!-- Load the URDF into the ROS Parameter Server -->
+  <param name="robot_description" command="$(find xacro)/xacro.py '$(find v4r_gazebo)/xacro/pioneer3dx.xacro'" />
+
+  <node pkg="robot_state_publisher" type="state_publisher" name="robot_state_publisher">
+      <param name="publish_frequency" type="double" value="30.0"/>
+      <param name="tf_prefix" type="string" value=""/>
+  </node>
+
+
+</launch>

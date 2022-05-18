@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="pioneer3dx_joints_state_publisher">
+    <gazebo>
+        <plugin name="joint_state_publisher" filename="libgazebo_ros_joint_state_publisher.so">
+          <robotNamespace></robotNamespace>
+          <jointName>chassis_swivel_joint, swivel_wheel_joint, left_hub_joint, right_hub_joint</jointName>
+          <updateRate>10.0</updateRate>
+          <alwaysOn>true</alwaysOn>
+        </plugin>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="pioneer3dx_diff_drive">
+    <gazebo>
+        <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
+            <rosDebugLevel>Debug</rosDebugLevel>
+            <robotNamespace></robotNamespace>
+            <publishWheelTF>false</publishWheelTF>
+            <publishWheelJointState>true</publishWheelJointState>
+            <alwaysOn>true</alwaysOn>
+            <leftJoint>left_hub_joint</leftJoint>
+            <rightJoint>right_hub_joint</rightJoint>
+            <wheelSeparation>0.3</wheelSeparation>
+            <wheelDiameter>0.18</wheelDiameter>
+            <wheelTorque>20</wheelTorque>
+            <wheelAcceleration>1.8</wheelAcceleration>
+            <commandTopic>cmd_vel</commandTopic>
+            <odometryTopic>odom</odometryTopic>
+            <odometryFrame>odom</odometryFrame>
+            <odometrySource>world</odometrySource>
+            <robotBaseFrame>base_link</robotBaseFrame>
+            <updateRate>10.0</updateRate>
+        </plugin>
+    </gazebo>
+
+  </xacro:macro>
+</robot>

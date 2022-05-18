@@ -1,0 +1,55 @@
+#!/bin/sh
+[ -L ${0} ] && SCRIPT_DIR=$(readlink ${0}) || SCRIPT_DIR=${0}
+SCRIPT_DIR=$(dirname ${SCRIPT_DIR})
+
+. ${SCRIPT_DIR}/libcommon.sh
+
+final="$@"
+
+EXT=so
+if [ $(uname) = "Darwin" ]; then
+    EXT=dylib
+fi
+
+# add ros path plugin if it does not already exist in the passed in arguments
+if [ `expr "$final" : ".*libgazebo_ros_paths_plugin\.$EXT.*"` -eq 0 ]
+then
+    final="$final -s `catkin_find --first-only libgazebo_ros_paths_plugin.$EXT`"
+fi
+
+# add ros api plugin if it does not already exist in the passed in arguments
+if [ `expr "$final" : ".*libgazebo_ros_api_plugin\.$EXT.*"` -eq 0 ]
+then
+    final="$final -s `catkin_find --first-only libgazebo_ros_api_plugin.$EXT`"
+fi
+
+client_final="-g `catkin_find --first-only libgazebo_ros_paths_plugin.$EXT`"
+
+setup_path=$(pkg-config --variable=prefix gazebo)/share/gazebo/
+
+# source setup.sh, but keep local modifications to GAZEBO_MASTER_URI and GAZEBO_MODEL_DATABASE_URI
+desired_master_uri="$GAZEBO_MASTER_URI"
+desired_model_database_uri="$GAZEBO_MODEL_DATABASE_URI"
+. $setup_path/setup.sh
+if [ "$desired_master_uri" = "" ]; then
+	desired_master_uri="$GAZEBO_MASTER_URI"
+fi
+if [ "$desired_model_database_uri" = "" ]; then
+	desired_model_database_uri="$GAZEBO_MODEL_DATABASE_URI"
+fi
+
+final=$(relocate_remappings "${final}")
+
+# Combine the commands
+GAZEBO_MASTER_URI="$desired_master_uri" GAZEBO_MODEL_DATABASE_URI="$desired_model_database_uri" gzserver $final &
+gzserver_pid="$!"
+# Use kill -0 to check if the process is running
+if $(kill -0 $! 2> /dev/null); then
+  GAZEBO_MASTER_URI="$desired_master_uri" GAZEBO_MODEL_DATABASE_URI="$desired_model_database_uri" gzclient $client_final
+fi
+
+# Kill the server if it is alive
+if $(kill -0 $! 2> /dev/null); then
+  # -2 SIGINT valid for Linux and Mac
+  kill -2 $!
+fi

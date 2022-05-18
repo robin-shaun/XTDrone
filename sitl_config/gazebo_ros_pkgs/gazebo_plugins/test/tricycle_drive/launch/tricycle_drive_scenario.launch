@@ -1,0 +1,31 @@
+<launch>
+
+  <arg name="r1" default="true" />
+  <arg name="r2" default="true" />
+
+  <!-- Gazebo  -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch" />
+
+  <group if="$(arg r1)">
+    <!-- Robot with tricycle drive -->
+    <include file="$(find gazebo_plugins)/test/tricycle_drive/launch/tricycle.gazebo.launch">
+      <arg name="robot_name" value="r1" />
+      <arg name="robot_position" value="-x 0.0 -y -0.0 -z 0.01 -R 0 -P 0 -Y +1.57" />
+    </include>
+
+    <node pkg="tf" type="static_transform_publisher" name="base_to_odom_r1"
+      args="0.0 -0.0 0.0 0.0 0.0 0.0 base_link r1/odom 200" />
+  </group>
+
+  <group if="$(arg r2)">
+    <!-- Robot with tricycle drive -->
+    <include file="$(find gazebo_plugins)/test/tricycle_drive/launch/tricycle.gazebo.launch">
+      <arg name="robot_name" value="r2" />
+      <arg name="robot_position" value="-x 2.0 -y 2 -z 0.01 -R 0 -P 0 -Y -1.57" />
+    </include>
+
+    <node pkg="tf" type="static_transform_publisher" name="base_to_odom_r2"
+      args="0.0 -0.0 0.0 0.0 0.0 0.0 base_link r2/odom 200" />
+  </group>
+
+</launch>

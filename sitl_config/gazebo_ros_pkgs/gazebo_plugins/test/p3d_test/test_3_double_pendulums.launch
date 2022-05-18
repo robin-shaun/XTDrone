@@ -1,0 +1,21 @@
+<launch>
+  <node name="pendulums" pkg="gazebo" type="gazebo" args="$(find gazebo_plugins)/test/p3d_test/worlds/3_double_pendulums.world"/>
+  <test test-name="test_3_double_pendulums_model_1_link_1_errors" pkg="gazebo_plugins" type="test_link_pose.py">
+    <param name="link_pose_topic_name" value="/model_1/link_1/pose"/>
+  </test>
+  <test test-name="test_3_double_pendulums_model_1_link_2_errors" pkg="gazebo_plugins" type="test_link_pose.py">
+    <param name="link_pose_topic_name" value="/model_1/link_2/pose"/>
+  </test>
+  <test test-name="test_3_double_pendulums_model_2_link_1_errors" pkg="gazebo_plugins" type="test_link_pose.py">
+    <param name="link_pose_topic_name" value="/model_2/link_1/pose"/>
+  </test>
+  <test test-name="test_3_double_pendulums_model_2_link_2_errors" pkg="gazebo_plugins" type="test_link_pose.py">
+    <param name="link_pose_topic_name" value="/model_2/link_2/pose"/>
+  </test>
+  <test test-name="test_3_double_pendulums_model_3_link_1_errors" pkg="gazebo_plugins" type="test_link_pose.py">
+    <param name="link_pose_topic_name" value="/model_3/link_1/pose"/>
+  </test>
+  <test test-name="test_3_double_pendulums_model_3_link_2_errors" pkg="gazebo_plugins" type="test_link_pose.py">
+    <param name="link_pose_topic_name" value="/model_3/link_2/pose"/>
+  </test>
+</launch>

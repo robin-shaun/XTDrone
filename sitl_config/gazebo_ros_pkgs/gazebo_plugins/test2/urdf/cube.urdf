@@ -1,0 +1,27 @@
+<robot name="cube_model">
+  <link name="my_cube">
+    <inertial>
+      <mass value="1.0" />
+      <origin xyz="0 0 0" />
+      <inertia  ixx="1.0" ixy="0.0"  ixz="0.0"  iyy="1.0"  iyz="0.0"  izz="1.0" />
+    </inertial>
+    <visual>
+      <!-- visual origin is defined w.r.t. link local coordinate system -->
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://pr2_simulator_benchmarks/meshes/cube_20k.stl" />
+      </geometry>
+    </visual>
+    <collision>
+      <!-- collision origin is defined w.r.t. link local coordinate system -->
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://pr2_simulator_benchmarks/meshes/cube_20k.stl" />
+      </geometry>
+    </collision>
+  </link>
+  <gazebo reference="my_cube">
+    <material>Gazebo/GrayGrid</material>
+    <turnGravityOff>false</turnGravityOff>
+  </gazebo>
+</robot>

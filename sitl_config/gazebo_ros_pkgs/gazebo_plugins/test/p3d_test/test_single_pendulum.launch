@@ -1,0 +1,6 @@
+<launch>
+  <node name="pendulums" pkg="gazebo" type="gazebo" args="$(find gazebo_plugins)/test/p3d_test/worlds/single_pendulum.world"/>
+  <test test-name="test_single_pendulum_link_1_errors" pkg="gazebo_plugins" type="test_link_pose.py">
+    <param name="link_pose_topic_name" value="/model_1/link_1/pose"/>
+  </test>
+</launch>

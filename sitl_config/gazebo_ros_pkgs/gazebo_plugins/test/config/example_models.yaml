@@ -1,0 +1,31 @@
+gazebo_models:                              # everything here is namespaced under "gazebo_models"
+    pr2:                                    # model name used inside gazebo
+        specification: robot_description    # potentially contains:
+                                            #    1. a verbatim string with URDF or Gazebo Model XML or
+                                            #    2. a parameter name that refers to a parameter containing (1.)
+                                            # the spawner will differentiate automatically
+        namespace: /                        # namespace for gazebo_ros_plugins related to this model
+        initial_pose:                       # initial pose for the model
+            x: 0
+            y: 0
+            z: 0
+            rx: 0
+            ry: 0
+            rz: 0
+            joint_name: r_forearm_link      # name of the joint to set initial position
+                position:  1.57             # initial joint position
+            joint_name: head_pan_link       # name of the joint to set initial position
+                position:  0.78             # initial joint position
+
+    # another example
+    table:
+        specification: table_description
+        namespace: /table
+        initial_pose:
+            x: 1
+            y: 0
+            z: 0
+            rx: 0
+            ry: 0
+            rz: 0
+

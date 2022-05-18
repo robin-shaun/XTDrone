@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+  <param name="/use_sim_time" value="true" />
+
+  <node name="gazebo" pkg="gazebo_ros" type="gzserver"
+      respawn="false" output="screen"
+      args="--verbose $(find gazebo_plugins)/test/camera/multicamera.world" />
+
+  <test test-name="multicamera" pkg="gazebo_plugins" type="multicamera-test"
+      clear_params="true" time-limit="15.0" />
+</launch>

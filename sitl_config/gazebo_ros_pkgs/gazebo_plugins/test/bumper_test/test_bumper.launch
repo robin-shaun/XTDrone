@@ -1,0 +1,6 @@
+<launch>
+  <node name="bumper" pkg="gazebo" type="gazebo" args="$(find gazebo_plugins)/test/bumper_test/gazebo_ros_bumper.world"/>
+  <test test-name="test_bumper" pkg="gazebo_plugins" type="test_bumper.py">
+    <param name="bumper_topic_name" value="/test_bumper"/>
+  </test>
+</launch>

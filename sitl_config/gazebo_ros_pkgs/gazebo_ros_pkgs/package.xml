@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>gazebo_ros_pkgs</name> <!-- This is a meta package! -->
+  <version>2.8.7</version>
+  <description>Interface for using ROS with the <a href="http://gazebosim.org/">Gazebo</a> simulator.</description>
+
+  <maintainer email="jrivero@osrfoundation.org">Jose Luis Rivero</maintainer>
+
+  <license>BSD,LGPL,Apache 2.0</license>
+
+  <url type="website">http://gazebosim.org/tutorials?cat=connect_ros</url>
+  <url type="bugtracker">https://github.com/ros-simulation/gazebo_ros_pkgs/issues</url>
+  <url type="repository">https://github.com/ros-simulation/gazebo_ros_pkgs</url>
+
+  <author>John Hsu, Nate Koenig, Dave Coleman</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <exec_depend>gazebo_dev</exec_depend>
+  <exec_depend>gazebo_msgs</exec_depend>
+  <exec_depend>gazebo_plugins</exec_depend>
+  <exec_depend>gazebo_ros</exec_depend>
+
+  <export>
+    <metapackage/>
+  </export>
+</package>

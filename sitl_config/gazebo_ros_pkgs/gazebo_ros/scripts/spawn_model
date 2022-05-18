@@ -1,0 +1,240 @@
+#!/usr/bin/env python
+#
+# Copyright 2018 Open Source Robotics Foundation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Desc: helper script for spawning models in gazebo
+# Author: John Hsu, Dave Coleman
+#
+import rospy
+import sys
+import os
+import argparse
+import xml
+try: # Python 3.x
+    from urllib.parse import urlsplit, SplitResult
+except ImportError: # Python 2.x
+    from urlparse import urlsplit, SplitResult
+from gazebo_ros import gazebo_interface
+from gazebo_msgs.msg import ModelStates
+from gazebo_msgs.srv import DeleteModel
+from std_srvs.srv import Empty
+from geometry_msgs.msg import Pose, Quaternion
+from tf.transformations import quaternion_from_euler
+
+
+class SpawnModelNode():
+    '''
+    Node to spawn a model in Gazebo using the ROS API
+    '''
+    MODEL_DATABASE_TEMPLATE = """\
+<sdf version="1.4">
+    <world name="default">
+        <include>
+            <uri>model://{}</uri>
+        </include>
+    </world>
+</sdf>"""
+
+    def __init__(self):
+        parser = argparse.ArgumentParser(description='Spawn a model in gazebo using the ROS API')
+        xmlformat = parser.add_mutually_exclusive_group(required=True)
+        xmlformat.add_argument('-urdf', action='store_true', help='Incoming xml is in urdf format')
+        xmlformat.add_argument('-sdf', action='store_true', help='Incoming xml is in sdf format')
+        source = parser.add_mutually_exclusive_group(required=True)
+        source.add_argument('-file', type=str, metavar='FILE_NAME', help='Load model xml from file')
+        source.add_argument('-param', type=str, metavar='PARAM_NAME', help='Load model xml from ROS parameter')
+        source.add_argument('-database', type=str, metavar='MODEL_NAME',
+                            help='Load model XML from specified model in Gazebo Model Database')
+        source.add_argument('-stdin', action='store_true', help='Load model from stdin')
+        parser.add_argument('-model', required=True, type=str, metavar='MODEL_NAME', help='Name of model to spawn')
+        parser.add_argument('-reference_frame', type=str, default='',
+                            help='Name of the model/body where initial pose is defined.\
+                                  If left empty or specified as "world", gazebo world frame is used')
+        parser.add_argument('-gazebo_namespace', type=str, default='/gazebo',
+                            help='ROS namespace of gazebo offered ROS interfaces.  Defaults to /gazebo/')
+        parser.add_argument('-robot_namespace', type=str, default=rospy.get_namespace(),
+                            help='change ROS namespace of gazebo-plugins')
+        parser.add_argument('-unpause', action='store_true',
+                            help='!!!Experimental!!! unpause physics after spawning model')
+        parser.add_argument('-wait', type=str, metavar='MODEL_NAME', help='!!!Experimental!!! wait for model to exist')
+        parser.add_argument('-x', type=float, default=0, help='x component of initial position, meters')
+        parser.add_argument('-y', type=float, default=0, help='y component of initial position, meters')
+        parser.add_argument('-z', type=float, default=0, help='z component of initial position, meters')
+        parser.add_argument('-R', type=float, default=0, help='roll angle of initial orientation, radians')
+        parser.add_argument('-P', type=float, default=0, help='pitch angle of initial orientation, radians')
+        parser.add_argument('-Y', type=float, default=0, help='yaw angle of initial orientation, radians')
+        parser.add_argument('-J', dest='joints', default=[], action='append', metavar=('JOINT_NAME', 'JOINT_POSITION'),
+                            type=str, nargs=2, help='initialize the specified joint at the specified position')
+        parser.add_argument('-package_to_model', action='store_true',
+                            help='convert urdf <mesh filename="package://..." to <mesh filename="model://..."')
+        parser.add_argument('-b', dest='bond', action='store_true',
+                            help='bond to gazebo and delete the model when this program is interrupted')
+        args = rospy.myargv()
+        self.args = parser.parse_args(args[1:])
+        # Convert position of joints to floats
+        for i in range(len(self.args.joints)):
+            self.args.joints[i][1] = float(self.args.joints[i][1])
+
+    def run(self):
+        '''
+        Run node, spawning model and doing other actions as configured in program arguments.
+        Returns exit code, 1 for failure, 0 for success
+        '''
+        # Wait for model to exist if wait flag is enabled
+        if self.args.wait:
+            self.model_exists = False
+
+            def models_cb(models):
+                self.model_exists = self.args.wait in models.name
+
+            rospy.Subscriber("%s/model_states" % self.args.gazebo_namespace, ModelStates, models_cb)
+            r = rospy.Rate(10)
+            rospy.loginfo('Waiting for model {} before proceeding.'.format(self.args.wait))
+            while not rospy.is_shutdown() and not self.model_exists:
+                r.sleep()
+            if rospy.is_shutdown():
+                return 0
+
+        # Load model XML from file
+        if self.args.file:
+            rospy.loginfo("Loading model XML from file %s" % self.args.file)
+            if not os.path.exists(self.args.file):
+                rospy.logfatal("Error: specified file %s does not exist", self.args.file)
+                return 1
+            if not os.path.isfile(self.args.file):
+                rospy.logfatal("Error: specified file %s is not a file", self.args.file)
+                return 1
+            # load file
+            try:
+                f = open(self.args.file, 'r')
+                model_xml = f.read()
+            except IOError as e:
+                rospy.logerr("Error reading file {}: {}".format(self.args.file, e))
+                return 1
+            if model_xml == "":
+                rospy.logerr("Error: file %s is empty", self.args.file)
+                return 1
+        # Load model XML from ROS param
+        elif self.args.param:
+            rospy.loginfo("Loading model XML from ros parameter %s" % self.args.param)
+            model_xml = rospy.get_param(self.args.param)
+            if model_xml == "":
+                rospy.logerr("Error: param does not exist or is empty")
+                return 1
+        # Generate model XML by putting requested model name into request template
+        elif self.args.database:
+            rospy.loginfo("Loading model XML from Gazebo Model Database")
+            model_xml = self.MODEL_DATABASE_TEMPLATE.format(self.args.database)
+        elif self.args.stdin:
+            rospy.loginfo("Loading model XML from stdin")
+            model_xml = sys.stdin.read()
+            if model_xml == "":
+                rospy.logerr("Error: stdin buffer was empty")
+                return 1
+
+        # Parse xml to detect invalid xml before sending to gazebo
+        try:
+            xml_parsed = xml.etree.ElementTree.fromstring(model_xml)
+        except xml.etree.ElementTree.ParseError as e:
+            rospy.logerr('Invalid XML: {}'.format(e))
+            return 1
+
+        # Replace package:// with model:// for mesh tags if flag is set
+        if self.args.package_to_model:
+            for element in xml_parsed.iterfind('.//mesh'):
+                filename_tag = element.get('filename')
+                if filename_tag is None:
+                    continue
+                url = urlsplit(filename_tag)
+                if url.scheme == 'package':
+                    url = SplitResult('model', *url[1:])
+                    element.set('filename', url.geturl())
+
+        # Encode xml object back into string for service call
+        model_xml = xml.etree.ElementTree.tostring(xml_parsed)
+
+        # For Python 3
+        if not isinstance(model_xml, str):
+            model_xml = model_xml.decode(encoding='ascii')
+
+        # Form requested Pose from arguments
+        initial_pose = Pose()
+        initial_pose.position.x = self.args.x
+        initial_pose.position.y = self.args.y
+        initial_pose.position.z = self.args.z
+        q = quaternion_from_euler(self.args.R, self.args.P, self.args.Y)
+        initial_pose.orientation = Quaternion(*q)
+
+        # Spawn model using urdf or sdf service based on arguments
+        success = False
+        if self.args.urdf:
+            success = gazebo_interface.spawn_urdf_model_client(self.args.model, model_xml, self.args.robot_namespace,
+                                                               initial_pose, self.args.reference_frame,
+                                                               self.args.gazebo_namespace)
+        elif self.args.sdf:
+            success = gazebo_interface.spawn_sdf_model_client(self.args.model, model_xml, self.args.robot_namespace,
+                                                              initial_pose, self.args.reference_frame,
+                                                              self.args.gazebo_namespace)
+        if not success:
+            rospy.logerr('Spawn service failed. Exiting.')
+            return 1
+
+        # Apply joint positions if any specified
+        if len(self.args.joints) != 0:
+            joint_names = [joint[0] for joint in self.args.joints]
+            joint_positions = [joint[1] for joint in self.args.joints]
+            success = gazebo_interface.set_model_configuration_client(self.args.model, "",
+                                                                      joint_names, joint_positions,
+                                                                      self.args.gazebo_namespace)
+            if not success:
+                rospy.logerr('SetModelConfiguration service failed. Exiting.')
+                return 1
+
+        # Unpause physics if user requested
+        if self.args.unpause:
+            rospy.loginfo('Unpausing physics')
+            rospy.wait_for_service('%s/unpause_physics' % self.args.gazebo_namespace)
+            try:
+                unpause_physics = rospy.ServiceProxy('%s/unpause_physics' % self.args.gazebo_namespace, Empty)
+                unpause_physics()
+            except rospy.ServiceException as e:
+                rospy.logerr("Unpause physics service call failed: {}".format(e))
+                return 1
+
+        # If bond enabled, setup shutdown callback and wait for shutdown
+        if self.args.bond:
+            rospy.on_shutdown(self._delete_model)
+            rospy.loginfo('Waiting for shutdown to delete model {}'.format(self.args.model))
+            rospy.spin()
+
+        return 0
+
+    def _delete_model(self):
+        '''
+        Delete model from gazebo on shutdown if bond flag enabled
+        '''
+        rospy.loginfo('Deleting model {}'.format(self.args.model))
+        try:
+            delete_model = rospy.ServiceProxy('%s/delete_model' % self.args.gazebo_namespace, DeleteModel)
+            delete_model(model_name=self.args.model)
+        except rospy.ServiceException as e:
+            rospy.logerr("Delete model service call failed: %s", e)
+
+
+if __name__ == "__main__":
+    sm = SpawnModelNode()
+    rospy.init_node('spawn_model', anonymous=True)
+    exit_code = sm.run()
+    sys.exit(exit_code)

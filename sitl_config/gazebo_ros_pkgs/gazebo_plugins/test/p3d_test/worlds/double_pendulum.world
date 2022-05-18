@@ -1,0 +1,165 @@
+<gazebo version="1.0">
+  <world name="default">
+    <scene>
+      <ambient rgba='0.5 0.5 0.5 1.0' />
+      <background rgba='0.5 0.5 0.5 1' >
+        <sky material='Gazebo/CloudySky' />
+      </background>
+      <shadows enabled="false"/>
+    </scene>
+
+    <physics type="ode">
+      <gravity xyz="0.0 0.0 -9.81"/>
+      <ode>
+        <solver type="quick" dt="0.001" iters="3000" sor="1.3"/>
+        <constraints cfm="0" erp="0.2" contact_max_correcting_vel="100.0" contact_surface_layer="0.0"/>
+      </ode>
+    </physics>
+
+    <model name="model_1" static="false">
+
+      <origin pose="0.0 0.0 2.1 0.523598776 0.0 0.0"/>
+
+      <link name="link_1" self_collide="true" gravity="true" kinematic="false">
+
+        <origin pose="0.0 0.0 0.0 0.0 0.0 0.0"/>
+
+        <inertial mass="10.0">
+          <origin pose="0.0 0.0 -0.5 0.0 0.0 0.0"/>
+          <damping linear="0.0" angular="0.0" />
+          <inertia ixx="1.0" ixy="0.0" ixz="0.0"
+                   iyy="1.0" iyz="0.0"
+                   izz="1.0"/>
+        </inertial>
+
+        <visual cast_shadows="true" name="visual_cylinder" laser_retro="100.0">
+          <origin pose="0.0 0.0 -0.5 0.0 0.0 0.0"/>
+          <geometry>
+            <cylinder radius="0.1" length="1.0"/>
+          </geometry>
+          <material script="Gazebo/Green"/>
+        </visual>
+
+        <collision name="collision_cylinder" laser_retro="100.0">
+          <origin pose="0.0 0.0 -0.5 0.0 0.0 0.0"/>
+          <max_contacts>250</max_contacts>
+          <geometry>
+            <cylinder radius="0.1" length="1.0"/>
+          </geometry>
+          <surface>
+            <friction>
+              <ode mu="0.5" mu2="0.2" fdir1="1.0 0 0" slip1="0" slip2="0"/>
+            </friction>
+            <bounce restitution_coefficient="0" threshold="1000000.0"/>
+            <contact>
+              <ode soft_cfm="0" kp="1e15" kd="1e13" max_vel="100.0" min_depth="0.0001"/>
+            </contact>
+          </surface>
+        </collision>
+
+      </link>
+
+      <link name="link_2">
+
+        <origin pose="0.0 0.0 -1.0 0.0 0.0 0.0"/>
+
+        <inertial mass="10.0">
+          <origin pose="0.0 0.0 -0.5 0.0 0.0 0.0"/>
+          <damping linear="0.0" angular="0.0" />
+          <inertia ixx="1.0" ixy="0.0" ixz="0.0"
+                   iyy="1.0" iyz="0.0"
+                   izz="1.0"/>
+        </inertial>
+
+        <visual cast_shadows="true" name="visual_box" laser_retro="100.0">
+          <origin pose="0.0 0.0 -0.5 0.0 0.0 0.0"/>
+          <geometry>
+            <box size="0.1 0.1 1.0"/>
+          </geometry>
+          <material script="Gazebo/Red"/>
+        </visual>
+
+        <collision name="collision_box" laser_retro="100.0">
+          <origin pose="0.0 0.0 -0.5 0.0 0.0 0.0"/>
+          <max_contacts>250</max_contacts>
+          <geometry>
+            <box size="0.1 0.1 1.0"/>
+          </geometry>
+          <surface>
+            <friction>
+              <ode mu="0.5" mu2="0.2" fdir1="1.0 0 0" slip1="0" slip2="0"/>
+            </friction>
+            <bounce restitution_coefficient="0" threshold="1000000.0"/>
+            <contact>
+              <ode soft_cfm="0" kp="1e15" kd="1e13" max_vel="100.0" min_depth="0.0001"/>
+            </contact>
+          </surface>
+        </collision>
+
+      </link>
+
+      <joint name="joint_0" type="revolute">
+        <parent link="world"/>
+        <child link="link_1"/>
+        <origin pose="0.0 0.0 0.0 0.0 0.0 0.0"/>
+        <axis xyz="1.0 0.0 0.0">
+          <limit lower="-100" upper="100" effort="1000" velocity="1000"/>
+          <dynamics damping="1.0" friction="0.0"/>
+        </axis>
+        <physics>
+          <ode>
+            <cfm>0.2</cfm>
+            <bounce>0.0</bounce>
+            <max_force>1000.0</max_force>
+            <velocity>0.0</velocity>
+            <fudge_factor>0.0</fudge_factor>
+            <limit cfm="0" erp="0.1"/>
+            <suspension cfm="0.0" erp="0.2"/>
+          </ode>
+        </physics>
+      </joint>
+
+      <joint name="joint_1" type="revolute">
+        <parent link="link_1"/>
+        <child link="link_2"/>
+        <origin pose="0.0 0.0 0.0 0.0 0.0 0.0"/>
+        <axis xyz="1.0 0.0 0.0">
+          <limit lower="-100" upper="100" effort="1000" velocity="1000"/>
+          <dynamics damping="1.0" friction="0.0"/>
+        </axis>
+        <physics>
+          <ode>
+            <cfm>0.2</cfm>
+            <bounce>0.0</bounce>
+            <max_force>1000.0</max_force>
+            <velocity>0.0</velocity>
+            <fudge_factor>0.0</fudge_factor>
+            <limit cfm="0" erp="0.1"/>
+            <suspension cfm="0.0" erp="0.2"/>
+          </ode>
+        </physics>
+      </joint>
+
+      <!-- gazebo_ros_p3d for position groundtruth -->
+      <plugin name="p3d_link_1_controller" filename="libgazebo_ros_p3d.so">
+          <alwaysOn>true</alwaysOn>
+          <updateRate>1000.0</updateRate>
+          <bodyName>link_1</bodyName>
+          <topicName>/model_1/link_1/pose</topicName>
+          <frameName>world</frameName>
+          <xyzOffset>0 0 -2.1</xyzOffset>
+          <rpyOffset>0 0  0.0</rpyOffset>
+      </plugin>
+      <plugin name="p3d_link_2_controller" filename="libgazebo_ros_p3d.so">
+          <alwaysOn>true</alwaysOn>
+          <updateRate>1000.0</updateRate>
+          <bodyName>link_2</bodyName>
+          <topicName>/model_1/link_2/pose</topicName>
+          <frameName>link_1</frameName>
+          <xyzOffset>0 0  1.0</xyzOffset>
+          <rpyOffset>0 0  0.0</rpyOffset>
+      </plugin>
+    </model>
+
+  </world>
+</gazebo>

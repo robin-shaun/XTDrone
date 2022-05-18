@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:property name="M_PI" value="3.1415926535897931" />
+
+  <xacro:macro name="wheel_actuated" params="name parent xyz rpy radius length meshes">
+
+  <!-- steering joint -->
+  <joint name="${name}_steering_joint" type="continuous">
+    <origin xyz="${xyz}" rpy="${rpy}"/>
+    <parent link="${parent}"/>
+    <child link="${name}_steering"/>
+    <axis xyz="0 1 0"/>
+    <anchor xyz="0 0 0"/>
+    <limit effort="100" velocity="100" k_velocity="0"/>
+    <joint_properties damping="0.0" friction="0.0"/>
+  </joint>
+  <link name="${name}_steering">
+    <visual name="${name}_visual">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry name="${name}_geometry">
+        <cylinder radius="${radius / 8.0}" length="${length * 2}"/>
+      </geometry>
+      <material name="blue"/>
+    </visual>
+    <xacro:cylinder_inertial radius="${radius / 8.0}" length="${length* 2}" mass="1.0" />
+  </link>
+  <gazebo reference="${name}_steering">
+    <material value="Gazebo/Blue"/>
+  </gazebo>
+
+  <!-- wheel joint -->
+  <xacro:wheel name="${name}"  parent="${name}_steering"  xyz="0 0 0" rpy="0 0 0" radius="${radius}" length="${length}" meshes="${meshes}"/>
+
+  </xacro:macro>
+
+</robot>

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>gazebo_dev</name>
+  <version>2.8.7</version>
+  <description>
+    Provides a cmake config for the default version of Gazebo for the ROS distribution.
+  </description>
+
+  <maintainer email="hsu@osrfoundation.org">John Hsu</maintainer>
+  <maintainer email="davetcoleman@gmail.com">Dave Coleman</maintainer>
+
+  <license>Apache 2.0</license>
+
+  <url type="website">http://gazebosim.org/tutorials?cat=connect_ros</url>
+  <url type="bugtracker">https://github.com/ros-simulation/gazebo_ros_pkgs/issues</url>
+  <url type="repository">https://github.com/ros-simulation/gazebo_ros_pkgs</url>
+
+  <author>Johannes Meyer</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_export_depend>libgazebo9-dev</build_export_depend>
+  <exec_depend>gazebo9</exec_depend>
+</package>

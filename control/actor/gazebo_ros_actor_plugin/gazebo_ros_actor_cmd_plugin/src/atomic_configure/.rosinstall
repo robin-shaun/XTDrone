@@ -1,2 +1,0 @@
-- setup-file:
-    local-name: /home/robocup/XTDrone/control/actor/gazebo_ros_actor_plugin/gazebo_ros_actor_cmd_plugin/src/devel/setup.sh

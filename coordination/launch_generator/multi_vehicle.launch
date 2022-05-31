@@ -1,10 +1,8 @@
 <?xml version="1.0"?>
 <launch>
-    <!-- MAVROS posix SITL environment launch script -->
-    <!-- launches Gazebo environment and 2x: MAVROS, PX4 SITL, and spawns vehicle -->
+    <!-- launches Gazebo environment and spawns vehicle -->
     <!-- vehicle model and world -->
-    <arg name="est" default="ekf2"/>
-    <arg name="world" default="$(find mavlink_sitl_gazebo)/worlds/outdoor2.world"/>
+    <arg name="world" default="$(find mavlink_sitl_gazebo)/worlds/outdoor1.world"/>
     <!-- gazebo configs -->
     <arg name="gui" default="true"/>
     <arg name="debug" default="false"/>
@@ -18,179 +16,581 @@
         <arg name="verbose" value="$(arg verbose)"/>
         <arg name="paused" value="$(arg paused)"/>
     </include>
-     <!-- iris_0 -->
-     <group ns="iris_0">
-        <!-- MAVROS and vehicle configs -->
-            <arg name="ID" value="0"/>
-            <arg name="ID_in_group" value="0"/>
-            <arg name="fcu_url" default="udp://:24540@localhost:34580"/>
-        <!-- PX4 SITL and vehicle spawn -->
-        <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
-            <arg name="x" value="0"/>
-            <arg name="y" value="3"/>
-            <arg name="z" value="0"/>
-            <arg name="R" value="0"/>
-            <arg name="P" value="0"/>
-            <arg name="Y" value="0"/>
-            <arg name="vehicle" value="iris"/>
-            <arg name="sdf" value="iris_stereo_camera"/>
-            <arg name="mavlink_udp_port" value="18570"/>
-            <arg name="mavlink_tcp_port" value="4560"/>
-            <arg name="ID" value="$(arg ID)"/>
-            <arg name="ID_in_group" value="$(arg ID_in_group)"/>
-        </include>
-        <!-- MAVROS -->
-        <include file="$(find mavros)/launch/px4.launch">
-            <arg name="fcu_url" value="$(arg fcu_url)"/>
-            <arg name="gcs_url" value=""/>
-            <arg name="tgt_system" value="$(eval 1 + arg('ID'))"/>
-            <arg name="tgt_component" value="1"/>
-        </include>
-    </group>
-     <!-- iris_1 -->
-     <group ns="iris_1">
-        <!-- MAVROS and vehicle configs -->
-            <arg name="ID" value="1"/>
-            <arg name="ID_in_group" value="1"/>
-            <arg name="fcu_url" default="udp://:24541@localhost:34581"/>
-        <!-- PX4 SITL and vehicle spawn -->
-        <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
-            <arg name="x" value="3"/>
-            <arg name="y" value="3"/>
-            <arg name="z" value="0"/>
-            <arg name="R" value="0"/>
-            <arg name="P" value="0"/>
-            <arg name="Y" value="0"/>
-            <arg name="vehicle" value="iris"/>
-            <arg name="sdf" value="iris_stereo_camera"/>
-            <arg name="mavlink_udp_port" value="18571"/>
-            <arg name="mavlink_tcp_port" value="4561"/>
-            <arg name="ID" value="$(arg ID)"/>
-            <arg name="ID_in_group" value="$(arg ID_in_group)"/>
-        </include>
-        <!-- MAVROS -->
-        <include file="$(find mavros)/launch/px4.launch">
-            <arg name="fcu_url" value="$(arg fcu_url)"/>
-            <arg name="gcs_url" value=""/>
-            <arg name="tgt_system" value="$(eval 1 + arg('ID'))"/>
-            <arg name="tgt_component" value="1"/>
-        </include>
-    </group>
-     <!-- iris_2 -->
-     <group ns="iris_2">
-        <!-- MAVROS and vehicle configs -->
-            <arg name="ID" value="2"/>
-            <arg name="ID_in_group" value="2"/>
-            <arg name="fcu_url" default="udp://:24542@localhost:34582"/>
-        <!-- PX4 SITL and vehicle spawn -->
-        <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
-            <arg name="x" value="0"/>
-            <arg name="y" value="6"/>
-            <arg name="z" value="0"/>
-            <arg name="R" value="0"/>
-            <arg name="P" value="0"/>
-            <arg name="Y" value="0"/>
-            <arg name="vehicle" value="iris"/>
-            <arg name="sdf" value="iris_stereo_camera"/>
-            <arg name="mavlink_udp_port" value="18572"/>
-            <arg name="mavlink_tcp_port" value="4562"/>
-            <arg name="ID" value="$(arg ID)"/>
-            <arg name="ID_in_group" value="$(arg ID_in_group)"/>
-        </include>
-        <!-- MAVROS -->
-        <include file="$(find mavros)/launch/px4.launch">
-            <arg name="fcu_url" value="$(arg fcu_url)"/>
-            <arg name="gcs_url" value=""/>
-            <arg name="tgt_system" value="$(eval 1 + arg('ID'))"/>
-            <arg name="tgt_component" value="1"/>
-        </include>
-    </group>
-     <!-- iris_3 -->
-     <group ns="iris_3">
-        <!-- MAVROS and vehicle configs -->
-            <arg name="ID" value="3"/>
-            <arg name="ID_in_group" value="3"/>
-            <arg name="fcu_url" default="udp://:24543@localhost:34583"/>
-        <!-- PX4 SITL and vehicle spawn -->
-        <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
-            <arg name="x" value="3"/>
-            <arg name="y" value="6"/>
-            <arg name="z" value="0"/>
-            <arg name="R" value="0"/>
-            <arg name="P" value="0"/>
-            <arg name="Y" value="0"/>
-            <arg name="vehicle" value="iris"/>
-            <arg name="sdf" value="iris_stereo_camera"/>
-            <arg name="mavlink_udp_port" value="18573"/>
-            <arg name="mavlink_tcp_port" value="4563"/>
-            <arg name="ID" value="$(arg ID)"/>
-            <arg name="ID_in_group" value="$(arg ID_in_group)"/>
-        </include>
-        <!-- MAVROS -->
-        <include file="$(find mavros)/launch/px4.launch">
-            <arg name="fcu_url" value="$(arg fcu_url)"/>
-            <arg name="gcs_url" value=""/>
-            <arg name="tgt_system" value="$(eval 1 + arg('ID'))"/>
-            <arg name="tgt_component" value="1"/>
-        </include>
-    </group>
-     <!-- iris_4 -->
-     <group ns="iris_4">
-        <!-- MAVROS and vehicle configs -->
-            <arg name="ID" value="4"/>
-            <arg name="ID_in_group" value="4"/>
-            <arg name="fcu_url" default="udp://:24544@localhost:34584"/>
-        <!-- PX4 SITL and vehicle spawn -->
-        <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
-            <arg name="x" value="0"/>
-            <arg name="y" value="9"/>
-            <arg name="z" value="0"/>
-            <arg name="R" value="0"/>
-            <arg name="P" value="0"/>
-            <arg name="Y" value="0"/>
-            <arg name="vehicle" value="iris"/>
-            <arg name="sdf" value="iris_stereo_camera"/>
-            <arg name="mavlink_udp_port" value="18574"/>
-            <arg name="mavlink_tcp_port" value="4564"/>
-            <arg name="ID" value="$(arg ID)"/>
-            <arg name="ID_in_group" value="$(arg ID_in_group)"/>
-        </include>
-        <!-- MAVROS -->
-        <include file="$(find mavros)/launch/px4.launch">
-            <arg name="fcu_url" value="$(arg fcu_url)"/>
-            <arg name="gcs_url" value=""/>
-            <arg name="tgt_system" value="$(eval 1 + arg('ID'))"/>
-            <arg name="tgt_component" value="1"/>
-        </include>
-    </group>
-     <!-- iris_5 -->
-     <group ns="iris_5">
-        <!-- MAVROS and vehicle configs -->
-            <arg name="ID" value="5"/>
-            <arg name="ID_in_group" value="5"/>
-            <arg name="fcu_url" default="udp://:24545@localhost:34585"/>
-        <!-- PX4 SITL and vehicle spawn -->
-        <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
-            <arg name="x" value="3"/>
-            <arg name="y" value="9"/>
-            <arg name="z" value="0"/>
-            <arg name="R" value="0"/>
-            <arg name="P" value="0"/>
-            <arg name="Y" value="0"/>
-            <arg name="vehicle" value="iris"/>
-            <arg name="sdf" value="iris_stereo_camera"/>
-            <arg name="mavlink_udp_port" value="18575"/>
-            <arg name="mavlink_tcp_port" value="4565"/>
-            <arg name="ID" value="$(arg ID)"/>
-            <arg name="ID_in_group" value="$(arg ID_in_group)"/>
-        </include>
-        <!-- MAVROS -->
-        <include file="$(find mavros)/launch/px4.launch">
-            <arg name="fcu_url" value="$(arg fcu_url)"/>
-            <arg name="gcs_url" value=""/>
-            <arg name="tgt_system" value="$(eval 1 + arg('ID'))"/>
-            <arg name="tgt_component" value="1"/>
-        </include>
-    </group>
+
+<group ns="iris_stereo_camera_0">
+    <!-- vehicle pose -->
+    <arg name="x" default="0"/>
+    <arg name="y" default="3"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="iris_stereo_camera"/>
+    <arg name="ID" default="0"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
+
+<group ns="iris_stereo_camera_1">
+    <!-- vehicle pose -->
+    <arg name="x" default="3"/>
+    <arg name="y" default="3"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="iris_stereo_camera"/>
+    <arg name="ID" default="1"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
+
+<group ns="iris_stereo_camera_2">
+    <!-- vehicle pose -->
+    <arg name="x" default="6"/>
+    <arg name="y" default="3"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="iris_stereo_camera"/>
+    <arg name="ID" default="2"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
+
+<group ns="iris_stereo_camera_3">
+    <!-- vehicle pose -->
+    <arg name="x" default="9"/>
+    <arg name="y" default="3"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="iris_stereo_camera"/>
+    <arg name="ID" default="3"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
+
+<group ns="iris_stereo_camera_4">
+    <!-- vehicle pose -->
+    <arg name="x" default="12"/>
+    <arg name="y" default="3"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="iris_stereo_camera"/>
+    <arg name="ID" default="4"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
+
+<group ns="iris_stereo_camera_5">
+    <!-- vehicle pose -->
+    <arg name="x" default="15"/>
+    <arg name="y" default="3"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="iris_stereo_camera"/>
+    <arg name="ID" default="5"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
+
+<group ns="iris_stereo_camera_6">
+    <!-- vehicle pose -->
+    <arg name="x" default="0"/>
+    <arg name="y" default="6"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="iris_stereo_camera"/>
+    <arg name="ID" default="6"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
+
+<group ns="iris_stereo_camera_7">
+    <!-- vehicle pose -->
+    <arg name="x" default="3"/>
+    <arg name="y" default="6"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="iris_stereo_camera"/>
+    <arg name="ID" default="7"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
+
+<group ns="iris_stereo_camera_8">
+    <!-- vehicle pose -->
+    <arg name="x" default="6"/>
+    <arg name="y" default="6"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="iris_stereo_camera"/>
+    <arg name="ID" default="8"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
+
+<group ns="iris_stereo_camera_9">
+    <!-- vehicle pose -->
+    <arg name="x" default="9"/>
+    <arg name="y" default="6"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="iris_stereo_camera"/>
+    <arg name="ID" default="9"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
+
+<group ns="iris_stereo_camera_10">
+    <!-- vehicle pose -->
+    <arg name="x" default="12"/>
+    <arg name="y" default="6"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="iris_stereo_camera"/>
+    <arg name="ID" default="10"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
+
+<group ns="iris_stereo_camera_11">
+    <!-- vehicle pose -->
+    <arg name="x" default="15"/>
+    <arg name="y" default="6"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="iris_stereo_camera"/>
+    <arg name="ID" default="11"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
+
+<group ns="iris_stereo_camera_12">
+    <!-- vehicle pose -->
+    <arg name="x" default="0"/>
+    <arg name="y" default="9"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="iris_stereo_camera"/>
+    <arg name="ID" default="12"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
+
+<group ns="iris_stereo_camera_13">
+    <!-- vehicle pose -->
+    <arg name="x" default="3"/>
+    <arg name="y" default="9"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="iris_stereo_camera"/>
+    <arg name="ID" default="13"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
+
+<group ns="iris_stereo_camera_14">
+    <!-- vehicle pose -->
+    <arg name="x" default="6"/>
+    <arg name="y" default="9"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="iris_stereo_camera"/>
+    <arg name="ID" default="14"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
+
+<group ns="iris_stereo_camera_15">
+    <!-- vehicle pose -->
+    <arg name="x" default="9"/>
+    <arg name="y" default="9"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="iris_stereo_camera"/>
+    <arg name="ID" default="15"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
+
+<group ns="iris_stereo_camera_16">
+    <!-- vehicle pose -->
+    <arg name="x" default="12"/>
+    <arg name="y" default="9"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="iris_stereo_camera"/>
+    <arg name="ID" default="16"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
+
+<group ns="iris_stereo_camera_17">
+    <!-- vehicle pose -->
+    <arg name="x" default="15"/>
+    <arg name="y" default="9"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="iris_stereo_camera"/>
+    <arg name="ID" default="17"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
+
+<group ns="iris_stereo_camera_18">
+    <!-- vehicle pose -->
+    <arg name="x" default="0"/>
+    <arg name="y" default="12"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="iris_stereo_camera"/>
+    <arg name="ID" default="18"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
+
+<group ns="iris_stereo_camera_19">
+    <!-- vehicle pose -->
+    <arg name="x" default="3"/>
+    <arg name="y" default="12"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="iris_stereo_camera"/>
+    <arg name="ID" default="19"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
+
+<group ns="iris_stereo_camera_20">
+    <!-- vehicle pose -->
+    <arg name="x" default="6"/>
+    <arg name="y" default="12"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="iris_stereo_camera"/>
+    <arg name="ID" default="20"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
+
+<group ns="iris_stereo_camera_21">
+    <!-- vehicle pose -->
+    <arg name="x" default="9"/>
+    <arg name="y" default="12"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="iris_stereo_camera"/>
+    <arg name="ID" default="21"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
+
+<group ns="iris_stereo_camera_22">
+    <!-- vehicle pose -->
+    <arg name="x" default="12"/>
+    <arg name="y" default="12"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="iris_stereo_camera"/>
+    <arg name="ID" default="22"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
+
+<group ns="iris_stereo_camera_23">
+    <!-- vehicle pose -->
+    <arg name="x" default="15"/>
+    <arg name="y" default="12"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="iris_stereo_camera"/>
+    <arg name="ID" default="23"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
+
+<group ns="iris_stereo_camera_24">
+    <!-- vehicle pose -->
+    <arg name="x" default="0"/>
+    <arg name="y" default="15"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="iris_stereo_camera"/>
+    <arg name="ID" default="24"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
+
+<group ns="iris_stereo_camera_25">
+    <!-- vehicle pose -->
+    <arg name="x" default="3"/>
+    <arg name="y" default="15"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="iris_stereo_camera"/>
+    <arg name="ID" default="25"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
+
+<group ns="iris_stereo_camera_26">
+    <!-- vehicle pose -->
+    <arg name="x" default="6"/>
+    <arg name="y" default="15"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="iris_stereo_camera"/>
+    <arg name="ID" default="26"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
+
+<group ns="iris_stereo_camera_27">
+    <!-- vehicle pose -->
+    <arg name="x" default="9"/>
+    <arg name="y" default="15"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="iris_stereo_camera"/>
+    <arg name="ID" default="27"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
+
+<group ns="iris_stereo_camera_28">
+    <!-- vehicle pose -->
+    <arg name="x" default="12"/>
+    <arg name="y" default="15"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="iris_stereo_camera"/>
+    <arg name="ID" default="28"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
+
+<group ns="iris_stereo_camera_29">
+    <!-- vehicle pose -->
+    <arg name="x" default="15"/>
+    <arg name="y" default="15"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="iris_stereo_camera"/>
+    <arg name="ID" default="29"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
+
+<group ns="iris_stereo_camera_30">
+    <!-- vehicle pose -->
+    <arg name="x" default="0"/>
+    <arg name="y" default="18"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="iris_stereo_camera"/>
+    <arg name="ID" default="30"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
+
+<group ns="iris_stereo_camera_31">
+    <!-- vehicle pose -->
+    <arg name="x" default="3"/>
+    <arg name="y" default="18"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="iris_stereo_camera"/>
+    <arg name="ID" default="31"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
+
+<group ns="iris_stereo_camera_32">
+    <!-- vehicle pose -->
+    <arg name="x" default="6"/>
+    <arg name="y" default="18"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="iris_stereo_camera"/>
+    <arg name="ID" default="32"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
+
+<group ns="iris_stereo_camera_33">
+    <!-- vehicle pose -->
+    <arg name="x" default="9"/>
+    <arg name="y" default="18"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="iris_stereo_camera"/>
+    <arg name="ID" default="33"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
+
+<group ns="iris_stereo_camera_34">
+    <!-- vehicle pose -->
+    <arg name="x" default="12"/>
+    <arg name="y" default="18"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="iris_stereo_camera"/>
+    <arg name="ID" default="34"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
+
+<group ns="iris_stereo_camera_35">
+    <!-- vehicle pose -->
+    <arg name="x" default="15"/>
+    <arg name="y" default="18"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="iris_stereo_camera"/>
+    <arg name="ID" default="35"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
 </launch>
 <!--the launch file is generated by XTDrone multi-vehicle generator.py  -->

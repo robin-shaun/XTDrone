@@ -2,10 +2,11 @@ from jinja2 import Template
 
 class Body_Param:
 
-    def __init__(self,x,y,vehicle,ID) -> None:
+    def __init__(self,x,y,vehicle,sdf,ID) -> None:
         self.x = x
         self.y = y
         self.vehicle = vehicle
+        self.sdf = sdf
         self.ID = ID
     
 
@@ -20,9 +21,10 @@ body_temp_str = '''
     <arg name="P" default="0"/>
     <arg name="Y" default="0"/>
     <arg name="vehicle" default="{{ params.vehicle }}"/>
+    <arg name="sdf" default="{{ params.sdf }}"/>
     <arg name="ID" default="{{params.ID}}"/>
     <!-- generate sdf vehicle model -->
-    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg vehicle)/$(arg vehicle).sdf"/>
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg sdf)/$(arg sdf).sdf"/>
     <!-- spawn vehicle -->
     <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
 </group>
@@ -127,12 +129,18 @@ with open('multi_vehicle.launch','w') as f:
     for type_id in range(8):
         type_num = num_of_type[type_id]
         row_in_type = row_of_type[type_id]
-        sdf_name = ID_TYPE_DICT[type_id]    
+        sdf_name = ID_TYPE_DICT[type_id] 
+
+        if "h480" in sdf_name or "vtol" in sdf_name or "plane_gimbal" in sdf_name:
+            type_name = sdf_name.split('_')[0]+'_'+sdf_name.split('_')[1]
+        else:
+            type_name = sdf_name.split('_')[0]
+
         if type_num > 0:
             for id_in_type in range(0,type_num):
                 x = (row_in_all*3 +(id_in_type%row_in_type )*3)
                 y = (( id_in_type//row_in_type +1)*3  ) 
-                body_lines_param = Body_Param(x,y,sdf_name,id_in_type)
+                body_lines_param = Body_Param(x,y,type_name,sdf_name,id_in_type)
                 body_lines = body_template.render(params=body_lines_param)
                 f.write(body_lines)
                 id_in_all+=1           

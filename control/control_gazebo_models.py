@@ -18,7 +18,7 @@ def pose_publisher():
         poses_msg.pose[i].position.x  = i / row_num
         poses_msg.pose[i].position.y = i % row_num
         poses_msg.pose[i].position.z = 3
-    f = 10
+    f = 20
     v = 0.5
     rate = rospy.Rate(f)
     while not rospy.is_shutdown():

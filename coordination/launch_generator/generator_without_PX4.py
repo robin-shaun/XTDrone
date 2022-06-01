@@ -121,7 +121,7 @@ sum_of_row = sum(row_of_type)
 
 body_template= Template(body_temp_str)
 
-with open('multi_vehicle.launch','w') as f:
+with open('multi_vehicle_without_PX4.launch','w') as f:
     f.write(head_temp_str)
     row_in_all = 0
     row_in_all = 0

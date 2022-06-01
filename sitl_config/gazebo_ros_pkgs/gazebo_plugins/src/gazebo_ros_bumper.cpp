@@ -76,8 +76,7 @@ void GazeboRosBumper::Load(sensors::SensorPtr _parent, sdf::ElementPtr _sdf)
 
   this->robot_namespace_ = "";
   if (_sdf->HasElement("robotNamespace"))
-    this->robot_namespace_ =
-      _sdf->GetElement("robotNamespace")->Get<std::string>() + "/";
+    this->robot_namespace_ = GetRobotNamespace(_parent, _sdf, "Bumper");
 
   // "publishing contact/collisions to this topic name: "
   //   << this->bumper_topic_name_ << std::endl;

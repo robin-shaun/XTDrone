@@ -29,7 +29,7 @@ slam_gmapping
   #### start gmapping ############################################
 
   <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
-    <param name="base_frame" value='base_link/'/>
+    <param name="base_frame" value='base_link'/>
     <param name="map_udpate_interval" value="1.0"/>
     <param name="maxUrange" value="5.0"/>
     <param name="sigma" value="0.1"/>

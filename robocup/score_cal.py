@@ -3,7 +3,6 @@ import rospy
 import sys
 from std_msgs.msg import Int16,String
 from ros_actor_cmd_pose_plugin_msgs.msg import ActorInfo
-from mavros_msgs.msg import State
 from gazebo_msgs.srv import DeleteModel,GetModelState
 import time
 import cv2
@@ -100,7 +99,7 @@ if __name__ == "__main__":
     gimbal = 1
     sensor_cost = mono_cam * 5e2 + stereo_cam * 1e3 + laser1d * 2e2+ laser2d * 5e3 + laser3d * 2e4 + gimbal * 2e2
     
-    fall_detect = [0] * 6
+    # fall_detect = [0] * 6
     target_finish = 0
     score = (2 + target_finish) * 60 - sensor_cost * 3e-3
     rate = rospy.Rate(10)

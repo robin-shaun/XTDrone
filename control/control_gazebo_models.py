@@ -23,7 +23,7 @@ def pose_publisher():
     rate = rospy.Rate(f)
     while not rospy.is_shutdown():
         for i in range(vehicle_num):
-            poses_msg.pose[i].position.x = poses_msg.pose[i].position.x + 0.5 / f
+            poses_msg.pose[i].position.x = poses_msg.pose[i].position.x + v / f
         pub.publish(poses_msg)
         rate.sleep()
 if __name__ == '__main__':

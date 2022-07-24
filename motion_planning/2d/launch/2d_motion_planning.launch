@@ -7,7 +7,7 @@
   <arg name="open_rviz" default="true"/>
 
   <!-- Map server -->
-  <node pkg="map_server" name="map_server" type="map_server" args="$(arg motion_planning)/map/indoor3.yaml"/>
+  <!-- <node pkg="map_server" name="map_server" type="map_server" args="$(arg motion_planning)/map/mission1.yaml"/> -->
 
   <!-- move_base -->
   <include file="$(arg motion_planning)/launch/move_base.launch">

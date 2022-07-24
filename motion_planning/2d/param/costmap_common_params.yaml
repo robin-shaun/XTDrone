@@ -1,11 +1,28 @@
-obstacle_range: 1
-raytrace_range: 2
+robot_radius: 0.4
 
-robot_radius: 0.17
-
-inflation_radius: 1.0
-cost_scaling_factor: 2.0
-
-map_type: costmap
-observation_sources: iris_0/scan
-iris_0/scan: {sensor_frame: iris_0/laser_2d, data_type: LaserScan, topic: iris_0/scan, marking: true, clearing: true}
+  
+obstacle_layer:
+  enabled: true
+  combination_method: 1
+  track_unknown_space: true
+  min_obstacle_height: -5
+  max_obstacle_height: 10 
+  obstacle_range: 10
+  raytrace_range: 10 
+  observation_sources: laser_scan_sensor
+  laser_scan_sensor: {
+    data_type: LaserScan,
+    topic: /iris_0/scan,
+    marking: true,
+    clearing: true,
+    min_obstacle_height: -5,
+    max_obstacle_height: 10,
+  }
+  
+inflation_layer:
+  enabled: true
+  cost_scaling_factor: 5.0
+  inflation_radius: 1
+  
+static_layer:
+  enabled: true

@@ -26,6 +26,7 @@ if __name__ == '__main__':
     for i in range(vehicle_num):
         multi_pose_pub[i] = rospy.Publisher(vehicle_type+'_'+str(i)+'/mavros/vision_pose/pose', PoseStamped, queue_size=1)
         multi_speed_pub[i] = rospy.Publisher(vehicle_type+'_'+str(i)+'/mavros/vision_speed/speed', Vector3Stamped, queue_size=1)
+        print("Get " + vehicle_type + "_" + str(i) + " groundtruth pose")
     rate = rospy.Rate(30)
     while not rospy.is_shutdown():
         for i in range(vehicle_num):

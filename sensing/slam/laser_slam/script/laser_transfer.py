@@ -1,6 +1,5 @@
 import rospy
 from geometry_msgs.msg import PoseStamped
-from nav_msgs.msg import Odometry
 from tf2_ros import TransformListener, Buffer
 import sys
 from gazebo_msgs.msg import ModelStates
@@ -37,6 +36,21 @@ def hector_slam():
         pose_pub.publish(local_pose)
         rate.sleep()
         
+def cartographer():
+    global local_pose, height
+    rate = rospy.Rate(30)
+    while not rospy.is_shutdown():
+        try:
+            tfstamped = tfBuffer.lookup_transform('map', 'base_link', rospy.Time(0))
+        except:
+            continue
+        local_pose.header.stamp = rospy.Time().now()
+        local_pose.pose.position = tfstamped.transform.translation
+        local_pose.pose.position.z = height
+        local_pose.pose.orientation = tfstamped.transform.rotation
+        pose_pub.publish(local_pose)
+        rate.sleep()
+        
 def aloam():
     global local_pose
     rate = rospy.Rate(30)
@@ -52,10 +66,13 @@ def aloam():
         rate.sleep()
     
 if __name__ == '__main__':
-    if laser_slam_type == '2d':
+    if laser_slam_type == 'hector':
         gazebo_model_state_sub = rospy.Subscriber("/gazebo/model_states", ModelStates, gazebo_model_state_callback,queue_size=1)
         hector_slam()
-    elif laser_slam_type == '3d':
+    elif laser_slam_type == 'cartographer':
+        gazebo_model_state_sub = rospy.Subscriber("/gazebo/model_states", ModelStates, gazebo_model_state_callback,queue_size=1)
+        cartographer()
+    elif laser_slam_type == 'aloam':
         aloam()
     else:
         print('input error')

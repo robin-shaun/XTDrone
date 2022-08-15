@@ -3,7 +3,6 @@ import cv2
 import rospy
 from sensor_msgs.msg import Image
 from std_msgs.msg import Int16
-import matplotlib.pyplot as plt
 from cv_bridge import CvBridge
 bridge = CvBridge()
 

@@ -42,12 +42,12 @@ Sensors are included separately, based on the arguments passed to the xacro incl
 <gazebo reference="front_laser_link">
         <sensor type="ray" name="sick_lms291">
               <pose>0 0 0 0 0 0</pose>
-                   <visualize>false</visualize>
+                   <visualize>true</visualize>
                     <update_rate>75</update_rate>
                        <ray>
                            <scan>
                                 <horizontal>
-                                       <samples>180</samples>
+                                       <samples>512</samples>
                                            <resolution>1</resolution>
                                             <min_angle>-1.57</min_angle>
                                             <max_angle>1.57</max_angle>
@@ -72,7 +72,6 @@ Sensors are included separately, based on the arguments passed to the xacro incl
 			      <topicName>/$(arg roboname)/front_laser_points</topicName>
                     <update_rate>75</update_rate>
 			      <frameName>front_laser_link</frameName>
-			      <gaussianNoise>0.02</gaussianNoise>
                  </plugin>
       </sensor>
 </gazebo>

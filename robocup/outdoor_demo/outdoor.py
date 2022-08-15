@@ -11,7 +11,7 @@ import os
 world_file_path = ''
 actor_avoid_file_path = ''#actors_plugins/src
 output_path=''#output:outdoor.world  path:px4//Tools/sitl_gazebo/worlds
-rover_num=5
+rover_num=20
 
 def rand_x(num):
     if num>0.33 and num <0.66:

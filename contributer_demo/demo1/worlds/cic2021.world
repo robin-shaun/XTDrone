@@ -12667,8 +12667,30 @@
     </model>
     <model name='gas_station_73'>
       <static>1</static>
-      <pose frame=''>61.88 -30.82 0 0 -0 3.14</pose>
       <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <mesh>
+              <uri>model://gas_station/meshes/gas_station.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+
+        </collision>
+      <pose frame=''>61.88 -30.82 0 0 -0 3.14</pose>
+
         <visual name='visual'>
           <geometry>
             <mesh>

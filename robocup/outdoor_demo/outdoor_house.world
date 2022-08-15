@@ -87,6 +87,105 @@
       </link>
     </model>
 
+    <actor name="actor_0">
+      <skin>
+        <filename>model://walker/walk_0.dae</filename>
+        <scale>1.0</scale>
+      </skin>
+      <animation name="walking">
+        <filename>model://walker/walk_0.dae</filename>
+        <scale>1.000000</scale>
+        <interpolate_x>true</interpolate_x>
+      </animation>
+      <plugin name="actor1_plugin" filename="libros_actor_cmd_pose_plugin.so">
+        <init_pose>0 0 1.25 1.57 0 0</init_pose>
+        <animation_factor>5.1</animation_factor>
+      </plugin>
+    </actor>
+
+
+    <actor name="actor_1">
+      <skin>
+        <filename>model://walker/walk_1.dae</filename>
+        <scale>1.0</scale>
+      </skin>
+      <animation name="walking">
+        <filename>model://walker/walk_1.dae</filename>
+        <scale>1.000000</scale>
+        <interpolate_x>true</interpolate_x>
+      </animation>
+      <plugin name="actor2_plugin" filename="libros_actor_cmd_pose_plugin.so">
+        <init_pose>70 22 1.25 1.57 0 0</init_pose>
+        <animation_factor>5.1</animation_factor>
+      </plugin>
+    </actor>
+
+    <actor name="actor_2">
+      <skin>
+        <filename>model://walker/walk_2.dae</filename>
+        <scale>1.0</scale>
+      </skin>
+      <animation name="walking">
+        <filename>model://walker/walk_2.dae</filename>
+        <scale>1.000000</scale>
+        <interpolate_x>true</interpolate_x>
+      </animation>
+      <plugin name="actor2_plugin" filename="libros_actor_cmd_pose_plugin.so">
+        <init_pose>18 -18 1.25 1.57 0 0</init_pose>
+        <animation_factor>5.1</animation_factor>
+      </plugin>
+    </actor>
+
+    <actor name="actor_3">
+      <skin>
+        <filename>model://walker/walk_3.dae</filename>
+        <scale>1.0</scale>
+      </skin>
+      <animation name="walking">
+        <filename>model://walker/walk_3.dae</filename>
+        <scale>1.000000</scale>
+        <interpolate_x>true</interpolate_x>
+      </animation>
+      <plugin name="actor3_plugin" filename="libros_actor_cmd_pose_plugin.so">
+        <init_pose>72 32 1.25 1.57 0 0</init_pose>
+        <animation_factor>5.1</animation_factor>
+      </plugin>
+    </actor>
+
+    <actor name="actor_4">
+      <skin>
+        <filename>model://walker/walk_4.dae</filename>
+        <scale>1.0</scale>
+      </skin>
+      <animation name="walking">
+        <filename>model://walker/walk_4.dae</filename>
+        <scale>1.000000</scale>
+        <interpolate_x>true</interpolate_x>
+      </animation>
+      <plugin name="actor4_plugin" filename="libros_actor_cmd_pose_plugin.so">
+        <init_pose>-32 -27 1.25 1.57 0 0</init_pose>
+        <animation_factor>5.1</animation_factor>
+      </plugin>
+    </actor>
+
+    <actor name="actor_5">
+      <skin>
+        <filename>model://walker/walk_5.dae</filename>
+        <scale>1.0</scale>
+      </skin>
+      <animation name="walking">
+        <filename>model://walker/walk_5.dae</filename>
+        <scale>1.000000</scale>
+        <interpolate_x>true</interpolate_x>
+      </animation>
+      <plugin name="actor5_plugin" filename="libros_actor_cmd_pose_plugin.so">
+        <init_pose>-35 -28 1.25 1.57 0 0</init_pose>
+        <animation_factor>5.1</animation_factor>
+      </plugin>
+    </actor>
+
+
+
     <model name='city_terrain_1'>
       <static>1</static>
       <link name='link'>
@@ -1960,7 +2059,7 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>61.74 22.76 0 0 0 -3.14</pose>
+<pose frame=''>-27.5 25.5 0 0 0 -1.57</pose>
     </model>
     <model name='house_1_67'>
       <static>1</static>
@@ -2008,7 +2107,7 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>86.62 27.93 0 0 -0 3.14</pose>
+<pose frame=''>-27.5 25.5 0 0 -0 3.14</pose>
     </model>
     <model name='house_3_68'>
       <static>1</static>
@@ -2057,7 +2156,7 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>96.43 14.14 0 0 -0 0</pose>
+<pose frame=''>-27.5 25.5 0 0 -0 0</pose>
     </model>
     <model name='house_2_71'>
       <static>1</static>
@@ -2106,7 +2205,7 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>76.71 13.4 0 0 -0 0</pose>
+<pose frame=''>-27.5 25.5 0 0 -0 0</pose>
     </model>
     <model name='gas_station_73'>
       <static>1</static>
@@ -2132,7 +2231,7 @@
             </friction>
 
         </collision>
-      <pose frame=''>61.88 -30.82 0 0 -0 3.14</pose>
+<pose frame=''>-27.5 25.5 0 0 -0 3.14</pose>
 
         <visual name='visual'>
           <geometry>
@@ -2260,7 +2359,7 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>28.25 -13.93 0 0 -0 0</pose>
+<pose frame=''>-27.5 25.5 0 0 -0 0</pose>
     </model>
     <model name='dumpster_94'>
       <link name='link'>
@@ -2401,7 +2500,7 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>1.61 -14.15 0 0 -0 3.14</pose>
+<pose frame=''>-27.5 25.5 0 0 -0 3.14</pose>
     </model>
     <model name='house_2_126'>
       <static>1</static>
@@ -2450,7 +2549,7 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>-0.59 -26.6 0 0 0 -1.57</pose>
+<pose frame=''>-27.5 25.5 0 0 0 -1.57</pose>
     </model>
     <model name='house_1_146'>
       <static>1</static>
@@ -2498,7 +2597,7 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>-27.49 25.344 0 0 0 -1.57</pose>
+<pose frame=''>-27.5 25.5 0 0 0 -1.57</pose>
     </model>
     <model name='cardboard_box_152'>
       <pose frame=''>-32 8 0 0 -0 0</pose>
@@ -2604,7 +2703,7 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>-33.39 -21.3 0 0 0 -1.57</pose>
+<pose frame=''>-27.5 25.5 0 0 0 -1.57</pose>
     </model>
     <model name='house_3_157'>
       <static>1</static>
@@ -2653,7 +2752,7 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>-28.126 -32.93 0 0 -0 0</pose>
+<pose frame=''>-27.5 25.5 0 0 -0 0</pose>
     </model>
     <model name='house_3_158'>
       <static>1</static>
@@ -2702,7 +2801,7 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>-25.739 -19.38 0 0 -0 1.57</pose>
+<pose frame=''>-27.5 25.5 0 0 -0 1.57</pose>
     </model>
     <model name='fire_hydrant_166'>
       <static>1</static>
@@ -3159,7 +3258,7 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>12 3.7 0 0 -0 0</pose>
+      <pose frame=''>9 3.7 0 0 -0 0</pose>
     </model>
     <model name='lamp_post_193'>
       <static>1</static>
@@ -3235,7 +3334,7 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>30 3.7 0 0 -0 0</pose>
+      <pose frame=''>27 3.7 0 0 -0 0</pose>
     </model>
     <model name='lamp_post_195'>
       <static>1</static>
@@ -3405,26 +3504,6 @@
       <real_time>1519 904767261</real_time>
       <wall_time>1581412925 146493851</wall_time>
       <iterations>287494</iterations>
-      <model name='Big box 2'>
-        <pose frame=''>8.48839 32.9364 0.749498 0 -0.000831 -1.7e-05</pose>
-        <scale>1 1 1</scale>
-        <link name='link'>
-          <pose frame=''>8.48839 32.9364 0.749498 0 -0.000831 -1.7e-05</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>-0.00269 0.194101 -0.000901 -0.258758 -0.003587 -0.000129</acceleration>
-          <wrench>-0.10762 7.76405 -0.036028 0 -0 0</wrench>
-        </link>
-      </model>
-      <model name='Big box 4'>
-        <pose frame=''>1.63474 29.107 0.624499 0 0.000832 -1.2e-05</pose>
-        <scale>1 1 1</scale>
-        <link name='link'>
-          <pose frame=''>1.63474 29.107 0.624499 0 0.000832 -1.2e-05</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>-0.020436 -0.144197 0.006579 0.230646 -0.032691 -0.000103</acceleration>
-          <wrench>-0.817458 -5.76786 0.263155 0 -0 0</wrench>
-        </link>
-      </model>
       <model name='EuroPallet'>
         <pose frame=''>14.2768 34.2177 0.063476 -0 -3.9e-05 0.003402</pose>
         <scale>1 1 1</scale>
@@ -3485,69 +3564,6 @@
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
-
-    <actor name='actor1'>
-      <skin>
-        <filename>walk.dae</filename>
-        <scale>1.0</scale>
-      </skin>
-      <animation name='walking'>
-        <filename>walk.dae</filename>
-        <scale>1.0</scale>
-        <interpolate_x>1</interpolate_x>
-      </animation>
-      <plugin name="actor_plugin" filename="libActorPlugin.so">
-      </plugin>
-    </actor>
-
-    <actor name='actor2'>
-      <skin>
-        <filename>walk.dae</filename>
-        <scale>1.0</scale>
-      </skin>
-      <animation name='walking'>
-        <filename>walk.dae</filename>
-        <scale>1.0</scale>
-        <interpolate_x>1</interpolate_x>
-      </animation>
-    </actor>
-    <actor name='actor3'>
-      <skin>
-        <filename>moonwalk.dae</filename>
-        <scale>1.0</scale>
-      </skin>
-      <animation name='running'>
-        <filename>run.dae</filename>
-        <scale>1.0</scale>
-        <interpolate_x>1</interpolate_x>
-      </animation>
-    </actor>
-    <actor name='actor4'>
-      <skin>
-        <filename>moonwalk.dae</filename>
-        <scale>1.0</scale>
-      </skin>
-      <animation name='standing up'>
-        <filename>stand.dae</filename>
-        <scale>1.0</scale>
-        <interpolate_x>1</interpolate_x>
-      </animation>
-    </actor>
-    <actor name='actor5'>
-      <skin>
-        <filename>moonwalk.dae</filename>
-        <scale>1.0</scale>
-      </skin>
-      <animation name='sitting down'>
-        <filename>sitting.dae</filename>
-        <scale>1.0</scale>
-        <interpolate_x>1</interpolate_x>
-      </animation>
-    </actor>
-
-
-
-
 
       <!--
       <model name='arrow_red'>
@@ -3682,10 +3698,10 @@
         </link>
       </model>
       <model name='fast_food_93'>
-        <pose frame=''>28.25 -13.93 0 0 -0 0</pose>
+<pose frame=''>87 22 3.15931 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose frame=''>28.25 -13.93 3.15931 0 -0 0</pose>
+<pose frame=''>87 22 3.15931 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -3782,10 +3798,10 @@
         </link>
       </model>
       <model name='gas_station_73'>
-        <pose frame=''>61.88 -30.82 0 0 -0 3.14</pose>
+<pose frame=''>6 14 0 0 -0 3.14</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose frame=''>61.88 -30.82 0 0 -0 3.14</pose>
+<pose frame=''>6 14 0 0 -0 3.14</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -3802,110 +3818,110 @@
         </link>
       </model>
       <model name='house_1_146'>
-        <pose frame=''>-27.49 25.344 0 0 0 -1.57</pose>
+<pose frame=''>-27.5 25.5 0 0 0 -1.57</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose frame=''>-27.49 25.344 0 0 0 -1.57</pose>
+<pose frame=''>-27.5 25.5 0 0 0 -1.57</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
       <model name='house_1_146_clone'>
-        <pose frame=''>8.9955 22.0454 0 0 -0 0.0116</pose>
+<pose frame=''>63 -14 0 0 -0 0.0116</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose frame=''>8.9955 22.0454 0 0 -0 0.0116</pose>
+<pose frame=''>63 -14 0 0 -0 0.0116</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
       <model name='house_1_66'>
-        <pose frame=''>61.74 22.76 0 0 0 -3.14</pose>
+<pose frame=''>27 -16 0 0 0 -1.57</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose frame=''>61.74 22.76 0 0 0 -3.14</pose>
+<pose frame=''>27 -16 0 0 0 -1.57</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
       <model name='house_1_67'>
-        <pose frame=''>86.62 27.93 0 0 -0 3.14</pose>
+<pose frame=''>82 -17 0 0 -0 3.14</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose frame=''>86.62 27.93 0 0 -0 3.14</pose>
+<pose frame=''>82 -17 0 0 -0 3.14</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
       <model name='house_2_125'>
-        <pose frame=''>1.61 -14.15 0 0 -0 3.14</pose>
+<pose frame=''>28 23 0 0 -0 3.14</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose frame=''>1.61 -14.15 0 0 -0 3.14</pose>
+<pose frame=''>28 23 0 0 -0 3.14</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
       <model name='house_2_126'>
-        <pose frame=''>-0.59 -26.6 0 0 0 -1.57</pose>
+<pose frame=''>62 25 0 0 0 -1.57</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose frame=''>-0.59 -26.6 0 0 0 -1.57</pose>
+<pose frame=''>62 25 0 0 0 -1.57</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
       <model name='house_2_71'>
-        <pose frame=''>76.71 13.4 0 0 -0 0</pose>
+<pose frame=''>10 -28 0 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose frame=''>76.71 13.4 0 0 -0 0</pose>
+<pose frame=''>10 -28 0 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
       <model name='house_3_156'>
-        <pose frame=''>-33.39 -21.3 0 0 0 -1.57</pose>
+<pose frame=''>-33.4 -21.4 0 0 0 -1.57</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose frame=''>-33.39 -21.3 0 0 0 -1.57</pose>
+<pose frame=''>-33.4 -21.4 0 0 0 -1.57</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
       <model name='house_3_157'>
-        <pose frame=''>-28.126 -32.93 0 0 -0 0</pose>
+<pose frame=''>-28.2 -33 0 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose frame=''>-28.126 -32.93 0 0 -0 0</pose>
+<pose frame=''>-28.2 -33 0 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
       <model name='house_3_158'>
-        <pose frame=''>-25.739 -19.38 0 0 -0 1.57</pose>
+<pose frame=''>-25.8 -19.4 0 0 -0 1.57</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose frame=''>-25.739 -19.38 0 0 -0 1.57</pose>
+<pose frame=''>-25.8 -19.4 0 0 -0 1.57</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
       <model name='house_3_68'>
-        <pose frame=''>96.43 14.14 0 0 -0 0</pose>
+<pose frame=''>4 -14 0 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose frame=''>96.43 14.14 0 0 -0 0</pose>
+<pose frame=''>4 -14 0 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -3942,10 +3958,10 @@
         </link>
       </model>
       <model name='lamp_post_192'>
-        <pose frame=''>12 3.7 0 0 -0 0</pose>
+        <pose frame=''>9 3.7 0 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose frame=''>12 3.7 0 0 -0 0</pose>
+          <pose frame=''>9 3.7 0 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -3962,10 +3978,10 @@
         </link>
       </model>
       <model name='lamp_post_194'>
-        <pose frame=''>30 3.7 0 0 -0 0</pose>
+        <pose frame=''>27 3.7 0 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose frame=''>30 3.7 0 0 -0 0</pose>
+          <pose frame=''>27 3.7 0 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -4461,16 +4477,7 @@
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
-      <model name='unit_cylinder'>
-        <pose frame=''>20.6722 33.4177 0.49998 0 -0 0</pose>
-        <scale>1 1 1</scale>
-        <link name='link'>
-          <pose frame=''>20.6722 33.4177 0.49998 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 -9.8 -0 -0 -0</acceleration>
-          <wrench>0 0 -9.8 0 -0 0</wrench>
-        </link>
-      </model>
+
       <light name='sun'>
         <pose frame=''>0 0 1000 0 -0 0</pose>
       </light>
@@ -4527,8 +4534,9 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>8.9955 22.0454 0 0 0 0</pose>
+<pose frame=''>-27.5 25.5 0 0 0 -1.57</pose>
     </model>
+<!--
     <model name='House'>
       <static>1</static>
       <pose frame=''>29.9646 19.6954 0.036 0 -0 0</pose>
@@ -4576,7 +4584,7 @@
         <kinematic>0</kinematic>
       </link>
     </model>
-
+-->
     <model name='casual_female'>
       <static>1</static>
       <link name='link'>
@@ -4614,108 +4622,6 @@
         <kinematic>0</kinematic>
       </link>
       <pose frame=''>-26.902 13.6572 0 0 -0 0</pose>
-    </model>
-    <model name='Big box 4'>
-      <pose frame=''>1.63426 29.107 0.625 0 -0 0</pose>
-      <static>0</static>
-      <link name='link'>
-        <inertial>
-          <mass>40</mass>
-          <inertia>
-            <ixx>1</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>1</iyy>
-            <iyz>0</iyz>
-            <izz>1</izz>
-          </inertia>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-        </inertial>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>1.2 0.8 1.25</size>
-            </box>
-          </geometry>
-
-            <contact>
-              <ode>
-                <max_vel>0.1</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://big_box4/meshes/big_box.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-    </model>
-    <model name='Big box 2'>
-      <pose frame=''>8.48888 32.9364 0.75 0 -0 0</pose>
-      <static>0</static>
-      <link name='link'>
-        <inertial>
-          <mass>40</mass>
-          <inertia>
-            <ixx>1</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>1</iyy>
-            <iyz>0</iyz>
-            <izz>1</izz>
-          </inertia>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-        </inertial>
-        <collision name='collision'>
-          <geometry>
-            <box>
-              <size>1.2 0.8 1.5</size>
-            </box>
-          </geometry>
-
-            <contact>
-              <ode>
-                <max_vel>0.1</max_vel>
-                <min_depth>0.001</min_depth>
-              </ode>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://big_box2/meshes/big_box.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
     </model>
     <model name='EuroPallet'>
       <pose frame=''>14.2768 34.2121 0.0635 0 -0 0</pose>
@@ -5018,61 +4924,7 @@
         <kinematic>0</kinematic>
       </link>
     </model>
-    <model name='unit_cylinder'>
-      <pose frame=''>20.6722 33.4177 0.5 0 -0 0</pose>
-      <link name='link'>
-        <inertial>
-          <mass>1</mass>
-          <inertia>
-            <ixx>0.145833</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.145833</iyy>
-            <iyz>0</iyz>
-            <izz>0.125</izz>
-          </inertia>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-        </inertial>
-        <collision name='collision'>
-          <geometry>
-            <cylinder>
-              <radius>0.5</radius>
-              <length>1</length>
-            </cylinder>
-          </geometry>
-          <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <cylinder>
-              <radius>0.5</radius>
-              <length>1</length>
-            </cylinder>
-          </geometry>
-          <material>
-            <script>
-              <name>Gazebo/Grey</name>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-    </model>
     <model name='Shelves high'>
       <static>1</static>
       <link name='link'>
@@ -6225,3 +6077,4 @@
     </model>
   </world>
 </sdf>
+

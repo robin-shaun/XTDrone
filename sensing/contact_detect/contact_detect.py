@@ -1,7 +1,6 @@
 import rospy
 from gazebo_msgs.msg import ContactsState
 import sys
-a = ContactsState()
 vehicle_type = sys.argv[1]
 vehicle_num = int(sys.argv[2])
 

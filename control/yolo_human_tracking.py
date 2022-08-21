@@ -2,10 +2,8 @@ import rospy
 from geometry_msgs.msg import Twist, PoseStamped
 from std_msgs.msg import String
 import sys 
-sys.path.append('/home/robin/catkin_ws/devel/lib/python2.7/dist-packages')
 from pyquaternion import Quaternion
 from darknet_ros_msgs.msg import BoundingBoxes
-import time
 import math
 
 def darknet_callback(data):

@@ -173,11 +173,11 @@ class ControlActor:
                     self.avoid.x = copy.deepcopy(middd_pos[0].x)
                     self.avoid.y = copy.deepcopy(middd_pos[0].y)
                     #self.avoid_start_flag = True
-                    if self.id == '5' or self.id == '4':
-                        print self.id+' general change position'
-                        print 'current_position:   ' + self.id+'      ', self.current_pose
-                        print 'middd_pos:     '+ self.id+'      ', middd_pos
-                        print '\n'
+                    if (self.id == '5' or self.id == '4'):
+                        print(self.id+' general change position')
+                        print('current_position:   ' + self.id+'      ', self.current_pose)
+                        print('middd_pos:     '+ self.id+'      ', middd_pos)
+                        print('\n')
                 except:
                     dis_list = [0,0,0,0]
                     for i in range(len(self.black_box)):
@@ -203,11 +203,11 @@ class ControlActor:
                                     self.avoid.y = self.black_box[i][1][1] + 1.0
                                     self.avoid.x = self.current_pose.x
                                 break
-                    if self.id == '5' or self.id == '4':
-                        print self.id+'change position except'
-                        print 'current_position:   ' + self.id+'      ', self.current_pose
-                        print 'target_motion:     '+ self.id+'      ', self.target_motion
-                        print '\n'
+                    if(self.id == '5' or self.id == '4'):
+                        print(self.id+'change position except')
+                        print('current_position:   ' + self.id+'      ', self.current_pose)
+                        print('target_motion:     '+ self.id+'      ', self.target_motion)
+                        print('\n')
                 self.avoid_finish_flag = False
 
             distance = (self.current_pose.x - self.avoid.x) ** 2 + (
@@ -249,7 +249,7 @@ class ControlActor:
             if self.catching_flag == 1:
                 flag_k = 0
                 angle = self.pos2ang(self.gazebo_uav_twist[self.catching_uav_num].x,self.gazebo_uav_twist[self.catching_uav_num].y)
-                print 'angle:   ', angle
+                print('angle:   ', angle)
                 tar_angle = angle - math.pi/2   # escape to the target vertical of the uav
                 if tar_angle == math.pi/2:
                     flag_k = 1
@@ -257,7 +257,7 @@ class ControlActor:
                     flag_k = 2
                 else:
                     k = math.tan(tar_angle) 
-                    print 'k:   ', k
+                    print('k:   ', k)
                 if (tar_angle < 0) and (flag_k == 0):
                     y = k*(self.x_max-self.gazebo_uav_pose[self.catching_uav_num].x)+self.gazebo_uav_pose[self.catching_uav_num].y
                     if y < self.y_min:
@@ -297,11 +297,11 @@ class ControlActor:
                     self.target_motion.x = self.gazebo_uav_pose[self.catching_uav_num].x
                     self.target_motion.y = self.y_min
                 if self.id == 5:
-                    print self.id + '   self.curr_pose:', self.gazebo_uav_pose[self.catching_uav_num]
-                    print self.id + '   self.target_motion:', self.target_motion
-                    print 'escaping change position'
+                    print(self.id + '   self.curr_pose:', self.gazebo_uav_pose[self.catching_uav_num])
+                    print(self.id + '   self.target_motion:', self.target_motion)
+                    print('escaping change position')
                 try:
-                    print self.id+'general change position'
+                    print(self.id+'general change position')
                     self.subtarget_pos = self.Obstacleavoid.GetPointList(self.current_pose, self.target_motion, 1) # current pose, target pose, safe distance
                     self.subtarget_length = 1
                     # middd_pos = [Point() for k in range(self.subtarget_length)]
@@ -356,7 +356,7 @@ class ControlActor:
             #reduce difficulty
             self.avoid.v = 1
             if self.id == 5:
-                print 'self.avoid:', self.avoid
+                print('self.avoid:', self.avoid)
             self.cmd_pub.publish(self.avoid)
             rate.sleep()
 

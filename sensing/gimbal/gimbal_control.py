@@ -36,8 +36,8 @@ if __name__ == "__main__":
         mountCnt.publish(msg)
         try:
             response = gazeboLinkstate(vehicle_type+'_'+vehicle_id+'::cgo3_camera_link','ground_plane')
-        except rospy.ServiceException, e:
-            print "Gazebo model state service call failed: %s"%e
+        except:
+            print("Gazebo model state service call failed")
         cam_pose.header.stamp = rospy.Time.now()
         cam_pose.pose = response.link_state.pose
         cam_pose_pub.publish(cam_pose)

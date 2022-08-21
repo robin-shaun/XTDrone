@@ -3698,10 +3698,10 @@
         </link>
       </model>
       <model name='fast_food_93'>
-<pose frame=''>87 22 3.15931 0 -0 0</pose>
+<pose frame=''>69 24 3.15931 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-<pose frame=''>87 22 3.15931 0 -0 0</pose>
+<pose frame=''>69 24 3.15931 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -3798,10 +3798,10 @@
         </link>
       </model>
       <model name='gas_station_73'>
-<pose frame=''>6 14 0 0 -0 3.14</pose>
+<pose frame=''>16 14 0 0 -0 3.14</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-<pose frame=''>6 14 0 0 -0 3.14</pose>
+<pose frame=''>16 14 0 0 -0 3.14</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -3828,60 +3828,60 @@
         </link>
       </model>
       <model name='house_1_146_clone'>
-<pose frame=''>63 -14 0 0 -0 0.0116</pose>
+<pose frame=''>11 -25 0 0 -0 0.0116</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-<pose frame=''>63 -14 0 0 -0 0.0116</pose>
+<pose frame=''>11 -25 0 0 -0 0.0116</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
       <model name='house_1_66'>
-<pose frame=''>27 -16 0 0 0 -1.57</pose>
+<pose frame=''>63 -19 0 0 0 -1.57</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-<pose frame=''>27 -16 0 0 0 -1.57</pose>
+<pose frame=''>63 -19 0 0 0 -1.57</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
       <model name='house_1_67'>
-<pose frame=''>82 -17 0 0 -0 3.14</pose>
+<pose frame=''>93 -17 0 0 -0 3.14</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-<pose frame=''>82 -17 0 0 -0 3.14</pose>
+<pose frame=''>93 -17 0 0 -0 3.14</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
       <model name='house_2_125'>
-<pose frame=''>28 23 0 0 -0 3.14</pose>
+<pose frame=''>30 -26 0 0 -0 3.14</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-<pose frame=''>28 23 0 0 -0 3.14</pose>
+<pose frame=''>30 -26 0 0 -0 3.14</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
       <model name='house_2_126'>
-<pose frame=''>62 25 0 0 0 -1.57</pose>
+<pose frame=''>28 -14 0 0 0 -1.57</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-<pose frame=''>62 25 0 0 0 -1.57</pose>
+<pose frame=''>28 -14 0 0 0 -1.57</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
       <model name='house_2_71'>
-<pose frame=''>10 -28 0 0 -0 0</pose>
+<pose frame=''>92 25 0 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-<pose frame=''>10 -28 0 0 -0 0</pose>
+<pose frame=''>92 25 0 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -3918,10 +3918,10 @@
         </link>
       </model>
       <model name='house_3_68'>
-<pose frame=''>4 -14 0 0 -0 0</pose>
+<pose frame=''>95 15 0 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-<pose frame=''>4 -14 0 0 -0 0</pose>
+<pose frame=''>95 15 0 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>

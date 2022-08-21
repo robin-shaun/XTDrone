@@ -2460,7 +2460,7 @@
       </joint>
       <static>1</static>
       <allow_auto_disable>0</allow_auto_disable>
- <pose frame=''>65 -45 -0.161234 -0.001128 -0.015612 3.09415</pose>
+ <pose frame=''>51 47 -0.161234 -0.001128 -0.015612 3.09415</pose>
     </model>
 <model name='rover_static_clone_clone_10_clone_clone_1'>
         <pose frame=''>-2.83005 -45.0898 -0.161234 -0.001128 -0.015612 3.09415</pose>
@@ -4976,7 +4976,7 @@
       </joint>
       <static>1</static>
       <allow_auto_disable>0</allow_auto_disable>
- <pose frame=''>-13 -32 -0.161234 -0.001128 -0.015612 3.09415</pose>
+ <pose frame=''>-39 -43 -0.161234 -0.001128 -0.015612 3.09415</pose>
     </model>
 <model name='rover_static_clone_clone_10_clone_clone_2'>
         <pose frame=''>-2.83005 -45.0898 -0.161234 -0.001128 -0.015612 3.09415</pose>
@@ -7492,7 +7492,7 @@
       </joint>
       <static>1</static>
       <allow_auto_disable>0</allow_auto_disable>
- <pose frame=''>120 20 -0.161234 -0.001128 -0.015612 3.09415</pose>
+ <pose frame=''>-15 19 -0.161234 -0.001128 -0.015612 3.09415</pose>
     </model>
 <model name='rover_static_clone_clone_10_clone_clone_3'>
         <pose frame=''>-2.83005 -45.0898 -0.161234 -0.001128 -0.015612 3.09415</pose>
@@ -10008,7 +10008,7 @@
       </joint>
       <static>1</static>
       <allow_auto_disable>0</allow_auto_disable>
- <pose frame=''>88 0 -0.161234 -0.001128 -0.015612 3.09415</pose>
+ <pose frame=''>-16 10 -0.161234 -0.001128 -0.015612 3.09415</pose>
     </model>
 <model name='rover_static_clone_clone_10_clone_clone_4'>
         <pose frame=''>-2.83005 -45.0898 -0.161234 -0.001128 -0.015612 3.09415</pose>
@@ -12524,7 +12524,7 @@
       </joint>
       <static>1</static>
       <allow_auto_disable>0</allow_auto_disable>
- <pose frame=''>35 -2 -0.161234 -0.001128 -0.015612 3.09415</pose>
+ <pose frame=''>119 -7 -0.161234 -0.001128 -0.015612 3.09415</pose>
     </model>
 <model name='rover_static_clone_clone_10_clone_clone_5'>
         <pose frame=''>-2.83005 -45.0898 -0.161234 -0.001128 -0.015612 3.09415</pose>
@@ -15040,7 +15040,7 @@
       </joint>
       <static>1</static>
       <allow_auto_disable>0</allow_auto_disable>
- <pose frame=''>122 -13 -0.161234 -0.001128 -0.015612 3.09415</pose>
+ <pose frame=''>120 36 -0.161234 -0.001128 -0.015612 3.09415</pose>
     </model>
 <model name='rover_static_clone_clone_10_clone_clone_6'>
         <pose frame=''>-2.83005 -45.0898 -0.161234 -0.001128 -0.015612 3.09415</pose>
@@ -17556,7 +17556,7 @@
       </joint>
       <static>1</static>
       <allow_auto_disable>0</allow_auto_disable>
- <pose frame=''>-16 19 -0.161234 -0.001128 -0.015612 3.09415</pose>
+ <pose frame=''>51 -44 -0.161234 -0.001128 -0.015612 3.09415</pose>
     </model>
 <model name='rover_static_clone_clone_10_clone_clone_7'>
         <pose frame=''>-2.83005 -45.0898 -0.161234 -0.001128 -0.015612 3.09415</pose>
@@ -20072,7 +20072,7 @@
       </joint>
       <static>1</static>
       <allow_auto_disable>0</allow_auto_disable>
- <pose frame=''>112 -14 -0.161234 -0.001128 -0.015612 3.09415</pose>
+ <pose frame=''>34 -43 -0.161234 -0.001128 -0.015612 3.09415</pose>
     </model>
 <model name='rover_static_clone_clone_10_clone_clone_8'>
         <pose frame=''>-2.83005 -45.0898 -0.161234 -0.001128 -0.015612 3.09415</pose>
@@ -22588,7 +22588,7 @@
       </joint>
       <static>1</static>
       <allow_auto_disable>0</allow_auto_disable>
- <pose frame=''>-35 43 -0.161234 -0.001128 -0.015612 3.09415</pose>
+ <pose frame=''>42 33 -0.161234 -0.001128 -0.015612 3.09415</pose>
     </model>
 <model name='rover_static_clone_clone_10_clone_clone_9'>
         <pose frame=''>-2.83005 -45.0898 -0.161234 -0.001128 -0.015612 3.09415</pose>
@@ -25104,7 +25104,7 @@
       </joint>
       <static>1</static>
       <allow_auto_disable>0</allow_auto_disable>
- <pose frame=''>54 43 -0.161234 -0.001128 -0.015612 3.09415</pose>
+ <pose frame=''>-11 35 -0.161234 -0.001128 -0.015612 3.09415</pose>
     </model>
 <model name='rover_static_clone_clone_10_clone_clone_10'>
         <pose frame=''>-2.83005 -45.0898 -0.161234 -0.001128 -0.015612 3.09415</pose>
@@ -27620,7 +27620,7 @@
       </joint>
       <static>1</static>
       <allow_auto_disable>0</allow_auto_disable>
- <pose frame=''>-11 47 -0.161234 -0.001128 -0.015612 3.09415</pose>
+ <pose frame=''>-11 1 -0.161234 -0.001128 -0.015612 3.09415</pose>
     </model>
 <model name='rover_static_clone_clone_10_clone_clone_11'>
         <pose frame=''>-2.83005 -45.0898 -0.161234 -0.001128 -0.015612 3.09415</pose>
@@ -30136,7 +30136,7 @@
       </joint>
       <static>1</static>
       <allow_auto_disable>0</allow_auto_disable>
- <pose frame=''>118 13 -0.161234 -0.001128 -0.015612 3.09415</pose>
+ <pose frame=''>-12 47 -0.161234 -0.001128 -0.015612 3.09415</pose>
     </model>
 <model name='rover_static_clone_clone_10_clone_clone_12'>
         <pose frame=''>-2.83005 -45.0898 -0.161234 -0.001128 -0.015612 3.09415</pose>
@@ -32652,7 +32652,7 @@
       </joint>
       <static>1</static>
       <allow_auto_disable>0</allow_auto_disable>
- <pose frame=''>-14 -2 -0.161234 -0.001128 -0.015612 3.09415</pose>
+ <pose frame=''>22 47 -0.161234 -0.001128 -0.015612 3.09415</pose>
     </model>
 <model name='rover_static_clone_clone_10_clone_clone_13'>
         <pose frame=''>-2.83005 -45.0898 -0.161234 -0.001128 -0.015612 3.09415</pose>
@@ -35168,7 +35168,7 @@
       </joint>
       <static>1</static>
       <allow_auto_disable>0</allow_auto_disable>
- <pose frame=''>45 0 -0.161234 -0.001128 -0.015612 3.09415</pose>
+ <pose frame=''>45 18 -0.161234 -0.001128 -0.015612 3.09415</pose>
     </model>
 <model name='rover_static_clone_clone_10_clone_clone_14'>
         <pose frame=''>-2.83005 -45.0898 -0.161234 -0.001128 -0.015612 3.09415</pose>
@@ -37684,7 +37684,7 @@
       </joint>
       <static>1</static>
       <allow_auto_disable>0</allow_auto_disable>
- <pose frame=''>111 38 -0.161234 -0.001128 -0.015612 3.09415</pose>
+ <pose frame=''>-42 -15 -0.161234 -0.001128 -0.015612 3.09415</pose>
     </model>
 <model name='rover_static_clone_clone_10_clone_clone_15'>
         <pose frame=''>-2.83005 -45.0898 -0.161234 -0.001128 -0.015612 3.09415</pose>
@@ -40200,7 +40200,7 @@
       </joint>
       <static>1</static>
       <allow_auto_disable>0</allow_auto_disable>
- <pose frame=''>80 46 -0.161234 -0.001128 -0.015612 3.09415</pose>
+ <pose frame=''>111 5 -0.161234 -0.001128 -0.015612 3.09415</pose>
     </model>
 <model name='rover_static_clone_clone_10_clone_clone_16'>
         <pose frame=''>-2.83005 -45.0898 -0.161234 -0.001128 -0.015612 3.09415</pose>
@@ -42716,7 +42716,7 @@
       </joint>
       <static>1</static>
       <allow_auto_disable>0</allow_auto_disable>
- <pose frame=''>110 8 -0.161234 -0.001128 -0.015612 3.09415</pose>
+ <pose frame=''>6 1 -0.161234 -0.001128 -0.015612 3.09415</pose>
     </model>
 <model name='rover_static_clone_clone_10_clone_clone_17'>
         <pose frame=''>-2.83005 -45.0898 -0.161234 -0.001128 -0.015612 3.09415</pose>
@@ -45232,7 +45232,7 @@
       </joint>
       <static>1</static>
       <allow_auto_disable>0</allow_auto_disable>
- <pose frame=''>-14 -20 -0.161234 -0.001128 -0.015612 3.09415</pose>
+ <pose frame=''>-12 -15 -0.161234 -0.001128 -0.015612 3.09415</pose>
     </model>
 <model name='rover_static_clone_clone_10_clone_clone_18'>
         <pose frame=''>-2.83005 -45.0898 -0.161234 -0.001128 -0.015612 3.09415</pose>
@@ -47748,7 +47748,7 @@
       </joint>
       <static>1</static>
       <allow_auto_disable>0</allow_auto_disable>
- <pose frame=''>-45 -18 -0.161234 -0.001128 -0.015612 3.09415</pose>
+ <pose frame=''>-25 -47 -0.161234 -0.001128 -0.015612 3.09415</pose>
     </model>
 <model name='rover_static_clone_clone_10_clone_clone_19'>
         <pose frame=''>-2.83005 -45.0898 -0.161234 -0.001128 -0.015612 3.09415</pose>
@@ -50264,7 +50264,7 @@
       </joint>
       <static>1</static>
       <allow_auto_disable>0</allow_auto_disable>
- <pose frame=''>-44 -24 -0.161234 -0.001128 -0.015612 3.09415</pose>
+ <pose frame=''>117 7 -0.161234 -0.001128 -0.015612 3.09415</pose>
     </model>
 <model name='rover_static_clone_clone_10_clone_clone_20'>
         <pose frame=''>-2.83005 -45.0898 -0.161234 -0.001128 -0.015612 3.09415</pose>

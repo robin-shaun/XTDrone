@@ -10,6 +10,7 @@ import copy
 from nav_msgs.msg import Odometry
 from ObstacleAvoid import ObstacleAviod
 import math
+import ast
 
 class ControlActor:
     def __init__(self, actor_id):
@@ -57,18 +58,11 @@ class ControlActor:
         self.catching_flag = 0                               # if there is a uav tracking 'me' for a long time
         self.catching_uav_num = 10                             # get the number of uav of which is catching 'me'
         #self.black_box = numpy.array([[[-34, -19], [16, 34]], [[5, 20], [10, 28]], [[53, 68], [13, 31]], [[70, 84], [8, 20]], [[86, 102], [10, 18]], [[77, 96], [22, 35]], [[52, 71], [-34, -25]], [[-6, 6], [-35, -20]], [[12, 40], [-20, -8]], [[-7, 8], [-21, -9]], [[-29, -22], [-16, -27]], [[-37, -30], [-27, -12]], [[-38, -24], [-36, -29]]])
-        self.black_box = [[[52.2, 55.2],[-10.0, -5.72]], \
-        [[78, 91], [-34.6, -27]],[[2, 10], [33, 37]], [[-36.0, -19.0], [16.0, 34.5]], [[3.0, 23.0], [10.0, 26.0]], [[54, 70.0], [14, 31.3]], \
-        [[70.7, 84.5], [8.5, 19.5]], [[87.3, 101.7], [10.9, 17.2]], [[78, 95.7], [21.2, 35.5]], [[52, 71], [-36, -26]], [[-6.4, 6.5], [-20.4, -9.6]], \
-        [[13.5, 40.5], [-23.5, -4.5]], [[-6.0, 6.0], [-35.0, -21.0]], [[-28.8, -22.5], [-28.5, -14]], [[-37, -23], [-36, -30]], \
-        [[-36.5, -30.3], [-26.5, -12]], [[2.0,9.2],[33.3,36.7]]]
+        content=open("black_box.txt")
+        line=content.readline()
+        self.black_box=ast.literal_eval(line)
         self.box_num = len(self.black_box)
         self.cmd_pub = rospy.Publisher('/actor_' + self.id + '/cmd_motion', ActorMotion, queue_size=10)
-        #self.black_box = numpy.array(
-        #    [[[-32, -21], [18, 32]], [[7, 18], [12, 26]], [[55, 66], [15, 29]], [[72, 82], [10, 18]],
-        #     [[88, 100], [12, 16]], [[79, 94], [24, 33]], [[54, 69], [-34, -27]], [[-4, 4], [-33, -22]],
-        #     [[14, 38], [-18, -10]], [[-7, 6], [-19, -11]], [[-27, -24], [-14, -29]], [[-35, -32], [-25, -14]],
-        #     [[-36, -24], [-34, -31]]])
         self.gazeboModelstate = rospy.ServiceProxy('gazebo/get_model_state', GetModelState)
         print('actor_' + self.id + ": " + "communication initialized")
         self.state_uav0_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+"_0/ground_truth/odom", Odometry, self.cmd_uav0_pose_callback,queue_size=1)
@@ -167,6 +161,7 @@ class ControlActor:
                     self.target_motion.y = self.y_max               
                 try:                   
                     self.subtarget_pos = self.Obstacleavoid.GetPointList(self.current_pose, self.target_motion, 1) # current pose, target pose, safe distance
+                    print(self.subtarget_pos)
                     self.subtarget_length = len(self.subtarget_pos)
                     middd_pos = [Point() for k in range(self.subtarget_length)]
                     middd_pos = copy.deepcopy(self.subtarget_pos)

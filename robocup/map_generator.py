@@ -57,17 +57,18 @@ def create_point():
 
 def obstacle_list(center_list):
     #generate obstacle list for human avoidance
-    size_box=[[16,12],[5, 17],[17,5],[5, 17],[20,10],[19, 17],[16,12],[18,18],[18,18],[11, 9],[11, 9],[11, 9],[14, 5],[2,2]]
+    size_box=[[16,12],[5, 17],[17,5],[5, 17],[20, 15],[30, 25],[16,12],[18,18],[18,18],[11, 9],[11, 9],[11, 9],[14, 5],[2,2]]
     black_box= [[[-35.375, -34.825], [-4, -3]], [[-3.275, -2.725], [-4, -3]], [[20.725, 21.275], [-4, -3]], \
         [[57.725, 58.275], [-4, -3]], [[83.725, 84.275], [-4, -3]], [[-25.475, -24.925], [3, 4]], [[8.725, 9.275], [3, 4]], \
         [[26.725, 27.275], [3, 4]], [[70.725, 71.275], [3, 4]], [[90.225, 90.775], [3, 4]]]
     for i in range(len(center_list)):
+        j=i
         if i>len(size_box)-1:
-            i=len(size_box)-1
-        x_min=center_list[i][0]-size_box[i][0]/2
-        x_max=center_list[i][0]+size_box[i][0]/2
-        y_min=center_list[i][1]-size_box[i][1]/2
-        y_max=center_list[i][1]+size_box[i][1]/2
+            j=len(size_box)-1
+        x_min=center_list[i][0]-size_box[j][0]/2
+        x_max=center_list[i][0]+size_box[j][0]/2
+        y_min=center_list[i][1]-size_box[j][1]/2
+        y_max=center_list[i][1]+size_box[j][1]/2
         black_box.append([[x_min,x_max],[y_min,y_max]])
     return black_box
     
@@ -151,13 +152,12 @@ def create_rover_point(rover_num):
     return center_box
 
 content=open("base.world",'r')
-with open(output_path+"robocup.world",'w') as f:
+with open("house.world",'w') as f:
     count = 5
     change_flag=False
     lines=content.readlines()
     center_list =create_point()
     name_list=['house_1_146','house_3_156','house_3_157','house_3_158','gas_station_73','fast_food_93','house_1_66','house_1_67','house_1_146_clone','house_2_71','house_2_125','house_2_126','house_3_68']
-    #name_list = ['house_1_66','house_1_67','house_1_146','house_1_146_clone','house_2_71','house_2_125','house_2_126','house_3_68','house_3_156','house_3_157','house_3_158','gas_station_73','fast_food_93']
     for num,line in enumerate(lines):
         for i in range(len(name_list)):
             if count ==1 or count == 4:
@@ -237,6 +237,10 @@ f.close()
 for i in range(len(rover_center_list)):
 	center_list.append(rover_center_list[i])
 black_box=obstacle_list(center_list)
+with open( "black_box.txt",'w') as f:
+    line=str(black_box)
+    f.write(line)
+f.close()
 ## random_actor_pose
 print('Obstacle List generated!')
 content=open("house.world",'r')

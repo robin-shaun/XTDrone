@@ -1,0 +1,42 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+  <model name="bumper_sensor_typhoon">
+    <!-- Only difference to regular iris is this sensor and a MAVLink stream -->
+    <link name="bumper_link">
+      <inertial>
+        <pose>0.01 0.025 -0.2 0 0 0</pose>
+        <mass>0.01</mass>
+        <inertia>
+          <ixx>4.15e-6</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>2.407e-6</iyy>
+          <iyz>0</iyz>
+          <izz>2.407e-6</izz>
+        </inertia>
+      </inertial>
+
+      <collision name='bumper_collision'>
+        <pose>0 0 -0.1 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.7 0.7 0.35</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <sensor name="bumper_sensor" type="contact">
+        <always_on>true</always_on>
+        <update_rate>30.0</update_rate>
+        <contact>
+          <collision>bumper_collision</collision>
+        </contact>
+        <plugin name="benchmarking_bumper" filename="libgazebo_ros_bumper.so">
+          <robotNamespace></robotNamespace>
+          <bumperTopicName>benchmarker/collision</bumperTopicName>
+        </plugin>
+      </sensor>
+
+    </link>
+  </model>
+</sdf>

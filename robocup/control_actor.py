@@ -161,7 +161,6 @@ class ControlActor:
                     self.target_motion.y = self.y_max               
                 try:                   
                     self.subtarget_pos = self.Obstacleavoid.GetPointList(self.current_pose, self.target_motion, 1) # current pose, target pose, safe distance
-                    print(self.subtarget_pos)
                     self.subtarget_length = len(self.subtarget_pos)
                     middd_pos = [Point() for k in range(self.subtarget_length)]
                     middd_pos = copy.deepcopy(self.subtarget_pos)

@@ -1,0 +1,12 @@
+material CitySim/ShinyGrey
+{
+  technique
+  {
+    pass main
+    {
+      ambient .3 .3 .3  1.0
+      diffuse .7 .7 .7  1.0
+      specular 1.00 1.00 1.00 1.000000 32.00000
+    }
+  }
+}

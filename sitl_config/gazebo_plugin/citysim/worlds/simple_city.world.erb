@@ -1,0 +1,1424 @@
+<?xml version="1.0" ?>
+
+<%
+  require 'matrix'
+
+  # Simple city
+
+  ###############################################
+  #                                             #
+  #              GLOBAL PARAMETERS              #
+  #                                             #
+  ###############################################
+
+  # Global model count used to generate unique names
+  $count = 0
+
+  # Street level height (Z == 0 is the bottom of the ocean)
+  $street_z_offset = 5.01
+
+  # Road parameters
+  road_x = [-45, -15, 45, 110, 120]
+  road_y = [-100, -45, 0, 45, 100]
+  road_width = 7.4
+  road_z_offset = 0.01 + $street_z_offset
+  road_z_offset_x = 0.005 + road_z_offset
+
+  # Sidewalk parameters
+  $sidewalk_width = 3
+  $sidewalk_height = 0.15
+  $sidewalk_corner_radius = 0.5
+  sidewalk_horiz_offset = 5.2
+
+  sidewalk_x =
+  [
+    road_x[0]+sidewalk_horiz_offset,
+    road_x[1]-sidewalk_horiz_offset,
+    road_x[1]+sidewalk_horiz_offset,
+    road_x[2]-sidewalk_horiz_offset,
+    road_x[2]+sidewalk_horiz_offset,
+    road_x[3]-sidewalk_horiz_offset,
+    road_x[4]+sidewalk_horiz_offset,
+  ]
+
+  sidewalk_y =
+  [
+    road_y[0]-sidewalk_horiz_offset,
+    road_y[0]+sidewalk_horiz_offset,
+    road_y[1]-sidewalk_horiz_offset,
+    road_y[1]+sidewalk_horiz_offset,
+    road_y[2]-sidewalk_horiz_offset,
+    road_y[2]+sidewalk_horiz_offset,
+    road_y[3]-sidewalk_horiz_offset,
+    road_y[3]+sidewalk_horiz_offset,
+    road_y[4]-sidewalk_horiz_offset,
+    road_y[4]+sidewalk_horiz_offset,
+  ]
+
+  # Static cars
+  static_cars = ["suv", "pickup", "hatchback", "hatchback_blue", "hatchback_red"]
+  car_width = 2.3
+
+  # Trees
+  trees = ["oak_tree", "pine_tree"]
+
+  ###############################################
+  #                                             #
+  #                  FUNCTIONS                  #
+  #                                             #
+  ###############################################
+
+  # Print a model include
+  # This automatically adds $street_z_offset to vertical coordinates
+  # Sets $count
+  # Parameters:
+  # _model: Model file (without "model://", such as "pine_tree")
+  # _posX: Position X in the world
+  # _posY: Position Y in the world
+  # _yaw: Yaw in the world
+  # _posZ: Optional position Z in the world w.r.t. street level
+  def includeModel(_model, _posX, _posY, _yaw, _posZ = 0.0)
+    $count += 1
+
+    "<include>\n"\
+    "      <name>" + _model + "_" + $count.to_s() + "</name>\n"\
+    "      <pose>\n"\
+    "      " + _posX.to_s() + "\n"\
+    "      " + _posY.to_s() + "\n"\
+    "      " + (_posZ + $street_z_offset).to_s() + "\n"\
+    "      " + 0.to_s() + "\n"\
+    "      " + 0.to_s() + "\n"\
+    "      " + _yaw.to_s() + "\n"\
+    "      </pose>\n"\
+    "      <uri>model://" + _model + "</uri>\n"\
+    "    </include>\n"
+  end
+
+  # Print an old model, optionally give it an ambient color
+  # Use this for old models instead of including so we can remove <normal_map_object_space>
+  # Sets $count
+  # Parameters:
+  # _model: Model file (without "model://", such as "house_1")
+  # _posX: Position X in the world
+  # _posY: Position Y in the world
+  # _yaw: Yaw in the world
+  # _posZ: Optional position Z in the world
+  # _r: Optional red color component (0..1)
+  # _g: Optional green color component (0..1)
+  # _b: Optional blue color component (0..1)
+  def oldModel(_model, _posX, _posY, _yaw, _posZ = 0, _r = 1, _g = 1, _b = 1)
+    $count += 1
+
+    if _model.include? "house"
+      scriptName = _model.capitalize
+    else
+      scriptName = _model.split('_').map(&:capitalize).join('')
+    end
+
+    "<model name=\"" + _model + "_" + $count.to_s() + "\">\n"\
+    "  <static>true</static>\n"\
+    "  <pose>\n"\
+    "    " + _posX.to_s() + "\n"\
+    "    " + _posY.to_s() + "\n"\
+    "    " + (_posZ + $street_z_offset).to_s() + "\n"\
+    "    " + 0.to_s() + "\n"\
+    "    " + 0.to_s() + "\n"\
+    "    " + _yaw.to_s() + "\n"\
+    "  </pose>\n"\
+    "  <link name=\"link\">\n"\
+    "    <collision name=\"collision\">\n"\
+    "      <geometry>\n"\
+    "        <mesh>\n"\
+    "          <uri>model://" + _model + "/meshes/" + _model + ".dae</uri>\n"\
+    "        </mesh>\n"\
+    "      </geometry>\n"\
+    "    </collision>\n"\
+    "    <visual name=\"visual\">\n"\
+    "      <geometry>\n"\
+    "        <mesh>\n"\
+    "          <uri>model://" + _model + "/meshes/" + _model + ".dae</uri>\n"\
+    "        </mesh>\n"\
+    "      </geometry>\n"\
+    "      <material>\n"\
+    "        <script>\n"\
+    "          <uri>model://" + _model + "/materials/scripts</uri>\n"\
+    "          <uri>model://" + _model + "/materials/textures</uri>\n"\
+    "          <name>" + scriptName + "/Diffuse</name>\n"\
+    "        </script>\n"\
+    "        <ambient>\n"\
+    "          " + _r.to_s() + "\n"\
+    "          " + _g.to_s() + "\n"\
+    "          " + _b.to_s() + "\n"\
+    "          " + 1.to_s() + "\n"\
+    "        </ambient>\n"\
+    "      </material>\n"\
+    "    </visual>\n"\
+    "  </link>\n"\
+    "</model>\n"
+  end
+
+  # Print an asphalt plane of the given dimensions
+  # Sets $count
+  # _posX: Position X in the world
+  # _posY: Position Y in the world
+  # _yaw: Yaw in the world
+  # _scaleX: Size on X
+  # _scaleY: Size on Y
+  # _posZ: Optional position Z in the world
+  def asphalt(_posX, _posY, _yaw, _scaleX, _scaleY, _posZ = 0)
+    $count += 1
+
+    "<model name=\"asphalt_plane_" + $count.to_s() + "\">\n"\
+    "  <static>true</static>\n"\
+    "  <pose>\n"\
+    "    " + _posX.to_s() + "\n"\
+    "    " + _posY.to_s() + "\n"\
+    "    " + (_posZ + $street_z_offset).to_s() + "\n"\
+    "    " + 0.to_s() + "\n"\
+    "    " + 0.to_s() + "\n"\
+    "    " + _yaw.to_s() + "\n"\
+    "  </pose>\n"\
+    "  <link name=\"link\">\n"\
+    "    <collision name=\"collision\">\n"\
+    "      <geometry>\n"\
+    "        <box>\n"\
+    "          <size>"\
+    "            " + _scaleX.to_s() + "\n"\
+    "            " + _scaleY.to_s() + "\n"\
+    "            " + (0.1).to_s() + "\n"\
+    "          </size>"\
+    "        </box>\n"\
+    "      </geometry>\n"\
+    "    </collision>\n"\
+    "    <visual name=\"visual\">\n"\
+    "      <geometry>\n"\
+    "        <box>\n"\
+    "          <size>"\
+    "            " + _scaleX.to_s() + "\n"\
+    "            " + _scaleY.to_s() + "\n"\
+    "            " + (0.05).to_s() + "\n"\
+    "          </size>"\
+    "        </box>\n"\
+    "      </geometry>\n"\
+    "      <material>\n"\
+    "        <script>\n"\
+    "          <uri>model://asphalt_plane/materials/scripts</uri>\n"\
+    "          <uri>model://asphalt_plane/materials/textures</uri>\n"\
+    "          <name>vrc/asphalt</name>\n"\
+    "        </script>\n"\
+    "      </material>\n"\
+    "    </visual>\n"\
+    "  </link>\n"\
+    "</model>\n"
+  end
+
+  # Get a rectangular trajectory
+  # Parameters:
+  # _block: A rectangle, consisting of [minX, minY, maxX, maxY]
+  # _speed: Speed in m/s
+  # _start: (0..7)
+  def getRectangularTrajectory(_block, _speed, _start)
+
+    minX = _block[:minX]
+    minY = _block[:minY]
+    maxX = _block[:maxX]
+    maxY = _block[:maxY]
+
+    # Orientation
+    plusX = 0
+    minusX = Math::PI
+    plusY = Math::PI*0.5
+    minusY = -Math::PI*0.5
+
+    margin = 5
+    turn = 10
+
+    # Time
+    edgeX_length = maxX - minX - margin*2.0 - turn*2.0
+    edgeX_time = edgeX_length / _speed
+
+    edgeY_length = maxY - minY - margin*2.0 - turn*2.0
+    edgeY_time = edgeY_length / _speed
+
+    turn_time = (turn*2) / _speed
+
+    # poses starting from min
+    allPoses =
+    [
+      {:x => minX + margin,        :y => minY + margin + turn, :yaw => plusY},
+      {:x => minX + margin,        :y => maxY - margin - turn, :yaw => plusY},
+      {:x => minX + margin + turn, :y => maxY - margin,        :yaw => plusX},
+      {:x => maxX - margin - turn, :y => maxY - margin,        :yaw => plusX},
+      {:x => maxX - margin,        :y => maxY - margin - turn, :yaw => minusY},
+      {:x => maxX - margin,        :y => minY + margin + turn, :yaw => minusY},
+      {:x => maxX - margin - turn, :y => minY + margin,        :yaw => minusX},
+      {:x => minX + margin + turn, :y => minY + margin,        :yaw => minusX},
+      {:x => minX + margin,        :y => minY + margin + turn, :yaw => plusY},
+    ]
+
+    trajectory = Array.new
+
+    time = 0.0
+    current = _start
+    for i in 0..8
+      if current == _start
+        time = 0.0
+      elsif current == 1 or current == 5
+        time = time + edgeY_time
+      elsif current == 3 or current == 7
+        time = time + edgeX_time
+      else
+        time = time + turn_time
+      end
+
+      pose = allPoses[current]
+
+      trajectory.push({:x => pose[:x], :y => pose[:y], :yaw => pose[:yaw], :time => time})
+
+      if current > 7
+        current = 0
+      else
+        current = current + 1
+      end
+    end
+
+    # repeat first
+    if _start == 1 || _start == 5
+      time = time + edgeY_time
+    elsif _start == 3 || _start == 7
+      time = time + edgeX_time
+    else
+      time = time + turn_time
+    end
+
+    pose = allPoses[_start]
+    trajectory.push({:x => pose[:x], :y => pose[:y], :yaw => pose[:yaw], :time => time})
+
+    return trajectory
+  end
+
+  # Get a straight trajectory
+  # Parameters:
+  # _starPt: Start point
+  # _endPt: End point
+  # _speed: Speed in m/s
+  def getStraightTrajectory(_startPt, _endPt, _speed)
+
+    diff = _endPt - _startPt
+
+    # Orientation
+    startYaw = diff.angle_with(Vector[1, 0])
+
+    # FIXME: For now, reducing all paths because animation is bad otherwise
+    newEndPt = Vector[_startPt[0] + diff[0] * 0.2, _startPt[1] + diff[1] * 0.2]
+    _endPt = newEndPt
+
+    # Time
+    length = (_endPt - _startPt).magnitude
+    oneWayTime = length / _speed
+
+    # Trajectory
+    trajectory =
+    [
+      {:x => _startPt[0],        :y => _startPt[1], :yaw => startYaw, :time => 0},
+      {:x => _endPt[0],          :y => _endPt[1],   :yaw => startYaw, :time => oneWayTime},
+      {:x => _endPt[0],          :y => _endPt[1],   :yaw => startYaw + Math::PI, :time => oneWayTime * 1.1},
+      {:x => _startPt[0],        :y => _startPt[1], :yaw => startYaw + Math::PI, :time => oneWayTime * 2},
+      {:x => _startPt[0],        :y => _startPt[1], :yaw => startYaw, :time => oneWayTime * 2.1},
+    ]
+
+    return trajectory
+  end
+
+  # Print sidewalk block
+  # Sets $count
+  # Parameters:
+  # _minX: Minimum X coordinate
+  # _maxX: Maximum X coordinate
+  # _minY: Minimum Y coordinate
+  # _maxY: Maximum Y coordinate
+  # _radius: Corner radius
+  def sidewalkBlock(_minX, _maxX, _minY, _maxY, _radius = $sidewalk_corner_radius)
+    $count += 1
+
+    pts = []
+
+    # min - min
+    (0.0..1.0).step(0.2).each do |pt|
+
+      angle = Math::PI * 0.5 * pt
+
+      x = _minX + _radius - _radius * Math::cos(angle)
+      y = _minY + _radius - _radius * Math::sin(angle)
+
+      pts.push([x, y])
+    end
+
+    # max - min
+    (0.0..1.0).step(0.2).each do |pt|
+
+      pt = 1.0 - pt
+
+      angle = Math::PI * 0.5 * pt
+
+      x = _maxX - _radius + _radius * Math::cos(angle)
+      y = _minY + _radius - _radius * Math::sin(angle)
+
+      pts.push([x, y])
+    end
+
+    # max - max
+    (0.0..1.0).step(0.2).each do |pt|
+
+      angle = Math::PI * 0.5 * pt
+
+      x = _maxX - _radius + _radius * Math::cos(angle)
+      y = _maxY - _radius + _radius * Math::sin(angle)
+
+      pts.push([x, y])
+    end
+
+    # min - max
+    (0.0..1.0).step(0.2).each do |pt|
+
+      pt = 1.0 - pt
+
+      angle = Math::PI * 0.5 * pt
+
+      x = _minX + _radius - _radius * Math::cos(angle)
+      y = _maxY - _radius + _radius * Math::sin(angle)
+
+      pts.push([x, y])
+    end
+
+    str = "<model name=\"sidewalk_" + $count.to_s() + "\">\n"\
+    "  <static>true</static>\n"\
+    "  <pose>0 0 " + $street_z_offset.to_s() + " 0 0 0</pose>\n"\
+    "  <link name=\"link\">\n"\
+    "    <collision name=\"collision\">\n"\
+    "      <geometry>\n"\
+    "        <polyline>\n"\
+    "          <height>" + $sidewalk_height.to_s() + "</height>\n"
+
+             for pt in pts
+    str += "          <point>"+ pt[0].to_s() + " " + pt[1].to_s() + "</point>\n"\
+             end
+
+    str += "        </polyline>\n"\
+    "      </geometry>\n"\
+    "    </collision>\n"\
+    "    <visual name=\"visual\">\n"\
+    "      <geometry>\n"\
+    "        <polyline>\n"\
+    "          <height>" + $sidewalk_height.to_s() + "</height>\n"
+
+             for pt in pts
+    str += "          <point>"+ pt[0].to_s() + " " + pt[1].to_s() + "</point>\n"\
+             end
+
+    str += "        </polyline>\n"\
+    "      </geometry>\n"\
+    "      <material>\n"\
+    "        <ambient>0.2 0.2 0.2 1.0</ambient>\n"\
+    "      </material>\n"\
+    "    </visual>\n"\
+    "  </link>\n"\
+    "</model>\n"
+
+    str
+
+  end
+
+  # Actor meshes
+  skins =
+  [
+    "SKIN_man_blue_shirt.dae",
+    "SKIN_man_green_shirt.dae",
+    "SKIN_man_red_shirt.dae"
+  ]
+
+  animations =
+  [
+    "ANIMATION_running.dae",
+    "ANIMATION_talking_a.dae",
+    "ANIMATION_talking_b.dae",
+    "ANIMATION_walking.dae"
+  ]
+
+  # Blocks for pedestrian rectangular trajectories
+  blocks = []
+  (0..2).step(1) do |x|
+    (0..3).step(1) do |y|
+      blocks.push({:minX => road_x[x], :maxX => road_x[x+1], :minY => road_y[y], :maxY => road_y[y+1]})
+    end
+  end
+
+  # Street segments for pedestrian straight trajectories
+  # Note: These are not covering all sidewalks
+  sidewalkSegs = []
+  (0..4).step(2) do |x|
+    (1..7).step(2) do |y|
+      sidewalkSegs.push({:start => Vector[sidewalk_x[x], sidewalk_y[y]], :end => Vector[sidewalk_x[x], sidewalk_y[y+1]]})
+      sidewalkSegs.push({:start => Vector[sidewalk_x[x], sidewalk_y[y]], :end => Vector[sidewalk_x[x+1], sidewalk_y[y]]})
+      sidewalkSegs.push({:start => Vector[sidewalk_x[x+1], sidewalk_y[y]], :end => Vector[sidewalk_x[x], sidewalk_y[y]]})
+      sidewalkSegs.push({:start => Vector[sidewalk_x[x+1], sidewalk_y[y+1]], :end => Vector[sidewalk_x[x], sidewalk_y[y+1]]})
+      sidewalkSegs.push({:start => Vector[sidewalk_x[x], sidewalk_y[y+1]], :end => Vector[sidewalk_x[x+1], sidewalk_y[y+1]]})
+    end
+  end
+
+  actors = Hash.new
+
+  # walking
+  for i in 0..5
+    seg = sidewalkSegs.delete sidewalkSegs.sample
+    actors["walking_"+i.to_s] = {:skin => skins.sample,
+                                 :anim => animations[3],
+                                 :traj => getStraightTrajectory(seg[:start], seg[:end], rand(0.9..1.6))}
+  end
+
+  # running
+  for i in 0..5
+    seg = sidewalkSegs.delete sidewalkSegs.sample
+    actors["running_"+i.to_s] = {:skin => skins.sample,
+                                 :anim => animations[0],
+                                 :traj => getStraightTrajectory(seg[:start], seg[:end], rand(3.5..4.5))}
+  end
+
+  actors["talkingA"] = {:skin => skins[0],
+                        :anim => animations[1],
+                        :traj => [{:x => 5, :y => 5, :yaw => 0, :time => 0}]}
+  actors["talkingB"] = {:skin => skins[1],
+                        :anim => animations[2],
+                        :traj => [{:x => 5, :y => 5.5, :yaw => 0, :time => 0}]}
+
+%>
+
+
+<sdf version="1.6">
+  <world name="default">
+    <plugin name="joy" filename="libJoyPlugin.so">
+      <sticky_buttons>false</sticky_buttons>
+      <dead_zone>0.05</dead_zone>
+      <rate>60</rate>
+      <accumulation_rate>1000</accumulation_rate>
+    </plugin>
+
+
+    <gui>
+     <camera name="user_camera">
+       <pose>-49.08 -1.911 6.95 0 0 -0.0159</pose>
+     </camera>
+     <plugin name="keyboard" filename="libKeyboardGUIPlugin.so">
+     </plugin>
+     <plugin name="TrafficLights" filename="libTrafficLightsGUIPlugin.so">
+
+       <!-- Q -->
+       <key value="113" model="stop_light_post_475" color="red"/>
+       <key value="113" model="stop_light_post_482" color="green"/>
+       <key value="113" model="stop_light_post_485" color="green"/>
+       <key value="113" model="stop_light_post_479" color="red"/>
+
+       <!-- A -->
+       <key value="97" model="stop_light_post_475" color="green"/>
+       <key value="97" model="stop_light_post_482" color="red"/>
+       <key value="97" model="stop_light_post_485" color="red"/>
+       <key value="97" model="stop_light_post_479" color="green"/>
+
+       <!-- W -->
+       <key value="119" model="stop_light_post_476" color="red"/>
+       <key value="119" model="stop_light_post_483" color="green"/>
+       <key value="119" model="stop_light_post_480" color="red"/>
+
+       <!-- S -->
+       <key value="115" model="stop_light_post_476" color="green"/>
+       <key value="115" model="stop_light_post_483" color="red"/>
+       <key value="115" model="stop_light_post_480" color="green"/>
+
+       <!-- E -->
+       <key value="101" model="stop_light_post_477" color="red"/>
+       <key value="101" model="stop_light_post_486" color="green"/>
+       <key value="101" model="stop_light_post_481" color="red"/>
+
+       <!-- D -->
+       <key value="100" model="stop_light_post_477" color="green"/>
+       <key value="100" model="stop_light_post_486" color="red"/>
+       <key value="100" model="stop_light_post_481" color="green"/>
+
+       <!-- R -->
+       <key value="114" model="stop_light_post_478" color="red"/>
+       <key value="114" model="stop_light_post_484" color="green"/>
+       <key value="114" model="stop_light_post_487" color="green"/>
+
+       <!-- F -->
+       <key value="102" model="stop_light_post_478" color="green"/>
+       <key value="102" model="stop_light_post_484" color="red"/>
+       <key value="102" model="stop_light_post_487" color="red"/>
+
+     </plugin>
+    </gui>
+    <scene>
+      <grid>false</grid>
+      <origin_visual>false</origin_visual>
+      <ambient>0.592 0.624 0.635 1</ambient>
+      <sky>
+        <clouds>
+          <speed>12</speed>
+        </clouds>
+      </sky>
+      <background>0.35 0.35 0.35 1.0</background>
+    </scene>
+
+    <physics name='default_physics' default='0' type='ode'>
+      <max_step_size>0.002</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>0</real_time_update_rate>
+    </physics>
+
+    <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <latitude_deg>0</latitude_deg>
+      <longitude_deg>0</longitude_deg>
+      <elevation>0</elevation>
+      <heading_deg>0</heading_deg>
+    </spherical_coordinates>
+
+    <!-- A global light source -->
+    <light type="directional" name="sun">
+      <pose>0 0 1000 0 0 0</pose>
+      <cast_shadows>true</cast_shadows>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.5 0.5 0.5 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.4</direction>
+    </light>
+
+    <model name="shaderbox">
+      <pose>0 0 -5 0 0 0</pose>
+      <static>true</static>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.1 0.1 0.1</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/citysim.material</uri>
+              <name>CitySim/ShinyGrey</name>
+            </script>
+          </material>
+          <plugin name="bloom" filename="libBloomVisualPlugin.so" />
+          <plugin name="lensflare" filename="libLensFlareVisualPlugin.so" />
+        </visual>
+      </link>
+    </model>
+
+
+    <!-- Environment -->
+    <%= includeModel("city_terrain", 0, 0, 0) %>
+    <%= includeModel("ocean", 40, -20, 0, 3 - $street_z_offset) %>
+
+    <%
+      # Roads
+      count = 0
+
+      # Along y
+      for x in road_x
+        count = count + 1
+        # Pull a bit to match roads made thicker to cover sidewalk corners
+        offset = $sidewalk_corner_radius
+    %>
+
+    <road name="road_y_<%= count %>">
+      <width><%= road_width %></width>
+      <point><%= x %> <%= road_y[0] - road_width * 0.5 %> <%= road_z_offset %></point>
+      <point><%= x %> <%= road_y[4] + road_width * 0.5 + offset %> <%= road_z_offset %></point>
+
+      <% if x != road_x.last and x != road_x.first %>
+      <material>
+        <script>
+          <uri>file://media/materials/scripts/gazebo.material</uri>
+          <name>Gazebo/Residential</name>
+        </script>
+      </material>
+      <% end %>
+
+    </road>
+    <% end
+
+      count = 0
+
+      # Along x
+      for y in road_y
+        count = count + 1
+        # Make X roads slightly thicker to cover the corners of sidewalks
+        width = road_width + 2 * $sidewalk_corner_radius
+    %>
+
+    <road name="road_x_<%= count %>">
+
+      <width><%= width %></width>
+      <point><%= road_x[0] + road_width * 0.5 %> <%= y %> <%= road_z_offset_x %></point>
+      <point><%= road_x[4] - road_width * 0.5 %> <%= y %> <%= road_z_offset_x %></point>
+
+      <% if y != road_y.last and y != road_y.first and y != road_y[2] %>
+      <material>
+        <script>
+          <uri>file://media/materials/scripts/gazebo.material</uri>
+          <name>Gazebo/Residential</name>
+        </script>
+      </material>
+      <% end %>
+
+    </road>
+    <% end %>
+
+
+    <!-- Sidewalks -->
+    <%
+      (0..3).step(1).each do |x|
+        (0..3).step(1).each do |y|
+          # Use this to fill a whole block with concrete
+          if false
+    %>
+      <%= sidewalkBlock(road_x[x] + road_width*0.5,
+                        road_x[x+1] - road_width*0.5,
+                        road_y[y] + road_width*0.5,
+                        road_y[y+1] - road_width*0.5)  %>
+    <%
+          # North road's center divider
+          elsif x == 3
+            width = 0.5
+            radius = 0.1
+    %>
+      <%= sidewalkBlock(road_x[x] + road_width*0.5,
+                        road_x[x+1] - road_width*0.5,
+                        road_y[y] + road_width*0.5,
+                        road_y[y] + width  + road_width*0.5, radius)  %>
+      <%= sidewalkBlock(road_x[x] + road_width*0.5,
+                        road_x[x+1] - road_width*0.5,
+                        road_y[y+1] - width - road_width*0.5,
+                        road_y[y+1] - road_width*0.5, radius)  %>
+      <%= sidewalkBlock(road_x[x] + road_width*0.5,
+                        road_x[x] + width + road_width*0.5,
+                        road_y[y] + road_width*0.5,
+                        road_y[y+1] - road_width*0.5, radius)  %>
+      <%= sidewalkBlock(road_x[x+1] - width - road_width*0.5,
+                        road_x[x+1] - road_width*0.5,
+                        road_y[y] + road_width*0.5,
+                        road_y[y+1] - road_width*0.5, radius)  %>
+    <%
+          # Blocks with 4 surrounding sidewalks
+          else
+    %>
+      <!-- East -->
+      <%= sidewalkBlock(road_x[x] + road_width*0.5,
+                        road_x[x+1] - road_width*0.5,
+                        road_y[y] + road_width*0.5,
+                        road_y[y] + $sidewalk_width  + road_width*0.5)  %>
+      <!-- West -->
+      <%
+        # Fast food entrance
+        if x == 2 and y == 0
+      %>
+        <%= sidewalkBlock(road_x[x] + road_width*0.5,
+                          road_x[x] + 40,
+                          road_y[y+1] - $sidewalk_width - road_width*0.5,
+                          road_y[y+1] - road_width*0.5)  %>
+        <%= sidewalkBlock(road_x[x] + 50,
+                          road_x[x+1] - road_width*0.5,
+                          road_y[y+1] - $sidewalk_width - road_width*0.5,
+                          road_y[y+1] - road_width*0.5)  %>
+      <%
+        # Normal west sidewalks
+        else
+      %>
+        <%= sidewalkBlock(road_x[x] + road_width*0.5,
+                          road_x[x+1] - road_width*0.5,
+                          road_y[y+1] - $sidewalk_width - road_width*0.5,
+                          road_y[y+1] - road_width*0.5)  %>
+      <% end %>
+
+      <!-- South -->
+      <%
+        # Grocery store entrance
+        if x == 1 and y == 0
+      %>
+        <%= sidewalkBlock(road_x[x] + road_width*0.5,
+                          road_x[x] + $sidewalk_width + road_width*0.5,
+                          road_y[y] + road_width*0.5,
+                          road_y[y] + 29)  %>
+        <%= sidewalkBlock(road_x[x] + road_width*0.5,
+                          road_x[x] + $sidewalk_width + road_width*0.5,
+                          road_y[y] + 35,
+                          road_y[y+1] - road_width*0.5 )  %>
+      <%
+        # Normal south sidewalks
+        else
+      %>
+        <%= sidewalkBlock(road_x[x] + road_width*0.5,
+                          road_x[x] + $sidewalk_width + road_width*0.5,
+                          road_y[y] + road_width*0.5,
+                          road_y[y+1] - road_width*0.5)  %>
+      <% end %>
+
+      <!-- North -->
+      <%= sidewalkBlock(road_x[x+1] - $sidewalk_width - road_width*0.5,
+                        road_x[x+1] - road_width*0.5,
+                        road_y[y] + road_width*0.5,
+                        road_y[y+1] - road_width*0.5)  %>
+    <%
+          end
+        end
+      end
+    %>
+
+    <!-- North sidewalk -->
+    <%= sidewalkBlock(road_x[4] + road_width*0.5,
+                      road_x[4] + road_width*0.5 + $sidewalk_width,
+                      road_y[0] - road_width*0.5 - $sidewalk_width,
+                      #road_y[4] + road_width*0.5 + $sidewalk_width
+                      road_y[4] + road_width*0.5)  %>
+
+    <!-- South sidewalk
+         Commented out because it leaks beyond the heightmap and intersects bridges
+    <%= sidewalkBlock(road_x[0] - road_width*0.5 - $sidewalk_width,
+                      road_x[0] - road_width*0.5,
+                      road_y[0] - road_width*0.5 - $sidewalk_width,
+                      road_y[4] + road_width*0.5 + $sidewalk_width)  %>
+     -->
+
+    <!-- East sidewalk -->
+    <%= sidewalkBlock(#road_x[0] - road_width*0.5 - $sidewalk_width,
+                      road_x[0] - road_width*0.5,
+                      road_x[4] + road_width*0.5 + $sidewalk_width,
+                      road_y[0] - road_width*0.5 - $sidewalk_width,
+                      road_y[0] - road_width*0.5)  %>
+
+    <!-- West sidewalk
+         Commented out because it leaks beyond the heightmap
+    <%= sidewalkBlock(road_x[0] - road_width*0.5 - $sidewalk_width,
+                      road_x[4] + road_width*0.5 + $sidewalk_width,
+                      road_y[4] + road_width*0.5,
+                      road_y[4] + road_width*0.5 + $sidewalk_width)  %>
+     -->
+
+    <!-- Buildings -->
+
+    <!-- North block -->
+
+    <%= includeModel("parking_garage", 146.778, 57.67, -1.57) %>
+    <%= includeModel("fountain", 153.17, -32.42, 0) %>
+    <%= includeModel("gazebo", 135.5, 0, 3.14) %>
+    <%= includeModel("person_standing", 133.73, -1.79, -0.94, 0.3) %>
+    <%= includeModel("pier", 199.63, -17.32, 0, -7.6) %>
+
+    <%= includeModel("oak_tree", 129, -16.3, rand(0.0..3.14)) %>
+    <%= includeModel("oak_tree", 149.3, -15.6, rand(0.0..3.14)) %>
+    <%= includeModel("oak_tree", 128.11, -7.09, rand(0.0..3.14)) %>
+    <%= includeModel("oak_tree", 128.5, 9.7, rand(0.0..3.14)) %>
+    <%= includeModel("oak_tree", 152, 10.9, rand(0.0..3.14)) %>
+    <%= includeModel("oak_tree", 139.5, 5.01, rand(0.0..3.14)) %>
+    <%= includeModel("oak_tree", 133.59, -34.94, rand(0.0..3.14)) %>
+    <%= includeModel("oak_tree", 130.211, -49.55, rand(0.0..3.14)) %>
+    <%= includeModel("oak_tree", 142.37, -60.3, rand(0.0..3.14)) %>
+    <%= includeModel("oak_tree", 152.151, -43.59, rand(0.0..3.14)) %>
+    <%= includeModel("oak_tree", 173.19, -34.8, rand(0.0..3.14)) %>
+    <%= includeModel("oak_tree", 177.91, -7.7, rand(0.0..3.14)) %>
+
+    <%= includeModel("robocup_3Dsim_field", 138.5, -86.6, 1.57, 0.05) %>
+    <%= includeModel("bus", 133.9, -67.16, -1.67) %>
+    <%= includeModel("bus", 133.9, -63.14, -1.67) %>
+
+    <!-- North road -->
+
+    <%
+      (0..3).step(1).each do |road|
+        (0..4).step(1).each do |y|
+          dist = (road_y[road+1] - road_y[road]) * 0.15
+    %>
+        <%= includeModel("pine_tree", (road_x[3] + road_x[4]) * 0.5, road_y[road] + 8 + y*dist, rand(0.0..3.14)) %>
+      <% end %>
+    <% end %>
+
+    <!-- Block 0 0 -->
+
+    <%= includeModel("fire_station", 63.8, 76.18, 0) %>
+    <%= includeModel("fire_truck", 64.139, 85.04, 1.57) %>
+    <%= includeModel("fire_truck", 65.098, 90.435, 1.34) %>
+
+    <%= includeModel("house_1", 88.76, 81.72, 1.57) %>
+    <%= includeModel("house_2", 71.455, 61.92, 0) %>
+    <%= includeModel("house_3", 92.89, 60.76, 0) %>
+    <%= includeModel("oak_tree", 68.27, 54.225, 3.08) %>
+    <%= includeModel("oak_tree", 81.411, 54.559, 1.17) %>
+    <%= includeModel("oak_tree", 99.055, 66.83, 2.2) %>
+    <%= includeModel("pine_tree", 97.22, 52.5, rand(0.0..3.14)) %>
+    <%= includeModel("pine_tree", 98.95, 53.2, rand(0.0..3.14)) %>
+    <%= includeModel("pine_tree", 101.11, 52.63, rand(0.0..3.14)) %>
+    <%= includeModel("pine_tree", 100.74, 54.2, rand(0.0..3.14)) %>
+    <%= includeModel("pine_tree", 100.53, 55.85, rand(0.0..3.14)) %>
+    <%= includeModel("pine_tree", 99.226, 55.0, rand(0.0..3.14)) %>
+    <%= includeModel("fire_hydrant", 103.2, 49, 0, $sidewalk_height) %>
+    <%= includeModel("postbox", 80, 49.34, 3.14, $sidewalk_height) %>
+
+    <!-- Block 0 1 -->
+
+    <%= includeModel("house_1", 61.74, 22.76, -1.57) %>
+    <%= includeModel("house_1", 86.62, 27.93, 3.14) %>
+    <%= includeModel("house_3", 96.43, 14.14, 0) %>
+    <%= includeModel("oak_tree", 57.97, 10.72, 3.06) %>
+    <%= includeModel("oak_tree", 53.56, 34.08, 1.16) %>
+    <%= includeModel("house_2", 76.71, 13.4, 0) %>
+    <%= includeModel("ambulance", 63.99, 7.06, -2.14) %>
+
+    <!-- Block 0 2 -->
+
+    <%= oldModel("gas_station", 61.88, -30.82, 3.14) %>
+    <%= asphalt(61.581, -16.664, 0, 20, 20) %>
+    <%= includeModel(static_cars.sample, 61.90, -12.36, 0) %>
+
+    <%= includeModel("apartment", 87.36, -21.48, -1.57) %>
+    <%= includeModel("oak_tree", 74.95, -8.29, rand(0.0..3.14)) %>
+    <%= includeModel("oak_tree", 79.06, -35.8, rand(0.0..3.14)) %>
+    <%= includeModel("oak_tree", 100.33, -33.7, rand(0.0..3.14)) %>
+    <%= includeModel("oak_tree", 100.15, -8.67, rand(0.0..3.14)) %>
+    <%= includeModel("fire_hydrant", 103.0, -4.386, 0, $sidewalk_height) %>
+
+    <!-- Block 0 3 -->
+
+    <%= includeModel("fast_food", 96.084, -69.65, -1.57) %>
+    <%= includeModel("dumpster", 96.55, -57.43, 1.57) %>
+    <%= asphalt(88.62, -72.49, 0, 29.378, 35.240) %>
+    <%= asphalt(90.00, -52.48, 0, 10.15, 6.61) %>
+    <%= includeModel(static_cars.sample, 86.87, -60.00, Math::PI*0.5) %>
+    <%= includeModel(static_cars.sample, 84.24, -60.00, Math::PI*0.5) %>
+    <%= includeModel("fire_hydrant", 105.6, -92.78, 0, $sidewalk_height) %>
+
+    <%
+      (0..6).step(1).each do |x|
+        (0..2).step(1).each do |y|
+    %>
+      <%= includeModel("cafe_table", road_x[3] - 8 - x*2.5, road_y[0] + 12 + y*2.5, 0) %>
+      <% end %>
+    <% end %>
+
+    <%
+      (0..4).step(1).each do |x|
+        (0..12).step(1).each do |y|
+    %>
+      <%= includeModel("oak_tree", road_x[2] + 9 + x*rand(1.5..4.0), road_y[0] + 10 + y*rand(1.5..3.0), rand(0.0..3.14)) %>
+      <% end %>
+    <% end %>
+
+    <!-- Block 1 0 -->
+
+    <%= includeModel("pine_tree", rand(-7.4..36.35), rand(53.3..91.8), rand(0.0..3.14)) %>
+    <%= includeModel("pine_tree", rand(-7.4..36.35), rand(53.3..91.8), rand(0.0..3.14)) %>
+    <%= includeModel("pine_tree", rand(-7.4..36.35), rand(53.3..91.8), rand(0.0..3.14)) %>
+    <%= includeModel("pine_tree", rand(-7.4..36.35), rand(53.3..91.8), rand(0.0..3.14)) %>
+    <%= includeModel("pine_tree", rand(-7.4..36.35), rand(53.3..91.8), rand(0.0..3.14)) %>
+    <%= includeModel("pine_tree", rand(-7.4..36.35), rand(53.3..91.8), rand(0.0..3.14)) %>
+    <%= includeModel("pine_tree", rand(-7.4..36.35), rand(53.3..91.8), rand(0.0..3.14)) %>
+    <%= includeModel("pine_tree", rand(-7.4..36.35), rand(53.3..91.8), rand(0.0..3.14)) %>
+    <%= includeModel("pine_tree", rand(-7.4..36.35), rand(53.3..91.8), rand(0.0..3.14)) %>
+    <%= includeModel("pine_tree", rand(-7.4..36.35), rand(53.3..91.8), rand(0.0..3.14)) %>
+    <%= includeModel("pine_tree", rand(-7.4..36.35), rand(53.3..91.8), rand(0.0..3.14)) %>
+    <%= includeModel("pine_tree", rand(-7.4..36.35), rand(53.3..91.8), rand(0.0..3.14)) %>
+    <%= includeModel("pine_tree", rand(-7.4..36.35), rand(53.3..91.8), rand(0.0..3.14)) %>
+    <%= includeModel("pine_tree", rand(-7.4..36.35), rand(53.3..91.8), rand(0.0..3.14)) %>
+    <%= includeModel("pine_tree", rand(-7.4..36.35), rand(53.3..91.8), rand(0.0..3.14)) %>
+    <%= includeModel("pine_tree", rand(-7.4..36.35), rand(53.3..91.8), rand(0.0..3.14)) %>
+    <%= includeModel("pine_tree", rand(-7.4..36.35), rand(53.3..91.8), rand(0.0..3.14)) %>
+
+    <%= includeModel("playground", 16.32, 64.85, -0.98) %>
+    <%= includeModel("fountain", 0.9, 58.9, rand(0.0..3.14)) %>
+    <%= includeModel("fire_hydrant", 38.5, 49, 0, $sidewalk_height) %>
+
+    <!-- Block 1 1 -->
+
+    <%= includeModel("law_office", 8.47, 9.356, 0) %>
+    <%= includeModel("thrift_shop", 1.35, 9.356, 0) %>
+    <%= includeModel("salon", 15.7, 9.356, 0) %>
+    <%= includeModel("oak_tree", -6.418, 10.37, 0.55) %>
+    <%= includeModel("apartment", 1.573, 27.565, 0) %>
+    <%= includeModel("osrf_first_office", 27.003, 20.15, 1.57) %>
+    <%= includeModel("pine_tree", 16.096, 34.82, rand(0.0..3.14)) %>
+    <%= includeModel("pine_tree", 18.7, 29.33, rand(0.0..3.14)) %>
+    <%= includeModel("pine_tree", 22.56, 34.58, rand(0.0..3.14)) %>
+    <%= includeModel("oak_tree", 31.49, 35.89, -3.03) %>
+    <%= includeModel("postbox", 24.0, 4.33, 3.14, $sidewalk_height) %>
+
+    <!-- Block 1 2 -->
+
+    <%= includeModel("fast_food", 28.25, -13.93, 0) %>
+    <%= includeModel("dumpster", 15.94, -13.63, 3.14) %>
+    <%= includeModel("fire_hydrant", 38.5, -4.38, 0, $sidewalk_height) %>
+
+    <%
+      (0..6).step(1).each do |x|
+        (0..3).step(1).each do |y|
+    %>
+      <%= includeModel("cafe_table", road_x[2] - 8 - x*2.5, road_y[1] + 12 + y*2.5, 0) %>
+      <% end %>
+    <% end %>
+
+    <%= includeModel("radio_tower", (road_x[1] + road_x[2])*0.5-1, (road_y[1] + road_y[2])*0.5, 0, 1.57965648) %>
+    <%= includeModel("house_2", 1.61, -14.15, 3.14) %>
+    <%= includeModel("house_2", -0.59, -26.6, -1.57) %>
+
+    <% (0..4).step(1).each do |x| %>
+      <%= includeModel("pine_tree", road_x[1] + 8 + x*5, road_y[2] - 8, rand(0.0..3.14)) %>
+    <% end %>
+
+    <% (1..6).step(1).each do |y| %>
+      <%= includeModel("pine_tree", road_x[1] + 8, road_y[2] - 8 - y*5, rand(0.0..3.14)) %>
+    <% end %>
+
+    <% (1..5).step(1).each do |x| %>
+      <%= includeModel("pine_tree", road_x[1] + 8 + x*5, road_y[1] + 8, rand(0.0..3.14)) %>
+    <% end %>
+
+    <!-- Block 1 3 -->
+
+    <%= includeModel("grocery_store", 26.027, -71.40, 1.57) %>
+    <%= asphalt(7.40, -72.69, 0, 22.248, 36.24) %>
+    <%= asphalt(-7.51, -67.99, 0, 7.63, 7.24) %>
+
+    <% (1..29).step(1).each do |x| %>
+      <%= includeModel("pine_tree", road_x[1] + 8 + x*1.5, road_y[0] + 8, rand(0.0..3.14)) %>
+    <% end %>
+
+    <% (1..29).step(1).each do |x| %>
+      <%= includeModel("pine_tree", road_x[1] + 8 + x*1.5, road_y[1] - 8, rand(0.0..3.14)) %>
+    <% end %>
+
+    <%
+      (1..25).step(1).each do |y|
+        if y > 7 and y < 13
+          next
+        end
+    %>
+      <%= includeModel("pine_tree", road_x[1] + 10, road_y[1] - 8 - y*1.5, rand(0.0..3.14)) %>
+    <% end %>
+
+    <%= includeModel(static_cars.sample, 9.27, -85.5, 0) %>
+    <%= includeModel("fire_hydrant", -10.8, -93.34, 0, $sidewalk_height) %>
+    <%= includeModel("postbox", -10.76, -74.02, 1.57, $sidewalk_height) %>
+
+    <!-- Block 2 0 -->
+
+    <%= includeModel("school", -27.309, 67.823, -1.57) %>
+    <%= includeModel("oak_tree", -28.916, 89.604, -0.51) %>
+    <%= includeModel("oak_tree", -34.077, 89.854, 0.51) %>
+    <%= includeModel("fire_hydrant", -38.5, 49, 0, $sidewalk_height) %>
+
+    <!-- Block 2 1 -->
+
+    <%= includeModel("post_office", -26.686, 11.119, 3.14) %>
+    <%= includeModel("postbox", -28.58, 4.33, 3.14, $sidewalk_height) %>
+    <%= includeModel("pine_tree", -30.709, 7.15, rand(0.0..3.14)) %>
+    <%= includeModel("house_1", -27.49, 25.344, -1.57) %>
+    <%= includeModel("pickup", -36.72, 21.02, -1.57) %>
+    <%= includeModel("oak_tree", -35.811, 11.78, 0.55) %>
+    <%= includeModel("pine_tree", -22.97, 15.87, 1.82) %>
+    <%= includeModel("oak_tree", -36.78, 36.47, 1.7) %>
+    <%= includeModel("pine_tree", -23.94, 34.92, 0.56) %>
+    <%= includeModel("cardboard_box", -32, 8, 0) %>
+    <%= includeModel("cardboard_box", -33, 7.5, 0) %>
+
+    <!-- Block 2 2 -->
+
+    <%= includeModel("salon", -27.65, -9.35, 3.14) %>
+    <%= includeModel("law_office", -34.886, -9.408, 3.14) %>
+    <%= includeModel("house_3", -33.39, -21.30, -1.57) %>
+    <%= includeModel("house_3", -28.126, -32.93, 0.0) %>
+    <%= includeModel("house_3", -25.739, -19.38, 1.57) %>
+    <%= includeModel("pine_tree", -37.48, -13.67, rand(0.0..3.14)) %>
+    <%= includeModel("pine_tree", -22.26, -7.39, rand(0.0..3.14)) %>
+    <%= includeModel("pine_tree", -22.26, -10.46, rand(0.0..3.14)) %>
+    <%= includeModel("pine_tree", -35.045, -28.058, rand(0.0..3.14)) %>
+    <%= includeModel("pine_tree", -37.48, -36.76, rand(0.0..3.14)) %>
+    <%= includeModel("pine_tree", -33.06, -37.17, rand(0.0..3.14)) %>
+    <%= includeModel("pine_tree", -25.34, -29.166, rand(0.0..3.14)) %>
+    <%= includeModel("fire_hydrant", -20.34, -4.38, 0, $sidewalk_height) %>
+
+    <!-- Block 2 3 -->
+
+    <%= includeModel("police_station", -31.838, -59.696, 0) %>
+    <%= includeModel("fire_hydrant", -40.34, -49.16, 0, $sidewalk_height) %>
+
+    <% (1..10).step(1).each do |y| %>
+      <%= includeModel("pine_tree", road_x[1] - 8 + rand(-0.8..0.8), road_y[1] - 6 - y, rand(0.0..3.14)) %>
+    <% end %>
+
+    <%= includeModel("collapsed_industrial", -29.8725, -83.9104, 1.5708) %>
+    <%= includeModel("construction_cone", -40.748, -90.1868, rand(0.0..3.14), $sidewalk_height) %>
+
+    <%= includeModel("construction_cone", -40.692, -95.2899, rand(0.0..3.14), $sidewalk_height) %>
+    <%= includeModel("construction_cone", -37.8997, -95.3521, rand(0.0..3.14), $sidewalk_height) %>
+    <%= includeModel("construction_cone", -35.2603, -95.3721, rand(0.0..3.14), $sidewalk_height) %>
+    <%= includeModel("construction_cone", -31.8118, -95.4314, rand(0.0..3.14), $sidewalk_height) %>
+    <%= includeModel("construction_cone", -40.1918, -74.491, rand(0.0..3.14), $sidewalk_height) %>
+    <%= includeModel("construction_cone", -40.6878, -80.629, rand(0.0..3.14), $sidewalk_height) %>
+
+    <%= includeModel("cinder_block", rand(-39.77..-35.209), rand(-93.948..-87.66), rand(0.0..3.14), $sidewalk_height) %>
+    <%= includeModel("cinder_block", rand(-39.77..-35.209), rand(-93.948..-87.66), rand(0.0..3.14), $sidewalk_height) %>
+    <%= includeModel("cinder_block", rand(-39.77..-35.209), rand(-93.948..-87.66), rand(0.0..3.14), $sidewalk_height) %>
+    <%= includeModel("cinder_block", rand(-39.77..-35.209), rand(-93.948..-87.66), rand(0.0..3.14), $sidewalk_height) %>
+    <%= includeModel("cinder_block", rand(-39.77..-35.209), rand(-93.948..-87.66), rand(0.0..3.14), $sidewalk_height) %>
+    <%= includeModel("cinder_block", rand(-39.77..-35.209), rand(-93.948..-87.66), rand(0.0..3.14), $sidewalk_height) %>
+    <%= includeModel("cinder_block_2", rand(-39.77..-35.209), rand(-93.948..-87.66), rand(0.0..3.14), $sidewalk_height) %>
+    <%= includeModel("cinder_block_2", rand(-39.77..-35.209), rand(-93.948..-87.66), rand(0.0..3.14), $sidewalk_height) %>
+    <%= includeModel("cinder_block_2", rand(-39.77..-35.209), rand(-93.948..-87.66), rand(0.0..3.14), $sidewalk_height) %>
+    <%= includeModel("cinder_block_2", rand(-39.77..-35.209), rand(-93.948..-87.66), rand(0.0..3.14), $sidewalk_height) %>
+    <%= includeModel("cinder_block_2", rand(-39.77..-35.209), rand(-93.948..-87.66), rand(0.0..3.14), $sidewalk_height) %>
+
+    <!-- West block -->
+
+    <!-- East block -->
+
+    <%= includeModel("powerplant", 15.57, -134.33, 3.14) %>
+    <%= includeModel("reactor", -42.29, -115.79, 3.14) %>
+    <%= includeModel("reactor", -40.95, -136.98, 3.14) %>
+
+    <!-- Construction zone -->
+
+    <%= includeModel("tower_crane", -46.2805, -101.493, 1.60214) %>
+    <%= includeModel("drc_practice_angled_barrier_45", -37.2216, -100.588, 3.14159) %>
+    <%= includeModel("drc_practice_orange_jersey_barrier", -34.8405, -101.725, 0.867273) %>
+    <%= includeModel("construction_barrel", -47.7276, -90.7959, 0) %>
+
+    <!-- South island -->
+
+    <%= includeModel("truss_bridge", -56.37, -45, 1.57, -0.29) %>
+    <%= includeModel("truss_bridge", -56.37, 0, 1.57, -0.29) %>
+    <%= includeModel("pier", -108.77, -22.03, 2.27, -7.6) %>
+    <%= includeModel("bus", -79.68, -3.81, 0) %>
+
+    <road name="sandy_path">
+      <width>17.9</width>
+      <point>-73 <%= -45 - road_width * 0.4 %> <%= road_z_offset %></point>
+      <point>-73 <%= road_width * 0.4 %> <%= road_z_offset %></point>
+
+      <material>
+        <script>
+          <uri>file://media/materials/scripts/gazebo.material</uri>
+          <name>Gazebo/Residential</name>
+        </script>
+      </material>
+    </road>
+
+    <!-- Stop lights -->
+
+    <%= includeModel("stop_light_post", road_x[0] + road_width * 0.5, road_y[1]-road_width * 0.5, -1.57) %>
+    <%= includeModel("stop_light_post", road_x[0] + road_width * 0.5, -road_width * 0.5, -1.57) %>
+    <%= includeModel("stop_light_post", road_x[1] + road_width * 0.5, -road_width * 0.5, -1.57) %>
+    <%= includeModel("stop_light_post", road_x[2] + road_width * 0.5, -road_width * 0.5, -1.57) %>
+    <%= includeModel("stop_light_post", road_x[4] + road_width * 0.5, -road_width * 0.5, -1.57) %>
+    <%= includeModel("stop_light_post", road_x[0] - road_width * 0.5, +road_width * 0.5, 1.57) %>
+    <%= includeModel("stop_light_post", road_x[1] - road_width * 0.5, +road_width * 0.5, 1.57) %>
+    <%= includeModel("stop_light_post", road_x[2] - road_width * 0.5, +road_width * 0.5, 1.57) %>
+    <%= includeModel("stop_light_post", road_x[0] + road_width * 0.5, +road_width * 0.5, 0.0) %>
+    <%= includeModel("stop_light_post", road_x[1] + road_width * 0.5, +road_width * 0.5, 0.0) %>
+    <%= includeModel("stop_light_post", road_x[4] + road_width * 0.5, +road_width * 0.5, 0.0) %>
+    <%= includeModel("stop_light_post", road_x[0] - road_width * 0.5, -road_width * 0.5, 3.14) %>
+    <%= includeModel("stop_light_post", road_x[2] - road_width * 0.5, -road_width * 0.5, 3.14) %>
+    <%= includeModel("stop_light_post", road_x[3] - road_width * 0.5, -road_width * 0.5, 3.14) %>
+
+    <!-- Stop signs -->
+
+    <%= includeModel("stop_sign", road_x[0] + road_width * 0.5, road_y[3]+road_width * 0.5, 1.57) %>
+    <%= includeModel("stop_sign", road_x[1] + road_width * 0.5, road_y[3]+road_width * 0.5, 1.57) %>
+    <%= includeModel("stop_sign", road_x[2] + road_width * 0.5, road_y[3]+road_width * 0.5, 1.57) %>
+    <%= includeModel("stop_sign", road_x[1] + road_width * 0.5, road_y[1]-road_width * 0.5, 0.0) %>
+    <%= includeModel("stop_sign", road_x[1] + road_width * 0.5, road_y[3]-road_width * 0.5, 0.0) %>
+    <%= includeModel("stop_sign", road_x[1] + road_width * 0.5, road_y[4]-road_width * 0.5, 0.0) %>
+    <%= includeModel("stop_sign", road_x[2] - road_width * 0.5, road_y[0]+road_width * 0.5, 3.14) %>
+    <%= includeModel("stop_sign", road_x[2] - road_width * 0.5, road_y[1]+road_width * 0.5, 3.14) %>
+    <%= includeModel("stop_sign", road_x[2] - road_width * 0.5, road_y[3]+road_width * 0.5, 3.14) %>
+    <%= includeModel("stop_sign", road_x[1] - road_width * 0.5, road_y[1]-road_width * 0.5, -1.57) %>
+    <%= includeModel("stop_sign", road_x[2] - road_width * 0.5, road_y[1]-road_width * 0.5, -1.57) %>
+    <%= includeModel("stop_sign", road_x[3] - road_width * 0.5, road_y[1]-road_width * 0.5, -1.57) %>
+
+    <!-- Street lights -->
+
+    <%
+      dist = road_x[1] - road_x[0]
+    %>
+    <%= includeModel("lamp_post", road_x[0] + dist*0.33, -road_width * 0.5, 3.14) %>
+    <%= includeModel("lamp_post", road_x[0] + dist*0.66,  road_width * 0.5, 0) %>
+
+    <%
+      dist = road_x[2] - road_x[1]
+    %>
+    <%= includeModel("lamp_post", road_x[1] + dist*0.2, -road_width * 0.5, 3.14) %>
+    <%= includeModel("lamp_post", road_x[1] + dist*0.4,  road_width * 0.5, 0) %>
+    <%= includeModel("lamp_post", road_x[1] + dist*0.6, -road_width * 0.5, 3.14) %>
+    <%= includeModel("lamp_post", road_x[1] + dist*0.7,  road_width * 0.5, 0) %>
+
+    <%
+      dist = road_x[3] - road_x[2]
+    %>
+    <%= includeModel("lamp_post", road_x[2] + dist*0.2, -road_width * 0.5, 3.14) %>
+    <%= includeModel("lamp_post", road_x[2] + dist*0.4,  road_width * 0.5, 0) %>
+    <%= includeModel("lamp_post", road_x[2] + dist*0.6, -road_width * 0.5, 3.14) %>
+    <%= includeModel("lamp_post", road_x[2] + dist*0.7,  road_width * 0.5, 0) %>
+
+    <!-- Telephone poles -->
+
+    <%
+      # Along Y
+      (0..3).step(1).each do |y|
+        (0..3).step(1).each do |x|
+          dist = road_y[y+1] - road_y[y]
+          if x != 3
+    %>
+            <%= includeModel("telephone_pole", road_x[x] + road_width * 0.5, road_y[y] + dist*0.33, 3.14) %>
+            <%= includeModel("telephone_pole", road_x[x] + road_width * 0.5, road_y[y] + dist*0.66, 3.14) %>
+    <%
+          end
+          if x != 0
+    %>
+            <%= includeModel("telephone_pole", road_x[x] - road_width * 0.5, road_y[y] + dist*0.33, 3.14) %>
+            <%= includeModel("telephone_pole", road_x[x] - road_width * 0.5, road_y[y] + dist*0.66, 3.14) %>
+    <%
+          end
+        end
+      end
+    %>
+
+    <%
+      # Along X
+      (0..2).step(1).each do |x|
+        (0..4).step(1).each do |y|
+          if y == 2
+            next
+          end
+          dist = road_x[x+1] - road_x[x]
+          if y != 4
+    %>
+            <%= includeModel("telephone_pole", road_x[x] + dist*0.33, road_y[y] + road_width * 0.5, 1.57) %>
+            <%= includeModel("telephone_pole", road_x[x] + dist*0.66, road_y[y] + road_width * 0.5, 1.57) %>
+    <%
+          end
+          if y != 0
+    %>
+            <%= includeModel("telephone_pole", road_x[x] + dist*0.33, road_y[y] - road_width * 0.5, 1.57) %>
+            <%= includeModel("telephone_pole", road_x[x] + dist*0.66, road_y[y] - road_width * 0.5, 1.57) %>
+    <%
+          end
+        end
+      end
+    %>
+
+    <!-- Parallel-parked cars -->
+
+    <%
+      # Along Y
+      (0..3).step(1).each do |y|
+        (1..2).step(1).each do |x|
+          dist = road_y[y+1] - road_y[y]
+
+          # facing west / east
+          yaw = x == 1 ? Math::PI*0.5 : -Math::PI*0.5
+    %>
+          <%= includeModel(static_cars.sample,
+                           road_x[x] - road_width * 0.5 + car_width * 0.5,
+                           road_y[y] + dist*rand(0.2..0.8), yaw) %>
+          <%= includeModel(static_cars.sample,
+                           road_x[x] + road_width * 0.5 - car_width * 0.5,
+                           road_y[y] + dist*rand(0.2..0.8), yaw) %>
+    <%
+        end
+      end
+    %>
+
+    <%
+      # Along X
+      (0..2).step(1).each do |x|
+        [1, 3].each do |y|
+          dist = road_x[x+1] - road_x[x]
+
+          # facing north / south
+          yaw = y == 1 ? 0 : Math::PI
+    %>
+          <%= includeModel(static_cars.sample,
+                           road_x[x] + dist*rand(0.2..0.8),
+                           road_y[y] - road_width * 0.5 + car_width * 0.5,  yaw) %>
+          <%= includeModel(static_cars.sample,
+                           road_x[x] + dist*rand(0.2..0.8),
+                           road_y[y] + road_width * 0.5 - car_width * 0.5,  yaw) %>
+    <%
+        end
+      end
+    %>
+
+    <!-- People -->
+    <%
+      actors.keys.each do |name|
+        skin = actors[name][:skin]
+        anim = actors[name][:anim]
+        traj = actors[name][:traj]
+    %>
+      <actor name="<%= name  %>">
+        <!-- Starting pose -->
+        <pose><%= traj[0][:x] %> <%= traj[0][:y] %> <%= 0.6 + $street_z_offset + $sidewalk_height %> 0 0 <%= traj[0][:yaw] %></pose>
+        <skin>
+          <filename>model://actor/meshes/<%= skin %></filename>
+        </skin>
+        <animation name="animation">
+          <filename>model://actor/meshes/<%= anim %></filename>
+          <% if traj.length > 1 %>
+            <interpolate_x>true</interpolate_x>
+          <% end %>
+        </animation>
+          <script>
+            <trajectory id="0" type="animation">
+              <%
+                # Needs trajectory otherwise it doesn't stay at initial pose and goes to 000
+                # But with a trajectory we have to get the duration right to loop nicely
+
+                if traj.length == 1
+                  front = traj.at(0)
+                  front[:time] = 100
+
+                  traj.push(front)
+                end
+
+                traj.each do |t|
+                  x = t[:x]
+                  y = t[:y]
+                  yaw = t[:yaw]
+                  time = t[:time]
+              %>
+                <waypoint>
+                  <time><%= time %></time>
+                  <pose><%= x %> <%= y %> <%= $street_z_offset + $sidewalk_height %> 0 0 <%= yaw %></pose>
+                </waypoint>
+              <% end %>
+            </trajectory>
+          </script>
+      </actor>
+    <% end %>
+
+    <!-- Animated vehicles -->
+    <%
+      animCars = []
+
+      # X == 0: 2 ways, offset for construction
+      trajectory = []
+      trajectory.push({:x => road_x[0] + road_width*0.25, :y => road_y[0] + 10, :yaw => 0, :time => 0})
+      trajectory.push({:x => road_x[0] + road_width*0.25, :y => road_y[4], :yaw => 0, :time => rand(20..50)})
+      animCars.push(trajectory)
+
+      trajectory = []
+      trajectory.push({:x => road_x[0] - road_width*0.25, :y => road_y[4], :yaw => Math::PI, :time => 0})
+      trajectory.push({:x => road_x[0] - road_width*0.25, :y => road_y[0] + 10, :yaw => Math::PI, :time => rand(20..50)})
+      animCars.push(trajectory)
+
+      # X == 1: -> west
+      trajectory = []
+      trajectory.push({:x => road_x[1], :y => road_y[0], :yaw => 0, :time => 0})
+      trajectory.push({:x => road_x[1], :y => road_y[4], :yaw => 0, :time => rand(20..50)})
+      animCars.push(trajectory)
+
+      # X == 2: -> east
+      trajectory = []
+      trajectory.push({:x => road_x[2], :y => road_y[4], :yaw => Math::PI, :time => 0})
+      trajectory.push({:x => road_x[2], :y => road_y[0], :yaw => Math::PI, :time => rand(20..50)})
+      animCars.push(trajectory)
+
+      # X == 3: 2 cars going east
+      trajectory = []
+      trajectory.push({:x => road_x[3] - road_width*0.25, :y => road_y[4], :yaw => Math::PI, :time => 0})
+      trajectory.push({:x => road_x[3] - road_width*0.25, :y => road_y[0], :yaw => Math::PI, :time => rand(20..50)})
+      animCars.push(trajectory)
+
+      trajectory = []
+      trajectory.push({:x => road_x[3] + road_width*0.25, :y => road_y[4], :yaw => Math::PI, :time => 0})
+      trajectory.push({:x => road_x[3] + road_width*0.25, :y => road_y[0], :yaw => Math::PI, :time => rand(20..50)})
+      animCars.push(trajectory)
+
+      # X == 4: 2 cars going west
+      trajectory = []
+      trajectory.push({:x => road_x[4] - road_width*0.25, :y => road_y[0], :yaw => 0, :time => 0})
+      trajectory.push({:x => road_x[4] - road_width*0.25, :y => road_y[4], :yaw => 0, :time => rand(20..50)})
+      animCars.push(trajectory)
+
+      trajectory = []
+      trajectory.push({:x => road_x[4] + road_width*0.25, :y => road_y[0], :yaw => 0, :time => 0})
+      trajectory.push({:x => road_x[4] + road_width*0.25, :y => road_y[4], :yaw => 0, :time => rand(20..50)})
+      animCars.push(trajectory)
+
+
+      animCars.each do |traj|
+        $count += 1
+    %>
+      <actor name="car_<%= $count.to_s()  %>">
+        <pose><%= traj[0][:x] %> <%= traj[0][:y] %> <%= $street_z_offset %> 0 0 <%= traj[0][:yaw] %></pose>
+        <%= includeModel(static_cars.sample, 0, 0, Math::PI*0.5, -$street_z_offset) %>
+        <script>
+          <trajectory id="0" type="animation">
+            <%
+              traj.each do |t|
+                x = t[:x]
+                y = t[:y]
+                yaw = t[:yaw]
+                time = t[:time]
+            %>
+              <waypoint>
+                <time><%= time %></time>
+                <pose><%= x %> <%= y %> <%= $street_z_offset %> 0 0 <%= yaw %></pose>
+              </waypoint>
+            <% end %>
+          </trajectory>
+        </script>
+      </actor>
+    <% end %>
+
+    <!-- Prius -->
+
+    <include>
+      <name>prius_hybrid_123</name>
+      <pose> -40 -1.9 5.01 0 0 1.57 </pose>
+
+      <uri>model://prius_hybrid_sensors</uri>
+      <plugin name="prius" filename="libPriusHybridPlugin.so">
+        <chassis>prius_hybrid::chassis</chassis>
+        <front_left_wheel>prius_hybrid::front_left_combined_joint</front_left_wheel>
+        <front_right_wheel>prius_hybrid::front_right_combined_joint</front_right_wheel>
+        <front_left_wheel_steering>prius_hybrid::front_left_combined_joint</front_left_wheel_steering>
+        <front_right_wheel_steering>prius_hybrid::front_right_combined_joint</front_right_wheel_steering>
+        <back_left_wheel>prius_hybrid::rear_left_wheel_joint</back_left_wheel>
+        <back_right_wheel>prius_hybrid::rear_right_wheel_joint</back_right_wheel>
+        <steering_wheel>prius_hybrid::steering_joint</steering_wheel>
+        <chassis_aero_force_gain>0.63045</chassis_aero_force_gain>
+        <front_torque>859.4004393000001</front_torque>
+        <back_torque>0</back_torque>
+        <front_brake_torque>1031.28052716</front_brake_torque>
+        <back_brake_torque>687.5203514400001</back_brake_torque>
+        <max_speed>37.998337013956565</max_speed>
+        <min_gas_flow>8.981854013171626e-05</min_gas_flow>
+        <gas_efficiency>0.371</gas_efficiency>
+        <battery_charge_watt_hours>291</battery_charge_watt_hours>
+        <battery_discharge_watt_hours>214</battery_discharge_watt_hours>
+        <max_steer>0.6458</max_steer>
+        <flwheel_steering_p_gain>1e4</flwheel_steering_p_gain>
+        <frwheel_steering_p_gain>1e4</frwheel_steering_p_gain>
+        <flwheel_steering_i_gain>0</flwheel_steering_i_gain>
+        <frwheel_steering_i_gain>0</frwheel_steering_i_gain>
+        <flwheel_steering_d_gain>3e2</flwheel_steering_d_gain>
+        <frwheel_steering_d_gain>3e2</frwheel_steering_d_gain>
+      </plugin>
+
+    </include>
+
+  </world>
+</sdf>

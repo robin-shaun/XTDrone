@@ -21,10 +21,7 @@
                 <ode/>
               </torsional>
             </friction>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
+
 
           <max_contacts>10</max_contacts>
         </collision>
@@ -96,16 +93,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <collision name='wall_1'>
@@ -117,16 +106,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <collision name='wall_2'>
@@ -138,16 +119,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
 
@@ -160,16 +133,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <collision name='wall_5'>
@@ -181,16 +146,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <collision name='wall_6'>
@@ -202,16 +159,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <collision name='wall_7'>
@@ -223,16 +172,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <collision name='wall_8'>
@@ -244,16 +185,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <collision name='coke'>
@@ -265,16 +198,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <visual name='visual'>
@@ -321,16 +246,8 @@
           <pose frame=''>-2.31327 0 1.425 0 -0 0</pose>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <visual name='Wall_0_Visual_1'>
@@ -360,16 +277,8 @@
           <pose frame=''>1.18673 0 0.25 0 -0 0</pose>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <visual name='Wall_0_Visual_2'>
@@ -399,16 +308,8 @@
           <pose frame=''>2.68673 0 1.675 0 -0 0</pose>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <visual name='Wall_0_Visual_3'>
@@ -438,16 +339,8 @@
           <pose frame=''>0.37346 0 2.575 0 -0 0</pose>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <self_collide>0</self_collide>
@@ -483,16 +376,8 @@
           <pose frame=''>-1.53914 0 1.425 0 -0 0</pose>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <visual name='Wall_3_Visual_1'>
@@ -522,16 +407,8 @@
           <pose frame=''>1.69286 0 1.425 0 -0 0</pose>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <visual name='Wall_3_Visual_2'>
@@ -561,16 +438,8 @@
           <pose frame=''>0.153711 0 0 0 -0 0</pose>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <visual name='Wall_3_Visual_3'>
@@ -600,16 +469,8 @@
           <pose frame=''>0.153711 0 2.425 0 -0 0</pose>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <self_collide>0</self_collide>
@@ -780,6 +641,54 @@
         <pose frame=''>0.076075 -5.91752 1 0 -0 0</pose>
       </light>
     </state>
+    <model name='ceiling'>
+      <link name='link'>
+        <inertial>
+          <pose frame=''>0 0 0 0 0 0</pose>
+          <mass>100000</mass>
+          <inertia>
+            <ixx>100000</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>100000</iyy>
+            <iyz>0</iyz>
+            <izz>100000</izz>
+          </inertia>
+        </inertial>
+        <collision name='collision'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>300 300 0.5</size>
+            </box>
+          </geometry>
+
+            <friction>
+              <ode>
+                <mu>1</mu>
+                <mu2>1</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <contact>
+              <ode>
+                <kp>1e+07</kp>
+                <kd>1</kd>
+                <min_depth>0.001</min_depth>
+                <max_vel>0.1</max_vel>
+              </ode>
+            </contact>
+
+          <max_contacts>10</max_contacts>
+        </collision>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <pose frame=''>0 0 5 0 0 0</pose>
+    </model>
     <model name='cafe_table'>
       <static>1</static>
       <link name='link'>
@@ -792,16 +701,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <collision name='column'>
@@ -813,16 +714,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <collision name='base'>
@@ -834,16 +727,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <visual name='visual'>
@@ -894,16 +779,7 @@
                 <min_depth>0.001</min_depth>
               </ode>
             </contact>
-            <friction>
-              <ode>
-                <mu>1</mu>
-                <mu2>1</mu2>
-              </ode>
-              <torsional>
-                <ode/>
-              </torsional>
-            </friction>
-            <bounce/>
+
 
           <max_contacts>10</max_contacts>
         </collision>
@@ -921,16 +797,7 @@
                 <min_depth>0.001</min_depth>
               </ode>
             </contact>
-            <friction>
-              <ode>
-                <mu>1</mu>
-                <mu2>1</mu2>
-              </ode>
-              <torsional>
-                <ode/>
-              </torsional>
-            </friction>
-            <bounce/>
+
 
           <max_contacts>10</max_contacts>
         </collision>
@@ -948,16 +815,7 @@
                 <min_depth>0.001</min_depth>
               </ode>
             </contact>
-            <friction>
-              <ode>
-                <mu>1</mu>
-                <mu2>1</mu2>
-              </ode>
-              <torsional>
-                <ode/>
-              </torsional>
-            </friction>
-            <bounce/>
+
 
           <max_contacts>10</max_contacts>
         </collision>
@@ -975,16 +833,7 @@
                 <min_depth>0.001</min_depth>
               </ode>
             </contact>
-            <friction>
-              <ode>
-                <mu>1</mu>
-                <mu2>1</mu2>
-              </ode>
-              <torsional>
-                <ode/>
-              </torsional>
-            </friction>
-            <bounce/>
+
 
           <max_contacts>10</max_contacts>
         </collision>
@@ -1002,16 +851,7 @@
                 <min_depth>0.001</min_depth>
               </ode>
             </contact>
-            <friction>
-              <ode>
-                <mu>1</mu>
-                <mu2>1</mu2>
-              </ode>
-              <torsional>
-                <ode/>
-              </torsional>
-            </friction>
-            <bounce/>
+
 
           <max_contacts>10</max_contacts>
         </collision>
@@ -1060,7 +900,6 @@
                 <max_vel>0.1</max_vel>
               </ode>
             </contact>
-            <bounce/>
 
           <max_contacts>10</max_contacts>
         </collision>
@@ -1090,16 +929,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <collision name='column'>
@@ -1111,16 +942,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <collision name='base'>
@@ -1132,16 +955,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <visual name='visual'>
@@ -1180,16 +995,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <collision name='lid_lip_1'>
@@ -1201,16 +1008,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <collision name='lid_lip_2'>
@@ -1222,16 +1021,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <collision name='lid_lip_3'>
@@ -1243,16 +1034,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <collision name='lid_lip_4'>
@@ -1264,16 +1047,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <collision name='side_wall_1'>
@@ -1285,16 +1060,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <collision name='side_wall_2'>
@@ -1306,16 +1073,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <collision name='side_wall_3'>
@@ -1327,16 +1086,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <collision name='side_wall_4'>
@@ -1348,16 +1099,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <collision name='bottom'>
@@ -1369,16 +1112,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <collision name='corner_1'>
@@ -1391,16 +1126,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <collision name='corner_2'>
@@ -1413,16 +1140,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <collision name='corner_3'>
@@ -1435,16 +1154,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <collision name='corner_4'>
@@ -1457,16 +1168,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <visual name='visual'>
@@ -1608,16 +1311,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <visual name='visual1'>
@@ -1643,16 +1338,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <visual name='visual2'>
@@ -1678,16 +1365,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <visual name='visual3'>
@@ -1713,16 +1392,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <visual name='visual4'>
@@ -1748,16 +1419,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <visual name='visual5'>
@@ -1783,16 +1446,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <visual name='visual6'>
@@ -1818,16 +1473,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <visual name='visual7'>
@@ -1865,16 +1512,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <visual name='visual1'>
@@ -1900,16 +1539,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <visual name='visual2'>
@@ -1935,16 +1566,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <visual name='visual3'>
@@ -1970,16 +1593,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <visual name='visual4'>
@@ -2005,16 +1620,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <visual name='visual5'>
@@ -2040,16 +1647,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <visual name='visual6'>
@@ -2075,16 +1674,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <visual name='visual7'>
@@ -2131,16 +1722,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <visual name='cabinet_bottom_plate_geom_visual'>
@@ -2166,16 +1749,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <visual name='cabinet_bottom_plate_geom_cabinet_back_plate_visual'>
@@ -2201,16 +1776,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <visual name='cabinet_bottom_plate_geom_cabinet_left_plate_visual'>
@@ -2236,16 +1803,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <visual name='cabinet_bottom_plate_geom_cabinet_middle_plate_visual'>
@@ -2271,16 +1830,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <visual name='cabinet_bottom_plate_geom_cabinet_right_plate_visual'>
@@ -2306,16 +1857,8 @@
           </geometry>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <visual name='cabinet_bottom_plate_geom_cabinet_top_plate_visual'>
@@ -2350,16 +1893,8 @@
           <pose frame=''>0 0 1.25 0 -0 0</pose>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <visual name='Wall_10_Visual'>
@@ -2395,16 +1930,8 @@
           <pose frame=''>0 0 1.25 0 -0 0</pose>
           <max_contacts>10</max_contacts>
 
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
+
+
 
         </collision>
         <visual name='Wall_4_Visual'>

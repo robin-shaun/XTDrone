@@ -24,7 +24,7 @@
               <size>100 100</size>
             </plane>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>100</mu>
@@ -38,7 +38,7 @@
               <ode/>
             </contact>
             <bounce/>
-           
+
           <max_contacts>10</max_contacts>
         </collision>
         <visual name='visual'>
@@ -520,7 +520,7 @@
               <size>1 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -564,7 +564,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_1'>
@@ -602,7 +602,7 @@
               <size>0.75 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -646,7 +646,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_11'>
@@ -684,7 +684,7 @@
               <size>2 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -728,7 +728,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_12'>
@@ -766,7 +766,7 @@
               <size>1.5 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -810,7 +810,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_13'>
@@ -848,7 +848,7 @@
               <size>1 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -892,7 +892,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_16'>
@@ -930,7 +930,7 @@
               <size>0.75 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -974,7 +974,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_17'>
@@ -1012,7 +1012,7 @@
               <size>1.25 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -1056,7 +1056,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_18'>
@@ -1094,7 +1094,7 @@
               <size>0.75 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -1138,7 +1138,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_2'>
@@ -1176,7 +1176,7 @@
               <size>1.75 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -1220,7 +1220,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_20'>
@@ -1258,7 +1258,7 @@
               <size>1.25 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -1302,7 +1302,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_21'>
@@ -1340,7 +1340,7 @@
               <size>0.75 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -1384,7 +1384,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_23'>
@@ -1422,7 +1422,7 @@
               <size>1.5 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -1466,7 +1466,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_24'>
@@ -1504,7 +1504,7 @@
               <size>1 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -1548,7 +1548,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_25'>
@@ -1586,7 +1586,7 @@
               <size>1 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -1630,7 +1630,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_26'>
@@ -1668,7 +1668,7 @@
               <size>1.25 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -1712,7 +1712,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_3'>
@@ -1750,7 +1750,7 @@
               <size>1 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -1794,7 +1794,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_32'>
@@ -1832,7 +1832,7 @@
               <size>2.25 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -1876,7 +1876,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_33'>
@@ -1914,7 +1914,7 @@
               <size>2 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -1958,7 +1958,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_34'>
@@ -1996,7 +1996,7 @@
               <size>1.25 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -2040,7 +2040,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_35'>
@@ -2078,7 +2078,7 @@
               <size>1.25 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -2122,7 +2122,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_36'>
@@ -2160,7 +2160,7 @@
               <size>1 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -2204,7 +2204,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_37'>
@@ -2242,7 +2242,7 @@
               <size>0.75 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -2286,7 +2286,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_37_clone'>
@@ -2324,7 +2324,7 @@
               <size>0.75 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -2368,7 +2368,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_37_clone_clone'>
@@ -2406,7 +2406,7 @@
               <size>0.75 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -2450,7 +2450,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_37_clone_clone_0'>
@@ -2488,7 +2488,7 @@
               <size>0.75 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -2532,7 +2532,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_37_clone_clone_1'>
@@ -2570,7 +2570,7 @@
               <size>0.75 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -2614,7 +2614,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_37_clone_clone_2'>
@@ -2652,7 +2652,7 @@
               <size>0.75 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -2696,7 +2696,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_37_clone_clone_3'>
@@ -2734,7 +2734,7 @@
               <size>0.75 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -2778,7 +2778,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_37_clone_clone_4'>
@@ -2816,7 +2816,7 @@
               <size>0.75 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -2860,7 +2860,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_37_clone_clone_5'>
@@ -2898,7 +2898,7 @@
               <size>0.75 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -2942,7 +2942,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_37_clone_clone_6'>
@@ -2980,7 +2980,7 @@
               <size>0.75 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -3024,7 +3024,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_37_clone_clone_7'>
@@ -3062,7 +3062,7 @@
               <size>0.75 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -3106,7 +3106,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_38'>
@@ -3144,7 +3144,7 @@
               <size>0.75 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -3188,7 +3188,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_39'>
@@ -3226,7 +3226,7 @@
               <size>1 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -3270,7 +3270,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_4'>
@@ -3308,7 +3308,7 @@
               <size>1.5 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -3352,7 +3352,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_40'>
@@ -3390,7 +3390,7 @@
               <size>1.25 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -3434,7 +3434,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_41'>
@@ -3472,7 +3472,7 @@
               <size>1 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -3516,7 +3516,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_42'>
@@ -3554,7 +3554,7 @@
               <size>1.75 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -3598,7 +3598,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_43'>
@@ -3636,7 +3636,7 @@
               <size>2.25 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -3680,7 +3680,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_44'>
@@ -3718,7 +3718,7 @@
               <size>1.75 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -3762,7 +3762,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_45'>
@@ -3800,7 +3800,7 @@
               <size>2 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -3844,7 +3844,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_46'>
@@ -3882,7 +3882,7 @@
               <size>2.25 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -3926,7 +3926,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_47'>
@@ -3964,7 +3964,7 @@
               <size>4.5 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -4008,7 +4008,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_48'>
@@ -4046,7 +4046,7 @@
               <size>3 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -4090,7 +4090,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_49'>
@@ -4128,7 +4128,7 @@
               <size>2.25 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -4172,7 +4172,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_5'>
@@ -4210,7 +4210,7 @@
               <size>1.5 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -4254,7 +4254,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_50'>
@@ -4292,7 +4292,7 @@
               <size>1.75 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -4336,7 +4336,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_51'>
@@ -4374,7 +4374,7 @@
               <size>2.25 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -4418,7 +4418,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_52'>
@@ -4456,7 +4456,7 @@
               <size>2 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -4500,7 +4500,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_53'>
@@ -4538,7 +4538,7 @@
               <size>2 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -4582,7 +4582,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_54'>
@@ -4620,7 +4620,7 @@
               <size>0.939679 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -4664,7 +4664,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_56'>
@@ -4702,7 +4702,7 @@
               <size>2 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -4746,7 +4746,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_57'>
@@ -4784,7 +4784,7 @@
               <size>1.5 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -4828,7 +4828,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_58'>
@@ -4866,7 +4866,7 @@
               <size>2 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -4910,7 +4910,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_59'>
@@ -4948,7 +4948,7 @@
               <size>1.5 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -4992,7 +4992,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_6'>
@@ -5030,7 +5030,7 @@
               <size>1 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -5074,7 +5074,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_61'>
@@ -5112,7 +5112,7 @@
               <size>1.5 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -5156,7 +5156,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_62'>
@@ -5194,7 +5194,7 @@
               <size>1.5 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -5238,7 +5238,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_63'>
@@ -5276,7 +5276,7 @@
               <size>1.25 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -5320,7 +5320,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_64'>
@@ -5358,7 +5358,7 @@
               <size>1.25 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -5402,7 +5402,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_65'>
@@ -5440,7 +5440,7 @@
               <size>0.603708 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -5484,7 +5484,7 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <link name='Wall_9'>
@@ -5522,7 +5522,7 @@
               <size>1 0.15 2.5</size>
             </box>
           </geometry>
-           
+
             <friction>
               <ode>
                 <mu>1</mu>
@@ -5566,12 +5566,61 @@
                 <kd>1</kd>
               </bullet>
             </contact>
-           
+
         </collision>
       </link>
       <static>1</static>
       <allow_auto_disable>1</allow_auto_disable>
       <pose frame=''>1.67578 5.00079 0 0 -0 2.94701</pose>
     </model>
+          <model name='ceiling'>
+        <link name='link'>
+          <inertial>
+            <pose frame=''>0 0 0 0 0 0</pose>
+            <mass>100000</mass>
+            <inertia>
+              <ixx>100000</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>100000</iyy>
+              <iyz>0</iyz>
+              <izz>100000</izz>
+            </inertia>
+          </inertial>
+          <collision name='collision'>
+            <pose frame=''>0 0 0 0 -0 0</pose>
+            <geometry>
+              <box>
+                <size>300 300 0.5</size>
+              </box>
+            </geometry>
+
+              <friction>
+                <ode>
+                  <mu>1</mu>
+                  <mu2>1</mu2>
+                </ode>
+                <torsional>
+                  <ode/>
+                </torsional>
+              </friction>
+              <contact>
+                <ode>
+                  <kp>1e+07</kp>
+                  <kd>1</kd>
+                  <min_depth>0.001</min_depth>
+                  <max_vel>0.1</max_vel>
+                </ode>
+              </contact>
+              <bounce/>
+
+            <max_contacts>10</max_contacts>
+          </collision>
+          <self_collide>0</self_collide>
+          <enable_wind>0</enable_wind>
+          <kinematic>0</kinematic>
+        </link>
+        <pose frame=''>0 0 5 0 0 0</pose>
+      </model>
   </world>
 </sdf>

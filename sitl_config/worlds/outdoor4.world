@@ -5,14 +5,6 @@
 
 <sdf version="1.6">
   <world name="default">
-    <plugin name="joy" filename="libJoyPlugin.so">
-      <sticky_buttons>false</sticky_buttons>
-      <dead_zone>0.05</dead_zone>
-      <rate>60</rate>
-      <accumulation_rate>1000</accumulation_rate>
-    </plugin>
-
-
     <gui>
      <camera name="user_camera">
        <pose>-49.08 -1.911 6.95 0 0 -0.0159</pose>
@@ -78,9 +70,10 @@
     </scene>
 
     <physics name='default_physics' default='0' type='ode'>
-      <max_step_size>0.002</max_step_size>
+      <max_step_size>0.004</max_step_size>
       <real_time_factor>1</real_time_factor>
-      <real_time_update_rate>0</real_time_update_rate>
+      <real_time_update_rate>250</real_time_update_rate>
+      <magnetic_field>6.0e-6 2.3e-5 -4.2e-5</magnetic_field>
     </physics>
 
     <spherical_coordinates>
@@ -13231,401 +13224,154 @@
     <!-- People -->
 
       <actor name="walking_0">
-        <!-- Starting pose -->
-            <plugin name="actor_collisions_plugin" filename="/home/robin/catkin_ws_new/src/actor_collisions/build/libActorCollisionsPlugin.so">
-      <scaling collision="LHipJoint_LeftUpLeg_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="LeftUpLeg_LeftLeg_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="LeftLeg_LeftFoot_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="LeftFoot_LeftToeBase_collision" scale="
-        4.0
-        4.0
-        1.5
-      "/>
-      <scaling collision="RHipJoint_RightUpLeg_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="RightUpLeg_RightLeg_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="RightLeg_RightFoot_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="RightFoot_RightToeBase_collision" scale="
-        4.0
-        4.0
-        1.5
-      "/>
-      <scaling collision="LowerBack_Spine_collision" scale="
-        12.0
-        20.0
-        5.0
-      " pose="0.05 0 0 0 -0.2 0"/>
-      <scaling collision="Spine_Spine1_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="Neck_Neck1_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="Neck1_Head_collision" scale="
-        5.0
-        5.0
-        3.0
-      "/>
-      <scaling collision="LeftShoulder_LeftArm_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="LeftArm_LeftForeArm_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="LeftForeArm_LeftHand_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="LeftFingerBase_LeftHandIndex1_collision" scale="
-        4.0
-        4.0
-        3.0
-      "/>
-      <scaling collision="RightShoulder_RightArm_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="RightArm_RightForeArm_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="RightForeArm_RightHand_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="RightFingerBase_RightHandIndex1_collision" scale="
-        4.0
-        4.0
-        3.0
-      "/>
-    </plugin>
+        <plugin name="actor_collisions_plugin" filename="libActorCollisionsPlugin.so">
+          <scaling collision="LHipJoint_LeftUpLeg_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="LeftUpLeg_LeftLeg_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="LeftLeg_LeftFoot_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="LeftFoot_LeftToeBase_collision" scale="4.0 4.0 1.5"/>
+          <scaling collision="RHipJoint_RightUpLeg_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="RightUpLeg_RightLeg_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="RightLeg_RightFoot_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="RightFoot_RightToeBase_collision" scale="4.0 4.0 1.5"/>
+          <scaling collision="LowerBack_Spine_collision" scale="12.0 20.0 5.0 "/>
+          <scaling collision="Spine_Spine1_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="Neck_Neck1_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="Neck1_Head_collision" scale="5.0 5.0 3.0"/>
+          <scaling collision="LeftShoulder_LeftArm_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="LeftArm_LeftForeArm_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="LeftForeArm_LeftHand_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="LeftFingerBase_LeftHandIndex1_collision" scale="4.0 4.0 3.0"/>
+          <scaling collision="RightShoulder_RightArm_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="RightArm_RightForeArm_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="RightForeArm_RightHand_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="RightFingerBase_RightHandIndex1_collision" scale="4.0 4.0 3.0"/>
+        </plugin>
         <pose>104.8 94.8 5.76 0 0 3.141592653589793</pose>
         <skin>
           <filename>model://actor/meshes/SKIN_man_green_shirt.dae</filename>
         </skin>
         <animation name="animation">
           <filename>model://actor/meshes/ANIMATION_walking.dae</filename>
-
             <interpolate_x>true</interpolate_x>
-
         </animation>
-          <script>
-            <trajectory id="0" type="animation">
+        <script>
+          <trajectory id="0" type="animation">
 
-                <waypoint>
-                  <time>0</time>
-                  <pose>104.8 94.8 5.16 0 0 3.141592653589793</pose>
-                </waypoint>
+              <waypoint>
+                <time>0</time>
+                <pose>104.8 94.8 5.16 0 0 3.141592653589793</pose>
+              </waypoint>
 
-                <waypoint>
-                  <time>12.1097824985654</time>
-                  <pose>93.88 94.8 5.16 0 0 3.141592653589793</pose>
-                </waypoint>
+              <waypoint>
+                <time>12.1097824985654</time>
+                <pose>93.88 94.8 5.16 0 0 3.141592653589793</pose>
+              </waypoint>
 
-                <waypoint>
-                  <time>13.320760748421941</time>
-                  <pose>93.88 94.8 5.16 0 0 6.283185307179586</pose>
-                </waypoint>
+              <waypoint>
+                <time>13.320760748421941</time>
+                <pose>93.88 94.8 5.16 0 0 6.283185307179586</pose>
+              </waypoint>
 
-                <waypoint>
-                  <time>24.2195649971308</time>
-                  <pose>104.8 94.8 5.16 0 0 6.283185307179586</pose>
-                </waypoint>
+              <waypoint>
+                <time>24.2195649971308</time>
+                <pose>104.8 94.8 5.16 0 0 6.283185307179586</pose>
+              </waypoint>
 
-                <waypoint>
-                  <time>25.43054324698734</time>
-                  <pose>104.8 94.8 5.16 0 0 3.141592653589793</pose>
-                </waypoint>
+              <waypoint>
+                <time>25.43054324698734</time>
+                <pose>104.8 94.8 5.16 0 0 3.141592653589793</pose>
+              </waypoint>
 
-            </trajectory>
-          </script>
+          </trajectory>
+        </script>
       </actor>
 
       <actor name="walking_1">
-        <!-- Starting pose -->
-            <plugin name="actor_collisions_plugin" filename="/home/robin/catkin_ws_new/src/actor_collisions/build/libActorCollisionsPlugin.so">
-      <scaling collision="LHipJoint_LeftUpLeg_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="LeftUpLeg_LeftLeg_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="LeftLeg_LeftFoot_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="LeftFoot_LeftToeBase_collision" scale="
-        4.0
-        4.0
-        1.5
-      "/>
-      <scaling collision="RHipJoint_RightUpLeg_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="RightUpLeg_RightLeg_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="RightLeg_RightFoot_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="RightFoot_RightToeBase_collision" scale="
-        4.0
-        4.0
-        1.5
-      "/>
-      <scaling collision="LowerBack_Spine_collision" scale="
-        12.0
-        20.0
-        5.0
-      " pose="0.05 0 0 0 -0.2 0"/>
-      <scaling collision="Spine_Spine1_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="Neck_Neck1_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="Neck1_Head_collision" scale="
-        5.0
-        5.0
-        3.0
-      "/>
-      <scaling collision="LeftShoulder_LeftArm_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="LeftArm_LeftForeArm_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="LeftForeArm_LeftHand_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="LeftFingerBase_LeftHandIndex1_collision" scale="
-        4.0
-        4.0
-        3.0
-      "/>
-      <scaling collision="RightShoulder_RightArm_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="RightArm_RightForeArm_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="RightForeArm_RightHand_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="RightFingerBase_RightHandIndex1_collision" scale="
-        4.0
-        4.0
-        3.0
-      "/>
-    </plugin>
+        <plugin name="actor_collisions_plugin" filename="libActorCollisionsPlugin.so">
+          <scaling collision="LHipJoint_LeftUpLeg_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="LeftUpLeg_LeftLeg_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="LeftLeg_LeftFoot_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="LeftFoot_LeftToeBase_collision" scale="4.0 4.0 1.5"/>
+          <scaling collision="RHipJoint_RightUpLeg_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="RightUpLeg_RightLeg_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="RightLeg_RightFoot_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="RightFoot_RightToeBase_collision" scale="4.0 4.0 1.5"/>
+          <scaling collision="LowerBack_Spine_collision" scale="12.0 20.0 5.0 "/>
+          <scaling collision="Spine_Spine1_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="Neck_Neck1_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="Neck1_Head_collision" scale="5.0 5.0 3.0"/>
+          <scaling collision="LeftShoulder_LeftArm_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="LeftArm_LeftForeArm_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="LeftForeArm_LeftHand_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="LeftFingerBase_LeftHandIndex1_collision" scale="4.0 4.0 3.0"/>
+          <scaling collision="RightShoulder_RightArm_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="RightArm_RightForeArm_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="RightForeArm_RightHand_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="RightFingerBase_RightHandIndex1_collision" scale="4.0 4.0 3.0"/>
+        </plugin>
         <pose>-20.2 5.2 5.76 0 0 3.141592653589793</pose>
         <skin>
           <filename>model://actor/meshes/SKIN_man_red_shirt.dae</filename>
         </skin>
         <animation name="animation">
           <filename>model://actor/meshes/ANIMATION_walking.dae</filename>
-
-            <interpolate_x>true</interpolate_x>
-
+          <interpolate_x>true</interpolate_x>
         </animation>
-          <script>
-            <trajectory id="0" type="animation">
+        <script>
+          <trajectory id="0" type="animation">
 
-                <waypoint>
-                  <time>0</time>
-                  <pose>-20.2 5.2 5.16 0 0 3.141592653589793</pose>
-                </waypoint>
+              <waypoint>
+                <time>0</time>
+                <pose>-20.2 5.2 5.16 0 0 3.141592653589793</pose>
+              </waypoint>
 
-                <waypoint>
-                  <time>3.1792229696439054</time>
-                  <pose>-24.119999999999997 5.2 5.16 0 0 3.141592653589793</pose>
-                </waypoint>
+              <waypoint>
+                <time>3.1792229696439054</time>
+                <pose>-24.119999999999997 5.2 5.16 0 0 3.141592653589793</pose>
+              </waypoint>
 
-                <waypoint>
-                  <time>3.497145266608296</time>
-                  <pose>-24.119999999999997 5.2 5.16 0 0 6.283185307179586</pose>
-                </waypoint>
+              <waypoint>
+                <time>3.497145266608296</time>
+                <pose>-24.119999999999997 5.2 5.16 0 0 6.283185307179586</pose>
+              </waypoint>
 
-                <waypoint>
-                  <time>6.358445939287811</time>
-                  <pose>-20.2 5.2 5.16 0 0 6.283185307179586</pose>
-                </waypoint>
+              <waypoint>
+                <time>6.358445939287811</time>
+                <pose>-20.2 5.2 5.16 0 0 6.283185307179586</pose>
+              </waypoint>
 
-                <waypoint>
-                  <time>6.676368236252202</time>
-                  <pose>-20.2 5.2 5.16 0 0 3.141592653589793</pose>
-                </waypoint>
+              <waypoint>
+                <time>6.676368236252202</time>
+                <pose>-20.2 5.2 5.16 0 0 3.141592653589793</pose>
+              </waypoint>
 
-            </trajectory>
-          </script>
+          </trajectory>
+        </script>
       </actor>
 
       <actor name="walking_2">
-        <!-- Starting pose -->
-            <plugin name="actor_collisions_plugin" filename="/home/robin/catkin_ws_new/src/actor_collisions/build/libActorCollisionsPlugin.so">
-      <scaling collision="LHipJoint_LeftUpLeg_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="LeftUpLeg_LeftLeg_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="LeftLeg_LeftFoot_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="LeftFoot_LeftToeBase_collision" scale="
-        4.0
-        4.0
-        1.5
-      "/>
-      <scaling collision="RHipJoint_RightUpLeg_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="RightUpLeg_RightLeg_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="RightLeg_RightFoot_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="RightFoot_RightToeBase_collision" scale="
-        4.0
-        4.0
-        1.5
-      "/>
-      <scaling collision="LowerBack_Spine_collision" scale="
-        12.0
-        20.0
-        5.0
-      " pose="0.05 0 0 0 -0.2 0"/>
-      <scaling collision="Spine_Spine1_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="Neck_Neck1_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="Neck1_Head_collision" scale="
-        5.0
-        5.0
-        3.0
-      "/>
-      <scaling collision="LeftShoulder_LeftArm_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="LeftArm_LeftForeArm_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="LeftForeArm_LeftHand_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="LeftFingerBase_LeftHandIndex1_collision" scale="
-        4.0
-        4.0
-        3.0
-      "/>
-      <scaling collision="RightShoulder_RightArm_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="RightArm_RightForeArm_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="RightForeArm_RightHand_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="RightFingerBase_RightHandIndex1_collision" scale="
-        4.0
-        4.0
-        3.0
-      "/>
-    </plugin>
+        <plugin name="actor_collisions_plugin" filename="libActorCollisionsPlugin.so">
+          <scaling collision="LHipJoint_LeftUpLeg_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="LeftUpLeg_LeftLeg_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="LeftLeg_LeftFoot_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="LeftFoot_LeftToeBase_collision" scale="4.0 4.0 1.5"/>
+          <scaling collision="RHipJoint_RightUpLeg_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="RightUpLeg_RightLeg_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="RightLeg_RightFoot_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="RightFoot_RightToeBase_collision" scale="4.0 4.0 1.5"/>
+          <scaling collision="LowerBack_Spine_collision" scale="12.0 20.0 5.0 "/>
+          <scaling collision="Spine_Spine1_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="Neck_Neck1_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="Neck1_Head_collision" scale="5.0 5.0 3.0"/>
+          <scaling collision="LeftShoulder_LeftArm_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="LeftArm_LeftForeArm_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="LeftForeArm_LeftHand_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="LeftFingerBase_LeftHandIndex1_collision" scale="4.0 4.0 3.0"/>
+          <scaling collision="RightShoulder_RightArm_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="RightArm_RightForeArm_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="RightForeArm_RightHand_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="RightFingerBase_RightHandIndex1_collision" scale="4.0 4.0 3.0"/>
+        </plugin>
         <pose>50.2 39.8 5.76 0 0 0.0</pose>
         <skin>
           <filename>model://actor/meshes/SKIN_man_green_shirt.dae</filename>
@@ -13669,109 +13415,28 @@
       </actor>
 
       <actor name="walking_3">
-        <!-- Starting pose -->
-            <plugin name="actor_collisions_plugin" filename="/home/robin/catkin_ws_new/src/actor_collisions/build/libActorCollisionsPlugin.so">
-      <scaling collision="LHipJoint_LeftUpLeg_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="LeftUpLeg_LeftLeg_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="LeftLeg_LeftFoot_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="LeftFoot_LeftToeBase_collision" scale="
-        4.0
-        4.0
-        1.5
-      "/>
-      <scaling collision="RHipJoint_RightUpLeg_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="RightUpLeg_RightLeg_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="RightLeg_RightFoot_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="RightFoot_RightToeBase_collision" scale="
-        4.0
-        4.0
-        1.5
-      "/>
-      <scaling collision="LowerBack_Spine_collision" scale="
-        12.0
-        20.0
-        5.0
-      " pose="0.05 0 0 0 -0.2 0"/>
-      <scaling collision="Spine_Spine1_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="Neck_Neck1_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="Neck1_Head_collision" scale="
-        5.0
-        5.0
-        3.0
-      "/>
-      <scaling collision="LeftShoulder_LeftArm_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="LeftArm_LeftForeArm_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="LeftForeArm_LeftHand_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="LeftFingerBase_LeftHandIndex1_collision" scale="
-        4.0
-        4.0
-        3.0
-      "/>
-      <scaling collision="RightShoulder_RightArm_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="RightArm_RightForeArm_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="RightForeArm_RightHand_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="RightFingerBase_RightHandIndex1_collision" scale="
-        4.0
-        4.0
-        3.0
-      "/>
-    </plugin>
+        <plugin name="actor_collisions_plugin" filename="libActorCollisionsPlugin.so">
+          <scaling collision="LHipJoint_LeftUpLeg_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="LeftUpLeg_LeftLeg_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="LeftLeg_LeftFoot_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="LeftFoot_LeftToeBase_collision" scale="4.0 4.0 1.5"/>
+          <scaling collision="RHipJoint_RightUpLeg_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="RightUpLeg_RightLeg_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="RightLeg_RightFoot_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="RightFoot_RightToeBase_collision" scale="4.0 4.0 1.5"/>
+          <scaling collision="LowerBack_Spine_collision" scale="12.0 20.0 5.0 "/>
+          <scaling collision="Spine_Spine1_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="Neck_Neck1_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="Neck1_Head_collision" scale="5.0 5.0 3.0"/>
+          <scaling collision="LeftShoulder_LeftArm_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="LeftArm_LeftForeArm_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="LeftForeArm_LeftHand_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="LeftFingerBase_LeftHandIndex1_collision" scale="4.0 4.0 3.0"/>
+          <scaling collision="RightShoulder_RightArm_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="RightArm_RightForeArm_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="RightForeArm_RightHand_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="RightFingerBase_RightHandIndex1_collision" scale="4.0 4.0 3.0"/>
+        </plugin>
         <pose>-9.8 -50.2 5.76 0 0 0.0</pose>
         <skin>
           <filename>model://actor/meshes/SKIN_man_red_shirt.dae</filename>
@@ -13815,109 +13480,28 @@
       </actor>
 
       <actor name="walking_4">
-        <!-- Starting pose -->
-            <plugin name="actor_collisions_plugin" filename="/home/robin/catkin_ws_new/src/actor_collisions/build/libActorCollisionsPlugin.so">
-      <scaling collision="LHipJoint_LeftUpLeg_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="LeftUpLeg_LeftLeg_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="LeftLeg_LeftFoot_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="LeftFoot_LeftToeBase_collision" scale="
-        4.0
-        4.0
-        1.5
-      "/>
-      <scaling collision="RHipJoint_RightUpLeg_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="RightUpLeg_RightLeg_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="RightLeg_RightFoot_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="RightFoot_RightToeBase_collision" scale="
-        4.0
-        4.0
-        1.5
-      "/>
-      <scaling collision="LowerBack_Spine_collision" scale="
-        12.0
-        20.0
-        5.0
-      " pose="0.05 0 0 0 -0.2 0"/>
-      <scaling collision="Spine_Spine1_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="Neck_Neck1_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="Neck1_Head_collision" scale="
-        5.0
-        5.0
-        3.0
-      "/>
-      <scaling collision="LeftShoulder_LeftArm_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="LeftArm_LeftForeArm_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="LeftForeArm_LeftHand_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="LeftFingerBase_LeftHandIndex1_collision" scale="
-        4.0
-        4.0
-        3.0
-      "/>
-      <scaling collision="RightShoulder_RightArm_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="RightArm_RightForeArm_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="RightForeArm_RightHand_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="RightFingerBase_RightHandIndex1_collision" scale="
-        4.0
-        4.0
-        3.0
-      "/>
-    </plugin>
+        <plugin name="actor_collisions_plugin" filename="libActorCollisionsPlugin.so">
+          <scaling collision="LHipJoint_LeftUpLeg_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="LeftUpLeg_LeftLeg_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="LeftLeg_LeftFoot_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="LeftFoot_LeftToeBase_collision" scale="4.0 4.0 1.5"/>
+          <scaling collision="RHipJoint_RightUpLeg_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="RightUpLeg_RightLeg_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="RightLeg_RightFoot_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="RightFoot_RightToeBase_collision" scale="4.0 4.0 1.5"/>
+          <scaling collision="LowerBack_Spine_collision" scale="12.0 20.0 5.0 "/>
+          <scaling collision="Spine_Spine1_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="Neck_Neck1_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="Neck1_Head_collision" scale="5.0 5.0 3.0"/>
+          <scaling collision="LeftShoulder_LeftArm_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="LeftArm_LeftForeArm_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="LeftForeArm_LeftHand_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="LeftFingerBase_LeftHandIndex1_collision" scale="4.0 4.0 3.0"/>
+          <scaling collision="RightShoulder_RightArm_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="RightArm_RightForeArm_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="RightForeArm_RightHand_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="RightFingerBase_RightHandIndex1_collision" scale="4.0 4.0 3.0"/>
+        </plugin>
         <pose>104.8 39.8 5.76 0 0 3.141592653589793</pose>
         <skin>
           <filename>model://actor/meshes/SKIN_man_red_shirt.dae</filename>
@@ -13961,109 +13545,28 @@
       </actor>
 
       <actor name="walking_5">
-        <!-- Starting pose -->
-            <plugin name="actor_collisions_plugin" filename="/home/robin/catkin_ws_new/src/actor_collisions/build/libActorCollisionsPlugin.so">
-      <scaling collision="LHipJoint_LeftUpLeg_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="LeftUpLeg_LeftLeg_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="LeftLeg_LeftFoot_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="LeftFoot_LeftToeBase_collision" scale="
-        4.0
-        4.0
-        1.5
-      "/>
-      <scaling collision="RHipJoint_RightUpLeg_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="RightUpLeg_RightLeg_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="RightLeg_RightFoot_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="RightFoot_RightToeBase_collision" scale="
-        4.0
-        4.0
-        1.5
-      "/>
-      <scaling collision="LowerBack_Spine_collision" scale="
-        12.0
-        20.0
-        5.0
-      " pose="0.05 0 0 0 -0.2 0"/>
-      <scaling collision="Spine_Spine1_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="Neck_Neck1_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="Neck1_Head_collision" scale="
-        5.0
-        5.0
-        3.0
-      "/>
-      <scaling collision="LeftShoulder_LeftArm_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="LeftArm_LeftForeArm_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="LeftForeArm_LeftHand_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="LeftFingerBase_LeftHandIndex1_collision" scale="
-        4.0
-        4.0
-        3.0
-      "/>
-      <scaling collision="RightShoulder_RightArm_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="RightArm_RightForeArm_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="RightForeArm_RightHand_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="RightFingerBase_RightHandIndex1_collision" scale="
-        4.0
-        4.0
-        3.0
-      "/>
-    </plugin>
+        <plugin name="actor_collisions_plugin" filename="libActorCollisionsPlugin.so">
+          <scaling collision="LHipJoint_LeftUpLeg_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="LeftUpLeg_LeftLeg_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="LeftLeg_LeftFoot_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="LeftFoot_LeftToeBase_collision" scale="4.0 4.0 1.5"/>
+          <scaling collision="RHipJoint_RightUpLeg_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="RightUpLeg_RightLeg_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="RightLeg_RightFoot_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="RightFoot_RightToeBase_collision" scale="4.0 4.0 1.5"/>
+          <scaling collision="LowerBack_Spine_collision" scale="12.0 20.0 5.0 "/>
+          <scaling collision="Spine_Spine1_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="Neck_Neck1_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="Neck1_Head_collision" scale="5.0 5.0 3.0"/>
+          <scaling collision="LeftShoulder_LeftArm_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="LeftArm_LeftForeArm_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="LeftForeArm_LeftHand_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="LeftFingerBase_LeftHandIndex1_collision" scale="4.0 4.0 3.0"/>
+          <scaling collision="RightShoulder_RightArm_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="RightArm_RightForeArm_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="RightForeArm_RightHand_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="RightFingerBase_RightHandIndex1_collision" scale="4.0 4.0 3.0"/>
+        </plugin>
         <pose>39.8 94.8 5.76 0 0 3.141592653589793</pose>
         <skin>
           <filename>model://actor/meshes/SKIN_man_green_shirt.dae</filename>
@@ -14107,109 +13610,28 @@
       </actor>
 
       <actor name="running_0">
-        <!-- Starting pose -->
-            <plugin name="actor_collisions_plugin" filename="/home/robin/catkin_ws_new/src/actor_collisions/build/libActorCollisionsPlugin.so">
-      <scaling collision="LHipJoint_LeftUpLeg_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="LeftUpLeg_LeftLeg_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="LeftLeg_LeftFoot_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="LeftFoot_LeftToeBase_collision" scale="
-        4.0
-        4.0
-        1.5
-      "/>
-      <scaling collision="RHipJoint_RightUpLeg_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="RightUpLeg_RightLeg_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="RightLeg_RightFoot_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="RightFoot_RightToeBase_collision" scale="
-        4.0
-        4.0
-        1.5
-      "/>
-      <scaling collision="LowerBack_Spine_collision" scale="
-        12.0
-        20.0
-        5.0
-      " pose="0.05 0 0 0 -0.2 0"/>
-      <scaling collision="Spine_Spine1_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="Neck_Neck1_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="Neck1_Head_collision" scale="
-        5.0
-        5.0
-        3.0
-      "/>
-      <scaling collision="LeftShoulder_LeftArm_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="LeftArm_LeftForeArm_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="LeftForeArm_LeftHand_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="LeftFingerBase_LeftHandIndex1_collision" scale="
-        4.0
-        4.0
-        3.0
-      "/>
-      <scaling collision="RightShoulder_RightArm_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="RightArm_RightForeArm_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="RightForeArm_RightHand_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="RightFingerBase_RightHandIndex1_collision" scale="
-        4.0
-        4.0
-        3.0
-      "/>
-    </plugin>
+        <plugin name="actor_collisions_plugin" filename="libActorCollisionsPlugin.so">
+          <scaling collision="LHipJoint_LeftUpLeg_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="LeftUpLeg_LeftLeg_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="LeftLeg_LeftFoot_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="LeftFoot_LeftToeBase_collision" scale="4.0 4.0 1.5"/>
+          <scaling collision="RHipJoint_RightUpLeg_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="RightUpLeg_RightLeg_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="RightLeg_RightFoot_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="RightFoot_RightToeBase_collision" scale="4.0 4.0 1.5"/>
+          <scaling collision="LowerBack_Spine_collision" scale="12.0 20.0 5.0 "/>
+          <scaling collision="Spine_Spine1_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="Neck_Neck1_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="Neck1_Head_collision" scale="5.0 5.0 3.0"/>
+          <scaling collision="LeftShoulder_LeftArm_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="LeftArm_LeftForeArm_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="LeftForeArm_LeftHand_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="LeftFingerBase_LeftHandIndex1_collision" scale="4.0 4.0 3.0"/>
+          <scaling collision="RightShoulder_RightArm_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="RightArm_RightForeArm_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="RightForeArm_RightHand_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="RightFingerBase_RightHandIndex1_collision" scale="4.0 4.0 3.0"/>
+        </plugin>
         <pose>-9.8 -94.8 5.76 0 0 0.0</pose>
         <skin>
           <filename>model://actor/meshes/SKIN_man_red_shirt.dae</filename>
@@ -14253,109 +13675,28 @@
       </actor>
 
       <actor name="running_1">
-        <!-- Starting pose -->
-            <plugin name="actor_collisions_plugin" filename="/home/robin/catkin_ws_new/src/actor_collisions/build/libActorCollisionsPlugin.so">
-      <scaling collision="LHipJoint_LeftUpLeg_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="LeftUpLeg_LeftLeg_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="LeftLeg_LeftFoot_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="LeftFoot_LeftToeBase_collision" scale="
-        4.0
-        4.0
-        1.5
-      "/>
-      <scaling collision="RHipJoint_RightUpLeg_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="RightUpLeg_RightLeg_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="RightLeg_RightFoot_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="RightFoot_RightToeBase_collision" scale="
-        4.0
-        4.0
-        1.5
-      "/>
-      <scaling collision="LowerBack_Spine_collision" scale="
-        12.0
-        20.0
-        5.0
-      " pose="0.05 0 0 0 -0.2 0"/>
-      <scaling collision="Spine_Spine1_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="Neck_Neck1_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="Neck1_Head_collision" scale="
-        5.0
-        5.0
-        3.0
-      "/>
-      <scaling collision="LeftShoulder_LeftArm_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="LeftArm_LeftForeArm_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="LeftForeArm_LeftHand_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="LeftFingerBase_LeftHandIndex1_collision" scale="
-        4.0
-        4.0
-        3.0
-      "/>
-      <scaling collision="RightShoulder_RightArm_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="RightArm_RightForeArm_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="RightForeArm_RightHand_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="RightFingerBase_RightHandIndex1_collision" scale="
-        4.0
-        4.0
-        3.0
-      "/>
-    </plugin>
+        <plugin name="actor_collisions_plugin" filename="libActorCollisionsPlugin.so">
+          <scaling collision="LHipJoint_LeftUpLeg_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="LeftUpLeg_LeftLeg_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="LeftLeg_LeftFoot_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="LeftFoot_LeftToeBase_collision" scale="4.0 4.0 1.5"/>
+          <scaling collision="RHipJoint_RightUpLeg_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="RightUpLeg_RightLeg_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="RightLeg_RightFoot_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="RightFoot_RightToeBase_collision" scale="4.0 4.0 1.5"/>
+          <scaling collision="LowerBack_Spine_collision" scale="12.0 20.0 5.0 "/>
+          <scaling collision="Spine_Spine1_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="Neck_Neck1_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="Neck1_Head_collision" scale="5.0 5.0 3.0"/>
+          <scaling collision="LeftShoulder_LeftArm_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="LeftArm_LeftForeArm_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="LeftForeArm_LeftHand_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="LeftFingerBase_LeftHandIndex1_collision" scale="4.0 4.0 3.0"/>
+          <scaling collision="RightShoulder_RightArm_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="RightArm_RightForeArm_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="RightForeArm_RightHand_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="RightFingerBase_RightHandIndex1_collision" scale="4.0 4.0 3.0"/>
+        </plugin>
         <pose>-20.2 -94.8 5.76 0 0 3.141592653589793</pose>
         <skin>
           <filename>model://actor/meshes/SKIN_man_blue_shirt.dae</filename>
@@ -14399,109 +13740,28 @@
       </actor>
 
       <actor name="running_2">
-        <!-- Starting pose -->
-            <plugin name="actor_collisions_plugin" filename="/home/robin/catkin_ws_new/src/actor_collisions/build/libActorCollisionsPlugin.so">
-      <scaling collision="LHipJoint_LeftUpLeg_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="LeftUpLeg_LeftLeg_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="LeftLeg_LeftFoot_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="LeftFoot_LeftToeBase_collision" scale="
-        4.0
-        4.0
-        1.5
-      "/>
-      <scaling collision="RHipJoint_RightUpLeg_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="RightUpLeg_RightLeg_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="RightLeg_RightFoot_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="RightFoot_RightToeBase_collision" scale="
-        4.0
-        4.0
-        1.5
-      "/>
-      <scaling collision="LowerBack_Spine_collision" scale="
-        12.0
-        20.0
-        5.0
-      " pose="0.05 0 0 0 -0.2 0"/>
-      <scaling collision="Spine_Spine1_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="Neck_Neck1_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="Neck1_Head_collision" scale="
-        5.0
-        5.0
-        3.0
-      "/>
-      <scaling collision="LeftShoulder_LeftArm_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="LeftArm_LeftForeArm_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="LeftForeArm_LeftHand_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="LeftFingerBase_LeftHandIndex1_collision" scale="
-        4.0
-        4.0
-        3.0
-      "/>
-      <scaling collision="RightShoulder_RightArm_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="RightArm_RightForeArm_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="RightForeArm_RightHand_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="RightFingerBase_RightHandIndex1_collision" scale="
-        4.0
-        4.0
-        3.0
-      "/>
-    </plugin>
+        <plugin name="actor_collisions_plugin" filename="libActorCollisionsPlugin.so">
+          <scaling collision="LHipJoint_LeftUpLeg_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="LeftUpLeg_LeftLeg_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="LeftLeg_LeftFoot_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="LeftFoot_LeftToeBase_collision" scale="4.0 4.0 1.5"/>
+          <scaling collision="RHipJoint_RightUpLeg_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="RightUpLeg_RightLeg_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="RightLeg_RightFoot_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="RightFoot_RightToeBase_collision" scale="4.0 4.0 1.5"/>
+          <scaling collision="LowerBack_Spine_collision" scale="12.0 20.0 5.0 "/>
+          <scaling collision="Spine_Spine1_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="Neck_Neck1_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="Neck1_Head_collision" scale="5.0 5.0 3.0"/>
+          <scaling collision="LeftShoulder_LeftArm_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="LeftArm_LeftForeArm_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="LeftForeArm_LeftHand_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="LeftFingerBase_LeftHandIndex1_collision" scale="4.0 4.0 3.0"/>
+          <scaling collision="RightShoulder_RightArm_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="RightArm_RightForeArm_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="RightForeArm_RightHand_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="RightFingerBase_RightHandIndex1_collision" scale="4.0 4.0 3.0"/>
+        </plugin>
         <pose>-20.2 50.2 5.76 0 0 3.141592653589793</pose>
         <skin>
           <filename>model://actor/meshes/SKIN_man_green_shirt.dae</filename>
@@ -14545,109 +13805,28 @@
       </actor>
 
       <actor name="running_3">
-        <!-- Starting pose -->
-            <plugin name="actor_collisions_plugin" filename="/home/robin/catkin_ws_new/src/actor_collisions/build/libActorCollisionsPlugin.so">
-      <scaling collision="LHipJoint_LeftUpLeg_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="LeftUpLeg_LeftLeg_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="LeftLeg_LeftFoot_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="LeftFoot_LeftToeBase_collision" scale="
-        4.0
-        4.0
-        1.5
-      "/>
-      <scaling collision="RHipJoint_RightUpLeg_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="RightUpLeg_RightLeg_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="RightLeg_RightFoot_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="RightFoot_RightToeBase_collision" scale="
-        4.0
-        4.0
-        1.5
-      "/>
-      <scaling collision="LowerBack_Spine_collision" scale="
-        12.0
-        20.0
-        5.0
-      " pose="0.05 0 0 0 -0.2 0"/>
-      <scaling collision="Spine_Spine1_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="Neck_Neck1_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="Neck1_Head_collision" scale="
-        5.0
-        5.0
-        3.0
-      "/>
-      <scaling collision="LeftShoulder_LeftArm_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="LeftArm_LeftForeArm_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="LeftForeArm_LeftHand_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="LeftFingerBase_LeftHandIndex1_collision" scale="
-        4.0
-        4.0
-        3.0
-      "/>
-      <scaling collision="RightShoulder_RightArm_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="RightArm_RightForeArm_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="RightForeArm_RightHand_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="RightFingerBase_RightHandIndex1_collision" scale="
-        4.0
-        4.0
-        3.0
-      "/>
-    </plugin>
+        <plugin name="actor_collisions_plugin" filename="libActorCollisionsPlugin.so">
+          <scaling collision="LHipJoint_LeftUpLeg_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="LeftUpLeg_LeftLeg_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="LeftLeg_LeftFoot_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="LeftFoot_LeftToeBase_collision" scale="4.0 4.0 1.5"/>
+          <scaling collision="RHipJoint_RightUpLeg_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="RightUpLeg_RightLeg_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="RightLeg_RightFoot_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="RightFoot_RightToeBase_collision" scale="4.0 4.0 1.5"/>
+          <scaling collision="LowerBack_Spine_collision" scale="12.0 20.0 5.0 "/>
+          <scaling collision="Spine_Spine1_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="Neck_Neck1_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="Neck1_Head_collision" scale="5.0 5.0 3.0"/>
+          <scaling collision="LeftShoulder_LeftArm_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="LeftArm_LeftForeArm_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="LeftForeArm_LeftHand_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="LeftFingerBase_LeftHandIndex1_collision" scale="4.0 4.0 3.0"/>
+          <scaling collision="RightShoulder_RightArm_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="RightArm_RightForeArm_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="RightForeArm_RightHand_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="RightFingerBase_RightHandIndex1_collision" scale="4.0 4.0 3.0"/>
+        </plugin>
         <pose>-39.8 -39.8 5.76 0 0 0.0</pose>
         <skin>
           <filename>model://actor/meshes/SKIN_man_red_shirt.dae</filename>
@@ -14691,109 +13870,28 @@
       </actor>
 
       <actor name="running_4">
-        <!-- Starting pose -->
-            <plugin name="actor_collisions_plugin" filename="/home/robin/catkin_ws_new/src/actor_collisions/build/libActorCollisionsPlugin.so">
-      <scaling collision="LHipJoint_LeftUpLeg_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="LeftUpLeg_LeftLeg_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="LeftLeg_LeftFoot_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="LeftFoot_LeftToeBase_collision" scale="
-        4.0
-        4.0
-        1.5
-      "/>
-      <scaling collision="RHipJoint_RightUpLeg_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="RightUpLeg_RightLeg_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="RightLeg_RightFoot_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="RightFoot_RightToeBase_collision" scale="
-        4.0
-        4.0
-        1.5
-      "/>
-      <scaling collision="LowerBack_Spine_collision" scale="
-        12.0
-        20.0
-        5.0
-      " pose="0.05 0 0 0 -0.2 0"/>
-      <scaling collision="Spine_Spine1_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="Neck_Neck1_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="Neck1_Head_collision" scale="
-        5.0
-        5.0
-        3.0
-      "/>
-      <scaling collision="LeftShoulder_LeftArm_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="LeftArm_LeftForeArm_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="LeftForeArm_LeftHand_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="LeftFingerBase_LeftHandIndex1_collision" scale="
-        4.0
-        4.0
-        3.0
-      "/>
-      <scaling collision="RightShoulder_RightArm_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="RightArm_RightForeArm_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="RightForeArm_RightHand_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="RightFingerBase_RightHandIndex1_collision" scale="
-        4.0
-        4.0
-        3.0
-      "/>
-    </plugin>
+        <plugin name="actor_collisions_plugin" filename="libActorCollisionsPlugin.so">
+          <scaling collision="LHipJoint_LeftUpLeg_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="LeftUpLeg_LeftLeg_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="LeftLeg_LeftFoot_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="LeftFoot_LeftToeBase_collision" scale="4.0 4.0 1.5"/>
+          <scaling collision="RHipJoint_RightUpLeg_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="RightUpLeg_RightLeg_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="RightLeg_RightFoot_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="RightFoot_RightToeBase_collision" scale="4.0 4.0 1.5"/>
+          <scaling collision="LowerBack_Spine_collision" scale="12.0 20.0 5.0 "/>
+          <scaling collision="Spine_Spine1_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="Neck_Neck1_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="Neck1_Head_collision" scale="5.0 5.0 3.0"/>
+          <scaling collision="LeftShoulder_LeftArm_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="LeftArm_LeftForeArm_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="LeftForeArm_LeftHand_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="LeftFingerBase_LeftHandIndex1_collision" scale="4.0 4.0 3.0"/>
+          <scaling collision="RightShoulder_RightArm_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="RightArm_RightForeArm_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="RightForeArm_RightHand_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="RightFingerBase_RightHandIndex1_collision" scale="4.0 4.0 3.0"/>
+        </plugin>
         <pose>-9.8 -39.8 5.76 0 0 1.5707963267948966</pose>
         <skin>
           <filename>model://actor/meshes/SKIN_man_green_shirt.dae</filename>
@@ -14837,109 +13935,28 @@
       </actor>
 
       <actor name="running_5">
-        <!-- Starting pose -->
-            <plugin name="actor_collisions_plugin" filename="/home/robin/catkin_ws_new/src/actor_collisions/build/libActorCollisionsPlugin.so">
-      <scaling collision="LHipJoint_LeftUpLeg_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="LeftUpLeg_LeftLeg_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="LeftLeg_LeftFoot_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="LeftFoot_LeftToeBase_collision" scale="
-        4.0
-        4.0
-        1.5
-      "/>
-      <scaling collision="RHipJoint_RightUpLeg_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="RightUpLeg_RightLeg_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="RightLeg_RightFoot_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="RightFoot_RightToeBase_collision" scale="
-        4.0
-        4.0
-        1.5
-      "/>
-      <scaling collision="LowerBack_Spine_collision" scale="
-        12.0
-        20.0
-        5.0
-      " pose="0.05 0 0 0 -0.2 0"/>
-      <scaling collision="Spine_Spine1_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="Neck_Neck1_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="Neck1_Head_collision" scale="
-        5.0
-        5.0
-        3.0
-      "/>
-      <scaling collision="LeftShoulder_LeftArm_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="LeftArm_LeftForeArm_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="LeftForeArm_LeftHand_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="LeftFingerBase_LeftHandIndex1_collision" scale="
-        4.0
-        4.0
-        3.0
-      "/>
-      <scaling collision="RightShoulder_RightArm_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="RightArm_RightForeArm_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="RightForeArm_RightHand_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="RightFingerBase_RightHandIndex1_collision" scale="
-        4.0
-        4.0
-        3.0
-      "/>
-    </plugin>
+        <plugin name="actor_collisions_plugin" filename="libActorCollisionsPlugin.so">
+          <scaling collision="LHipJoint_LeftUpLeg_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="LeftUpLeg_LeftLeg_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="LeftLeg_LeftFoot_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="LeftFoot_LeftToeBase_collision" scale="4.0 4.0 1.5"/>
+          <scaling collision="RHipJoint_RightUpLeg_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="RightUpLeg_RightLeg_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="RightLeg_RightFoot_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="RightFoot_RightToeBase_collision" scale="4.0 4.0 1.5"/>
+          <scaling collision="LowerBack_Spine_collision" scale="12.0 20.0 5.0 "/>
+          <scaling collision="Spine_Spine1_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="Neck_Neck1_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="Neck1_Head_collision" scale="5.0 5.0 3.0"/>
+          <scaling collision="LeftShoulder_LeftArm_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="LeftArm_LeftForeArm_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="LeftForeArm_LeftHand_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="LeftFingerBase_LeftHandIndex1_collision" scale="4.0 4.0 3.0"/>
+          <scaling collision="RightShoulder_RightArm_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="RightArm_RightForeArm_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="RightForeArm_RightHand_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="RightFingerBase_RightHandIndex1_collision" scale="4.0 4.0 3.0"/>
+        </plugin>
         <pose>-9.8 5.2 5.76 0 0 1.5707963267948966</pose>
         <skin>
           <filename>model://actor/meshes/SKIN_man_blue_shirt.dae</filename>
@@ -14983,109 +14000,28 @@
       </actor>
 
       <actor name="talkingA">
-        <!-- Starting pose -->
-            <plugin name="actor_collisions_plugin" filename="/home/robin/catkin_ws_new/src/actor_collisions/build/libActorCollisionsPlugin.so">
-      <scaling collision="LHipJoint_LeftUpLeg_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="LeftUpLeg_LeftLeg_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="LeftLeg_LeftFoot_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="LeftFoot_LeftToeBase_collision" scale="
-        4.0
-        4.0
-        1.5
-      "/>
-      <scaling collision="RHipJoint_RightUpLeg_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="RightUpLeg_RightLeg_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="RightLeg_RightFoot_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="RightFoot_RightToeBase_collision" scale="
-        4.0
-        4.0
-        1.5
-      "/>
-      <scaling collision="LowerBack_Spine_collision" scale="
-        12.0
-        20.0
-        5.0
-      " pose="0.05 0 0 0 -0.2 0"/>
-      <scaling collision="Spine_Spine1_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="Neck_Neck1_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="Neck1_Head_collision" scale="
-        5.0
-        5.0
-        3.0
-      "/>
-      <scaling collision="LeftShoulder_LeftArm_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="LeftArm_LeftForeArm_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="LeftForeArm_LeftHand_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="LeftFingerBase_LeftHandIndex1_collision" scale="
-        4.0
-        4.0
-        3.0
-      "/>
-      <scaling collision="RightShoulder_RightArm_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="RightArm_RightForeArm_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="RightForeArm_RightHand_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="RightFingerBase_RightHandIndex1_collision" scale="
-        4.0
-        4.0
-        3.0
-      "/>
-    </plugin>
+        <plugin name="actor_collisions_plugin" filename="libActorCollisionsPlugin.so">
+          <scaling collision="LHipJoint_LeftUpLeg_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="LeftUpLeg_LeftLeg_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="LeftLeg_LeftFoot_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="LeftFoot_LeftToeBase_collision" scale="4.0 4.0 1.5"/>
+          <scaling collision="RHipJoint_RightUpLeg_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="RightUpLeg_RightLeg_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="RightLeg_RightFoot_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="RightFoot_RightToeBase_collision" scale="4.0 4.0 1.5"/>
+          <scaling collision="LowerBack_Spine_collision" scale="12.0 20.0 5.0 "/>
+          <scaling collision="Spine_Spine1_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="Neck_Neck1_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="Neck1_Head_collision" scale="5.0 5.0 3.0"/>
+          <scaling collision="LeftShoulder_LeftArm_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="LeftArm_LeftForeArm_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="LeftForeArm_LeftHand_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="LeftFingerBase_LeftHandIndex1_collision" scale="4.0 4.0 3.0"/>
+          <scaling collision="RightShoulder_RightArm_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="RightArm_RightForeArm_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="RightForeArm_RightHand_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="RightFingerBase_RightHandIndex1_collision" scale="4.0 4.0 3.0"/>
+        </plugin>
         <pose>5 5 5.76 0 0 0</pose>
         <skin>
           <filename>model://actor/meshes/SKIN_man_blue_shirt.dae</filename>
@@ -15112,109 +14048,28 @@
       </actor>
 
       <actor name="talkingB">
-        <!-- Starting pose -->
-            <plugin name="actor_collisions_plugin" filename="/home/robin/catkin_ws_new/src/actor_collisions/build/libActorCollisionsPlugin.so">
-      <scaling collision="LHipJoint_LeftUpLeg_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="LeftUpLeg_LeftLeg_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="LeftLeg_LeftFoot_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="LeftFoot_LeftToeBase_collision" scale="
-        4.0
-        4.0
-        1.5
-      "/>
-      <scaling collision="RHipJoint_RightUpLeg_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="RightUpLeg_RightLeg_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="RightLeg_RightFoot_collision" scale="
-        8.0
-        8.0
-        1.0
-      "/>
-      <scaling collision="RightFoot_RightToeBase_collision" scale="
-        4.0
-        4.0
-        1.5
-      "/>
-      <scaling collision="LowerBack_Spine_collision" scale="
-        12.0
-        20.0
-        5.0
-      " pose="0.05 0 0 0 -0.2 0"/>
-      <scaling collision="Spine_Spine1_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="Neck_Neck1_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="Neck1_Head_collision" scale="
-        5.0
-        5.0
-        3.0
-      "/>
-      <scaling collision="LeftShoulder_LeftArm_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="LeftArm_LeftForeArm_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="LeftForeArm_LeftHand_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="LeftFingerBase_LeftHandIndex1_collision" scale="
-        4.0
-        4.0
-        3.0
-      "/>
-      <scaling collision="RightShoulder_RightArm_collision" scale="
-        0.01
-        0.001
-        0.001
-      "/>
-      <scaling collision="RightArm_RightForeArm_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="RightForeArm_RightHand_collision" scale="
-        5.0
-        5.0
-        1.0
-      "/>
-      <scaling collision="RightFingerBase_RightHandIndex1_collision" scale="
-        4.0
-        4.0
-        3.0
-      "/>
-    </plugin>
+        <plugin name="actor_collisions_plugin" filename="libActorCollisionsPlugin.so">
+          <scaling collision="LHipJoint_LeftUpLeg_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="LeftUpLeg_LeftLeg_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="LeftLeg_LeftFoot_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="LeftFoot_LeftToeBase_collision" scale="4.0 4.0 1.5"/>
+          <scaling collision="RHipJoint_RightUpLeg_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="RightUpLeg_RightLeg_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="RightLeg_RightFoot_collision" scale="8.0 8.0 1.0"/>
+          <scaling collision="RightFoot_RightToeBase_collision" scale="4.0 4.0 1.5"/>
+          <scaling collision="LowerBack_Spine_collision" scale="12.0 20.0 5.0 "/>
+          <scaling collision="Spine_Spine1_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="Neck_Neck1_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="Neck1_Head_collision" scale="5.0 5.0 3.0"/>
+          <scaling collision="LeftShoulder_LeftArm_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="LeftArm_LeftForeArm_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="LeftForeArm_LeftHand_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="LeftFingerBase_LeftHandIndex1_collision" scale="4.0 4.0 3.0"/>
+          <scaling collision="RightShoulder_RightArm_collision" scale="0.01 0.001 0.001"/>
+          <scaling collision="RightArm_RightForeArm_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="RightForeArm_RightHand_collision" scale="5.0 5.0 1.0"/>
+          <scaling collision="RightFingerBase_RightHandIndex1_collision" scale="4.0 4.0 3.0"/>
+        </plugin>
         <pose>5 5.5 5.76 0 0 0</pose>
         <skin>
           <filename>model://actor/meshes/SKIN_man_green_shirt.dae</filename>
@@ -15371,21 +14226,6 @@
         </script>
       </actor>
 
-      <model name="car_630_collision_model">
-      <pose>0 0 -100 0 0 0</pose>
-      <static>true</static>
-      <link name="link">
-        <collision name="link">
-          <pose>0 -0.18 0.05 0 -1.5707963267948966 0</pose>
-          <geometry>
-            <box>
-              <size>5 2 2</size>
-            </box>
-          </geometry>
-        </collision>
-      </link>
-      </model>
-
       <actor name="car_630">
         <pose>108.15 100 5.01 1.54 0 -1.1845615157171019</pose>
         <skin>
@@ -15405,51 +14245,8 @@
               </waypoint>
             </trajectory>
         </script>
-        <plugin name="attach_model" filename="libAttachModelPlugin.so">
-          <link>
-            <link_name>car_630_collision</link_name>
-            <model>
-              <model_name>car_630_collision_model</model_name>
-            </model>
-          </link>
-      </plugin>
       </actor>
 
- <model name="human_20843_collision_model">
-      <pose>0 0 -100 0 0 0</pose>
-      <static>true</static>
-      <link name="link">
-        <collision name="link">
-          <pose>0 -0.18 0.05 0 -1.5707963267948966 0</pose>
-          <geometry>
-            <box>
-              <size>0.44 1.62 0.60</size>
-            </box>
-          </geometry>
-        </collision>
-      </link>
-    </model>
-
-    <actor name="human_20843">
-
-      <!-- Starting pose, nice for when the world is reset -->
-      <pose>120.15 100 5.01 0 0 3.141592653589793</pose>
-
-      <skin>
-        <filename>model://actor/meshes/SKIN_man_blue_shirt.dae</filename>
-      </skin>
-
-
-      <plugin name="attach_model" filename="libAttachModelPlugin.so">
-        <link>
-          <link_name>human_20843_pose</link_name>
-          <model>
-            <model_name>human_20843_collision_model</model_name>
-          </model>
-        </link>
-      </plugin>
-
-    </actor>
 
       <actor name="car_632">
         <pose>111.85 100 5.01 0 0 3.141592653589793</pose>

@@ -35,7 +35,7 @@ if __name__ == "__main__":
         msg.yaw = gimbal_yaw_
         mountCnt.publish(msg)
         try:
-            response = gazeboLinkstate(vehicle_type+'_'+vehicle_id+'::cgo3_camera_link','ground_plane')
+            response = gazeboLinkstate(vehicle_type+'_'+vehicle_id+'::cgo3_camera_link','ground_plane::link')
         except:
             print("Gazebo model state service call failed")
         cam_pose.header.stamp = rospy.Time.now()

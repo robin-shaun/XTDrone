@@ -22,10 +22,10 @@ To all drones  (press g to control the leader)
    a    s    d       g       j    k    l
         x       v    b   n        ,
 
-w/x : increase/decrease forward velocity 
-a/d : increase/decrease leftward velocity
-i/, : increase/decrease upward velocity
-j/l : increase/decrease orientation
+w/x : increase/decrease forward  
+a/d : increase/decrease leftward 
+i/, : increase/decrease yaw 
+j/l : increase/decrease yaw
 r   : return home
 t/y : arm/disarm
 v/n : takeoff/land
@@ -47,10 +47,10 @@ To the leader  (press g to control all drones)
    a    s    d       g       j    k    l
         x       v    b   n        ,
 
-w/x : increase/decrease forward velocity
-a/d : increase/decrease leftward velocity
-i/, : increase/decrease upward velocity
-j/l : increase/decrease orientation
+w/x : increase/decrease forward 
+a/d : increase/decrease leftward 
+i/, : increase/decrease upward 
+j/l : increase/decrease yaw
 r   : return home
 t/y : arm/disarm
 v/n : takeoff/land

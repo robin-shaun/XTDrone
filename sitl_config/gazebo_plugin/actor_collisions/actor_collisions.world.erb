@@ -1,0 +1,454 @@
+<%
+  # Random seed
+  seed = rand(0..10000000)
+  srand(seed)
+
+  # Number of models
+  n = 30
+
+  # Boundaries to spawn
+  x_min = -2.5
+  x_max = 2.5
+  y_min = -2.5
+  y_max = 2.5
+  z_min = 0.5
+  z_max = 5
+
+  # Limit sizes
+  size_min = 0.01
+  size_max = 0.5
+
+  # Limit density
+  $density_min = 0.1
+  $density_max = 5.0
+
+  # Print inertia
+  # Parameters:
+  # _geom: box, cylinder or sphere
+  # _sizeX: X size
+  # _sizeY: Y size
+  # _sizeZ: Z size
+  def printInertia(_geom, _sizeX, _sizeY = 0, _sizeZ = 0)
+
+    density = rand($density_min..$density_max)
+    radius = _sizeX * 0.5
+
+    if (_geom == 'box')
+
+      mass = density * _sizeX * _sizeY * _sizeZ
+
+      ixx = 1.0 / 12 * mass * (_sizeY*_sizeY + _sizeZ*_sizeZ)
+      iyy = 1.0 / 12 * mass * (_sizeZ*_sizeZ + _sizeX*_sizeX)
+      izz = 1.0 / 12 * mass * (_sizeX*_sizeX + _sizeY*_sizeY)
+
+    elsif (_geom == 'sphere')
+
+      mass = density * 4.0 * Math::PI / 3.0 * radius**3
+
+      ixx = mass * 0.4 * radius**2
+      iyy = ixx
+      izz = ixx
+
+    elsif (_geom == 'cylinder')
+
+      mass = density * Math::PI * radius**2 * _sizeY
+
+      izz = mass * 0.5 * radius**2
+      ixx = (1.0/12.0) * mass * (3 * radius**2 + _sizeY**2)
+      iyy = ixx
+
+    else
+      return
+    end
+
+    "<inertial>\n"\
+    "      <mass>" + mass.to_s() + "</mass>\n"\
+    "      <inertia>\n"\
+    "        <ixx>" + ixx.to_s() + "</ixx>\n"\
+    "        <iyy>" + iyy.to_s() + "</iyy>\n"\
+    "        <izz>" + izz.to_s() + "</izz>\n"\
+    "        <ixy>0.0</ixy>\n"\
+    "        <ixz>0.0</ixz>\n"\
+    "        <iyz>0.0</iyz>\n"\
+    "      </inertia>\n"\
+    "    </inertial>\n"
+
+  end
+
+  # Print geometry
+  # Parameters:
+  # _geom: box, cylinder or sphere
+  # _sizeX: X size
+  # _sizeY: Y size
+  # _sizeZ: Z size
+  def printGeom(_geom, _sizeX, _sizeY = 0, _sizeZ = 0)
+
+    if (_geom == 'box')
+      "<box>\n"\
+      "         <size>\n"\
+      "           " + _sizeX.to_s() + "\n"\
+      "           " + _sizeY.to_s() + "\n"\
+      "           " + _sizeZ.to_s() + "\n"\
+      "         </size>\n"\
+      "        </box>\n"
+    elsif (_geom == 'sphere')
+      "<sphere>\n"\
+      "         <radius>\n"\
+      "           " + (_sizeX * 0.5).to_s() + "\n"\
+      "         </radius>\n"\
+      "        </sphere>\n"
+    elsif (_geom == 'cylinder')
+      "<cylinder>\n"\
+      "         <radius>\n"\
+      "           " + (_sizeX * 0.5).to_s() + "\n"\
+      "         </radius>\n"\
+      "         <length>\n"\
+      "           " + _sizeY.to_s() + "\n"\
+      "         </length>\n"\
+      "        </cylinder>\n"
+    end
+
+  end
+
+%>
+<!--
+  Generated from actor_collisions.world.erb
+  Seed: <%= seed %>
+-->
+<?xml version="1.0" ?>
+<sdf version="1.6">
+<world name="default">
+  <include>
+    <uri>model://ground_plane</uri>
+  </include>
+  <include>
+    <uri>model://sun</uri>
+  </include>
+  <actor name="actor">
+    <%
+      # Scaling chosen by trial and error
+      legs = [8.0, 8.0, 1.0]
+      arms = [5.0, 5.0, 1.0]
+      feet = [4.0, 4.0, 1.5]
+      hands = [4.0, 4.0, 3.0]
+      neck = [5.0, 5.0, 3.0]
+      torso = [12.0, 20.0, 5.0]
+      zero = [0.01, 0.001, 0.001]
+    %>
+    <plugin name="actor_collisions_plugin" filename="libActorCollisionsPlugin.so">
+      <scaling collision="LHipJoint_LeftUpLeg_collision" scale="
+        <%= zero[0] %>
+        <%= zero[1] %>
+        <%= zero[2] %>
+      "/>
+      <scaling collision="LeftUpLeg_LeftLeg_collision" scale="
+        <%= legs[0] %>
+        <%= legs[1] %>
+        <%= legs[2] %>
+      "/>
+      <scaling collision="LeftLeg_LeftFoot_collision" scale="
+        <%= legs[0] %>
+        <%= legs[1] %>
+        <%= legs[2] %>
+      "/>
+      <scaling collision="LeftFoot_LeftToeBase_collision" scale="
+        <%= feet[0] %>
+        <%= feet[1] %>
+        <%= feet[2] %>
+      "/>
+      <scaling collision="RHipJoint_RightUpLeg_collision" scale="
+        <%= zero[0] %>
+        <%= zero[1] %>
+        <%= zero[2] %>
+      "/>
+      <scaling collision="RightUpLeg_RightLeg_collision" scale="
+        <%= legs[0] %>
+        <%= legs[1] %>
+        <%= legs[2] %>
+      "/>
+      <scaling collision="RightLeg_RightFoot_collision" scale="
+        <%= legs[0] %>
+        <%= legs[1] %>
+        <%= legs[2] %>
+      "/>
+      <scaling collision="RightFoot_RightToeBase_collision" scale="
+        <%= feet[0] %>
+        <%= feet[1] %>
+        <%= feet[2] %>
+      "/>
+      <scaling collision="LowerBack_Spine_collision" scale="
+        <%= torso[0] %>
+        <%= torso[1] %>
+        <%= torso[2] %>
+      " pose="0.05 0 0 0 -0.2 0"/>
+      <scaling collision="Spine_Spine1_collision" scale="
+        <%= zero[0] %>
+        <%= zero[1] %>
+        <%= zero[2] %>
+      "/>
+      <scaling collision="Neck_Neck1_collision" scale="
+        <%= zero[0] %>
+        <%= zero[1] %>
+        <%= zero[2] %>
+      "/>
+      <scaling collision="Neck1_Head_collision" scale="
+        <%= neck[0] %>
+        <%= neck[1] %>
+        <%= neck[2] %>
+      "/>
+      <scaling collision="LeftShoulder_LeftArm_collision" scale="
+        <%= zero[0] %>
+        <%= zero[1] %>
+        <%= zero[2] %>
+      "/>
+      <scaling collision="LeftArm_LeftForeArm_collision" scale="
+        <%= arms[0] %>
+        <%= arms[1] %>
+        <%= arms[2] %>
+      "/>
+      <scaling collision="LeftForeArm_LeftHand_collision" scale="
+        <%= arms[0] %>
+        <%= arms[1] %>
+        <%= arms[2] %>
+      "/>
+      <scaling collision="LeftFingerBase_LeftHandIndex1_collision" scale="
+        <%= hands[0] %>
+        <%= hands[1] %>
+        <%= hands[2] %>
+      "/>
+      <scaling collision="RightShoulder_RightArm_collision" scale="
+        <%= zero[0] %>
+        <%= zero[1] %>
+        <%= zero[2] %>
+      "/>
+      <scaling collision="RightArm_RightForeArm_collision" scale="
+        <%= arms[0] %>
+        <%= arms[1] %>
+        <%= arms[2] %>
+      "/>
+      <scaling collision="RightForeArm_RightHand_collision" scale="
+        <%= arms[0] %>
+        <%= arms[1] %>
+        <%= arms[2] %>
+      "/>
+      <scaling collision="RightFingerBase_RightHandIndex1_collision" scale="
+        <%= hands[0] %>
+        <%= hands[1] %>
+        <%= hands[2] %>
+      "/>
+    </plugin>
+    <skin>
+      <filename>walk.dae</filename>
+      <scale>1.0</scale>
+    </skin>
+    <animation name="walking">
+      <filename>walk.dae</filename>
+      <scale>1.000000</scale>
+      <interpolate_x>true</interpolate_x>
+    </animation>
+    <script>
+      <loop>true</loop>
+      <delay_start>0.000000</delay_start>
+      <auto_start>true</auto_start>
+      <trajectory id="0" type="walking">
+        <waypoint>
+          <time>0.000000</time>
+          <pose>0.000000 1.000000 0.000000 0.000000 0.000000 0.000000</pose>
+        </waypoint>
+        <waypoint>
+          <time>0.500000</time>
+          <pose>0.195090 0.980785 0.000000 0.000000 0.000000 -0.196350</pose>
+        </waypoint>
+        <waypoint>
+           <time>1.000000</time>
+           <pose>0.382683 0.923880 0.000000 0.000000 0.000000 -0.392699</pose>
+        </waypoint>
+        <waypoint>
+           <time>1.500000</time>
+           <pose>0.555570 0.831470 0.000000 0.000000 0.000000 -0.589049</pose>
+        </waypoint>
+        <waypoint>
+           <time>2.000000</time>
+           <pose>0.707107 0.707107 0.000000 0.000000 0.000000 -0.785398</pose>
+        </waypoint>
+        <waypoint>
+           <time>2.500000</time>
+           <pose>0.831470 0.555570 0.000000 0.000000 0.000000 -0.981748</pose>
+        </waypoint>
+        <waypoint>
+           <time>3.000000</time>
+           <pose>0.923880 0.382683 0.000000 0.000000 0.000000 -1.178100</pose>
+        </waypoint>
+        <waypoint>
+           <time>3.500000</time>
+           <pose>0.980785 0.195090 0.000000 0.000000 0.000000 -1.374450</pose>
+        </waypoint>
+        <waypoint>
+           <time>4.000000</time>
+           <pose>1.000000 0.000000 0.000000 0.000000 0.000000 -1.570800</pose>
+        </waypoint>
+        <waypoint>
+           <time>4.500000</time>
+           <pose>0.980785 -0.195090 0.000000 0.000000 0.000000 -1.767150</pose>
+        </waypoint>
+        <waypoint>
+           <time>5.000000</time>
+           <pose>0.923880 -0.382683 0.000000 0.000000 0.000000 -1.963500</pose>
+        </waypoint>
+        <waypoint>
+           <time>5.500000</time>
+           <pose>0.831470 -0.555570 0.000000 0.000000 0.000000 -2.159840</pose>
+        </waypoint>
+        <waypoint>
+           <time>6.000000</time>
+           <pose>0.707107 -0.707107 0.000000 0.000000 0.000000 -2.356190</pose>
+        </waypoint>
+        <waypoint>
+           <time>6.500000</time>
+           <pose>0.555570 -0.831470 0.000000 0.000000 0.000000 -2.552540</pose>
+        </waypoint>
+        <waypoint>
+           <time>7.500000</time>
+           <pose>0.382683 -0.923880 0.000000 0.000000 0.000000 -2.748890</pose>
+        </waypoint>
+        <waypoint>
+           <time>8.500000</time>
+           <pose>0.195090 -0.980785 0.000000 0.000000 0.000000 -2.945240</pose>
+        </waypoint>
+        <waypoint>
+           <time>9.500000</time>
+           <pose>0.000000 -1.000000 0.000000 0.000000 0.000000 -3.141590</pose>
+        </waypoint>
+        <waypoint>
+           <time>10.500000</time>
+           <pose>-0.195090 -0.980785 0.000000 0.000000 0.000000 2.945245</pose>
+        </waypoint>
+        <waypoint>
+           <time>11.500000</time>
+           <pose>-0.382683 -0.923880 0.000000 0.000000 0.000000 2.748895</pose>
+        </waypoint>
+        <waypoint>
+           <time>12.000000</time>
+           <pose>-0.555570 -0.831470 0.000000 0.000000 0.000000 2.552545</pose>
+        </waypoint>
+        <waypoint>
+           <time>12.500000</time>
+           <pose>-0.707107 -0.707107 0.000000 0.000000 0.000000 2.356195</pose>
+        </waypoint>
+        <waypoint>
+           <time>13.000000</time>
+           <pose>-0.831470 -0.555570 0.000000 0.000000 0.000000 2.159845</pose>
+        </waypoint>
+        <waypoint>
+           <time>13.500000</time>
+           <pose>-0.923880 -0.382683 0.000000 0.000000 0.000000 1.963495</pose>
+        </waypoint>
+        <waypoint>
+           <time>14.000000</time>
+           <pose>-0.980785 -0.195090 0.000000 0.000000 0.000000 1.767145</pose>
+        </waypoint>
+        <waypoint>
+           <time>14.500000</time>
+           <pose>-1.000000 0.000000 0.000000 0.000000 0.000000 1.570795</pose>
+        </waypoint>
+        <waypoint>
+           <time>15.000000</time>
+           <pose>-0.980785 0.195090 0.000000 0.000000 0.000000 1.374445</pose>
+        </waypoint>
+        <waypoint>
+           <time>15.500000</time>
+           <pose>-0.923880 0.382683 0.000000 0.000000 0.000000 1.178095</pose>
+        </waypoint>
+        <waypoint>
+           <time>16.000000</time>
+           <pose>-0.831470 0.555570 0.000000 0.000000 0.000000 0.981745</pose>
+        </waypoint>
+        <waypoint>
+           <time>16.500000</time>
+           <pose>-0.707107 0.707107 0.000000 0.000000 0.000000 0.785395</pose>
+        </waypoint>
+        <waypoint>
+           <time>17.000000</time>
+           <pose>-0.555570 0.831470 0.000000 0.000000 0.000000 0.589045</pose>
+        </waypoint>
+        <waypoint>
+           <time>17.500000</time>
+           <pose>-0.382683 0.923880 0.000000 0.000000 0.000000 0.392695</pose>
+        </waypoint>
+        <waypoint>
+           <time>18.000000</time>
+           <pose>-0.195090 0.980785 0.000000 0.000000 0.000000 0.196345</pose>
+        </waypoint>
+      </trajectory>
+    </script>
+  </actor>
+
+  <%
+    for m in (0..n)
+      geom = ['box', 'sphere', 'cylinder'].sample()
+      sizeX = rand(size_min..size_max)
+      sizeY = rand(size_min..size_max)
+      sizeZ = rand(size_min..size_max)
+  %>
+  <model name="model_<%= m.to_s %>">
+    <!-- important to allow collisions with actor -->
+    <allow_auto_disable>false</allow_auto_disable>
+    <pose>
+      <%= rand(x_min..x_max) %>
+      <%= rand(y_min..y_max) %>
+      <%= rand(z_min..z_max) %>
+      <%= rand(0..Math::PI) %>
+      <%= rand(0..Math::PI) %>
+      <%= rand(0..Math::PI) %>
+    </pose>
+    <link name="link">
+      <%= printInertia(geom, sizeX, sizeY, sizeZ) %>
+      <collision name="collision">
+        <geometry>
+          <%= printGeom(geom, sizeX, sizeY, sizeZ) %>
+        </geometry>
+        <surface>
+          <bounce>
+            <restitution_coefficient><%= rand(0..1) %></restitution_coefficient>
+            <threshold>5.0</threshold>
+          </bounce>
+          <friction>
+            <ode>
+              <mu><%= rand(0..10) %></mu>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <%= printGeom(geom, sizeX, sizeY, sizeZ) %>
+        </geometry>
+        <material>
+          <diffuse>
+            <%= rand(0..1) %>
+            <%= rand(0..1) %>
+            <%= rand(0..1) %>
+            <%= 1 %>
+          </diffuse>
+          <specular>
+            <%= rand(0..1) %>
+            <%= rand(0..1) %>
+            <%= rand(0..1) %>
+            <%= 1 %>
+          </specular>
+          <ambient>
+            <%= rand(0..1) %>
+            <%= rand(0..1) %>
+            <%= rand(0..1) %>
+            <%= 1 %>
+          </ambient>
+        </material>
+      </visual>
+    </link>
+  </model>
+  <%
+    end
+  %>
+
+ </world>
+</sdf>

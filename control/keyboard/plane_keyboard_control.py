@@ -23,7 +23,7 @@ To all drones  (press g to control the leader)
 w/x : increase/decrease north setpoint  
 a/d : increase/decrease east setpoint 
 i/, : increase/decrease upward setpoint
-j/l : increase/decrease orientation
+j/l : increase/decrease yaw
 r   : return home
 t/y : arm/disarm
 v/n : takeoff/land
@@ -49,7 +49,7 @@ To the leader (press g to control all drones)
 w/x : increase/decrease north setpoint  
 a/d : increase/decrease east setpoint 
 i/, : increase/decrease upward setpoint
-j/l : increase/decrease orientation
+j/l : increase/decrease yaw
 r   : return home
 t/y : arm/disarm
 v/n : takeoff/land

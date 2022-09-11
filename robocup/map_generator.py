@@ -304,7 +304,7 @@ with open(output_path + "robocup.world", 'w') as f:
     for num, line in enumerate(lines):
         if count == 1:
             line = line_1
-        if "<plugin name=" in line:
+        if 'filename="libros_actor_cmd_pose_plugin.so">' in line:
             count = 0
             a, b = create_human_point(black_box)
             line_1 = "        <init_pose>" + str(a) + ' ' + str(b) + " 1.25 1.57 0 0</init_pose>"

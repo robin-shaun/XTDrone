@@ -29,6 +29,7 @@ foreach (guiSrc ${GUIplugin})
                         ${GAZEBO_LIBRARIES}
                         ${Qt5Core_LIBRARIES}
                         ${Qt5Widgets_LIBRARIES} 
+                        ${Qt5Test_LIBRARIES}
                         ${GAZEBO_LIBRARIES}
   )
   install (TARGETS ${guiSrc} DESTINATION ${CITYSIM_PLUGIN_INSTALL_DIR})

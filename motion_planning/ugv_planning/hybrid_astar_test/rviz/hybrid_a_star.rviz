@@ -146,8 +146,8 @@ Visualization Manager:
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
       Name: RobotModel
-      Robot Description: catvehicle/robot_description
-      TF Prefix: catvehicle
+      Robot Description: ugv_0/robot_description
+      TF Prefix: ugv_0
       Update Interval: 0
       Value: true
       Visual Enabled: true

@@ -82,7 +82,7 @@ if __name__=="__main__":
     settings = termios.tcgetattr(sys.stdin)
 
     rospy.init_node('catvehicle_keyboard_control')
-    cmd_vel_pub = rospy.Publisher("/catvehicle/cmd_vel_safe", Twist, queue_size=1)
+    cmd_vel_pub = rospy.Publisher("/catvehicle/cmd_vel", Twist, queue_size=1)
     cmd= String()
     twist = Twist()    
 

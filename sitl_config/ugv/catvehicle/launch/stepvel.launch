@@ -73,7 +73,7 @@ roslaunch azcar_sim stepvel.launch robot:=car1
             <remap from="/azcar_sim/vel" to="/$(arg robot)/vel"/>
             <remap from="/azcar_sim/steering" to="/$(arg robot)/steering"/>
             <remap from="/azcar_sim/cmd_vel" to="/$(arg robot)/cmd_vel"/>
-            <remap from="/azcar_sim/cmd_vel_safe" to="/$(arg robot)/cmd_vel_safe"/>
+            <remap from="/azcar_sim/cmd_vel" to="/$(arg robot)/cmd_vel"/>
             <remap from="/azcar_sim/odom" to="/$(arg robot)/odom"/>
             <remap from="/azcar_sim/waypoint" to="/$(arg robot)/waypoint"/>
 </node>

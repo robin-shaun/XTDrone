@@ -67,7 +67,7 @@ output="screen" ns="/$(arg robot_name)" args="joint1_velocity_controller joint2_
 
  
 <node name="cmdvel2gazebo$(arg robot_name)" pkg="catvehicle" type="cmdvel2gazebo.py" respawn="false" output="screen"> 
-    <remap from="/$(arg robot_name)/cmd_vel" to="/$(arg robot_name)/cmd_vel_safe" if="$(arg obstaclestopper)"/>
+    <remap from="/$(arg robot_name)/cmd_vel" to="/$(arg robot_name)/cmd_vel" if="$(arg obstaclestopper)"/>
 </node>
 
 <!--node name="distanceEstimatorSteeringBased" pkg="catvehicle" type="distanceEstimatorSteeringBased" output="screen">

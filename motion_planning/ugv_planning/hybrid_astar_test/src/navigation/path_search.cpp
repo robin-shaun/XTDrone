@@ -13,7 +13,7 @@ HybridAStarGraphSearcher::HybridAStarGraphSearcher(ros::NodeHandle& nh) : nh_(nh
     if(HybridAStar::Constants::manual)
         est_start_subscriber_ptr_ = std::make_shared<EstStartSubscriber>(nh_, "/initialpose");
     else
-        start_subscriber_ptr_   = std::make_shared<StartSubscriber>(nh_, "catvehicle/base_link", "/map");
+        start_subscriber_ptr_   = std::make_shared<StartSubscriber>(nh_, "ugv_0/base_link", "/map");
     goal_subscriber_ptr_ = std::make_shared<GoalSubscriber>(nh_, "/move_base_simple/goal");
     path_publisher_ptr_  = std::make_shared<Path>();
     front_end_path_publisher_ptr_ = std::make_shared<PathPublisher>(nh_, "/front_end");

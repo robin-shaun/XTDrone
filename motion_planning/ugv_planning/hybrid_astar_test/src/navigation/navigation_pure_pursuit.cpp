@@ -2,7 +2,7 @@
 
 PurePursuitControl::PurePursuitControl(ros::NodeHandle& nh) : nh_(nh){
 
-    localization_subscriber_ptr_ = std::make_shared<StartSubscriber>(nh_, "catvehicle/base_link", "/map");
+    localization_subscriber_ptr_ = std::make_shared<StartSubscriber>(nh_, "ugv_0/base_link", "/map");
     path_subscriber_ptr_ = std::make_shared<PathSubscriber>(nh_, "/front_end__poses");
 
 }

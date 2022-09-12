@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<launch>
-	<node pkg="tf" type="static_transform_publisher" name="odom_to_map" args="0 0 0 0 0 0 /scanmatcher_frame /world 100"/>
-</launch>

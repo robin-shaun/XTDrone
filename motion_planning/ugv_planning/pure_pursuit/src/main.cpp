@@ -92,7 +92,7 @@ void odom_callback(const ros::TimerEvent&){
         }
         else
             ros::Duration(0.1).sleep();
-        listener->lookupTransform("/map","catvehicle/base_link",rostime,transform);
+        listener->lookupTransform("/map","ugv_0/base_link",rostime,transform);
     }
     catch(tf::TransformException &ex){
         ROS_ERROR("%s", ex.what());
@@ -354,7 +354,7 @@ int main(int argc, char **argv) {
 //    ros::Subscriber path_sub =  nh.subscribe<visualization_msgs::MarkerArray>("/new_path_vehicle_node", 100, &path_callback);
     ros::Subscriber path_sub =  nh.subscribe<nav_msgs::Path>("/new_path", 100, &path_callback);
 
-    vel_publisher_ = nh.advertise<geometry_msgs::Twist>("/catvehicle/cmd_vel_safe", 1);
+    vel_publisher_ = nh.advertise<geometry_msgs::Twist>("/ugv_0/cmd_vel", 1);
     path_publisher_= nh.advertise<nav_msgs::Path>("/visual_path",1, true);
     odom_publisher_= nh.advertise<nav_msgs::Odometry>("/odom_path",1, true);
 

@@ -30,5 +30,5 @@ while getopts n:r: flag; do
 done
 
 echo "Car $NS receiving inputs with latched rate"
-rostopic pub -r ${PUBRATE} -f hardLeft.bagy $NS/cmd_vel_safe geometry_msgs/Twist
+rostopic pub -r ${PUBRATE} -f hardLeft.bagy $NS/cmd_vel geometry_msgs/Twist
 

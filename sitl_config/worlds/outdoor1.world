@@ -87,28 +87,6 @@
       </link>
     </model>
     <actor name='actor'>
-     <plugin name="actor_collisions_plugin" filename="libActorCollisionsPlugin.so">
-          <scaling collision="LHipJoint_LeftUpLeg_collision" scale="0.01 0.001 0.001"/>
-          <scaling collision="LeftUpLeg_LeftLeg_collision" scale="8.0 8.0 1.0"/>
-          <scaling collision="LeftLeg_LeftFoot_collision" scale="8.0 8.0 1.0"/>
-          <scaling collision="LeftFoot_LeftToeBase_collision" scale="4.0 4.0 1.5"/>
-          <scaling collision="RHipJoint_RightUpLeg_collision" scale="0.01 0.001 0.001"/>
-          <scaling collision="RightUpLeg_RightLeg_collision" scale="8.0 8.0 1.0"/>
-          <scaling collision="RightLeg_RightFoot_collision" scale="8.0 8.0 1.0"/>
-          <scaling collision="RightFoot_RightToeBase_collision" scale="4.0 4.0 1.5"/>
-          <scaling collision="LowerBack_Spine_collision" scale="12.0 20.0 5.0 "/>
-          <scaling collision="Spine_Spine1_collision" scale="0.01 0.001 0.001"/>
-          <scaling collision="Neck_Neck1_collision" scale="0.01 0.001 0.001"/>
-          <scaling collision="Neck1_Head_collision" scale="5.0 5.0 3.0"/>
-          <scaling collision="LeftShoulder_LeftArm_collision" scale="0.01 0.001 0.001"/>
-          <scaling collision="LeftArm_LeftForeArm_collision" scale="5.0 5.0 1.0"/>
-          <scaling collision="LeftForeArm_LeftHand_collision" scale="5.0 5.0 1.0"/>
-          <scaling collision="LeftFingerBase_LeftHandIndex1_collision" scale="4.0 4.0 3.0"/>
-          <scaling collision="RightShoulder_RightArm_collision" scale="0.01 0.001 0.001"/>
-          <scaling collision="RightArm_RightForeArm_collision" scale="5.0 5.0 1.0"/>
-          <scaling collision="RightForeArm_RightHand_collision" scale="5.0 5.0 1.0"/>
-          <scaling collision="RightFingerBase_RightHandIndex1_collision" scale="4.0 4.0 3.0"/>
-        </plugin>
       <skin>
         <filename>walk.dae</filename>
         <scale>1</scale>
@@ -9201,6 +9179,48 @@
             <ambient>0.2 0.2 0.2 1</ambient>
           </material>
         </visual>
+<collision name='collision'>
+<geometry>
+<polyline>
+              <height>0.15</height>
+              <point>-41.3 -40.8</point>
+              <point>-41.2755 -40.9545</point>
+              <point>-41.2045 -41.0939</point>
+              <point>-41.0939 -41.2045</point>
+              <point>-40.9545 -41.2755</point>
+              <point>-40.8 -41.3</point>
+              <point>-19.2 -41.3</point>
+              <point>-19.0455 -41.2755</point>
+              <point>-18.9061 -41.2045</point>
+              <point>-18.7955 -41.0939</point>
+              <point>-18.7245 -40.9545</point>
+              <point>-18.7 -40.8</point>
+              <point>-18.7 -38.8</point>
+              <point>-18.7245 -38.6455</point>
+              <point>-18.7955 -38.5061</point>
+              <point>-18.9061 -38.3955</point>
+              <point>-19.0455 -38.3245</point>
+              <point>-19.2 -38.3</point>
+              <point>-40.8 -38.3</point>
+              <point>-40.9545 -38.3245</point>
+              <point>-41.0939 -38.3955</point>
+              <point>-41.2045 -38.5061</point>
+              <point>-41.2755 -38.6455</point>
+              <point>-41.3 -38.8</point>
+</polyline>
+</geometry>
+<max_contacts>10</max_contacts>
+ <contact>
+<ode/>
+</contact>
+<bounce/>
+<friction>
+<torsional>
+<ode/>
+</torsional>
+<ode/>
+</friction>
+</collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
@@ -9244,6 +9264,48 @@
             <ambient>0.2 0.2 0.2 1</ambient>
           </material>
         </visual>
+<collision name='collision'>
+<geometry>
+<polyline>
+              <height>0.15</height>
+              <point>-41.3 -6.2</point>
+              <point>-41.2755 -6.35451</point>
+              <point>-41.2045 -6.49389</point>
+              <point>-41.0939 -6.60451</point>
+              <point>-40.9545 -6.67553</point>
+              <point>-40.8 -6.7</point>
+              <point>-19.2 -6.7</point>
+              <point>-19.0455 -6.67553</point>
+              <point>-18.9061 -6.60451</point>
+              <point>-18.7955 -6.49389</point>
+              <point>-18.7245 -6.35451</point>
+              <point>-18.7 -6.2</point>
+              <point>-18.7 -4.2</point>
+              <point>-18.7245 -4.04549</point>
+              <point>-18.7955 -3.90611</point>
+              <point>-18.9061 -3.79549</point>
+              <point>-19.0455 -3.72447</point>
+              <point>-19.2 -3.7</point>
+              <point>-40.8 -3.7</point>
+              <point>-40.9545 -3.72447</point>
+              <point>-41.0939 -3.79549</point>
+              <point>-41.2045 -3.90611</point>
+              <point>-41.2755 -4.04549</point>
+              <point>-41.3 -4.2</point>
+</polyline>
+</geometry>
+<max_contacts>10</max_contacts>
+ <contact>
+<ode/>
+</contact>
+<bounce/>
+<friction>
+<torsional>
+<ode/>
+</torsional>
+<ode/>
+</friction>
+</collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
@@ -9287,6 +9349,48 @@
             <ambient>0.2 0.2 0.2 1</ambient>
           </material>
         </visual>
+<collision name='collision'>
+<geometry>
+<polyline>
+              <height>0.15</height>
+              <point>-41.3 -40.8</point>
+              <point>-41.2755 -40.9545</point>
+              <point>-41.2045 -41.0939</point>
+              <point>-41.0939 -41.2045</point>
+              <point>-40.9545 -41.2755</point>
+              <point>-40.8 -41.3</point>
+              <point>-38.8 -41.3</point>
+              <point>-38.6455 -41.2755</point>
+              <point>-38.5061 -41.2045</point>
+              <point>-38.3955 -41.0939</point>
+              <point>-38.3245 -40.9545</point>
+              <point>-38.3 -40.8</point>
+              <point>-38.3 -4.2</point>
+              <point>-38.3245 -4.04549</point>
+              <point>-38.3955 -3.90611</point>
+              <point>-38.5061 -3.79549</point>
+              <point>-38.6455 -3.72447</point>
+              <point>-38.8 -3.7</point>
+              <point>-40.8 -3.7</point>
+              <point>-40.9545 -3.72447</point>
+              <point>-41.0939 -3.79549</point>
+              <point>-41.2045 -3.90611</point>
+              <point>-41.2755 -4.04549</point>
+              <point>-41.3 -4.2</point>
+</polyline>
+</geometry>
+<max_contacts>10</max_contacts>
+ <contact>
+<ode/>
+</contact>
+<bounce/>
+<friction>
+<torsional>
+<ode/>
+</torsional>
+<ode/>
+</friction>
+</collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
@@ -9330,6 +9434,48 @@
             <ambient>0.2 0.2 0.2 1</ambient>
           </material>
         </visual>
+<collision name='collision'>
+<geometry>
+<polyline>
+              <height>0.15</height>
+              <point>-21.7 -40.8</point>
+              <point>-21.6755 -40.9545</point>
+              <point>-21.6045 -41.0939</point>
+              <point>-21.4939 -41.2045</point>
+              <point>-21.3545 -41.2755</point>
+              <point>-21.2 -41.3</point>
+              <point>-19.2 -41.3</point>
+              <point>-19.0455 -41.2755</point>
+              <point>-18.9061 -41.2045</point>
+              <point>-18.7955 -41.0939</point>
+              <point>-18.7245 -40.9545</point>
+              <point>-18.7 -40.8</point>
+              <point>-18.7 -4.2</point>
+              <point>-18.7245 -4.04549</point>
+              <point>-18.7955 -3.90611</point>
+              <point>-18.9061 -3.79549</point>
+              <point>-19.0455 -3.72447</point>
+              <point>-19.2 -3.7</point>
+              <point>-21.2 -3.7</point>
+              <point>-21.3545 -3.72447</point>
+              <point>-21.4939 -3.79549</point>
+              <point>-21.6045 -3.90611</point>
+              <point>-21.6755 -4.04549</point>
+              <point>-21.7 -4.2</point>
+</polyline>
+</geometry>
+<max_contacts>10</max_contacts>
+ <contact>
+<ode/>
+</contact>
+<bounce/>
+<friction>
+<torsional>
+<ode/>
+</torsional>
+<ode/>
+</friction>
+</collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
@@ -9460,6 +9606,48 @@
             <ambient>0.2 0.2 0.2 1</ambient>
           </material>
         </visual>
+<collision name='collision'>
+<geometry>
+<polyline>
+              <height>0.15</height>
+              <point>-41.3 38.8</point>
+              <point>-41.2755 38.6455</point>
+              <point>-41.2045 38.5061</point>
+              <point>-41.0939 38.3955</point>
+              <point>-40.9545 38.3245</point>
+              <point>-40.8 38.3</point>
+              <point>-19.2 38.3</point>
+              <point>-19.0455 38.3245</point>
+              <point>-18.9061 38.3955</point>
+              <point>-18.7955 38.5061</point>
+              <point>-18.7245 38.6455</point>
+              <point>-18.7 38.8</point>
+              <point>-18.7 40.8</point>
+              <point>-18.7245 40.9545</point>
+              <point>-18.7955 41.0939</point>
+              <point>-18.9061 41.2045</point>
+              <point>-19.0455 41.2755</point>
+              <point>-19.2 41.3</point>
+              <point>-40.8 41.3</point>
+              <point>-40.9545 41.2755</point>
+              <point>-41.0939 41.2045</point>
+              <point>-41.2045 41.0939</point>
+              <point>-41.2755 40.9545</point>
+              <point>-41.3 40.8</point>
+</polyline>
+</geometry>
+<max_contacts>10</max_contacts>
+ <contact>
+<ode/>
+</contact>
+<bounce/>
+<friction>
+<torsional>
+<ode/>
+</torsional>
+<ode/>
+</friction>
+</collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
@@ -9503,6 +9691,48 @@
             <ambient>0.2 0.2 0.2 1</ambient>
           </material>
         </visual>
+<collision name='collision'>
+<geometry>
+<polyline>
+              <height>0.15</height>
+              <point>-41.3 4.2</point>
+              <point>-41.2755 4.04549</point>
+              <point>-41.2045 3.90611</point>
+              <point>-41.0939 3.79549</point>
+              <point>-40.9545 3.72447</point>
+              <point>-40.8 3.7</point>
+              <point>-38.8 3.7</point>
+              <point>-38.6455 3.72447</point>
+              <point>-38.5061 3.79549</point>
+              <point>-38.3955 3.90611</point>
+              <point>-38.3245 4.04549</point>
+              <point>-38.3 4.2</point>
+              <point>-38.3 40.8</point>
+              <point>-38.3245 40.9545</point>
+              <point>-38.3955 41.0939</point>
+              <point>-38.5061 41.2045</point>
+              <point>-38.6455 41.2755</point>
+              <point>-38.8 41.3</point>
+              <point>-40.8 41.3</point>
+              <point>-40.9545 41.2755</point>
+              <point>-41.0939 41.2045</point>
+              <point>-41.2045 41.0939</point>
+              <point>-41.2755 40.9545</point>
+              <point>-41.3 40.8</point>
+</polyline>
+</geometry>
+<max_contacts>10</max_contacts>
+ <contact>
+<ode/>
+</contact>
+<bounce/>
+<friction>
+<torsional>
+<ode/>
+</torsional>
+<ode/>
+</friction>
+</collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
@@ -9546,6 +9776,48 @@
             <ambient>0.2 0.2 0.2 1</ambient>
           </material>
         </visual>
+<collision name='collision'>
+<geometry>
+<polyline>
+              <height>0.15</height>
+              <point>-21.7 4.2</point>
+              <point>-21.6755 4.04549</point>
+              <point>-21.6045 3.90611</point>
+              <point>-21.4939 3.79549</point>
+              <point>-21.3545 3.72447</point>
+              <point>-21.2 3.7</point>
+              <point>-19.2 3.7</point>
+              <point>-19.0455 3.72447</point>
+              <point>-18.9061 3.79549</point>
+              <point>-18.7955 3.90611</point>
+              <point>-18.7245 4.04549</point>
+              <point>-18.7 4.2</point>
+              <point>-18.7 40.8</point>
+              <point>-18.7245 40.9545</point>
+              <point>-18.7955 41.0939</point>
+              <point>-18.9061 41.2045</point>
+              <point>-19.0455 41.2755</point>
+              <point>-19.2 41.3</point>
+              <point>-21.2 41.3</point>
+              <point>-21.3545 41.2755</point>
+              <point>-21.4939 41.2045</point>
+              <point>-21.6045 41.0939</point>
+              <point>-21.6755 40.9545</point>
+              <point>-21.7 40.8</point>
+</polyline>
+</geometry>
+<max_contacts>10</max_contacts>
+ <contact>
+<ode/>
+</contact>
+<bounce/>
+<friction>
+<torsional>
+<ode/>
+</torsional>
+<ode/>
+</friction>
+</collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
@@ -9589,6 +9861,48 @@
             <ambient>0.2 0.2 0.2 1</ambient>
           </material>
         </visual>
+<collision name='collision'>
+<geometry>
+<polyline>
+              <height>0.15</height>
+              <point>-11.3 -40.8</point>
+              <point>-11.2755 -40.9545</point>
+              <point>-11.2045 -41.0939</point>
+              <point>-11.0939 -41.2045</point>
+              <point>-10.9545 -41.2755</point>
+              <point>-10.8 -41.3</point>
+              <point>40.8 -41.3</point>
+              <point>40.9545 -41.2755</point>
+              <point>41.0939 -41.2045</point>
+              <point>41.2045 -41.0939</point>
+              <point>41.2755 -40.9545</point>
+              <point>41.3 -40.8</point>
+              <point>41.3 -38.8</point>
+              <point>41.2755 -38.6455</point>
+              <point>41.2045 -38.5061</point>
+              <point>41.0939 -38.3955</point>
+              <point>40.9545 -38.3245</point>
+              <point>40.8 -38.3</point>
+              <point>-10.8 -38.3</point>
+              <point>-10.9545 -38.3245</point>
+              <point>-11.0939 -38.3955</point>
+              <point>-11.2045 -38.5061</point>
+              <point>-11.2755 -38.6455</point>
+              <point>-11.3 -38.8</point>
+</polyline>
+</geometry>
+<max_contacts>10</max_contacts>
+ <contact>
+<ode/>
+</contact>
+<bounce/>
+<friction>
+<torsional>
+<ode/>
+</torsional>
+<ode/>
+</friction>
+</collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
@@ -9632,6 +9946,48 @@
             <ambient>0.2 0.2 0.2 1</ambient>
           </material>
         </visual>
+<collision name='collision'>
+<geometry>
+<polyline>
+              <height>0.15</height>
+              <point>-11.3 -6.2</point>
+              <point>-11.2755 -6.35451</point>
+              <point>-11.2045 -6.49389</point>
+              <point>-11.0939 -6.60451</point>
+              <point>-10.9545 -6.67553</point>
+              <point>-10.8 -6.7</point>
+              <point>40.8 -6.7</point>
+              <point>40.9545 -6.67553</point>
+              <point>41.0939 -6.60451</point>
+              <point>41.2045 -6.49389</point>
+              <point>41.2755 -6.35451</point>
+              <point>41.3 -6.2</point>
+              <point>41.3 -4.2</point>
+              <point>41.2755 -4.04549</point>
+              <point>41.2045 -3.90611</point>
+              <point>41.0939 -3.79549</point>
+              <point>40.9545 -3.72447</point>
+              <point>40.8 -3.7</point>
+              <point>-10.8 -3.7</point>
+              <point>-10.9545 -3.72447</point>
+              <point>-11.0939 -3.79549</point>
+              <point>-11.2045 -3.90611</point>
+              <point>-11.2755 -4.04549</point>
+              <point>-11.3 -4.2</point>
+</polyline>
+</geometry>
+<max_contacts>10</max_contacts>
+ <contact>
+<ode/>
+</contact>
+<bounce/>
+<friction>
+<torsional>
+<ode/>
+</torsional>
+<ode/>
+</friction>
+</collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
@@ -9675,6 +10031,48 @@
             <ambient>0.2 0.2 0.2 1</ambient>
           </material>
         </visual>
+<collision name='collision'>
+<geometry>
+<polyline>
+              <height>0.15</height>
+              <point>-11.3 -40.8</point>
+              <point>-11.2755 -40.9545</point>
+              <point>-11.2045 -41.0939</point>
+              <point>-11.0939 -41.2045</point>
+              <point>-10.9545 -41.2755</point>
+              <point>-10.8 -41.3</point>
+              <point>-8.8 -41.3</point>
+              <point>-8.64549 -41.2755</point>
+              <point>-8.50611 -41.2045</point>
+              <point>-8.39549 -41.0939</point>
+              <point>-8.32447 -40.9545</point>
+              <point>-8.3 -40.8</point>
+              <point>-8.3 -16.5</point>
+              <point>-8.32447 -16.3455</point>
+              <point>-8.39549 -16.2061</point>
+              <point>-8.50611 -16.0955</point>
+              <point>-8.64549 -16.0245</point>
+              <point>-8.8 -16</point>
+              <point>-10.8 -16</point>
+              <point>-10.9545 -16.0245</point>
+              <point>-11.0939 -16.0955</point>
+              <point>-11.2045 -16.2061</point>
+              <point>-11.2755 -16.3455</point>
+              <point>-11.3 -16.5</point>
+</polyline>
+</geometry>
+<max_contacts>10</max_contacts>
+ <contact>
+<ode/>
+</contact>
+<bounce/>
+<friction>
+<torsional>
+<ode/>
+</torsional>
+<ode/>
+</friction>
+</collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
@@ -9718,6 +10116,48 @@
             <ambient>0.2 0.2 0.2 1</ambient>
           </material>
         </visual>
+<collision name='collision'>
+<geometry>
+<polyline>
+              <height>0.15</height>
+              <point>-11.3 -9.5</point>
+              <point>-11.2755 -9.65451</point>
+              <point>-11.2045 -9.79389</point>
+              <point>-11.0939 -9.90451</point>
+              <point>-10.9545 -9.97553</point>
+              <point>-10.8 -10</point>
+              <point>-8.8 -10</point>
+              <point>-8.64549 -9.97553</point>
+              <point>-8.50611 -9.90451</point>
+              <point>-8.39549 -9.79389</point>
+              <point>-8.32447 -9.65451</point>
+              <point>-8.3 -9.5</point>
+              <point>-8.3 -4.2</point>
+              <point>-8.32447 -4.04549</point>
+              <point>-8.39549 -3.90611</point>
+              <point>-8.50611 -3.79549</point>
+              <point>-8.64549 -3.72447</point>
+              <point>-8.8 -3.7</point>
+              <point>-10.8 -3.7</point>
+              <point>-10.9545 -3.72447</point>
+              <point>-11.0939 -3.79549</point>
+              <point>-11.2045 -3.90611</point>
+              <point>-11.2755 -4.04549</point>
+              <point>-11.3 -4.2</point>
+</polyline>
+</geometry>
+<max_contacts>10</max_contacts>
+ <contact>
+<ode/>
+</contact>
+<bounce/>
+<friction>
+<torsional>
+<ode/>
+</torsional>
+<ode/>
+</friction>
+</collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
@@ -9761,6 +10201,48 @@
             <ambient>0.2 0.2 0.2 1</ambient>
           </material>
         </visual>
+<collision name='collision'>
+<geometry>
+<polyline>
+              <height>0.15</height>
+              <point>38.3 -40.8</point>
+              <point>38.3245 -40.9545</point>
+              <point>38.3955 -41.0939</point>
+              <point>38.5061 -41.2045</point>
+              <point>38.6455 -41.2755</point>
+              <point>38.8 -41.3</point>
+              <point>40.8 -41.3</point>
+              <point>40.9545 -41.2755</point>
+              <point>41.0939 -41.2045</point>
+              <point>41.2045 -41.0939</point>
+              <point>41.2755 -40.9545</point>
+              <point>41.3 -40.8</point>
+              <point>41.3 -4.2</point>
+              <point>41.2755 -4.04549</point>
+              <point>41.2045 -3.90611</point>
+              <point>41.0939 -3.79549</point>
+              <point>40.9545 -3.72447</point>
+              <point>40.8 -3.7</point>
+              <point>38.8 -3.7</point>
+              <point>38.6455 -3.72447</point>
+              <point>38.5061 -3.79549</point>
+              <point>38.3955 -3.90611</point>
+              <point>38.3245 -4.04549</point>
+              <point>38.3 -4.2</point>
+</polyline>
+</geometry>
+<max_contacts>10</max_contacts>
+ <contact>
+<ode/>
+</contact>
+<bounce/>
+<friction>
+<torsional>
+<ode/>
+</torsional>
+<ode/>
+</friction>
+</collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
@@ -9804,6 +10286,48 @@
             <ambient>0.2 0.2 0.2 1</ambient>
           </material>
         </visual>
+<collision name='collision'>
+<geometry>
+<polyline>
+              <height>0.15</height>
+              <point>-11.3 4.2</point>
+              <point>-11.2755 4.04549</point>
+              <point>-11.2045 3.90611</point>
+              <point>-11.0939 3.79549</point>
+              <point>-10.9545 3.72447</point>
+              <point>-10.8 3.7</point>
+              <point>40.8 3.7</point>
+              <point>40.9545 3.72447</point>
+              <point>41.0939 3.79549</point>
+              <point>41.2045 3.90611</point>
+              <point>41.2755 4.04549</point>
+              <point>41.3 4.2</point>
+              <point>41.3 6.2</point>
+              <point>41.2755 6.35451</point>
+              <point>41.2045 6.49389</point>
+              <point>41.0939 6.60451</point>
+              <point>40.9545 6.67553</point>
+              <point>40.8 6.7</point>
+              <point>-10.8 6.7</point>
+              <point>-10.9545 6.67553</point>
+              <point>-11.0939 6.60451</point>
+              <point>-11.2045 6.49389</point>
+              <point>-11.2755 6.35451</point>
+              <point>-11.3 6.2</point>
+</polyline>
+</geometry>
+<max_contacts>10</max_contacts>
+ <contact>
+<ode/>
+</contact>
+<bounce/>
+<friction>
+<torsional>
+<ode/>
+</torsional>
+<ode/>
+</friction>
+</collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
@@ -9847,6 +10371,48 @@
             <ambient>0.2 0.2 0.2 1</ambient>
           </material>
         </visual>
+<collision name='collision'>
+<geometry>
+<polyline>
+              <height>0.15</height>
+              <point>-11.3 38.8</point>
+              <point>-11.2755 38.6455</point>
+              <point>-11.2045 38.5061</point>
+              <point>-11.0939 38.3955</point>
+              <point>-10.9545 38.3245</point>
+              <point>-10.8 38.3</point>
+              <point>40.8 38.3</point>
+              <point>40.9545 38.3245</point>
+              <point>41.0939 38.3955</point>
+              <point>41.2045 38.5061</point>
+              <point>41.2755 38.6455</point>
+              <point>41.3 38.8</point>
+              <point>41.3 40.8</point>
+              <point>41.2755 40.9545</point>
+              <point>41.2045 41.0939</point>
+              <point>41.0939 41.2045</point>
+              <point>40.9545 41.2755</point>
+              <point>40.8 41.3</point>
+              <point>-10.8 41.3</point>
+              <point>-10.9545 41.2755</point>
+              <point>-11.0939 41.2045</point>
+              <point>-11.2045 41.0939</point>
+              <point>-11.2755 40.9545</point>
+              <point>-11.3 40.8</point>
+</polyline>
+</geometry>
+<max_contacts>10</max_contacts>
+ <contact>
+<ode/>
+</contact>
+<bounce/>
+<friction>
+<torsional>
+<ode/>
+</torsional>
+<ode/>
+</friction>
+</collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
@@ -9890,6 +10456,48 @@
             <ambient>0.2 0.2 0.2 1</ambient>
           </material>
         </visual>
+<collision name='collision'>
+<geometry>
+<polyline>
+              <height>0.15</height>
+              <point>-11.3 4.2</point>
+              <point>-11.2755 4.04549</point>
+              <point>-11.2045 3.90611</point>
+              <point>-11.0939 3.79549</point>
+              <point>-10.9545 3.72447</point>
+              <point>-10.8 3.7</point>
+              <point>-8.8 3.7</point>
+              <point>-8.64549 3.72447</point>
+              <point>-8.50611 3.79549</point>
+              <point>-8.39549 3.90611</point>
+              <point>-8.32447 4.04549</point>
+              <point>-8.3 4.2</point>
+              <point>-8.3 40.8</point>
+              <point>-8.32447 40.9545</point>
+              <point>-8.39549 41.0939</point>
+              <point>-8.50611 41.2045</point>
+              <point>-8.64549 41.2755</point>
+              <point>-8.8 41.3</point>
+              <point>-10.8 41.3</point>
+              <point>-10.9545 41.2755</point>
+              <point>-11.0939 41.2045</point>
+              <point>-11.2045 41.0939</point>
+              <point>-11.2755 40.9545</point>
+              <point>-11.3 40.8</point>
+</polyline>
+</geometry>
+<max_contacts>10</max_contacts>
+ <contact>
+<ode/>
+</contact>
+<bounce/>
+<friction>
+<torsional>
+<ode/>
+</torsional>
+<ode/>
+</friction>
+</collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
@@ -9933,6 +10541,48 @@
             <ambient>0.2 0.2 0.2 1</ambient>
           </material>
         </visual>
+<collision name='collision'>
+<geometry>
+<polyline>
+              <height>0.15</height>
+              <point>38.3 4.2</point>
+              <point>38.3245 4.04549</point>
+              <point>38.3955 3.90611</point>
+              <point>38.5061 3.79549</point>
+              <point>38.6455 3.72447</point>
+              <point>38.8 3.7</point>
+              <point>40.8 3.7</point>
+              <point>40.9545 3.72447</point>
+              <point>41.0939 3.79549</point>
+              <point>41.2045 3.90611</point>
+              <point>41.2755 4.04549</point>
+              <point>41.3 4.2</point>
+              <point>41.3 40.8</point>
+              <point>41.2755 40.9545</point>
+              <point>41.2045 41.0939</point>
+              <point>41.0939 41.2045</point>
+              <point>40.9545 41.2755</point>
+              <point>40.8 41.3</point>
+              <point>38.8 41.3</point>
+              <point>38.6455 41.2755</point>
+              <point>38.5061 41.2045</point>
+              <point>38.3955 41.0939</point>
+              <point>38.3245 40.9545</point>
+              <point>38.3 40.8</point>
+</polyline>
+</geometry>
+<max_contacts>10</max_contacts>
+ <contact>
+<ode/>
+</contact>
+<bounce/>
+<friction>
+<torsional>
+<ode/>
+</torsional>
+<ode/>
+</friction>
+</collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
@@ -9976,6 +10626,48 @@
             <ambient>0.2 0.2 0.2 1</ambient>
           </material>
         </visual>
+<collision name='collision'>
+<geometry>
+<polyline>
+              <height>0.15</height>
+              <point>48.7 -40.8</point>
+              <point>48.7245 -40.9545</point>
+              <point>48.7955 -41.0939</point>
+              <point>48.9061 -41.2045</point>
+              <point>49.0455 -41.2755</point>
+              <point>49.2 -41.3</point>
+              <point>105.8 -41.3</point>
+              <point>105.955 -41.2755</point>
+              <point>106.094 -41.2045</point>
+              <point>106.205 -41.0939</point>
+              <point>106.276 -40.9545</point>
+              <point>106.3 -40.8</point>
+              <point>106.3 -38.8</point>
+              <point>106.276 -38.6455</point>
+              <point>106.205 -38.5061</point>
+              <point>106.094 -38.3955</point>
+              <point>105.955 -38.3245</point>
+              <point>105.8 -38.3</point>
+              <point>49.2 -38.3</point>
+              <point>49.0455 -38.3245</point>
+              <point>48.9061 -38.3955</point>
+              <point>48.7955 -38.5061</point>
+              <point>48.7245 -38.6455</point>
+              <point>48.7 -38.8</point>
+</polyline>
+</geometry>
+<max_contacts>10</max_contacts>
+ <contact>
+<ode/>
+</contact>
+<bounce/>
+<friction>
+<torsional>
+<ode/>
+</torsional>
+<ode/>
+</friction>
+</collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
@@ -10019,6 +10711,48 @@
             <ambient>0.2 0.2 0.2 1</ambient>
           </material>
         </visual>
+<collision name='collision'>
+<geometry>
+<polyline>
+              <height>0.15</height>
+              <point>48.7 -6.2</point>
+              <point>48.7245 -6.35451</point>
+              <point>48.7955 -6.49389</point>
+              <point>48.9061 -6.60451</point>
+              <point>49.0455 -6.67553</point>
+              <point>49.2 -6.7</point>
+              <point>84.5 -6.7</point>
+              <point>84.6545 -6.67553</point>
+              <point>84.7939 -6.60451</point>
+              <point>84.9045 -6.49389</point>
+              <point>84.9755 -6.35451</point>
+              <point>85 -6.2</point>
+              <point>85 -4.2</point>
+              <point>84.9755 -4.04549</point>
+              <point>84.9045 -3.90611</point>
+              <point>84.7939 -3.79549</point>
+              <point>84.6545 -3.72447</point>
+              <point>84.5 -3.7</point>
+              <point>49.2 -3.7</point>
+              <point>49.0455 -3.72447</point>
+              <point>48.9061 -3.79549</point>
+              <point>48.7955 -3.90611</point>
+              <point>48.7245 -4.04549</point>
+              <point>48.7 -4.2</point>
+</polyline>
+</geometry>
+<max_contacts>10</max_contacts>
+ <contact>
+<ode/>
+</contact>
+<bounce/>
+<friction>
+<torsional>
+<ode/>
+</torsional>
+<ode/>
+</friction>
+</collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
@@ -10062,6 +10796,48 @@
             <ambient>0.2 0.2 0.2 1</ambient>
           </material>
         </visual>
+<collision name='collision'>
+<geometry>
+<polyline>
+              <height>0.15</height>
+              <point>95 -6.2</point>
+              <point>95.0245 -6.35451</point>
+              <point>95.0955 -6.49389</point>
+              <point>95.2061 -6.60451</point>
+              <point>95.3455 -6.67553</point>
+              <point>95.5 -6.7</point>
+              <point>105.8 -6.7</point>
+              <point>105.955 -6.67553</point>
+              <point>106.094 -6.60451</point>
+              <point>106.205 -6.49389</point>
+              <point>106.276 -6.35451</point>
+              <point>106.3 -6.2</point>
+              <point>106.3 -4.2</point>
+              <point>106.276 -4.04549</point>
+              <point>106.205 -3.90611</point>
+              <point>106.094 -3.79549</point>
+              <point>105.955 -3.72447</point>
+              <point>105.8 -3.7</point>
+              <point>95.5 -3.7</point>
+              <point>95.3455 -3.72447</point>
+              <point>95.2061 -3.79549</point>
+              <point>95.0955 -3.90611</point>
+              <point>95.0245 -4.04549</point>
+              <point>95 -4.2</point>
+</polyline>
+</geometry>
+<max_contacts>10</max_contacts>
+ <contact>
+<ode/>
+</contact>
+<bounce/>
+<friction>
+<torsional>
+<ode/>
+</torsional>
+<ode/>
+</friction>
+</collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
@@ -10105,6 +10881,48 @@
             <ambient>0.2 0.2 0.2 1</ambient>
           </material>
         </visual>
+<collision name='collision'>
+<geometry>
+<polyline>
+              <height>0.15</height>
+              <point>48.7 -40.8</point>
+              <point>48.7245 -40.9545</point>
+              <point>48.7955 -41.0939</point>
+              <point>48.9061 -41.2045</point>
+              <point>49.0455 -41.2755</point>
+              <point>49.2 -41.3</point>
+              <point>51.2 -41.3</point>
+              <point>51.3545 -41.2755</point>
+              <point>51.4939 -41.2045</point>
+              <point>51.6045 -41.0939</point>
+              <point>51.6755 -40.9545</point>
+              <point>51.7 -40.8</point>
+              <point>51.7 -4.2</point>
+              <point>51.6755 -4.04549</point>
+              <point>51.6045 -3.90611</point>
+              <point>51.4939 -3.79549</point>
+              <point>51.3545 -3.72447</point>
+              <point>51.2 -3.7</point>
+              <point>49.2 -3.7</point>
+              <point>49.0455 -3.72447</point>
+              <point>48.9061 -3.79549</point>
+              <point>48.7955 -3.90611</point>
+              <point>48.7245 -4.04549</point>
+              <point>48.7 -4.2</point>
+</polyline>
+</geometry>
+<max_contacts>10</max_contacts>
+ <contact>
+<ode/>
+</contact>
+<bounce/>
+<friction>
+<torsional>
+<ode/>
+</torsional>
+<ode/>
+</friction>
+</collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
@@ -10148,6 +10966,48 @@
             <ambient>0.2 0.2 0.2 1</ambient>
           </material>
         </visual>
+<collision name='collision'>
+<geometry>
+<polyline>
+              <height>0.15</height>
+              <point>103.3 -40.8</point>
+              <point>103.324 -40.9545</point>
+              <point>103.395 -41.0939</point>
+              <point>103.506 -41.2045</point>
+              <point>103.645 -41.2755</point>
+              <point>103.8 -41.3</point>
+              <point>105.8 -41.3</point>
+              <point>105.955 -41.2755</point>
+              <point>106.094 -41.2045</point>
+              <point>106.205 -41.0939</point>
+              <point>106.276 -40.9545</point>
+              <point>106.3 -40.8</point>
+              <point>106.3 -4.2</point>
+              <point>106.276 -4.04549</point>
+              <point>106.205 -3.90611</point>
+              <point>106.094 -3.79549</point>
+              <point>105.955 -3.72447</point>
+              <point>105.8 -3.7</point>
+              <point>103.8 -3.7</point>
+              <point>103.645 -3.72447</point>
+              <point>103.506 -3.79549</point>
+              <point>103.395 -3.90611</point>
+              <point>103.324 -4.04549</point>
+              <point>103.3 -4.2</point>
+</polyline>
+</geometry>
+<max_contacts>10</max_contacts>
+ <contact>
+<ode/>
+</contact>
+<bounce/>
+<friction>
+<torsional>
+<ode/>
+</torsional>
+<ode/>
+</friction>
+</collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
@@ -10191,6 +11051,48 @@
             <ambient>0.2 0.2 0.2 1</ambient>
           </material>
         </visual>
+<collision name='collision'>
+<geometry>
+<polyline>
+              <height>0.15</height>
+              <point>48.7 4.2</point>
+              <point>48.7245 4.04549</point>
+              <point>48.7955 3.90611</point>
+              <point>48.9061 3.79549</point>
+              <point>49.0455 3.72447</point>
+              <point>49.2 3.7</point>
+              <point>105.8 3.7</point>
+              <point>105.955 3.72447</point>
+              <point>106.094 3.79549</point>
+              <point>106.205 3.90611</point>
+              <point>106.276 4.04549</point>
+              <point>106.3 4.2</point>
+              <point>106.3 6.2</point>
+              <point>106.276 6.35451</point>
+              <point>106.205 6.49389</point>
+              <point>106.094 6.60451</point>
+              <point>105.955 6.67553</point>
+              <point>105.8 6.7</point>
+              <point>49.2 6.7</point>
+              <point>49.0455 6.67553</point>
+              <point>48.9061 6.60451</point>
+              <point>48.7955 6.49389</point>
+              <point>48.7245 6.35451</point>
+              <point>48.7 6.2</point>
+</polyline>
+</geometry>
+<max_contacts>10</max_contacts>
+ <contact>
+<ode/>
+</contact>
+<bounce/>
+<friction>
+<torsional>
+<ode/>
+</torsional>
+<ode/>
+</friction>
+</collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
@@ -10234,6 +11136,48 @@
             <ambient>0.2 0.2 0.2 1</ambient>
           </material>
         </visual>
+<collision name='collision'>
+<geometry>
+<polyline>
+              <height>0.15</height>
+              <point>48.7 38.8</point>
+              <point>48.7245 38.6455</point>
+              <point>48.7955 38.5061</point>
+              <point>48.9061 38.3955</point>
+              <point>49.0455 38.3245</point>
+              <point>49.2 38.3</point>
+              <point>105.8 38.3</point>
+              <point>105.955 38.3245</point>
+              <point>106.094 38.3955</point>
+              <point>106.205 38.5061</point>
+              <point>106.276 38.6455</point>
+              <point>106.3 38.8</point>
+              <point>106.3 40.8</point>
+              <point>106.276 40.9545</point>
+              <point>106.205 41.0939</point>
+              <point>106.094 41.2045</point>
+              <point>105.955 41.2755</point>
+              <point>105.8 41.3</point>
+              <point>49.2 41.3</point>
+              <point>49.0455 41.2755</point>
+              <point>48.9061 41.2045</point>
+              <point>48.7955 41.0939</point>
+              <point>48.7245 40.9545</point>
+              <point>48.7 40.8</point>
+</polyline>
+</geometry>
+<max_contacts>10</max_contacts>
+ <contact>
+<ode/>
+</contact>
+<bounce/>
+<friction>
+<torsional>
+<ode/>
+</torsional>
+<ode/>
+</friction>
+</collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
@@ -10277,6 +11221,48 @@
             <ambient>0.2 0.2 0.2 1</ambient>
           </material>
         </visual>
+<collision name='collision'>
+<geometry>
+<polyline>
+              <height>0.15</height>
+              <point>48.7 4.2</point>
+              <point>48.7245 4.04549</point>
+              <point>48.7955 3.90611</point>
+              <point>48.9061 3.79549</point>
+              <point>49.0455 3.72447</point>
+              <point>49.2 3.7</point>
+              <point>51.2 3.7</point>
+              <point>51.3545 3.72447</point>
+              <point>51.4939 3.79549</point>
+              <point>51.6045 3.90611</point>
+              <point>51.6755 4.04549</point>
+              <point>51.7 4.2</point>
+              <point>51.7 40.8</point>
+              <point>51.6755 40.9545</point>
+              <point>51.6045 41.0939</point>
+              <point>51.4939 41.2045</point>
+              <point>51.3545 41.2755</point>
+              <point>51.2 41.3</point>
+              <point>49.2 41.3</point>
+              <point>49.0455 41.2755</point>
+              <point>48.9061 41.2045</point>
+              <point>48.7955 41.0939</point>
+              <point>48.7245 40.9545</point>
+              <point>48.7 40.8</point>
+</polyline>
+</geometry>
+<max_contacts>10</max_contacts>
+ <contact>
+<ode/>
+</contact>
+<bounce/>
+<friction>
+<torsional>
+<ode/>
+</torsional>
+<ode/>
+</friction>
+</collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
@@ -10320,6 +11306,48 @@
             <ambient>0.2 0.2 0.2 1</ambient>
           </material>
         </visual>
+<collision name='collision'>
+<geometry>
+<polyline>
+              <height>0.15</height>
+              <point>103.3 4.2</point>
+              <point>103.324 4.04549</point>
+              <point>103.395 3.90611</point>
+              <point>103.506 3.79549</point>
+              <point>103.645 3.72447</point>
+              <point>103.8 3.7</point>
+              <point>105.8 3.7</point>
+              <point>105.955 3.72447</point>
+              <point>106.094 3.79549</point>
+              <point>106.205 3.90611</point>
+              <point>106.276 4.04549</point>
+              <point>106.3 4.2</point>
+              <point>106.3 40.8</point>
+              <point>106.276 40.9545</point>
+              <point>106.205 41.0939</point>
+              <point>106.094 41.2045</point>
+              <point>105.955 41.2755</point>
+              <point>105.8 41.3</point>
+              <point>103.8 41.3</point>
+              <point>103.645 41.2755</point>
+              <point>103.506 41.2045</point>
+              <point>103.395 41.0939</point>
+              <point>103.324 40.9545</point>
+              <point>103.3 40.8</point>
+</polyline>
+</geometry>
+<max_contacts>10</max_contacts>
+ <contact>
+<ode/>
+</contact>
+<bounce/>
+<friction>
+<torsional>
+<ode/>
+</torsional>
+<ode/>
+</friction>
+</collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
@@ -10363,6 +11391,48 @@
             <ambient>0.2 0.2 0.2 1</ambient>
           </material>
         </visual>
+<collision name='collision'>
+<geometry>
+<polyline>
+              <height>0.15</height>
+              <point>113.7 -41.2</point>
+              <point>113.705 -41.2309</point>
+              <point>113.719 -41.2588</point>
+              <point>113.741 -41.2809</point>
+              <point>113.769 -41.2951</point>
+              <point>113.8 -41.3</point>
+              <point>116.2 -41.3</point>
+              <point>116.231 -41.2951</point>
+              <point>116.259 -41.2809</point>
+              <point>116.281 -41.2588</point>
+              <point>116.295 -41.2309</point>
+              <point>116.3 -41.2</point>
+              <point>116.3 -40.9</point>
+              <point>116.295 -40.8691</point>
+              <point>116.281 -40.8412</point>
+              <point>116.259 -40.8191</point>
+              <point>116.231 -40.8049</point>
+              <point>116.2 -40.8</point>
+              <point>113.8 -40.8</point>
+              <point>113.769 -40.8049</point>
+              <point>113.741 -40.8191</point>
+              <point>113.719 -40.8412</point>
+              <point>113.705 -40.8691</point>
+              <point>113.7 -40.9</point>
+</polyline>
+</geometry>
+<max_contacts>10</max_contacts>
+ <contact>
+<ode/>
+</contact>
+<bounce/>
+<friction>
+<torsional>
+<ode/>
+</torsional>
+<ode/>
+</friction>
+</collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
@@ -10406,6 +11476,48 @@
             <ambient>0.2 0.2 0.2 1</ambient>
           </material>
         </visual>
+<collision name='collision'>
+<geometry>
+<polyline>
+              <height>0.15</height>
+              <point>113.7 -4.1</point>
+              <point>113.705 -4.1309</point>
+              <point>113.719 -4.15878</point>
+              <point>113.741 -4.1809</point>
+              <point>113.769 -4.19511</point>
+              <point>113.8 -4.2</point>
+              <point>116.2 -4.2</point>
+              <point>116.231 -4.19511</point>
+              <point>116.259 -4.1809</point>
+              <point>116.281 -4.15878</point>
+              <point>116.295 -4.1309</point>
+              <point>116.3 -4.1</point>
+              <point>116.3 -3.8</point>
+              <point>116.295 -3.7691</point>
+              <point>116.281 -3.74122</point>
+              <point>116.259 -3.7191</point>
+              <point>116.231 -3.70489</point>
+              <point>116.2 -3.7</point>
+              <point>113.8 -3.7</point>
+              <point>113.769 -3.70489</point>
+              <point>113.741 -3.7191</point>
+              <point>113.719 -3.74122</point>
+              <point>113.705 -3.7691</point>
+              <point>113.7 -3.8</point>
+</polyline>
+</geometry>
+<max_contacts>10</max_contacts>
+ <contact>
+<ode/>
+</contact>
+<bounce/>
+<friction>
+<torsional>
+<ode/>
+</torsional>
+<ode/>
+</friction>
+</collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
@@ -10449,6 +11561,48 @@
             <ambient>0.2 0.2 0.2 1</ambient>
           </material>
         </visual>
+<collision name='collision'>
+<geometry>
+<polyline>
+              <height>0.15</height>
+              <point>113.7 -41.2</point>
+              <point>113.705 -41.2309</point>
+              <point>113.719 -41.2588</point>
+              <point>113.741 -41.2809</point>
+              <point>113.769 -41.2951</point>
+              <point>113.8 -41.3</point>
+              <point>114.1 -41.3</point>
+              <point>114.131 -41.2951</point>
+              <point>114.159 -41.2809</point>
+              <point>114.181 -41.2588</point>
+              <point>114.195 -41.2309</point>
+              <point>114.2 -41.2</point>
+              <point>114.2 -3.8</point>
+              <point>114.195 -3.7691</point>
+              <point>114.181 -3.74122</point>
+              <point>114.159 -3.7191</point>
+              <point>114.131 -3.70489</point>
+              <point>114.1 -3.7</point>
+              <point>113.8 -3.7</point>
+              <point>113.769 -3.70489</point>
+              <point>113.741 -3.7191</point>
+              <point>113.719 -3.74122</point>
+              <point>113.705 -3.7691</point>
+              <point>113.7 -3.8</point>
+</polyline>
+</geometry>
+<max_contacts>10</max_contacts>
+ <contact>
+<ode/>
+</contact>
+<bounce/>
+<friction>
+<torsional>
+<ode/>
+</torsional>
+<ode/>
+</friction>
+</collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
@@ -10492,6 +11646,48 @@
             <ambient>0.2 0.2 0.2 1</ambient>
           </material>
         </visual>
+<collision name='collision'>
+<geometry>
+<polyline>
+              <height>0.15</height>
+              <point>115.8 -41.2</point>
+              <point>115.805 -41.2309</point>
+              <point>115.819 -41.2588</point>
+              <point>115.841 -41.2809</point>
+              <point>115.869 -41.2951</point>
+              <point>115.9 -41.3</point>
+              <point>116.2 -41.3</point>
+              <point>116.231 -41.2951</point>
+              <point>116.259 -41.2809</point>
+              <point>116.281 -41.2588</point>
+              <point>116.295 -41.2309</point>
+              <point>116.3 -41.2</point>
+              <point>116.3 -3.8</point>
+              <point>116.295 -3.7691</point>
+              <point>116.281 -3.74122</point>
+              <point>116.259 -3.7191</point>
+              <point>116.231 -3.70489</point>
+              <point>116.2 -3.7</point>
+              <point>115.9 -3.7</point>
+              <point>115.869 -3.70489</point>
+              <point>115.841 -3.7191</point>
+              <point>115.819 -3.74122</point>
+              <point>115.805 -3.7691</point>
+              <point>115.8 -3.8</point>
+</polyline>
+</geometry>
+<max_contacts>10</max_contacts>
+ <contact>
+<ode/>
+</contact>
+<bounce/>
+<friction>
+<torsional>
+<ode/>
+</torsional>
+<ode/>
+</friction>
+</collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
@@ -10535,6 +11731,48 @@
             <ambient>0.2 0.2 0.2 1</ambient>
           </material>
         </visual>
+<collision name='collision'>
+<geometry>
+<polyline>
+              <height>0.15</height>
+              <point>113.7 3.8</point>
+              <point>113.705 3.7691</point>
+              <point>113.719 3.74122</point>
+              <point>113.741 3.7191</point>
+              <point>113.769 3.70489</point>
+              <point>113.8 3.7</point>
+              <point>116.2 3.7</point>
+              <point>116.231 3.70489</point>
+              <point>116.259 3.7191</point>
+              <point>116.281 3.74122</point>
+              <point>116.295 3.7691</point>
+              <point>116.3 3.8</point>
+              <point>116.3 4.1</point>
+              <point>116.295 4.1309</point>
+              <point>116.281 4.15878</point>
+              <point>116.259 4.1809</point>
+              <point>116.231 4.19511</point>
+              <point>116.2 4.2</point>
+              <point>113.8 4.2</point>
+              <point>113.769 4.19511</point>
+              <point>113.741 4.1809</point>
+              <point>113.719 4.15878</point>
+              <point>113.705 4.1309</point>
+              <point>113.7 4.1</point>
+</polyline>
+</geometry>
+<max_contacts>10</max_contacts>
+ <contact>
+<ode/>
+</contact>
+<bounce/>
+<friction>
+<torsional>
+<ode/>
+</torsional>
+<ode/>
+</friction>
+</collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
@@ -10578,6 +11816,48 @@
             <ambient>0.2 0.2 0.2 1</ambient>
           </material>
         </visual>
+<collision name='collision'>
+<geometry>
+<polyline>
+              <height>0.15</height>
+              <point>113.7 40.9</point>
+              <point>113.705 40.8691</point>
+              <point>113.719 40.8412</point>
+              <point>113.741 40.8191</point>
+              <point>113.769 40.8049</point>
+              <point>113.8 40.8</point>
+              <point>116.2 40.8</point>
+              <point>116.231 40.8049</point>
+              <point>116.259 40.8191</point>
+              <point>116.281 40.8412</point>
+              <point>116.295 40.8691</point>
+              <point>116.3 40.9</point>
+              <point>116.3 41.2</point>
+              <point>116.295 41.2309</point>
+              <point>116.281 41.2588</point>
+              <point>116.259 41.2809</point>
+              <point>116.231 41.2951</point>
+              <point>116.2 41.3</point>
+              <point>113.8 41.3</point>
+              <point>113.769 41.2951</point>
+              <point>113.741 41.2809</point>
+              <point>113.719 41.2588</point>
+              <point>113.705 41.2309</point>
+              <point>113.7 41.2</point>
+</polyline>
+</geometry>
+<max_contacts>10</max_contacts>
+ <contact>
+<ode/>
+</contact>
+<bounce/>
+<friction>
+<torsional>
+<ode/>
+</torsional>
+<ode/>
+</friction>
+</collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
@@ -10621,6 +11901,48 @@
             <ambient>0.2 0.2 0.2 1</ambient>
           </material>
         </visual>
+<collision name='collision'>
+<geometry>
+<polyline>
+              <height>0.15</height>
+              <point>113.7 3.8</point>
+              <point>113.705 3.7691</point>
+              <point>113.719 3.74122</point>
+              <point>113.741 3.7191</point>
+              <point>113.769 3.70489</point>
+              <point>113.8 3.7</point>
+              <point>114.1 3.7</point>
+              <point>114.131 3.70489</point>
+              <point>114.159 3.7191</point>
+              <point>114.181 3.74122</point>
+              <point>114.195 3.7691</point>
+              <point>114.2 3.8</point>
+              <point>114.2 41.2</point>
+              <point>114.195 41.2309</point>
+              <point>114.181 41.2588</point>
+              <point>114.159 41.2809</point>
+              <point>114.131 41.2951</point>
+              <point>114.1 41.3</point>
+              <point>113.8 41.3</point>
+              <point>113.769 41.2951</point>
+              <point>113.741 41.2809</point>
+              <point>113.719 41.2588</point>
+              <point>113.705 41.2309</point>
+              <point>113.7 41.2</point>
+</polyline>
+</geometry>
+<max_contacts>10</max_contacts>
+ <contact>
+<ode/>
+</contact>
+<bounce/>
+<friction>
+<torsional>
+<ode/>
+</torsional>
+<ode/>
+</friction>
+</collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
@@ -10664,6 +11986,48 @@
             <ambient>0.2 0.2 0.2 1</ambient>
           </material>
         </visual>
+<collision name='collision'>
+<geometry>
+<polyline>
+              <height>0.15</height>
+              <point>115.8 3.8</point>
+              <point>115.805 3.7691</point>
+              <point>115.819 3.74122</point>
+              <point>115.841 3.7191</point>
+              <point>115.869 3.70489</point>
+              <point>115.9 3.7</point>
+              <point>116.2 3.7</point>
+              <point>116.231 3.70489</point>
+              <point>116.259 3.7191</point>
+              <point>116.281 3.74122</point>
+              <point>116.295 3.7691</point>
+              <point>116.3 3.8</point>
+              <point>116.3 41.2</point>
+              <point>116.295 41.2309</point>
+              <point>116.281 41.2588</point>
+              <point>116.259 41.2809</point>
+              <point>116.231 41.2951</point>
+              <point>116.2 41.3</point>
+              <point>115.9 41.3</point>
+              <point>115.869 41.2951</point>
+              <point>115.841 41.2809</point>
+              <point>115.819 41.2588</point>
+              <point>115.805 41.2309</point>
+              <point>115.8 41.2</point>
+</polyline>
+</geometry>
+<max_contacts>10</max_contacts>
+ <contact>
+<ode/>
+</contact>
+<bounce/>
+<friction>
+<torsional>
+<ode/>
+</torsional>
+<ode/>
+</friction>
+</collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
@@ -10707,6 +12071,48 @@
             <ambient>0.2 0.2 0.2 1</ambient>
           </material>
         </visual>
+<collision name='collision'>
+<geometry>
+<polyline>
+              <height>0.15</height>
+              <point>123.7 -51.2</point>
+              <point>123.724 -51.3545</point>
+              <point>123.795 -51.4939</point>
+              <point>123.906 -51.6045</point>
+              <point>124.045 -51.6755</point>
+              <point>124.2 -51.7</point>
+              <point>126.2 -51.7</point>
+              <point>126.355 -51.6755</point>
+              <point>126.494 -51.6045</point>
+              <point>126.605 -51.4939</point>
+              <point>126.676 -51.3545</point>
+              <point>126.7 -51.2</point>
+              <point>126.7 48.2</point>
+              <point>126.676 48.3545</point>
+              <point>126.605 48.4939</point>
+              <point>126.494 48.6045</point>
+              <point>126.355 48.6755</point>
+              <point>126.2 48.7</point>
+              <point>124.2 48.7</point>
+              <point>124.045 48.6755</point>
+              <point>123.906 48.6045</point>
+              <point>123.795 48.4939</point>
+              <point>123.724 48.3545</point>
+              <point>123.7 48.2</point>
+</polyline>
+</geometry>
+<max_contacts>10</max_contacts>
+ <contact>
+<ode/>
+</contact>
+<bounce/>
+<friction>
+<torsional>
+<ode/>
+</torsional>
+<ode/>
+</friction>
+</collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
@@ -10750,6 +12156,48 @@
             <ambient>0.2 0.2 0.2 1</ambient>
           </material>
         </visual>
+<collision name='collision'>
+<geometry>
+<polyline>
+              <height>0.15</height>
+              <point>-48.7 -51.2</point>
+              <point>-48.6755 -51.3545</point>
+              <point>-48.6045 -51.4939</point>
+              <point>-48.4939 -51.6045</point>
+              <point>-48.3545 -51.6755</point>
+              <point>-48.2 -51.7</point>
+              <point>126.2 -51.7</point>
+              <point>126.355 -51.6755</point>
+              <point>126.494 -51.6045</point>
+              <point>126.605 -51.4939</point>
+              <point>126.676 -51.3545</point>
+              <point>126.7 -51.2</point>
+              <point>126.7 -49.2</point>
+              <point>126.676 -49.0455</point>
+              <point>126.605 -48.9061</point>
+              <point>126.494 -48.7955</point>
+              <point>126.355 -48.7245</point>
+              <point>126.2 -48.7</point>
+              <point>-48.2 -48.7</point>
+              <point>-48.3545 -48.7245</point>
+              <point>-48.4939 -48.7955</point>
+              <point>-48.6045 -48.9061</point>
+              <point>-48.6755 -49.0455</point>
+              <point>-48.7 -49.2</point>
+</polyline>
+</geometry>
+<max_contacts>10</max_contacts>
+ <contact>
+<ode/>
+</contact>
+<bounce/>
+<friction>
+<torsional>
+<ode/>
+</torsional>
+<ode/>
+</friction>
+</collision>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>

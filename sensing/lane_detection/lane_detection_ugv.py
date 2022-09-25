@@ -37,8 +37,8 @@ def draw_lines(img, lines, color=[255, 0, 0], thickness=3):
 def yellow_dectection(image):
     # create hsv
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-    lower = np.uint8([ 30, 150, 101])
-    upper = np.uint8([ 100, 255, 255])
+    lower = np.uint8([ 26, 43, 46])
+    upper = np.uint8([ 30, 255, 255])
     yellow_mask = cv2.inRange(hsv, lower, upper)
     result = cv2.bitwise_and(image, image,mask=yellow_mask)
 
@@ -63,7 +63,7 @@ def pipeline(image):
     )  
     
     if lines is None:
-        img_ros = bridge.cv2_to_imgmsg(image, "rgb8")
+        img_ros = bridge.cv2_to_imgmsg(image, "bgr8")
         return img_ros, 0
  
     left_line_x = []
@@ -82,7 +82,7 @@ def pipeline(image):
                 right_line_y.extend([y1, y2])
 
     min_y = int(image.shape[0]* 1 / 2)
-    max_y = int(image.shape[0]* 3 / 5)
+    max_y = int(image.shape[0])
     
     if not left_line_x == []:
         poly_left = np.poly1d(np.polyfit(left_line_y,left_line_x,deg=1))
@@ -95,18 +95,18 @@ def pipeline(image):
         right_x_end = int(poly_right(min_y))
     if not left_line_x == [] and not right_line_x == []:   
         mid_x_error = (left_x_end+right_x_end)/2.0-width/2
-        line_image = draw_lines(image,[[[left_x_start, max_y, left_x_end, min_y],[right_x_start, max_y, right_x_end,min_y],]],thickness=5,)
-        img_ros = bridge.cv2_to_imgmsg(line_image, "rgb8")
+        line_image = draw_lines(image,[[[left_x_start, max_y, left_x_end, min_y],[right_x_start, max_y, right_x_end,min_y],]], color=[0,0,255],thickness=5,)
+        img_ros = bridge.cv2_to_imgmsg(line_image, "bgr8")
     else:
         mid_x_error = 1000
-        img_ros = bridge.cv2_to_imgmsg(image, "rgb8")
+        img_ros = bridge.cv2_to_imgmsg(image, "bgr8")
 
     return img_ros, mid_x_error 
     
 
 def img_callback(msg):
     global img_processed, lane_mid_error
-    cv_image = bridge.imgmsg_to_cv2(msg, "rgb8")
+    cv_image = bridge.imgmsg_to_cv2(msg, "bgr8")
     img_processed, lane_mid_error = pipeline(cv_image)
     img_processed.header.stamp = rospy.Time.now()
     img_processed_pub.publish(img_processed)
@@ -115,7 +115,7 @@ def img_callback(msg):
 if __name__ == "__main__":
     ugv_num = sys.argv[1]
     rospy.init_node("lane_detection_"+ugv_num)
-    img_sub = rospy.Subscriber("/ugv_"+ugv_num+"/triclops/triclops/left/image", Image, callback=img_callback,queue_size=1)
+    img_sub = rospy.Subscriber("/ugv_0/realsense/depth_camera/color/image_raw", Image, callback=img_callback,queue_size=1)
     img_processed_pub = rospy.Publisher("/ugv_"+ugv_num+"/image_lane", Image,queue_size=1)
     lane_mid_error_pub = rospy.Publisher("/ugv_"+ugv_num+"/lane_mid_error",Int16,queue_size=1)
     img_processed = Image()

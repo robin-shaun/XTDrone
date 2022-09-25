@@ -1,5 +1,5 @@
+# -*- coding: UTF-8 -*-
 import sys
-sys.path.remove('/opt/ros/kinetic/lib/python2.7/dist-packages')
 import cv2
 import numpy as np
 #定义窗口名称
@@ -7,7 +7,7 @@ winName='Colors of the rainbow'
 #定义滑动条回调函数，此处pass用作占位语句保持程序结构的完整性
 def nothing(x):
     pass
-img_original=cv2.imread('lane.png')
+img_original=cv2.imread('frame0000.jpg')
 #颜色空间的转换
 img_hsv=cv2.cvtColor(img_original,cv2.COLOR_BGR2HSV)
 #新建窗口

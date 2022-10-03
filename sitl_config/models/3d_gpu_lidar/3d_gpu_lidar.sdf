@@ -46,6 +46,7 @@
         </range>
       </ray>
       <plugin name='3d_laser' filename='libgazebo_ros_velodyne_gpu_laser.so'>
+        <robotNamespace></robotNamespace>
         <topicName>/velodyne_points</topicName>
         <frameName>laser_3d</frameName>
         <gaussianNoise>0.008</gaussianNoise>

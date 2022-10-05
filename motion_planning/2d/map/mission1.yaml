@@ -1,7 +1,0 @@
-image: /home/robin/XTDrone/motion_planning/2d/map/mission1.pgm
-resolution: 0.026
-origin: [-3, -12, 0.000000]
-negate: 0
-occupied_thresh: 0.65
-free_thresh: 0.196
-

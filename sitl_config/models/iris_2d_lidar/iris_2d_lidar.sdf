@@ -572,7 +572,8 @@
       <accelerometerTurnOnBiasSigma>0.196</accelerometerTurnOnBiasSigma>
     </plugin>
 
-<!-- For Hokuyo Lidar Payload -->
+
+    <!-- For Hokuyo Lidar Payload -->
     <include>
         <uri>model://hokuyo_lidar</uri>
         <pose>0 0 0.06 0 0 0</pose>
@@ -589,7 +590,24 @@
       </axis>
     </joint>
 
-<!-- For IMU-->
+    <!-- For Laser Ranger 1d Payload -->
+    <include>
+        <uri>model://laser_ranger_1d</uri>
+        <pose>0 0 -0.05 0 1.570796 0</pose>
+      </include>
+    <joint name="laser_1d_joint" type="fixed">
+      <child>laser_ranger_1d::link</child>
+      <parent>base_link</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <upper>0</upper>
+          <lower>0</lower>
+        </limit>
+      </axis>
+    </joint>
+
+    <!-- For IMU-->
     <include>
       <uri>model://imu_gazebo</uri>
       <pose>0 0 -0.05 0 0 0</pose>
@@ -606,19 +624,6 @@
       </axis>
     </joint>
   </model>
-
-<!-- For bumper sensor-->
-  <joint name="bumper_joint" type="revolute">
-      <child>bumper_sensor_iris::bumper_link</child>
-      <parent>base_link</parent>
-      <axis>
-        <xyz>0 0 1</xyz>
-        <limit>
-          <upper>0</upper>
-          <lower>0</lower>
-        </limit>
-      </axis>
-    </joint>
 </sdf>
 <!-- vim: set noet fenc=utf-8 ff=unix sts=0 sw=4 ts=4 : -->
 

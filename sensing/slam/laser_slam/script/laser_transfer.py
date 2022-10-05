@@ -2,7 +2,7 @@ import rospy
 from geometry_msgs.msg import PoseStamped
 from tf2_ros import TransformListener, Buffer
 import sys
-from gazebo_msgs.msg import ModelStates
+from sensor_msgs.msg import LaserScan
 
 vehicle_type = sys.argv[1]
 vehicle_id = sys.argv[2]
@@ -21,10 +21,11 @@ def hector_callback(data):
     global hector
     hector = data
 
-def gazebo_model_state_callback(msg):
+def height_distance_callback(msg):
     global height
-    id = msg.name.index(vehicle_type+'_'+str(vehicle_id))
-    height = msg.pose[id].position.z
+    height = msg.ranges[0]
+    if(height==float("inf")):
+        height = 0
     
 def hector_slam():
     global local_pose, height
@@ -67,10 +68,10 @@ def aloam():
     
 if __name__ == '__main__':
     if laser_slam_type == 'hector':
-        gazebo_model_state_sub = rospy.Subscriber("/gazebo/model_states", ModelStates, gazebo_model_state_callback,queue_size=1)
+        height_distance_sub = rospy.Subscriber(vehicle_type+'_'+ vehicle_id+"/distance", LaserScan, height_distance_callback,queue_size=1)
         hector_slam()
     elif laser_slam_type == 'cartographer':
-        gazebo_model_state_sub = rospy.Subscriber("/gazebo/model_states", ModelStates, gazebo_model_state_callback,queue_size=1)
+        height_distance_sub = rospy.Subscriber(vehicle_type+'_'+ vehicle_id+"/distance", LaserScan, height_distance_callback,queue_size=1)
         cartographer()
     elif laser_slam_type == 'aloam':
         aloam()

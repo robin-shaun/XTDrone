@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <sdf version="1.5">
-  <model name="laser_ranger_1d">
+  <model name="laser_rangefinder">
     <pose>0 0 0 0 0 0</pose>
     <link name="link">
       <inertial>
@@ -29,7 +29,7 @@
             <resolution>0.01</resolution>
           </range>
         </ray>
-        <plugin name="gazebo_ros_laser_ranger_1d_controller" filename="libgazebo_ros_laser.so">
+        <plugin name="gazebo_ros_laser_rangefinder_controller" filename="libgazebo_ros_laser.so">
           <robotNamespace></robotNamespace>
           <topicName>distance</topicName>
           <frameName>laser_1d</frameName>

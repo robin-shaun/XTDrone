@@ -590,13 +590,13 @@
       </axis>
     </joint>
 
-    <!-- For Laser Ranger 1d Payload -->
+    <!-- For laser Range Finder Payload -->
     <include>
-        <uri>model://laser_ranger_1d</uri>
+        <uri>model://laser_rangefinder</uri>
         <pose>0 0 -0.05 0 1.570796 0</pose>
       </include>
     <joint name="laser_1d_joint" type="fixed">
-      <child>laser_ranger_1d::link</child>
+      <child>laser_rangefinder::link</child>
       <parent>base_link</parent>
       <axis>
         <xyz>0 0 1</xyz>

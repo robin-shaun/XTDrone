@@ -22,7 +22,7 @@ if __name__ == '__main__':
     rate = rospy.Rate(50)
     while not rospy.is_shutdown():
         try:
-            tfstamped = tfBuffer.lookup_transform('tag_'+vehicle_id, 'map', rospy.Time(0))
+            tfstamped = tfBuffer.lookup_transform('map', 'tag_'+vehicle_id, rospy.Time(0))
         except:
             continue
         # print('tf:',tfstamped.transform.translation.x)

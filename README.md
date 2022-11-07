@@ -119,18 +119,6 @@ K. Xiao, L. Ma, S. Tan, Y. Cong , X. Wang, "Implementation of UAV Coordination B
 
 2022 中国机器人大赛及 2022 RoboCup 机器人世界杯中国赛（大学组）预计在2022年11月，于福建泉州举办，比赛详情见http://crc.drct-caa.org.cn/index.php/race/view?id=879，其中无人机挑战赛仿真组的平台使用XTDrone，欢迎大家积极报名，展示自己的风采。
 
-### 商业合作
+### 合作
 
-如果想与XTDrone团队建立商业合作，请联系肖昆<robin_shaun@foxmail.com>。
-
-### 捐赠
-
-如果您觉得XTDrone对您有帮助，可以给XTDrone团队捐赠，如果您愿意，可以备注上姓名或个人主页，我们将把您添加到赞助人名单中。
-
-<img src="./images/donation.png" width="640" height="360" /> 
-
-### 赞助人
-
-非常感谢你们对XTDrone团队的支持
-
-高多多 张宇翔 李照祥
+如果想与XTDrone团队建立合作，请联系肖昆<robin_shaun@foxmail.com>。

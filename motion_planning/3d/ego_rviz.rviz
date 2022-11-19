@@ -102,7 +102,7 @@ Visualization Manager:
       Shaft Length: 1
       Shaft Radius: 0.05000000074505806
       Shape: Arrow
-      Topic: /iris_0/mavros/vision_pose/pose
+      Topic: /iris_0/mavros/local_position/pose
       Unreliable: false
       Value: true
     - Alpha: 1

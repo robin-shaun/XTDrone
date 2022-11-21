@@ -5300,7 +5300,7 @@
         </link>
       </model>
       <model name='fast_food_93'>
-        <pose frame=''>28.25 -13.93 0 0 -0 0</pose>
+        <pose frame=''>28.25 -13.93 3.15931 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
           <pose frame=''>28.25 -13.93 3.15931 0 -0 0</pose>

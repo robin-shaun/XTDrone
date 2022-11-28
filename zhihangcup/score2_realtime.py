@@ -34,7 +34,7 @@ if __name__ == "__main__":
     mavros_sub = rospy.Subscriber("/iris_0/mavros/state", State, mavros_state_callback)
     rendezvous_sub = rospy.Subscriber("/rendezvous", Bool, rendezvous_callback)
     get_model_state = rospy.ServiceProxy("/gazebo/get_model_state",GetModelState) 
-    get_link_state = rospy.ServiceProxy('gazebo/get_link_state', GetLinkState)
+    get_link_state = rospy.ServiceProxy('/gazebo/get_link_state', GetLinkState)
     target_finish = 0
     score1 = 0.0
     score2 = 0.0

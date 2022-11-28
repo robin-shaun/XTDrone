@@ -4,7 +4,7 @@
     <!-- launches Gazebo environment and 2x: MAVROS, PX4 SITL, and spawns vehicle -->
     <!-- vehicle model and world -->
     <arg name="est" default="ekf2"/>
-    <arg name="world" default="$(find mavlink_sitl_gazebo)/worlds/zhihang2_3.world"/>
+    <arg name="world" default="$(find mavlink_sitl_gazebo)/worlds/zhihang2.world"/>
     <!-- gazebo configs -->
     <arg name="gui" default="true"/>
     <arg name="debug" default="false"/>
@@ -26,7 +26,7 @@
             <arg name="fcu_url" default="udp://:24540@localhost:34580"/>
         <!-- PX4 SITL and vehicle spawn -->
         <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
-            <arg name="x" value="-18"/> <!-- -16 for map2-1, -18 for map2-2, -18 for map2-3 -->
+            <arg name="x" value="-16"/> <!-- -16 for map2-1, -18 for map2-2, -18 for map2-3 -->
             <arg name="y" value="0"/>
             <arg name="z" value="0.5"/>
             <arg name="R" value="0"/>

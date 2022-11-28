@@ -121,7 +121,7 @@ K. Xiao, L. Ma, S. Tan, Y. Cong , X. Wang, "Implementation of UAV Coordination B
 
 ### “智航杯”全国无人机智能算法竞赛
 
-“智航杯”全国无人机智能算法竞赛（以下简称“竞赛”），由航空工业智航院、中国光华科技基金会联合主办，目前正在报名阶段，比赛详情见[官网](https://zhihangcup.chilunyc.com/)，其中仿真赛项的平台使用XTDrone，欢迎大家积极报名，展示自己的风采。
+“智航杯”全国无人机智能算法竞赛，由航空工业智航院、中国光华科技基金会联合主办，目前正在报名阶段，比赛详情见[官网](https://zhihangcup.chilunyc.com/)，其中仿真赛项的平台使用XTDrone，欢迎大家积极报名，展示自己的风采。
 
 ### 合作
 

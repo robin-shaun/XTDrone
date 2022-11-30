@@ -1,9 +1,8 @@
 import rospy
 from gazebo_msgs.msg import ModelStates
 from geometry_msgs.msg import Pose, Twist
-import sys
 
-def pose_publisher(id):
+def pose_publisher():
     pub = rospy.Publisher('gazebo/set_model_states', ModelStates, queue_size=1)
     poses_msg = ModelStates()
     poses_msg.name = [None] * 3
@@ -13,52 +12,19 @@ def pose_publisher(id):
     poses_msg.name[1] = 'target_blue'
     poses_msg.name[2] = 'target_green'
 
-    if(id==1):
-        poses_msg.pose[0].position.x  = -8
-        poses_msg.pose[0].position.y = -8.5
-        poses_msg.pose[0].position.z = 1.5
-        
-        poses_msg.pose[1].position.x  = 11
-        poses_msg.pose[1].position.y = 2.5
-        poses_msg.pose[1].position.z = 1.5
+    poses_msg.pose[0].position.x  = -8
+    poses_msg.pose[0].position.y = -8.5
+    poses_msg.pose[0].position.z = 1.5
+    
+    poses_msg.pose[1].position.x  = 11
+    poses_msg.pose[1].position.y = 2.5
+    poses_msg.pose[1].position.z = 1.5
 
-        poses_msg.pose[2].position.x  = 13.5
-        poses_msg.pose[2].position.y = -8
-        poses_msg.pose[2].position.z = 1.5
-        poses_msg.pose[2].orientation.z = 0.707106
-        poses_msg.pose[2].orientation.w = 0.707106
-
-    elif(id==2):
-        poses_msg.pose[0].position.x  = -13.1
-        poses_msg.pose[0].position.y = -5
-        poses_msg.pose[0].position.z = 1.5
-
-        poses_msg.pose[1].position.x  = -2
-        poses_msg.pose[1].position.y = -3
-        poses_msg.pose[1].position.z = 1.5
-
-        poses_msg.pose[2].position.x  = 12
-        poses_msg.pose[2].position.y = -7
-        poses_msg.pose[2].position.z = 1.5
-        poses_msg.pose[2].orientation.z = 0.707106
-        poses_msg.pose[2].orientation.w = 0.707106
-
-    elif(id==3):
-        poses_msg.pose[0].position.x  = -2
-        poses_msg.pose[0].position.y = -4
-        poses_msg.pose[0].position.z = 1.5
-
-        poses_msg.pose[1].position.x  = 6
-        poses_msg.pose[1].position.y = -8
-        poses_msg.pose[1].position.z = 1.5
-
-        poses_msg.pose[2].position.x  = 18
-        poses_msg.pose[2].position.y = 2
-        poses_msg.pose[2].position.z = 1.5
-
-    else:
-        print("Only support 3 maps")
-        sys.exit(0)
+    poses_msg.pose[2].position.x  = 13.5
+    poses_msg.pose[2].position.y = -8
+    poses_msg.pose[2].position.z = 1.5
+    poses_msg.pose[2].orientation.z = 0.707106
+    poses_msg.pose[2].orientation.w = 0.707106
 
     f = 10.0
     v = 0.0
@@ -96,5 +62,4 @@ def pose_publisher(id):
 
 if __name__ == '__main__':
     rospy.init_node('control_targets')
-    map_id = int(sys.argv[1])
-    pose_publisher(map_id)
+    pose_publisher()

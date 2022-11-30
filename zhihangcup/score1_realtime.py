@@ -24,6 +24,7 @@ def gazebo_model_state_callback(msg):
     if(uav_pos.z < 0.15 and time_usage > 10 and not armed):
             distance = ((uav_pos.x - target_pos.x) ** 2 + (uav_pos.y - target_pos.y) ** 2) ** 0.5
             print("Arrived, distance is %.2f"%distance)
+            print("Time usage is %.4f seconds"%time_usage)
             if (time_usage < 600):
                 score = 40
                 if (distance <= 3):

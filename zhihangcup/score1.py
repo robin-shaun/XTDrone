@@ -31,7 +31,8 @@ if __name__ == "__main__":
             armed = armed_array[index][1]
             if(uav_pos.z < 0.15 and time_usage > 10 and not armed):
                     distance = ((uav_pos.x - target_pos.x) ** 2 + (uav_pos.y - target_pos.y) ** 2) ** 0.5
-                    print("Arrived, distance is %.2f"%distance)
+                    print("Arrived, distance is %.4f meters"%distance)
+                    print("Time usage is %.4f seconds"%time_usage)
                     if (time_usage < 600):
                         score = 40
                         if (distance <= 3):
@@ -39,7 +40,7 @@ if __name__ == "__main__":
                         else:
                             score = 0
                     elif (time_usage < 1200):
-                        score = 40 - 3.6 * (time_usage - 10)
+                        score = 40 - 3.6 * (time_usage/60 - 10)
                         if (distance <= 3):
                             score = score + 60 - 18 * distance                 
                         else:

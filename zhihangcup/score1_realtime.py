@@ -31,7 +31,7 @@ def gazebo_model_state_callback(msg):
                 else:
                     score = 0
             elif (time_usage < 1200):
-                score = 40 - 3.6 * (time_usage - 10)
+                score = 40 - 3.6 * (time_usage/60 - 10)
                 if (distance <= 3):
                     score = score + 60 - 18 * distance                 
                 else:

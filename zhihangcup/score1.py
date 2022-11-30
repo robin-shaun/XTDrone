@@ -2,10 +2,6 @@
 # -*- coding: UTF-8 -*-
 
 import rosbag
-from std_msgs.msg import Int16
-from geometry_msgs.msg  import Vector3
-from gazebo_msgs.msg import ModelStates
-from mavros_msgs.msg import State
 import sys 
         
 if __name__ == "__main__":
@@ -14,7 +10,6 @@ if __name__ == "__main__":
     score = 0
     first_record = True
     armed_array = []
-    target_pos = Vector3()
     with rosbag.Bag('score1.bag') as bag:
         for topic, msg, time in bag.read_messages(topics=['/iris_0/mavros/state']):
             armed_array.append([round(time.to_sec()), msg.armed])

@@ -2,7 +2,6 @@
 # -*- coding: UTF-8 -*-
 
 import rospy
-from std_msgs.msg import Int16
 from gazebo_msgs.msg import ModelStates
 import time
 from mavros_msgs.msg import State

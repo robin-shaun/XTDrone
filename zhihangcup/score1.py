@@ -3,6 +3,7 @@
 
 import rosbag
 import sys 
+import math
         
 if __name__ == "__main__":
     armed = False
@@ -12,7 +13,7 @@ if __name__ == "__main__":
     armed_array = []
     with rosbag.Bag('score1.bag') as bag:
         for topic, msg, time in bag.read_messages(topics=['/iris_0/mavros/state']):
-            armed_array.append([round(time.to_sec()), msg.armed])
+            armed_array.append([math.floor(time.to_sec()), msg.armed])
         for topic, msg, time in bag.read_messages(topics=['/gazebo/model_states']):
             if(first_record):
                 start_time = time.to_sec()
@@ -27,7 +28,10 @@ if __name__ == "__main__":
             uav_id = msg.name.index('iris_0')
             target_id = msg.name.index('landing1')
             uav_pos = msg.pose[uav_id].position
-            index = [x[0] for x in armed_array].index(round(time.to_sec()))
+            try:
+                index = [x[0] for x in armed_array].index(math.floor(time.to_sec()))
+            except:
+                continue
             armed = armed_array[index][1]
             if(uav_pos.z < 0.15 and time_usage > 10 and not armed):
                     distance = ((uav_pos.x - target_pos.x) ** 2 + (uav_pos.y - target_pos.y) ** 2) ** 0.5

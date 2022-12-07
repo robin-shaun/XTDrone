@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <sdf version="1.6">
   <model name="realsense_camera">
-    <pose frame="">0 0 0.015 0 0 0</pose>
+    <pose frame="">0 0 0 0 0 0</pose>
     <link name="link">
       <inertial>
         <mass>0.0615752</mass>

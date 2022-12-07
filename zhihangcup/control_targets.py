@@ -31,7 +31,7 @@ def pose_publisher():
 
     f = 10.0
     v = 0.0
-    a = 0.05
+    a = 0.5
     i = 0
     period_1 = 2
     period_2 = period_1 + 4
@@ -43,11 +43,11 @@ def pose_publisher():
         if (i%(period_total*f)<period_1*f):
             v = v + a/f
         elif (i%(period_total*f)<period_2*f):
-            v = 0.1
+            v = 1.0
         elif (i%(period_total*f)<period_3*f):
             v = v - a/f
         elif (i%(period_total*f)<period_4*f):
-            v = -0.1
+            v = -1.0
         else:
             v = v + a/f
         poses_msg.pose[0].position.y = poses_msg.pose[0].position.y + v / f

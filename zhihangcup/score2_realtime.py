@@ -20,7 +20,7 @@ def rendezvous_callback(msg):
     rendezvous = msg.data
 
 def relative_pose_callback(msg):
-    global rendezvous, score_sum, score_cnt, start_time, first_score, rendezvous_start_time, score1
+    global rendezvous, score_sum, score_cnt, start_time, first_score, rendezvous_start_time, score1, score2
     if(rendezvous):
         x0 = msg.position.x
         y0 = msg.position.y
@@ -41,7 +41,7 @@ def relative_pose_callback(msg):
             score1 = (ring**2 + (10-np.min([10, abs(distance - 30)]))**2) / 4
             score_sum = score1
             score_cnt =  score_cnt + 1
-            print("Score1: %.3f"%score1)
+            print("Score1: %.4f"%score1)
             first_score = False
             rendezvous_start_time = rospy.get_time()
         else:
@@ -49,16 +49,16 @@ def relative_pose_callback(msg):
             score_cnt =  score_cnt + 1
             if(rospy.get_time()-rendezvous_start_time>10):
                 score2 = score_sum / score_cnt
-                print("Score2: %.3f"%score2) 
-                score = score1 + score2
-                print("Score: %.3f"%score)
+                print("Score2: %.4f"%score2) 
                 rendezvous = False 
     time_usage = rospy.get_time() - start_time
     if(time_usage > 1200):
         print("Time out, score: 0")
         os._exit(0) 
     if(time_usage > 30 and not armed):
-        print("Mission finish, time usage: %.3f"%time_usage) 
+        print("Mission finish, time usage: %.4f"%time_usage) 
+        score = score1 + score2
+        print("Score: %.4f"%score)
         os._exit(0)    
 
 if __name__ == "__main__":
@@ -75,6 +75,7 @@ if __name__ == "__main__":
     score_sum = 0.0
     score_cnt = 0
     score1 = 0
+    score2 = 0
     rate = rospy.Rate(20)
     start_time = rospy.get_time()
     while not rospy.is_shutdown():

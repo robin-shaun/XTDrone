@@ -4,65 +4,73 @@
 import rosbag
 import sys 
 import math
+import numpy as np
+from scipy.spatial.transform import Rotation
+import math
         
 if __name__ == "__main__":
     armed = False
     rendezvous = False
+    first_score = True
     first_record = True
+    rendezvous_start_time = 0
+    score_sum = 0
+    score_cnt = 1
+    start_time = 0 
+    score1 = 0 
+    score2 = 0
     with rosbag.Bag('score2.bag') as bag:
         for topic, msg, time in bag.read_messages(topics=['/iris_0/mavros/state']):
-             if(not armed and msg.armed):
+            if(not armed and msg.armed):
                 armed = True
                 armed_time = time.to_sec()
             elif(armed and not msg.armed):
                 armed = False
                 disarmed_time = time.to_sec()
-                print(disarmed_time)
         for topic, msg, time in bag.read_messages(topics=['/rendezvous']):
-             if(not rendezvous and msg.data):
-                rendezvous = True
-                rendezvous_time = time.to_sec()
-        for topic, msg, time in bag.read_messages(topics=['/gazebo/distance']):
-             if(not rendezvous and msg.data):
+            if(not rendezvous and msg.data):
                 rendezvous = True
                 rendezvous_time = time.to_sec()
         for topic, msg, time in bag.read_messages(topics=['/gazebo/relative_pose']):
             if(first_record):
                 start_time = time.to_sec()
-                target_id = msg.name.index('landing1')
-                target_pos = msg.pose[target_id].position
-                target_pos.y = target_pos.y + 3 #初始偏差
                 first_record = False
+            if(time.to_sec()>rendezvous_time and rendezvous):
+                x0 = msg.position.x
+                y0 = msg.position.y
+                z0 = msg.position.z
+                t = np.expand_dims([x0,y0,z0],axis=0)
+                Rq = [msg.orientation.x,msg.orientation.y,msg.orientation.z,msg.orientation.w]
+                rot = Rotation.from_quat(Rq)
+                T = np.block([[rot.as_dcm(),t.transpose()],[np.zeros((1,3)),np.ones((1,1))]])
+                distance = np.linalg.inv(T)[0,3]*100
+                euler = rot.as_euler('zyx', degrees=False)
+                y = -x0 * math.tan(euler[0]) + y0
+                z = -x0 * math.tan(euler[1]) / math.cos(euler[0]) + z0
+                r = (y**2+z**2)**0.5
+                ring = 10 - math.floor(r / 0.0225)
+                if(ring < 0):
+                    ring = 0
+                if(first_score):
+                    score1 = (ring**2 + (10-np.min([10, abs(distance - 30)]))**2) / 4
+                    score_sum = score1
+                    score_cnt =  score_cnt + 1
+                    print("Score1: %.4f"%score1)
+                    first_score = False
+                    rendezvous_start_time = time.to_sec()
+                else:
+                    score_sum = score_sum + (ring**2 + (10-np.min([10, abs(distance - 30)]))**2) / 4
+                    score_cnt =  score_cnt + 1
+                    if(time.to_sec()-rendezvous_start_time>10):
+                        score2 = score_sum / score_cnt
+                        print("Score2: %.4f"%score2) 
+                        rendezvous = False 
             time_usage = time.to_sec() - start_time
             if(time_usage > 1200):
                 print("Time out, score: 0")
-                sys.exit(0)
-            uav_id = msg.name.index('iris_0')
-            target_id = msg.name.index('landing1')
-            uav_pos = msg.pose[uav_id].position
-            try:
-                index = [x[0] for x in armed_array].index(math.floor(time.to_sec()))
-            except:
-                continue
-            armed = armed_array[index][1]
-            if(uav_pos.z < 0.15 and time_usage > 10 and not armed):
-                    distance = ((uav_pos.x - target_pos.x) ** 2 + (uav_pos.y - target_pos.y) ** 2) ** 0.5
-                    print("Arrived, distance is %.4f meters"%distance)
-                    print("Time usage is %.4f seconds"%time_usage)
-                    if (time_usage < 600):
-                        score = 40
-                        if (distance <= 3):
-                            score = score + 60 - 18 * distance                 
-                        else:
-                            score = 0
-                    elif (time_usage < 1200):
-                        score = 40 - 3.6 * (time_usage/60 - 10)
-                        if (distance <= 3):
-                            score = score + 60 - 18 * distance                 
-                        else:
-                            score = 0
-                    else:
-                        score = 0
-
-                    print("Score: %.3f"%score)
-                    sys.exit(0)
+                sys.exit(0) 
+            if(time.to_sec() > disarmed_time):
+                print("Mission finish, time usage: %.4f"%time_usage)
+                score = score1 + score2
+                print("Score: %.4f"%score) 
+                sys.exit(0)    

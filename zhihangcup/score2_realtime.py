@@ -19,18 +19,17 @@ def rendezvous_callback(msg):
     global rendezvous
     rendezvous = msg.data
 
-def distance_callback(msg):
-    global distance
-    distance = msg.data
-
 def relative_pose_callback(msg):
     global rendezvous, score_sum, score_cnt, start_time, first_score, rendezvous_start_time, score1
     if(rendezvous):
         x0 = msg.position.x
         y0 = msg.position.y
         z0 = msg.position.z
+        t = np.expand_dims([x0,y0,z0],axis=0)
         Rq = [msg.orientation.x,msg.orientation.y,msg.orientation.z,msg.orientation.w]
         rot = Rotation.from_quat(Rq)
+        T = np.block([[rot.as_dcm(),t.transpose()],[np.zeros((1,3)),np.ones((1,1))]])
+        distance = np.linalg.inv(T)[0,3]*100
         euler = rot.as_euler('zyx', degrees=False)
         y = -x0 * math.tan(euler[0]) + y0
         z = -x0 * math.tan(euler[1]) / math.cos(euler[0]) + z0
@@ -47,9 +46,7 @@ def relative_pose_callback(msg):
             rendezvous_start_time = rospy.get_time()
         else:
             score_sum = score_sum + (ring**2 + (10-np.min([10, abs(distance - 30)]))**2) / 4
-            print("Score sum: %.3f"%score_sum)
             score_cnt =  score_cnt + 1
-            print("Score cnt: %d"%score_cnt)
             if(rospy.get_time()-rendezvous_start_time>10):
                 score2 = score_sum / score_cnt
                 print("Score2: %.3f"%score2) 
@@ -73,7 +70,6 @@ if __name__ == "__main__":
     rendezvous_start_time = rospy.get_time()
     mavros_sub = rospy.Subscriber("/iris_0/mavros/state", State, mavros_state_callback,queue_size=1)
     rendezvous_sub = rospy.Subscriber("/rendezvous", Bool, rendezvous_callback,queue_size=1)
-    distance_sub = rospy.Subscriber("/gazebo/distance", Float32, distance_callback,queue_size=1)
     relative_pose_sub = rospy.Subscriber("/gazebo/relative_pose", Pose, relative_pose_callback,queue_size=1)
     distance = 100.0
     score_sum = 0.0

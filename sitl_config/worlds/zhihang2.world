@@ -1896,7 +1896,7 @@
     <model name='target_red'>
       <static>0</static>
       <link name='link'>
-        <pose frame=''>0 0 0.45 0 0 0</pose>
+        <pose frame=''>0 0 0 0 0 0</pose>
         <collision name='Target_Red_Collision'>
           <geometry>
             <mesh>
@@ -1917,6 +1917,7 @@
               <ode/>
             </friction>
           </surface>
+          <pose frame=''>0 0 -0.225 0 0 3.1415</pose>
         </collision>
         <visual name='visual'>
           <geometry>
@@ -1925,6 +1926,7 @@
               <scale>0.9 0.9 0.9</scale>
             </mesh>
           </geometry>
+          <pose frame=''>0 0 -0.225 0 0 3.1415</pose>
         </visual>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
@@ -1937,7 +1939,7 @@
     <model name='target_blue'>
       <static>0</static>
       <link name='link'>
-       <pose frame=''>0 0 0.45 0 -0 0</pose>
+       <pose frame=''>0 0 0 0 0 0</pose>
           <collision name='Target_Blue_Collision'>
             <geometry>
               <mesh>
@@ -1958,6 +1960,7 @@
                 <ode/>
               </friction>
             </surface>
+          <pose frame=''>0 0 -0.225 0 0 3.1415</pose>
           </collision>
         <visual name='visual'>
           <geometry>
@@ -1966,6 +1969,7 @@
               <scale>0.9 0.9 0.9</scale>
             </mesh>
           </geometry>
+          <pose frame=''>0 0 -0.225 0 0 3.1415</pose>
         </visual>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
@@ -1978,7 +1982,7 @@
     <model name='target_green'>
       <static>0</static>
       <link name='link'>
-        <pose frame=''>0 0 0.45 0 0 0</pose>
+        <pose frame=''>0 0 0 0 0 0</pose>
         <collision name='Target_Green_Collision'>
             <geometry>
               <mesh>
@@ -1999,6 +2003,7 @@
                 <ode/>
               </friction>
             </surface>
+            <pose frame=''>0 0 -0.225 0 0 3.1415</pose>
         </collision>
         <visual name='visual'>
           <geometry>
@@ -2007,6 +2012,7 @@
               <scale>0.9 0.9 0.9</scale>
             </mesh>
           </geometry>
+          <pose frame=''>0 0 -0.225 0 0 3.1415</pose>
         </visual>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>

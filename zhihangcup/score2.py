@@ -14,6 +14,8 @@ if __name__ == "__main__":
     first_score = True
     first_record = True
     rendezvous_start_time = 0
+    rendezvous_time = 1e6
+    disarmed_time = 1e6
     score_sum = 0
     score_cnt = 1
     start_time = 0 

@@ -571,7 +571,7 @@ Visualization Manager:
           Size (Pixels): 3
           Size (m): 0.0500000007
           Style: Flat Squares
-          Topic: /velodyne_points
+          Topic: /iris_0/velodyne_points
           Unreliable: false
           Use Fixed Frame: true
           Use rainbow: true

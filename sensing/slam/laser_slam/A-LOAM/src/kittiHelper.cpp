@@ -50,7 +50,7 @@ int main(int argc, char** argv)
     n.getParam("publish_delay", publish_delay);
     publish_delay = publish_delay <= 0 ? 1 : publish_delay;
 
-    ros::Publisher pub_laser_cloud = n.advertise<sensor_msgs::PointCloud2>("/velodyne_points", 2);
+    ros::Publisher pub_laser_cloud = n.advertise<sensor_msgs::PointCloud2>("/iris_0/velodyne_points", 2);
 
     image_transport::ImageTransport it(n);
     image_transport::Publisher pub_image_left = it.advertise("/image_left", 2);
@@ -165,7 +165,7 @@ int main(int argc, char** argv)
         {
             bag_out.write("/image_left", ros::Time::now(), image_left_msg);
             bag_out.write("/image_right", ros::Time::now(), image_right_msg);
-            bag_out.write("/velodyne_points", ros::Time::now(), laser_cloud_msg);
+            bag_out.write("/iris_0/velodyne_points", ros::Time::now(), laser_cloud_msg);
             bag_out.write("/path_gt", ros::Time::now(), pathGT);
             bag_out.write("/odometry_gt", ros::Time::now(), odomGT);
         }

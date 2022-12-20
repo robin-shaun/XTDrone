@@ -2,9 +2,9 @@
 <sdf version='1.5'>
   <model name='iris_stereo_camera'>
     <link name='base_link'>
-      <pose frame=''>0 0 0 0 -0 0</pose>
+      <pose>0 0 0 0 0 0</pose>
       <inertial>
-        <pose frame=''>0 0 0 0 -0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
         <mass>1.5</mass>
         <inertia>
           <ixx>0.029125</ixx>
@@ -16,7 +16,7 @@
         </inertia>
       </inertial>
       <collision name='base_link_inertia_collision'>
-        <pose frame=''>0 0 0 0 -0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
         <geometry>
           <box>
             <size>0.47 0.47 0.11</size>
@@ -35,11 +35,11 @@
         </surface>
       </collision>
       <visual name='base_link_inertia_visual'>
-        <pose frame=''>0 0 0 0 -0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://rotors_description/meshes/iris.stl</uri>
+            <uri>model://iris/meshes/iris.stl</uri>
           </mesh>
         </geometry>
         <material>
@@ -53,9 +53,9 @@
       <velocity_decay/>
     </link>
     <link name='/imu_link'>
-      <pose frame=''>0 0 0 0 -0 0</pose>
+      <pose>0 0 0 0 0 0</pose>
       <inertial>
-        <pose frame=''>0 0 0 0 -0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
         <mass>0.015</mass>
         <inertia>
           <ixx>1e-05</ixx>
@@ -86,9 +86,9 @@
       </axis>
     </joint>
     <link name='rotor_0'>
-      <pose frame=''>0.13 -0.22 0.023 0 -0 0</pose>
+      <pose>0.13 -0.22 0.023 0 0 0</pose>
       <inertial>
-        <pose frame=''>0 0 0 0 -0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
         <mass>0.005</mass>
         <inertia>
           <ixx>9.75e-07</ixx>
@@ -100,7 +100,7 @@
         </inertia>
       </inertial>
       <collision name='rotor_0_collision'>
-        <pose frame=''>0 0 0 0 -0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
         <geometry>
           <cylinder>
             <length>0.005</length>
@@ -117,11 +117,11 @@
         </surface>
       </collision>
       <visual name='rotor_0_visual'>
-        <pose frame=''>0 0 0 0 -0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://rotors_description/meshes/iris_prop_ccw.dae</uri>
+            <uri>model://iris/meshes/iris_prop_ccw.dae</uri>
           </mesh>
         </geometry>
         <material>
@@ -151,9 +151,9 @@
       </axis>
     </joint>
     <link name='rotor_1'>
-      <pose frame=''>-0.13 0.2 0.023 0 -0 0</pose>
+      <pose>-0.13 0.2 0.023 0 0 0</pose>
       <inertial>
-        <pose frame=''>0 0 0 0 -0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
         <mass>0.005</mass>
         <inertia>
           <ixx>9.75e-07</ixx>
@@ -165,7 +165,7 @@
         </inertia>
       </inertial>
       <collision name='rotor_1_collision'>
-        <pose frame=''>0 0 0 0 -0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
         <geometry>
           <cylinder>
             <length>0.005</length>
@@ -182,11 +182,11 @@
         </surface>
       </collision>
       <visual name='rotor_1_visual'>
-        <pose frame=''>0 0 0 0 -0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://rotors_description/meshes/iris_prop_ccw.dae</uri>
+            <uri>model://iris/meshes/iris_prop_ccw.dae</uri>
           </mesh>
         </geometry>
         <material>
@@ -216,9 +216,9 @@
       </axis>
     </joint>
     <link name='rotor_2'>
-      <pose frame=''>0.13 0.22 0.023 0 -0 0</pose>
+      <pose>0.13 0.22 0.023 0 0 0</pose>
       <inertial>
-        <pose frame=''>0 0 0 0 -0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
         <mass>0.005</mass>
         <inertia>
           <ixx>9.75e-07</ixx>
@@ -230,7 +230,7 @@
         </inertia>
       </inertial>
       <collision name='rotor_2_collision'>
-        <pose frame=''>0 0 0 0 -0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
         <geometry>
           <cylinder>
             <length>0.005</length>
@@ -247,11 +247,11 @@
         </surface>
       </collision>
       <visual name='rotor_2_visual'>
-        <pose frame=''>0 0 0 0 -0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://rotors_description/meshes/iris_prop_cw.dae</uri>
+            <uri>model://iris/meshes/iris_prop_cw.dae</uri>
           </mesh>
         </geometry>
         <material>
@@ -281,9 +281,9 @@
       </axis>
     </joint>
     <link name='rotor_3'>
-      <pose frame=''>-0.13 -0.2 0.023 0 -0 0</pose>
+      <pose>-0.13 -0.2 0.023 0 0 0</pose>
       <inertial>
-        <pose frame=''>0 0 0 0 -0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
         <mass>0.005</mass>
         <inertia>
           <ixx>9.75e-07</ixx>
@@ -295,7 +295,7 @@
         </inertia>
       </inertial>
       <collision name='rotor_3_collision'>
-        <pose frame=''>0 0 0 0 -0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
         <geometry>
           <cylinder>
             <length>0.005</length>
@@ -312,11 +312,11 @@
         </surface>
       </collision>
       <visual name='rotor_3_visual'>
-        <pose frame=''>0 0 0 0 -0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://rotors_description/meshes/iris_prop_cw.dae</uri>
+            <uri>model://iris/meshes/iris_prop_cw.dae</uri>
           </mesh>
         </geometry>
         <material>
@@ -358,7 +358,7 @@
       <timeConstantUp>0.0125</timeConstantUp>
       <timeConstantDown>0.025</timeConstantDown>
       <maxRotVelocity>1100</maxRotVelocity>
-      <motorConstant>8.54858e-06</motorConstant>
+      <motorConstant>5.84e-06</motorConstant>
       <momentConstant>0.06</momentConstant>
       <commandSubTopic>/gazebo/command/motor_speed</commandSubTopic>
       <motorNumber>0</motorNumber>
@@ -375,7 +375,7 @@
       <timeConstantUp>0.0125</timeConstantUp>
       <timeConstantDown>0.025</timeConstantDown>
       <maxRotVelocity>1100</maxRotVelocity>
-      <motorConstant>8.54858e-06</motorConstant>
+      <motorConstant>5.84e-06</motorConstant>
       <momentConstant>0.06</momentConstant>
       <commandSubTopic>/gazebo/command/motor_speed</commandSubTopic>
       <motorNumber>1</motorNumber>
@@ -392,7 +392,7 @@
       <timeConstantUp>0.0125</timeConstantUp>
       <timeConstantDown>0.025</timeConstantDown>
       <maxRotVelocity>1100</maxRotVelocity>
-      <motorConstant>8.54858e-06</motorConstant>
+      <motorConstant>5.84e-06</motorConstant>
       <momentConstant>0.06</momentConstant>
       <commandSubTopic>/gazebo/command/motor_speed</commandSubTopic>
       <motorNumber>2</motorNumber>
@@ -409,7 +409,7 @@
       <timeConstantUp>0.0125</timeConstantUp>
       <timeConstantDown>0.025</timeConstantDown>
       <maxRotVelocity>1100</maxRotVelocity>
-      <motorConstant>8.54858e-06</motorConstant>
+      <motorConstant>5.84e-06</motorConstant>
       <momentConstant>0.06</momentConstant>
       <commandSubTopic>/gazebo/command/motor_speed</commandSubTopic>
       <motorNumber>3</motorNumber>
@@ -418,9 +418,17 @@
       <motorSpeedPubTopic>/motor_speed/3</motorSpeedPubTopic>
       <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
     </plugin>
-    <plugin name='gps_plugin' filename='libgazebo_gps_plugin.so'>
+    <include>
+      <uri>model://gps</uri>
+      <pose>0.1 0 0 0 0 0</pose>
+      <name>gps0</name>
+    </include>
+    <joint name='gps0_joint' type='fixed'>
+      <child>gps0::link</child>
+      <parent>base_link</parent>
+    </joint>
+    <plugin name='groundtruth_plugin' filename='libgazebo_groundtruth_plugin.so'>
       <robotNamespace/>
-      <gpsNoise>1</gpsNoise>
     </plugin>
     <plugin name='magnetometer_plugin' filename='libgazebo_magnetometer_plugin.so'>
       <robotNamespace/>
@@ -434,16 +442,16 @@
       <robotNamespace/>
       <pubRate>50</pubRate>
       <baroTopic>/baro</baroTopic>
+      <baroDriftPaPerSec>0</baroDriftPaPerSec>
     </plugin>
     <plugin name='mavlink_interface' filename='libgazebo_mavlink_interface.so'>
       <robotNamespace/>
       <imuSubTopic>/imu</imuSubTopic>
-      <gpsSubTopic>/gps</gpsSubTopic>
       <magSubTopic>/mag</magSubTopic>
       <baroSubTopic>/baro</baroSubTopic>
       <mavlink_addr>INADDR_ANY</mavlink_addr>
-      <mavlink_udp_port>14560</mavlink_udp_port>
       <mavlink_tcp_port>4560</mavlink_tcp_port>
+      <mavlink_udp_port>14560</mavlink_udp_port>
       <serialEnabled>0</serialEnabled>
       <serialDevice>/dev/ttyACM0</serialDevice>
       <baudRate>921600</baudRate>
@@ -453,9 +461,8 @@
       <sdk_udp_port>14540</sdk_udp_port>
       <hil_mode>0</hil_mode>
       <hil_state_level>0</hil_state_level>
-      <vehicle_is_tailsitter>0</vehicle_is_tailsitter>
-      <send_vision_estimation>1</send_vision_estimation>
-      <send_odometry>0</send_odometry>
+      <send_vision_estimation>0</send_vision_estimation>
+      <send_odometry>1</send_odometry>
       <enable_lockstep>1</enable_lockstep>
       <use_tcp>1</use_tcp>
       <motorSpeedCommandPubTopic>/gazebo/command/motor_speed</motorSpeedCommandPubTopic>

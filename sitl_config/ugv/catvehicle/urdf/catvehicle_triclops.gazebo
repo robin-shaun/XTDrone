@@ -48,8 +48,8 @@ http://gazebosim.org/tutorials/?tut=ros_control#Prerequisites
       <camera name="triclops">
         <horizontal_fov>1.3962634</horizontal_fov>
         <image>
-          <width>752</width>
-          <height>480</height>
+          <width>1280</width>
+          <height>960</height>
           <format>R8G8B8</format>
         </image>
         <clip>
@@ -70,16 +70,12 @@ http://gazebosim.org/tutorials/?tut=ros_control#Prerequisites
         <imageTopicName>triclops/left/image</imageTopicName>
         <cameraInfoTopicName>camera_triclops_info</cameraInfoTopicName>
         <frameName>triclops_link</frameName>
-        <hackBaseline>0.12</hackBaseline>
-        <Fx>376.0</Fx>
-        <Fy>376.0</Fy>
-        <Cx>376.0</Cx>
-        <Cy>240.0</Cy>
-        <distortionK1>-0.2</distortionK1>
-        <distortionK2>0.08</distortionK2>
+        <hackBaseline>0.07</hackBaseline>
+        <distortionK1>0.0</distortionK1>
+        <distortionK2>0.0</distortionK2>
         <distortionK3>0.0</distortionK3>
-        <distortionT1>5e-5</distortionT1>
-        <distortionT2>-1e-4</distortionT2>
+        <distortionT1>0.0</distortionT1>
+        <distortionT2>0.0</distortionT2>
       </plugin>
     </sensor>
 </gazebo>

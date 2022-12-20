@@ -36,6 +36,7 @@ This launch file loads the worlds and models for the catvehicle
 	  <arg name="headless" default="false"/>
 	  <arg name="debug" default="false"/>
       <arg name="obstaclestopper" default="true"/>
+      <arg name="updateRate" default="20.0"/>
 
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" value="$(find catvehicle)/worlds/canyonview_field.world"/>
@@ -48,7 +49,7 @@ This launch file loads the worlds and models for the catvehicle
 
 <group ns="catvehicle">
  <param name="robot_description"
-         command="$(find xacro)/xacro.py '$(find catvehicle)/urdf/catvehicle.xacro' roboname:='ugv_0'" />
+         command="$(find xacro)/xacro '$(find catvehicle)/urdf/catvehicle.xacro' roboname:='catvehicle' updateRate:='$(arg updateRate)'" />
 
 <include file="$(find catvehicle)/launch/catvehicle.launch">
     <arg name="robot_name" value="catvehicle"/>

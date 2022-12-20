@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<launch>
+
+<arg name="robot" default="toyota"/>
+<arg name="csvfile" default="/home/ivory/CyverseData/JmscslgroupData/ARED/2016-07-28/data_by_test/CSVData/test5/test5_1.csv"/>
+<arg name="time_col" default="Time"/>
+<arg name="vel_col" default="Speed"/>
+<arg name="str_angle" default="2.82321111"/>
+<arg name="input_type" default="CSV"/>
+<arg name="decoupled" default="false"/>
+<group ns="$(arg robot)">
+    <!-- load the predict rospy class-->
+    <node pkg="catvehicle" type="velinjector.py" name="velinjector_$(arg robot)" output="screen" required="true" args="$(arg csvfile) $(arg time_col) $(arg vel_col) $(arg str_angle) $(arg input_type)">
+    </node>
+    
+    <!--node name="model_state_$(arg robot)" pkg="sparkle" type="model_state" output="screen" if="$(arg decoupled)">
+            <param name="enableTwist" value="false"/>
+    </node-->
+
+
+</group>
+
+</launch>

@@ -35,6 +35,7 @@ This launch file loads the worlds and models for the catvehicle
 	  <arg name="gui" default="false"/>
 	  <arg name="headless" default="false"/>
 	  <arg name="debug" default="false"/>
+	  <arg name="updateRate" default="20.0"/>
       <arg name="obstaclestopper" default="true"/>
 
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -47,7 +48,7 @@ This launch file loads the worlds and models for the catvehicle
 
 <group ns="catvehicle">
 <param name="robot_description"
-         command="$(find xacro)/xacro.py '$(find catvehicle)/urdf/catvehicle.xacro' roboname:='catvehicle'" />
+         command="$(find xacro)/xacro '$(find catvehicle)/urdf/catvehicle.xacro' roboname:='catvehicle' updateRate:='$(arg updateRate)'" />
 <include file="$(find catvehicle)/launch/catvehicle.launch">
     <arg name="robot_name" value="catvehicle"/>
     <arg name="init_pose" value="-x 1 -y 1 -z 0"/>
@@ -69,7 +70,7 @@ This launch file loads the worlds and models for the catvehicle
 </group>
 <group ns="follower_sim">
 <param name="robot_description"
-         command="$(find xacro)/xacro.py '$(find catvehicle)/urdf/catvehicle.xacro' roboname:='follower_sim'" />
+         command="$(find xacro)/xacro '$(find catvehicle)/urdf/catvehicle.xacro' roboname:='follower_sim' updateRate:='$(arg updateRate)'" />
 <include file="$(find catvehicle)/launch/catvehicle.launch">
     <arg name="robot_name" value="follower_sim"/>
     <arg name="init_pose" value="-x -10 -y 1 -z 0"/>

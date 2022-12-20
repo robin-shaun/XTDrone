@@ -52,13 +52,14 @@ roslaunch catvehicle catvehicle_spawn.launch robot:=acar_sim X:=0 Y:=0 Z:=0 roll
     <arg name="pitch" default="0"/>
     <arg name="yaw" default="0"/>
     <arg name="camera_left" default="false"/>
+    <arg name="updateRate" default="20.0"/>
     <arg name="camera_right" default="false"/>
     <arg name="triclops" default="false"/>
     <arg name="velodyne_points" default="false"/>
-    <arg name="laser_sensor" default="true"/>
+    <arg name="laser_sensor" default="false"/>
     <arg name="obstaclestopper" default="false"/>
     <group ns="$(arg robot)">
-        <param name="robot_description" command="$(find xacro)/xacro.py '$(find catvehicle)/urdf/catvehicle.xacro' roboname:='$(arg robot)' camera_left:='$(arg camera_left)'  camera_right:='$(arg camera_right)' triclops:='$(arg triclops)' velodyne_points:='$(arg velodyne_points)' laser_points:='$(arg laser_sensor)'" />
+        <param name="robot_description" command="$(find xacro)/xacro '$(find catvehicle)/urdf/catvehicle.xacro' roboname:='$(arg robot)' updateRate:='$(arg updateRate)' camera_left:='$(arg camera_left)'  camera_right:='$(arg camera_right)' triclops:='$(arg triclops)' velodyne_points:='$(arg velodyne_points)' laser_points:='$(arg laser_sensor)'" />
         <include file="$(find catvehicle)/launch/catvehicle.launch">
             <arg name="robot_name" value="$(arg robot)"/>
             <arg name="obstaclestopper" value="$(arg obstaclestopper)"/>

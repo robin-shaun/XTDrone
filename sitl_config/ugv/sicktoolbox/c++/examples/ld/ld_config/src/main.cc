@@ -261,7 +261,7 @@ void setConfig() {
   config_path = getFilename();
 
   /* Instantiate the parser */
-  if(ifstream(config_path.c_str())) {
+  if(!ifstream(config_path.c_str())) {
     sick_config_file = ConfigFile(config_path);
   }
   else {

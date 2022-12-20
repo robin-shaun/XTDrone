@@ -62,12 +62,12 @@ output="screen" ns="/$(arg robot_name)" args="joint1_velocity_controller joint2_
 </node>
 
 <!-- set up a static TF transform for publishing SLAM localization estimates wrt base_link -->
-<!--<node pkg="tf" type="static_transform_publisher" name="base_link2slamodom_tf_$(arg robot_name)" 
-    args="0 0 0 0 0 1 $(arg robot_name)/base_link $(arg robot_name)/slamodom 5" /> -->
+<node pkg="tf" type="static_transform_publisher" name="base_link2slamodom_tf_$(arg robot_name)" 
+    args="0 0 0 0 0 1 $(arg robot_name)/base_link $(arg robot_name)/slamodom 5" />
 
  
 <node name="cmdvel2gazebo$(arg robot_name)" pkg="catvehicle" type="cmdvel2gazebo.py" respawn="false" output="screen"> 
-    <remap from="/$(arg robot_name)/cmd_vel" to="/$(arg robot_name)/cmd_vel" if="$(arg obstaclestopper)"/>
+    <remap from="/$(arg robot_name)/cmd_vel" to="/$(arg robot_name)/cmd_vel_safe" if="$(arg obstaclestopper)"/>
 </node>
 
 <!--node name="distanceEstimatorSteeringBased" pkg="catvehicle" type="distanceEstimatorSteeringBased" output="screen">
@@ -85,23 +85,22 @@ output="screen" ns="/$(arg robot_name)" args="joint1_velocity_controller joint2_
 
 <!--/node-->
 
-<node name="distanceEstimator" pkg="catvehicle" type="distanceEstimator" output="screen">
+<!--node name="distanceEstimator" pkg="catvehicle" type="distanceEstimator" output="screen">
     <param name="scan_topic" value="/$(arg robot_name)/front_laser_points"/>
     <param name="angle_min" value="-10.0"/>
     <param name="angle_max" value="10.0"/>
 
-</node>
+</node-->
 
 <!-- Let's be safe with obstacles by stopping when we get too close--> 
-<!--
-     <node name="obstacleStopper$(arg robot_name)" pkg="obstaclestopper" type="obstaclestopper_node" output="screen" if="$(arg obstaclestopper)"/>
--->
+<node name="obstacleStopper$(arg robot_name)" pkg="obstaclestopper" type="obstaclestopper_node" output="screen" if="$(arg obstaclestopper)"/>
+
 <!-- publish the path information of this vehicle -->
 <node name="odom2path$(arg robot_name)" pkg="catvehicle" type="odom2path.py" respawn="false" output="screen" args="-n /$(arg robot_name)">
 </node>
 
 <!-- establish this vehicle's place in the global frame for tf transforms -->
-<!--<node pkg="tf" type="static_transform_publisher" name="global_frame_tf_$(arg robot_name)" 
-    args="0 0 0 0 0 0 /world $(arg robot_name)/odom 100"/> -->
+<node pkg="tf" type="static_transform_publisher" name="global_frame_tf_$(arg robot_name)" 
+    args="0 0 0 0 0 0 /world $(arg robot_name)/odom 100"/>
 
 </launch>

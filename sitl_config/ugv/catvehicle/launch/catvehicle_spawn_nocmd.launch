@@ -49,11 +49,12 @@ roslaunch catvehicle catvehicle_spawn_nocmd.launch robot1:=acar_sim X:=0 Y:=0 Z:
     <arg name="Z" default="0"/>
     <arg name="roll" default="0"/>
     <arg name="pitch" default="0"/>
+    <arg name="updateRate" default="20.0"/>
     <arg name="yaw" default="0"/>
     <arg name="obstaclestopper" default="true"/>
 
     <group ns="$(arg robot1)">
-        <param name="robot_description" command="$(find xacro)/xacro.py '$(find catvehicle)/urdf/catvehicle.xacro' roboname:='$(arg robot1)'" />
+        <param name="robot_description" command="$(find xacro)/xacro '$(find catvehicle)/urdf/catvehicle.xacro' roboname:='$(arg robot1)' updateRate:='$(arg updateRate)'" />
         <include file="$(find catvehicle)/launch/catvehicle.launch">
             <arg name="robot_name" value="$(arg robot1)"/>
             <arg name="init_pose" value="-x $(arg X) -y $(arg Y) -z $(arg Z) -R $(arg roll) -P $(arg pitch) -Y $(arg yaw)"/>

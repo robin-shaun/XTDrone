@@ -836,17 +836,17 @@ http://www.car-engineer.com/vehicle-inertia-calculation-tool/
       <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6"/>
     </inertial>
   </link>
-  <joint name="parking_joint" type="fixed">
-    <origin rpy="0 0 0" xyz="-0.5 0 2.025"/>
+  <joint name="camera_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0 2.1"/>
     <axis xyz="0 0 1"/>
     <parent link="base_link"/>
-    <child link="parking_link"/>
+    <child link="camera_link"/>
   </joint>
-  <link name="parking_link">
+  <link name="camera_link">
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <box size="1 0.8 0.15"/>
+        <box size="0.25 0.25 0.25"/>
       </geometry>
     </collision>
     <visual>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+	<arg name="bagfile" default="start_at_0mph.bag"/>
+	<arg name='leader' default='leader'/> 
+
+	<group ns="$(arg leader)">
+                <!--node pkg="rosbag" type="play" name="player" output="screen" args="$(find transfer_pkg)/launch/$(arg bagfile) -topics /ghost/vel">
+                        <remap from="/ghost/vel" to="cmd_control_vel"/>
+                </node-->
+        
+
+        <node pkg="synthetic_data" type="synthetic_data_node" name="synthetic_data_$(arg leader)" output="screen">
+            <!--remap from="vel" to="cmd_vel"/-->
+                <remap from="vel" to="cmd_control_vel"/>
+        </node>
+
+
+        <node pkg="hoffmansubsystem" type="hoffmansubsystem_node" name="hoffmansubsystem_$(arg leader)" output="screen" required="true">
+        </node>
+
+        </group>
+
+	
+	
+
+
+
+
+</launch>

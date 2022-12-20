@@ -66,7 +66,7 @@ titles{3} = 'Run 3';
 % titles{6} = 'Real time, 100Hz (5000 iters, erp=0.1, cmcv=10, csl=0.01), #1';
 % titles{7} = 'Real time, 100Hz (5000 iters, erp=0.1, cmcv=10, csl=0.01), #2';
 
-%% grab data inputs of cmd_vel
+%% grab data inputs of cmd_vel_safe
 for i=1:length(bagfiles)
     bagselect = select(bagfiles{i}, 'Topic', '/catvehicle/odom');
     ts{i} = timeseries(bagselect, 'Pose.Pose.Position.X', 'Pose.Pose.Position.Y');

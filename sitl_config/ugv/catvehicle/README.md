@@ -11,14 +11,14 @@ The CAT Vehicle is a ROS based simulator to facilitate the development of autono
 * [cmdvel2gazebo](https://github.com/jmscslgroup/cmdvel2gazebo)
 * Controller manager (allows the car to move around with ROS messages)
 ```shell
-  sudo apt-get install ros-melodic-controller-manager
-  sudo apt-get install ros-melodic-ros-control ros-melodic-ros-controllers
-  sudo apt-get install ros-melodic-gazebo-ros-control
-  sudo apt-get install libpcap-dev
+  sudo apt-get update
+  sudo apt-get install ros-noetic-controller-manager
+  sudo apt-get install ros-noetic-ros-control ros-noetic-ros-controllers
+  sudo apt-get install ros-noetic-gazebo-ros-control
   ```
 
 # System Requirements
-* Ubuntu 18.04 LTS (We cannot guarantee if it works on any other version of Ubuntu)
+* Ubuntu 20.04 LTS (We cannot guarantee if it works on any other version of Ubuntu)
 * RAM: 4GB required, > 8GB recommended.
 
 
@@ -46,7 +46,7 @@ year={2018}
 ```
 
 # What's new
-* Released for Ubuntu 18.04 LTS, ROS Melodic and Gazebo 9.0
+* Released for Ubuntu 20.04 LTS, ROS Noetic and Gazebo 11.0
 * Support for front camera
 * More stable vehicle dynamics
 * Bug fixes and improvements
@@ -54,10 +54,10 @@ year={2018}
 # How to use it
 
 ## Installing ROS
-* Follow the steps mentioned in the [ROS wiki page](http://wiki.ros.org/melodic/Installation/Ubuntu%C2%A0) on how to install ROS Melodic. 
+* Follow the steps mentioned in the [ROS wiki page](http://wiki.ros.org/noetic/Installation/Ubuntu%C2%A0) on how to install ROS Noetic. 
 * In addition to that we are required to install some additional ros packages
 ```shell
-sudo apt-get install ros-melodic-velodyne ros-melodic-novatel-span-driver
+sudo apt-get install ros-noetic-velodyne
 ```
 
 ## Creating catkin workspace
@@ -71,7 +71,7 @@ cd ..
 catkin_make
 ```
 
-At this point, you can extract this release package from [catvehicle-3.0.1](https://github.com/jmscslgroup/catvehicle/releases/download/3.0.1/catvehicle-3.0.1.tar.xz) and other dependent package into your src directory
+At this point, you can clone this repo and other dependent package into your src directory
 ```shell
 cd ~/catvehicle_ws/src
 git clone https://github.com/jmscslgroup/catvehicle
@@ -81,17 +81,17 @@ git clone https://github.com/jmscslgroup/sicktoolbox
 git clone https://github.com/jmscslgroup/sicktoolbox_wrapper
 git clone https://github.com/jmscslgroup/stepvel
 git clone https://github.com/jmscslgroup/cmdvel2gazebo
-git clone https://github.com/jmscslgroup/velodyne
 cd ..
 catkin_make
 ```
 ## Sourcing workspace to the environment path
 ```bash
 echo "source ~/catvehicle_ws/devel/setup.bash" >> ~/.bashrc
+source ~/.bashrc
 ```
 
 # Simple tutorial and examples
-Follow the tutorials on the CAT Vehicle Testbed group on the [CPS Virtual Organization](https://cps-vo.org/group/CATVehicleTestbed) to see how to use the testbed.
+Follow the tutorials on the CAT Vehicle Testbed group on the [CPS Virtual Organization](https://cps-vo.org/node/31792) to see how to use the testbed.
 
 # Issues
 If you run into a problem, please feel free to post to [issues](https://github.com/jmscslgroup/catvehicle/issues). If the issue is urgent, please email to catvehicle@list.arizona.edu.

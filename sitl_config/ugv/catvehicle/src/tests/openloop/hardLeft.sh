@@ -11,7 +11,7 @@ NAMESPACE is the robot name. Default is catvehicle
 EOF
 }
 
-NS=/ugv_0
+NS=/catvehicle
 PUBRATE=100
 
 while getopts n:r: flag; do
@@ -30,5 +30,5 @@ while getopts n:r: flag; do
 done
 
 echo "Car $NS receiving inputs with latched rate"
-rostopic pub -r ${PUBRATE} -f hardLeft.bagy $NS/cmd_vel geometry_msgs/Twist
+rostopic pub -r ${PUBRATE} -f hardLeft.bagy $NS/cmd_vel_safe geometry_msgs/Twist
 

@@ -69,8 +69,8 @@ namespace SickToolbox {
     static const uint16_t SICK_MAX_MEAN_PULSE_FREQUENCY = 10800;                        ///< Max mean pulse frequence of the current device configuration (in Hz) (see page 22 of the operator's manual)
     static const uint16_t SICK_MAX_PULSE_FREQUENCY = 14400;                             ///< Max pulse frequency of the device (in Hz) (see page 22 of the operator's manual)
     static const uint16_t SICK_NUM_TICKS_PER_MOTOR_REV = 5760;                          ///< Odometer ticks per revolution of the Sick LD scan head
-    static constexpr double SICK_MAX_SCAN_ANGULAR_RESOLUTION = 0.125;                   ///< Minimum valid separation between laser pulses in active scan ares (deg)
-    static constexpr double SICK_DEGREES_PER_MOTOR_STEP = 0.0625;                       ///< Each odometer tick is equivalent to rotating the scan head this many degrees
+    static constexpr double SICK_MAX_SCAN_ANGULAR_RESOLUTION = 0.125;                       ///< Minimum valid separation between laser pulses in active scan ares (deg)
+    static constexpr double SICK_DEGREES_PER_MOTOR_STEP = 0.0625;                           ///< Each odometer tick is equivalent to rotating the scan head this many degrees
     
     /* Sick LD sensor modes of operation */
     static const uint8_t SICK_SENSOR_MODE_IDLE = 0x01;                                  ///< The Sick LD is powered but idle

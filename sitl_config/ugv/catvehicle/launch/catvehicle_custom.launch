@@ -33,6 +33,7 @@ This launch file loads the worlds and models for the catvehicle
 	  <arg name="use_sim_time" default="true"/>
 	  <arg name="gui" default="false"/>
 	  <arg name="headless" default="false"/>
+	  <arg name="updateRate" default="20.0"/>
 	  <arg name="debug" default="false"/>
       <arg name="worldfile" default="enter_worldfile_no_path.world"/>
 
@@ -59,7 +60,7 @@ This launch file loads the worlds and models for the catvehicle
 
 <group ns="catvehicle">
 <param name="robot_description"
-         command="$(find xacro)/xacro.py '$(find catvehicle)/urdf/catvehicle.xacro' roboname:='catvehicle' front_laser_points:='$(arg front_laser_points)' velodyne_points:='$(arg velodyne_points)' camera_right:='$(arg camera_right)' camera_left:='$(arg camera_left)' velodyne_max_angle:='$(arg velodyne_max_angle)' velodyne_min_angle:='$(arg velodyne_min_angle)'" />
+         command="$(find xacro)/xacro '$(find catvehicle)/urdf/catvehicle.xacro' roboname:='catvehicle' updateRate:='$(arg updateRate)' front_laser_points:='$(arg front_laser_points)' velodyne_points:='$(arg velodyne_points)' camera_right:='$(arg camera_right)' camera_left:='$(arg camera_left)' velodyne_max_angle:='$(arg velodyne_max_angle)' velodyne_min_angle:='$(arg velodyne_min_angle)'" />
 
 <include file="$(find catvehicle)/launch/catvehicle.launch">
     <arg name="robot_name" value="catvehicle"/>

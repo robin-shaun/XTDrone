@@ -30,5 +30,5 @@ while getopts n:r: flag; do
 done
 
 echo "Car $NS receiving inputs at $PUBRATE rate (set lower to run in slo motion)"
-rostopic pub -r $PUBRATE -f joystickInput1.bagy $NS/cmd_vel geometry_msgs/Twist
+rostopic pub -r $PUBRATE -f joystickInput1.bagy $NS/cmd_vel_safe geometry_msgs/Twist
 

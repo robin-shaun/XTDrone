@@ -186,7 +186,6 @@ namespace gazebo
 
         //Publish the velocity as string to speed topic
         ros_pub.publish(out_vel);
-        //      logOut << V << ";\n";
 
         // JMS: get information about the steering joints
         physics::JointPtr steering_joints[2];

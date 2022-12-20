@@ -1,12 +1,18 @@
 cmake_minimum_required(VERSION 2.8.3)
+set(CMAKE_CXX_STANDARD 17)
+
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 project(catvehicle)
-SET( CMAKE_CXX_FLAGS "-std=c++11 -O3")
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}")
+
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   controller_manager
   gazebo_ros_control
+  gazebo_plugins
   geometry_msgs
   position_controllers
   roscpp
@@ -65,9 +71,18 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
+include_directories(
+	/usr/include/eigen3
+)
+
 
 add_library(catvehiclegazebo SHARED src/cont.cc ./include/catvehicle/cont.hh)
 target_link_libraries(catvehiclegazebo ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+
+## Declare a C++ library
+add_library(catmin_distance SHARED src/distance.cc)
+## Specify libraries to link a library or executable target against
+target_link_libraries(catmin_distance ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 
 add_executable( distanceEstimator src/distanceEstimator.cpp )
 target_link_libraries( distanceEstimator ${catkin_LIBRARIES} )

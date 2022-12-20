@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+        <arg name='leader' default='leader'/>
+        <arg name='ego' default='ego'/>
+
+        <arg name='leader_pos' default='30.0'/>
+        <arg name='ego_pos' default='0.0'/>
+
+        <!--include file="$(find steer)/launch/threelanes.launch"/-->
+        <include file="$(find catvehicle)/launch/catvehicle_spawn.launch">
+                <arg name="robot" value="$(arg leader)"/>
+                <arg name="X" value="$(arg leader_pos)"/>
+        </include>
+
+        <include file="$(find catvehicle)/launch/catvehicle_spawn.launch">
+                <arg name="robot" value="$(arg ego)"/>
+                <arg name="X" value="$(arg ego_pos)"/>
+        </include>
+
+</launch>
+

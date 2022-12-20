@@ -34,6 +34,7 @@ This launch file loads the worlds and models for the catvehicle
 	  <arg name="use_sim_time" default="true"/>
 	  <arg name="gui" default="false"/>
 	  <arg name="headless" default="false"/>
+	  <arg name="updateRate" default="20.0"/>
 	  <arg name="debug" default="false"/>
       <arg name="obstaclestopper" default="true"/>
 
@@ -48,7 +49,7 @@ This launch file loads the worlds and models for the catvehicle
 
 <group ns="catvehicle">
 <param name="robot_description"
-         command="$(find xacro)/xacro.py '$(find catvehicle)/urdf/catvehicle.xacro' roboname:='catvehicle'" />
+         command="$(find xacro)/xacro '$(find catvehicle)/urdf/catvehicle.xacro' roboname:='catvehicle' updateRate:='$(arg updateRate)'" />
 <include file="$(find catvehicle)/launch/catvehicle.launch">
     <arg name="robot_name" value="catvehicle"/>
     <arg name="obstaclestopper" value="$(arg obstaclestopper)"/>

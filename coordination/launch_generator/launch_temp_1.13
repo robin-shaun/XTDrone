@@ -5,7 +5,7 @@
         <arg name="ID_in_group" value="0"/>
         <arg name="fcu_url" default="udp://:14540@localhost:14580"/>
         <!-- PX4 SITL and vehicle spawn -->
-        <include file="$(find px4)/launch/single_vehicle_spawn_xtd.launch">
+        <include file="$(find px4)/launch/single_vehicle_spawn_sdf.launch">
             <arg name="x" value="0"/>
             <arg name="y" value="0"/>
             <arg name="z" value="0"/>

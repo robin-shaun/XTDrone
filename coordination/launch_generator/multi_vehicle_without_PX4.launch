@@ -17,7 +17,7 @@
         <arg name="paused" value="$(arg paused)"/>
     </include>
 
-<group ns="iris_0">
+<group ns="typhoon_h480_0">
     <!-- vehicle pose -->
     <arg name="x" default="0"/>
     <arg name="y" default="3"/>
@@ -25,9 +25,26 @@
     <arg name="R" default="0"/>
     <arg name="P" default="0"/>
     <arg name="Y" default="0"/>
-    <arg name="vehicle" default="iris"/>
-    <arg name="sdf" default="iris_stereo_camera"/>
+    <arg name="vehicle" default="typhoon_h480"/>
+    <arg name="sdf" default="typhoon_h480"/>
     <arg name="ID" default="0"/>
+    <!-- generate sdf vehicle model -->
+    <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg sdf)/$(arg sdf).sdf"/>
+    <!-- spawn vehicle -->
+    <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(arg model_description) -model $(arg vehicle)_$(arg ID) -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+</group>
+
+<group ns="typhoon_h480_1">
+    <!-- vehicle pose -->
+    <arg name="x" default="0"/>
+    <arg name="y" default="6"/>
+    <arg name="z" default="0.2"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="vehicle" default="typhoon_h480"/>
+    <arg name="sdf" default="typhoon_h480"/>
+    <arg name="ID" default="1"/>
     <!-- generate sdf vehicle model -->
     <arg name="model_description" default="$(find px4)/Tools/sitl_gazebo/models/$(arg sdf)/$(arg sdf).sdf"/>
     <!-- spawn vehicle -->

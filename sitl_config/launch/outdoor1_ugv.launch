@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+	<arg name="paused" default="false"/>
+	<arg name="use_sim_time" default="true"/>
+	<arg name="gui" default="true"/>
+	<arg name="headless" default="false"/>
+	<arg name="debug" default="false"/>
+
+    <!-- change these defaults here, or as a cmd line arg, in order to turn off   -->
+    <!--   sensors that you aren't using, thus freeing up computational resources -->
+    <!--   and reducing storage space for your bagfiles -->
+    <arg name="front_laser_points" default="true"/>
+    <arg name="velodyne_points" default="true"/>
+    <arg name="camera_right" default="true"/>
+    <arg name="camera_left" default="true"/>
+    <!-- change these defaults here, to see further left with the velodyne   -->
+    <arg name="velodyne_max_angle" default="0.4"/>
+    <!-- change these defaults here, to see further right with the velodyne   -->
+    <arg name="velodyne_min_angle" default="-0.4"/>
+	<arg name="obstaclestopper" default="false"/>
+
+	<include file="$(find gazebo_ros)/launch/empty_world.launch">
+		<!--<arg name="world_name" value="$(find catvehicle)/worlds/canyonview_field.world"/> -->
+
+           <arg name="world_name" value="$(find mavlink_sitl_gazebo)/worlds/outdoor1.world"/>
+            <arg name="debug" value="$(arg debug)" />
+            <arg name="gui" value="$(arg gui)" />
+            <arg name="paused" value="$(arg paused)"/>
+            <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+            <arg name="headless" value="$(arg headless)"/>
+    </include>
+
+    <group ns="ugv_0">
+        <param name="robot_description"
+                command="$(find xacro)/xacro.py '$(find catvehicle)/urdf/catvehicle.xacro' roboname:='ugv_0' front_laser_points:='$(arg front_laser_points)' velodyne_points:='$(arg velodyne_points)' camera_right:='$(arg camera_right)' camera_left:='$(arg camera_left)' velodyne_max_angle:='$(arg velodyne_max_angle)' velodyne_min_angle:='$(arg velodyne_min_angle)'" />
+
+        <include file="$(find catvehicle)/launch/catvehicle.launch">
+            <arg name="robot_name" value="ugv_0"/>
+            <arg name="init_pose" value="-x 1 -y 1 -z 0"/>
+            <arg name="obstaclestopper" value="$(arg obstaclestopper)"/>
+            <arg name="config_file" value="catvehicle_control.yaml"/>
+        </include>
+    </group>
+
+</launch>

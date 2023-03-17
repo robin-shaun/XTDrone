@@ -13,7 +13,7 @@
   </include>
 
   <!-- send robot urdf to param server -->
-  <include file="$(find le_arm)/launch/upload_le_arm.launch"/>
+  <param  name="robot_description"  command="$(find xacro)/xacro --inorder '$(find le_arm)/urdf/le_arm.xacro'" />
 
   <!-- push robot_description to factory and spawn robot in gazebo -->
   <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model robot" respawn="false" output="screen" />

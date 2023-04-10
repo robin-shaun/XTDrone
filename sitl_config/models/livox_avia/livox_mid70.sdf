@@ -1,0 +1,112 @@
+<sdf version='1.6'>
+  <model name='iris_livox70'>
+    <link name='link'>
+      <pose frame=''>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose frame=''>-0.066667 0 0.10095 0 -0 0</pose>
+        <mass>1.2</mass>
+        <inertia>
+          <ixx>0.535575</ixx>
+          <ixy>6.98779e-07</ixy>
+          <ixz>0.02038</ixz>
+          <iyy>1.06224</iyy>
+          <iyz>-2.70401e-08</iyz>
+          <izz>1.04667</izz>
+        </inertia>
+      </inertial>
+      <collision name='link_fixed_joint_lump__oasis_300_collision'>
+        <pose frame=''>0 0 0.1 0 -0 1.57079</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://livox_mid40/meshes/standardrobots.STL</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <collision name='link_fixed_joint_lump__livox_base_collision_1'>
+        <pose frame=''>-0.4 1e-06 0.3557 0 -0 3.14149</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://livox_mid40/meshes/livox_mid40.dae</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='link_fixed_joint_lump__oasis_300_visual'>
+        <pose frame=''>0 0 0.1 0 -0 1.57079</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://livox_mid40/meshes/standardrobots.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/White</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <visual name='link_fixed_joint_lump__livox_base_visual_1'>
+        <pose frame=''>-0.4 1e-06 0.3557 0 -0 3.14149</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://livox_mid40/meshes/livox_mid40.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <velocity_decay/>
+      <gravity>1</gravity>
+      <velocity_decay/>
+      <sensor name='laser_livox' type='ray'>
+        <visualize>1</visualize>
+        <update_rate>10</update_rate>
+        <plugin name='gazebo_ros_laser_controller' filename='liblivox_laser_simulation.so'>
+          <ray>
+            <scan>
+              <horizontal>
+                <samples>100</samples>
+                <resolution>1</resolution>
+                <min_angle>-0.614355377778</min_angle>
+                <max_angle>0.614355377778</max_angle>
+              </horizontal>
+              <vertical>
+                <samples>50</samples>
+                <resolution>1</resolution>
+                <min_angle>-0.614355377778</min_angle>
+                <max_angle>0.614355377778</max_angle>
+              </vertical>
+            </scan>
+            <range>
+              <min>0.1</min>
+              <max>200.0</max>
+              <resolution>0.002</resolution>
+            </range>
+            <noise>
+              <type>gaussian</type>
+              <mean>0.0</mean>
+              <stddev>0.01</stddev>
+            </noise>
+          </ray>
+          <visualize>1</visualize>
+          <samples>10000</samples>
+          <downsample>1</downsample>
+          <csv_file_name>model://livox_mid40/scan_mode/mid70.csv</csv_file_name>
+           <robotNamespace></robotNamespace>
+        <topicName>/livox</topicName>
+        <frameName>laser_3d</frameName>
+        </plugin>
+        <pose frame=''>-0.4 1e-06 0.3557 0 -0 3.14149</pose>
+      </sensor>
+    </link>
+  </model>
+</sdf>

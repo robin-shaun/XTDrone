@@ -586,17 +586,5 @@
       </axis>
     </joint>
 
-    <joint name="bumper_joint" type="revolute">
-      <child>bumper_sensor_iris::bumper_link</child>
-      <parent>base_link</parent>
-      <axis>
-        <xyz>0 0 1</xyz>
-        <limit>
-          <upper>0</upper>
-          <lower>0</lower>
-        </limit>
-      </axis>
-    </joint>
-
   </model>
 </sdf>

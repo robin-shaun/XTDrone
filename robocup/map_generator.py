@@ -67,8 +67,8 @@ def create_point():
 
 def obstacle_list(center_list):
     # generate obstacle list for human avoidance
-    size_box = [[16, 12], [5, 17], [17, 5], [5, 17], [20, 15], [30, 25], [16, 12], [18, 18], [18, 18], [11, 9], [11, 9],
-                [11, 9], [14, 5], [2, 2]]
+    size_box = [[18, 18], [6, 17], [17, 6], [6, 17], [20, 15], [30, 25], [18, 18], [18, 18], [18, 18], [13, 10], [13, 10],
+                [10, 13], [17, 6], [2, 2]]
     black_box = [[[-35.375, -34.825], [-4, -3]], [[-3.275, -2.725], [-4, -3]], [[20.725, 21.275], [-4, -3]], \
                  [[57.725, 58.275], [-4, -3]], [[83.725, 84.275], [-4, -3]], [[-25.475, -24.925], [3, 4]],
                  [[8.725, 9.275], [3, 4]], \
@@ -113,17 +113,16 @@ def create_human_point(black_box):
         a = random.uniform(-50, 140)
         b = random.uniform(-50, 50)
         for i in range(int(len(black_box))):
-            if (a > (black_box[i][0][0] - 3)) and (a < (black_box[i][0][1] + 3)) or (b > (black_box[i][1][0] - 3)) and (
+            if (a > (black_box[i][0][0] - 3)) and (a < (black_box[i][0][1] + 3)) and (b > (black_box[i][1][0] - 3)) and (
                     b < (black_box[i][1][1] + 3)):
                 in_obstacle = True
                 count=count+1
                 break
             else:
                 in_obstacle = False
-    if count==100:
+    if count==500:
         a= random.choice((-50, 140))
         b= random.choice((-50, 50))
-        print('AAA')
     return int(a), int(b)
 
 

@@ -201,7 +201,6 @@ if __name__=="__main__":
             print('Disarming')
         elif key == 'v':
             cmd = 'AUTO.TAKEOFF'
-            cmd = ''
             print_msg()
             #print('Takeoff mode is disenabled now')
         elif key == 'b':

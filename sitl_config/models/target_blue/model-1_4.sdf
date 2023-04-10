@@ -1,0 +1,14 @@
+<?xml version="1.0" ?><sdf version="1.4">
+  <model name="target2">
+    <static>true</static>
+    <link name="link">
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>model://target2/meshes/target2.dae</uri>
+          <scale>0.9 0.9 0.9</scale></mesh>
+        </geometry>
+      </visual>
+    </link>
+  </model>
+</sdf>

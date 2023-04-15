@@ -1,5 +1,5 @@
 import rospy
-from mavros_msgs.msg import PositionTarget, ParamValue
+from mavros_msgs.msg import PositionTarget
 from mavros_msgs.srv import CommandBool, SetMode, ParamSet
 from geometry_msgs.msg import PoseStamped, Pose, Twist
 from std_msgs.msg import String
@@ -49,9 +49,6 @@ class Communication:
         '''
         self.armService = rospy.ServiceProxy(self.vehicle_type+'_'+self.vehicle_id+"/mavros/cmd/arming", CommandBool)
         self.flightModeService = rospy.ServiceProxy(self.vehicle_type+'_'+self.vehicle_id+"/mavros/set_mode", SetMode)
-        self.set_param_srv = rospy.ServiceProxy(self.vehicle_type+'_'+self.vehicle_id+"/mavros/param/set", ParamSet)
-        rcl_except = ParamValue(4, 0.0)
-        self.set_param_srv("COM_RCL_EXCEPT", rcl_except)
 
         print(self.vehicle_type+'_'+self.vehicle_id+": "+"communication initialized")
 

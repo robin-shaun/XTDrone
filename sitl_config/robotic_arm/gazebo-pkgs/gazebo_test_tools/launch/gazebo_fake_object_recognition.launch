@@ -1,0 +1,15 @@
+<launch>
+    #####################################
+    # Load Gazebo world plugins
+    #####################################
+    # Load parameters for Gazebo World Plugins to load
+    <include file="$(find gazebo_state_plugins)/launch/plugin_loader.launch"/>
+
+	#####################################
+	# Load Gazebo fake object detector 
+    #####################################
+    <include file="$(find gazebo_test_tools)/launch/fake_object_recognizer.launch">
+        # use the default config file profided in this package
+        <arg name="config_file" value="$(find gazebo_test_tools)/config/FakeObjectRecognizer.yaml"/>
+    </include>
+</launch>

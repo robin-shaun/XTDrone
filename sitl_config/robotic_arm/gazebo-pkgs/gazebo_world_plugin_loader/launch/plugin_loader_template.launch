@@ -1,0 +1,5 @@
+<launch>
+    <!-- for each gazebo world plugin to be loaded, you may need to load individual ROS parameters. 
+        You can do this from here. -->
+    <rosparam ns="<your-package>" file="$(find <your-package>)/config/<world-plugin-config>.yaml"/>
+</launch>

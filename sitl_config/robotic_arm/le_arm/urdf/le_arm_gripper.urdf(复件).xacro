@@ -1,0 +1,425 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+<xacro:include filename="$(find le_arm)/urdf/le_arm_gripper.transmission.xacro" />
+    <xacro:macro name="le_arm_gripper" params="prefix parent *origin">         
+
+        <joint  name="${prefix}wrist_2_joint" type="revolute">
+            <xacro:insert_block name="origin"/>
+            <parent link="${parent}"/>
+            <child link="${prefix}gripper_base_link"/>
+            <axis  xyz="0 0 1" />
+            <limit lower="-1.57"  upper="1.57" effort="1000" velocity="2" />
+        </joint>  
+
+        <link
+            name="gripper_base_link">
+            <inertial>
+            <origin
+                xyz="-0.016093 0.0024206 0.03061"
+                rpy="0 0 0" />
+            <mass value="0.00001" />
+            <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001" />
+            </inertial>
+            <visual>
+            <origin
+                xyz="0 0 0"
+                rpy="0 0 0" />
+            <geometry>
+                <mesh
+                filename="package://le_arm/meshes/gripper/base_link.STL" />
+            </geometry>
+            <material
+                name="">
+                <color
+                rgba="0.75294 0.75294 0.75294 1" />
+            </material>
+            </visual>
+            <collision>
+            <origin
+                xyz="0 0 0"
+                rpy="0 0 0" />
+            <geometry>
+                <mesh
+                filename="package://le_arm/meshes/gripper/base_link.STL" />
+            </geometry>
+            </collision>
+        </link>
+
+        <gazebo reference="${prefix}gripper_base_link">
+            <implicitSpringDamper>1</implicitSpringDamper>
+            <mu1>100000</mu1>
+            <mu2>100000</mu2>
+            <kp>100000000.0</kp>
+            <kd>1.0</kd>
+        </gazebo> 
+
+        <link
+            name="left_knuckle_link">
+            <inertial>
+            <origin
+                xyz="0.0004174 0.0081181 0.00092142"
+                rpy="0 0 0" />
+            <mass value="0.00001" />
+            <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001" />
+            </inertial>
+            <visual>
+            <origin
+                xyz="0 0 0"
+                rpy="0 0 0" />
+            <geometry>
+                <mesh
+                filename="package://le_arm/meshes/gripper/left_knuckle_link.STL" />
+            </geometry>
+            <material
+                name="">
+                <color
+                rgba="0.75294 0.75294 0.75294 1" />
+            </material>
+            </visual>
+            <collision>
+            <origin
+                xyz="0 0 0"
+                rpy="0 0 0" />
+            <geometry>
+                <mesh
+                filename="package://le_arm/meshes/gripper/left_knuckle_link.STL" />
+            </geometry>
+            </collision>
+        </link>
+
+        <gazebo reference="${prefix}left_knuckle_link">
+            <implicitSpringDamper>1</implicitSpringDamper>
+            <mu1>100000</mu1>
+            <mu2>100000</mu2>
+            <kp>100000000.0</kp>
+            <kd>1.0</kd>
+        </gazebo> 
+
+        <joint
+            name="left_knuckle_joint"
+            type="revolute">
+            <origin
+            xyz="0.0045 -0.014 0.0325"
+            rpy="1.5708 -0.59692 1.5708" />
+            <parent
+            link="gripper_base_link" />
+            <child
+            link="left_knuckle_link" />
+            <axis
+            xyz="0 0 1" />
+            <limit
+            lower="-1.57"
+            upper="1.57"
+            effort="1000"
+            velocity="2.0" />
+        </joint>
+        <link
+            name="right_knuckle_link">
+            <inertial>
+            <origin
+                xyz="0.00045059 0.0080041 0.0020288"
+                rpy="0 0 0" />
+            <mass value="0.00001" />
+            <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001" />
+            </inertial>
+            <visual>
+            <origin
+                xyz="0 0 0"
+                rpy="0 0 0" />
+            <geometry>
+                <mesh
+                filename="package://le_arm/meshes/gripper/right_knuckle_link.STL" />
+            </geometry>
+            <material
+                name="">
+                <color
+                rgba="0.75294 0.75294 0.75294 1" />
+            </material>
+            </visual>
+            <collision>
+            <origin
+                xyz="0 0 0"
+                rpy="0 0 0" />
+            <geometry>
+                <mesh
+                filename="package://le_arm/meshes/gripper/right_knuckle_link.STL" />
+            </geometry>
+            </collision>
+        </link>
+
+        <gazebo reference="${prefix}right_knuckle_link">
+            <implicitSpringDamper>1</implicitSpringDamper>
+            <mu1>100000</mu1>
+            <mu2>100000</mu2>
+            <kp>100000000.0</kp>
+            <kd>1.0</kd>
+        </gazebo> 
+
+        <joint
+            name="right_knuckle_joint"
+            type="revolute">
+            <origin
+            xyz="0.0075 0.014 0.0325"
+            rpy="1.5708 -0.69513 -1.5708" />
+            <parent
+            link="gripper_base_link" />
+            <child
+            link="right_knuckle_link" />
+            <axis
+            xyz="0 0 -1" />
+            <limit
+            lower="-1.57"
+            upper="1.57"
+            effort="1000"
+            velocity="2.0" />
+            <mimic joint="${prefix}left_knuckle_joint" multiplier="-1"/>
+        </joint>
+        <link
+            name="left_inner_knuckle_link">
+            <inertial>
+            <origin
+                xyz="-0.013801 1.3512E-10 -0.0091952"
+                rpy="0 0 0" />
+            <mass value="0.00001" />
+            <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001" />
+            </inertial>
+            <visual>
+            <origin
+                xyz="0 0 0"
+                rpy="0 0 0" />
+            <geometry>
+                <mesh
+                filename="package://le_arm/meshes/gripper/left_inner_knuckle_link.STL" />
+            </geometry>
+            <material
+                name="">
+                <color
+                rgba="0.75294 0.75294 0.75294 1" />
+            </material>
+            </visual>
+            <collision>
+            <origin
+                xyz="0 0 0"
+                rpy="0 0 0" />
+            <geometry>
+                <mesh
+                filename="package://le_arm/meshes/gripper/left_inner_knuckle_link.STL" />
+            </geometry>
+            </collision>
+        </link>
+
+        <gazebo reference="${prefix}left_inner_knuckle_link">
+            <implicitSpringDamper>1</implicitSpringDamper>
+            <mu1>100000</mu1>
+            <mu2>100000</mu2>
+            <kp>100000000.0</kp>
+            <kd>1.0</kd>
+        </gazebo> 
+
+        <joint
+            name="left_inner_knuckle_joint"
+            type="revolute">
+            <origin
+            xyz="0.0099 -0.005 0.051474"
+            rpy="1.5708 0.97387 1.5708" />
+            <parent
+            link="gripper_base_link" />
+            <child
+            link="left_inner_knuckle_link" />
+            <axis
+            xyz="0 0 1" />
+            <limit
+            lower="-1.57"
+            upper="1.57"
+            effort="1000"
+            velocity="2.0" />
+            <mimic joint="${prefix}left_knuckle_joint" multiplier="1"/>
+        </joint>
+        <link
+            name="left_finger_link">
+            <inertial>
+            <origin
+                xyz="-0.0038459 0.0027734 -5.6082E-05"
+                rpy="0 0 0" />
+            <mass value="0.00001" />
+            <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001" />
+            </inertial>
+            <visual>
+            <origin
+                xyz="0 0 0"
+                rpy="0 0 0" />
+            <geometry>
+                <mesh
+                filename="package://le_arm/meshes/gripper/left_finger_link.STL" />
+            </geometry>
+            <material
+                name="">
+                <color
+                rgba="0.75294 0.75294 0.75294 1" />
+            </material>
+            </visual>
+            <collision>
+            <origin
+                xyz="0 0 0"
+                rpy="0 0 0" />
+            <geometry>
+                <mesh
+                filename="package://le_arm/meshes/gripper/left_finger_link.STL" />
+            </geometry>
+            </collision>
+        </link>
+        
+        <gazebo reference="${prefix}left_finger_link">
+            <implicitSpringDamper>1</implicitSpringDamper>
+            <mu1>100000</mu1>
+            <mu2>100000</mu2>
+            <kp>100000000.0</kp>
+            <kd>1.0</kd>
+        </gazebo> 
+
+        <joint
+            name="left_finger_joint"
+            type="revolute">
+            <origin
+            xyz="-0.029 0 -0.0084"
+            rpy="9.0533E-10 -1.7902E-09 0.53096" />
+            <parent
+            link="left_inner_knuckle_link" />
+            <child
+            link="left_finger_link" />
+            <axis
+            xyz="0 0 1" />
+            <limit
+            lower="-1.57"
+            upper="1.57"
+            effort="1000"
+            velocity="2.0" />
+            <mimic joint="${prefix}left_knuckle_joint" multiplier="-1"/>
+        </joint>
+        <link
+            name="right_inner_knuckle_link">
+            <inertial>
+            <origin
+                xyz="-0.013801 4.8285E-11 0.0069248"
+                rpy="0 0 0" />
+            <mass value="0.00001" />
+            <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001" />
+            </inertial>
+            <visual>
+            <origin
+                xyz="0 0 0"
+                rpy="0 0 0" />
+            <geometry>
+                <mesh
+                filename="package://le_arm/meshes/gripper/right_inner_knuckle_link.STL" />
+            </geometry>
+            <material
+                name="">
+                <color
+                rgba="0.75294 0.75294 0.75294 1" />
+            </material>
+            </visual>
+            <collision>
+            <origin
+                xyz="0 0 0"
+                rpy="0 0 0" />
+            <geometry>
+                <mesh
+                filename="package://le_arm/meshes/gripper/right_inner_knuckle_link.STL" />
+            </geometry>
+            </collision>
+        </link>
+
+        <gazebo reference="${prefix}right_inner_knuckle_link">
+            <implicitSpringDamper>1</implicitSpringDamper>
+            <mu1>100000</mu1>
+            <mu2>100000</mu2>
+            <kp>100000000.0</kp>
+            <kd>1.0</kd>
+        </gazebo> 
+
+        <joint
+            name="right_inner_knuckle_joint"
+            type="revolute">
+            <origin
+            xyz="-0.00622 0.005 0.051474"
+            rpy="-1.5708 0.87566 -1.5708" />
+            <parent
+            link="gripper_base_link" />
+            <child
+            link="right_inner_knuckle_link" />
+            <axis
+            xyz="0 0 1" />
+            <limit
+            lower="-1.57"
+            upper="1.57"
+            effort="1000"
+            velocity="2.0" />
+            <mimic joint="${prefix}left_knuckle_joint" multiplier="-1"/>
+        </joint>
+        <link
+            name="right_finger_link">
+            <inertial>
+            <origin
+                xyz="-0.0038459 0.0027734 0.0030561"
+                rpy="0 0 0" />
+            <mass value="0.00001" />
+            <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001" />
+            </inertial>
+            <visual>
+            <origin
+                xyz="0 0 0"
+                rpy="0 0 0" />
+            <geometry>
+                <mesh
+                filename="package://le_arm/meshes/gripper/right_finger_link.STL" />
+            </geometry>
+            <material
+                name="">
+                <color
+                rgba="0.75294 0.75294 0.75294 1" />
+            </material>
+            </visual>
+            <collision>
+            <origin
+                xyz="0 0 0"
+                rpy="0 0 0" />
+            <geometry>
+                <mesh
+                filename="package://le_arm/meshes/gripper/right_finger_link.STL" />
+            </geometry>
+            </collision>
+        </link>
+        
+        <gazebo reference="${prefix}right_finger_link">
+            <implicitSpringDamper>1</implicitSpringDamper>
+            <mu1>100000</mu1>
+            <mu2>100000</mu2>
+            <kp>100000000.0</kp>
+            <kd>1.0</kd>
+        </gazebo> 
+
+        <joint
+            name="right_finger_joint"
+            type="revolute">
+            <origin
+            xyz="-0.029 0 0.01072"
+            rpy="-3.1416 1.7902E-09 -0.43275" />
+            <parent
+            link="right_inner_knuckle_link" />
+            <child
+            link="right_finger_link" />
+            <axis
+            xyz="0 0 -1" />
+            <limit
+            lower="-1.57"
+            upper="1.57"
+            effort="1000"
+            velocity="2.0" />
+            <mimic joint="${prefix}left_knuckle_joint" multiplier="1"/>
+        </joint>
+
+        <xacro:le_arm_gripper_transmission prefix="${prefix}"/>
+
+    </xacro:macro>    
+</robot>

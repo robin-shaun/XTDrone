@@ -1,0 +1,13 @@
+# Execute a series of geometry_msgs/Transform points instead of
+# using a nav_msgs/Path.
+ 
+Header header
+
+geometry_msgs/Transform[] transforms
+
+---
+
+# The actual end pose when the robot has finished navigating.
+geometry_msgs/PoseWithCovarianceStamped finalpose
+
+---

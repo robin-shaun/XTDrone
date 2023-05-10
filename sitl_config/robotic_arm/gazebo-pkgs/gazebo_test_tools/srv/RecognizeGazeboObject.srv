@@ -1,0 +1,14 @@
+# name of the object in Gazebo which is to be detected
+# and published as object_msgs/Object.msg
+string name
+
+# If true, continuously re-publish the current
+# state of the object (continuously "re-recognize").
+# If false, and the object was previously set to
+# republish, this will stop the re-publishing.
+bool republish
+
+---
+
+# If true, found the object in Gazebo and published the message.
+bool success

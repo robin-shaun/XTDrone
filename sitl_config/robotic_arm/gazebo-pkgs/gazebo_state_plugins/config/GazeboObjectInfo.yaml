@@ -1,0 +1,16 @@
+# Continuously publish info of gazebo objects?
+# This should be false if another plugin publishes
+# gazebo object info.
+publish_world_objects: false 
+
+# the topic onto which to publish object info of
+# type object_msgs/Object
+world_objects_topic: "/gazebo_objects"
+
+# The topic onto which to publish the service
+# which can be used to request object info    
+request_object_service: "/gazebo_objects/get_info"
+
+# frame of the objects poses that will be published.
+# Should usually be 'world'
+objects_frame_id: "world"

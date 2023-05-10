@@ -1,0 +1,3 @@
+<launch>
+    <param  name="robot_description"  command="$(find xacro)/xacro --inorder '$(find le_arm)/urdf/le_arm.xacro'" />  
+</launch>

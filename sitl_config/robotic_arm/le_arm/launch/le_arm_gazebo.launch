@@ -7,7 +7,7 @@
   
   <!-- startup simulated world -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" default="worlds/empty.world"/>
+    <arg name="world_name" default="worlds/box_world.world"/>
     <arg name="paused" value="$(arg paused)"/>
     <arg name="gui" value="$(arg gui)"/>
   </include>
@@ -30,9 +30,11 @@
 
   <node name="gripper_controller_spawner" pkg="controller_manager" type="spawner" args="gripper_controller " />
 
-    <!-- Add Coke can to the world -->
+<!--
+    Add Coke can to the world
   <node name="spawn_object" pkg="gazebo_ros" type="spawn_model" 
    args="-urdf -file $(find object_models)/models/urdf/coke_can.urdf -model coke -x 0.745 -y -0.75 -z 0.0"
-   respawn="false" output="screen" />
+   respawn="false" output="screen" /> 
+-->
 
 </launch>

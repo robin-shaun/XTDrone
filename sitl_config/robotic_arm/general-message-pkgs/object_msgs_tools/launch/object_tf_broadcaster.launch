@@ -1,0 +1,5 @@
+<launch>
+    <arg name="config_file" default="$(find object_msgs_tools)/config/ObjectTFBroadcaster.yaml"/>
+    <rosparam ns="object_tf_broadcaster" file="$(arg config_file)"/>
+    <node name="object_tf_broadcaster" pkg="object_msgs_tools" type="object_tf_broadcaster_node" args="" output="screen" respawn="true"/>
+</launch>

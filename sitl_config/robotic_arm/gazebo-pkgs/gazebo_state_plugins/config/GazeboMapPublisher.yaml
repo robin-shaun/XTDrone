@@ -1,0 +1,22 @@
+# the topic onto which to continuously publish
+# the map.
+publish_map_topic: "/gazebo/map"
+
+# frequency to publish the map
+map_pub_frequency: 1
+
+# topic onto which to publish the metadata
+# information of the map. Only will be published
+# if publish_map_topic is not empty.
+map_metadata_topic: "/map_metadata"
+
+# topic onto which to provide a service to
+# request the map.
+request_map_service: "/dynamic_map"
+
+# The frame ID to assign to the map    
+map_frame_id: "/map"
+
+# the name of the robot in Gazebo
+robot_name: "robot"
+

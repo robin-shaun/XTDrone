@@ -1,0 +1,6 @@
+<launch>
+    <arg name="config_file" default="$(find gazebo_test_tools)/config/ObjectTFBroadcaster.yaml"/>
+    <include file="$(find object_msgs_tools)/launch/object_tf_broadcaster.launch">
+        <arg name="config_file" value="$(arg config_file)"/>
+    </include>
+</launch>

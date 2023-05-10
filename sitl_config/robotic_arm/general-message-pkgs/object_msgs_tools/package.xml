@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<package>
+  <name>object_msgs_tools</name>
+  <version>1.0.0</version>
+  <description>The object_msgs_tools package</description>
+
+  <!-- One maintainer tag required, multiple allowed, one person per tag --> 
+  <maintainer email="jennifer.e.buehler@gmail.com">Jennifer Buehler</maintainer>
+
+  <!-- One license tag required, multiple allowed, one license per tag -->
+  <!-- Commonly used license strings: -->
+  <!--   BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 -->
+  <license>GPLv3</license>
+
+
+  <!-- Url tags are optional, but mutiple are allowed, one per tag -->
+  <!-- Optional attribute type can be: website, bugtracker, or repository -->
+  <!-- Example: -->
+  <!-- <url type="website">http://wiki.ros.org/object_msgs_tools</url> -->
+
+
+  <!-- Author tags are optional, mutiple are allowed, one per tag -->
+  <!-- Authors do not have to be maintianers, but could be -->
+  <author email="jennifer.e.buehler@gmail.com">Jennifer Buehler</author>
+
+
+  <!-- The *_depend tags are used to specify dependencies -->
+  <!-- Dependencies can be catkin packages or system dependencies -->
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>object_msgs</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>eigen_conversions</build_depend>
+  <build_depend>tf</build_depend>
+  <run_depend>object_msgs</run_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>eigen_conversions</run_depend>
+  <run_depend>tf</run_depend>
+
+  <!-- The export tag contains other, unspecified, tags -->
+  <export>
+    <!-- Other tools can request additional information be placed here -->
+  </export>
+</package>

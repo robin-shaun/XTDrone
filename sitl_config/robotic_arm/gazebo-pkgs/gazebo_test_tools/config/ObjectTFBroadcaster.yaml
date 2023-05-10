@@ -1,0 +1,9 @@
+# configuration file for publishing object information to /tf, using the same
+# topic names configured for the fake object recogniser.
+# For documentation of the fileds see also $(find object_msgs_tools)/config/ObjectTFBroadcaster.yaml.
+ 
+object_topic: ""
+register_object_service: "/object_tf_broadcaster/register_object"
+object_service: "/gazebo_objects/get_info"
+publish_tf_rate: 100
+query_object_info_rate: 1

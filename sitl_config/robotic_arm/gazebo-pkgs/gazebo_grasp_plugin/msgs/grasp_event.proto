@@ -1,0 +1,17 @@
+syntax = "proto2";
+package gazebo.msgs;
+
+/// \ingroup gazebo_msgs
+/// \interface GraspEvent
+/// \brief Message to notify about grasp events
+message GraspEvent
+{
+  // name of grasping arm/gripper
+  required string arm = 1;
+  
+  // collision shape name of grasped object
+  required string object = 2;
+  
+  // detached if false
+  required bool attached = 3;
+}

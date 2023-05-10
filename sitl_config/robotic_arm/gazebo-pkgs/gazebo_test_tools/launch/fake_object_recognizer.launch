@@ -1,0 +1,27 @@
+<launch>
+    # configuration file for the fake object recogniser
+    <arg name="config_file" default="$(find gazebo_test_tools)/config/FakeObjectRecognizer.yaml"/>
+
+    # load ROS parameters from configuratoin file
+    <rosparam ns="gazebo_test_tools" file="$(arg config_file)"/>
+
+	# name of the node
+	<arg name="node_name" default="fake_object_recognizer"/>
+	
+    #####################################
+    # Lauch the fake object recogniser node
+    #####################################
+	<node name="$(arg node_name)" pkg="gazebo_test_tools" type="fake_object_recognizer_node" respawn="true" output="screen"/>
+
+	#####################################
+	# Load the object tf publisher along
+    # with the fake object detector so that
+    # recognised objects also can
+    # get published on tf
+    #####################################
+    <include file="$(find gazebo_test_tools)/launch/object_tf_broadcaster.launch">
+        # use the default config file profided in this package
+        <arg name="config_file" value="$(find gazebo_test_tools)/config/ObjectTFBroadcaster.yaml"/>
+    </include>
+</launch>
+

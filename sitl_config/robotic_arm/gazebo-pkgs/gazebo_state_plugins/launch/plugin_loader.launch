@@ -1,0 +1,5 @@
+<launch>
+    <rosparam ns="gazebo_state_plugins" file="$(find gazebo_state_plugins)/config/WorldPlugins.yaml"/>
+    <rosparam ns="gazebo_state_plugins" file="$(find gazebo_state_plugins)/config/GazeboObjectInfo.yaml"/>
+    <rosparam ns="gazebo_state_plugins" file="$(find gazebo_state_plugins)/config/GazeboMapPublisher.yaml"/>
+</launch>

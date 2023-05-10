@@ -16,7 +16,11 @@
   It also provides a GUI to move the simulated robot around "manually".
   This corresponds to moving around the real robot without the use of MoveIt.
   -->
-  <arg name="use_gui" default="false" />
+  <arg name="use_gui" default="true" />
+
+   <!-- Load the URDF into the ROS Parameter Server -->
+   <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find le_arm)/urdf/iris_arm_base.xacro'" /> 
+
 
   <!-- Load the URDF, SRDF and other .yaml configuration files on the param server -->
   <include file="$(find le_arm_moveit_config)/launch/planning_context.launch">

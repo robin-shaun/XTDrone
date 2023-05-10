@@ -29,6 +29,26 @@
       </transmission>
 
       <gazebo>
+        <plugin name="gazebo_grasp_fix" filename="libgazebo_grasp_fix.so">
+          <arm>
+            <arm_name>gripper</arm_name>
+            <palm_link>base_link</palm_link>
+            <gripper_link>left_knuckle_link</gripper_link>
+            <gripper_link>right_knuckle_link</gripper_link>
+            <gripper_link>left_inner_knuckle_link</gripper_link>
+            <gripper_link>left_finger_link</gripper_link>
+            <gripper_link>right_inner_knuckle_link</gripper_link>
+            <gripper_link>right_finger_link</gripper_link>
+          </arm>
+        <forces_angle_tolerance>100</forces_angle_tolerance>
+        <update_rate>20</update_rate>
+        <grip_count_threshold>1</grip_count_threshold>
+        <max_grip_count>2</max_grip_count>
+        <release_tolerance>0.01</release_tolerance>
+        <disable_collisions_on_attach>true</disable_collisions_on_attach>
+        <contact_topic>__default_topic__</contact_topic>
+       </plugin>
+
         <plugin name="${prefix}MimicJointPlugin_right_finger" filename="libroboticsgroup_gazebo_mimic_joint_plugin.so">
             <joint>${prefix}left_knuckle_joint</joint>
             <mimicJoint>${prefix}right_finger_joint</mimicJoint>

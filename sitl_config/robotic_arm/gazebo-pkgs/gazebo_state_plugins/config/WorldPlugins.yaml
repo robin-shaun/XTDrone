@@ -1,0 +1,14 @@
+# Parameters read by GazeboPluginLoader: contains
+# names and library files of Gazebo World Plugins to be
+# loaded.
+
+# name of world to load the plugins on. 'default' or 
+# empty string should yield the default world.
+world_name: "default"
+
+# names and filenames of plugins to load
+world_plugins:
+    - name: gazebo_object_info
+      file: libgazebo_object_info.so
+    # - name: gazebo_map_publisher
+    #  file: libgazebo_map_publisher.so

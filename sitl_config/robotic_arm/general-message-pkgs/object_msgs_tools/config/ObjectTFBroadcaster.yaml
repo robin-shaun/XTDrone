@@ -1,0 +1,26 @@
+# the topic at which object_msgs/Object information is being
+# published. Can be left empty to instead rely on object_service
+object_topic: ""
+
+# the name under which a service of type object_msgs/RegisterObject
+# is going to be provided which can be used to add objects to be published wiht /tf.
+register_object_service: "/object_tf_broadcaster/register_object"
+
+# the object_msgs/ObjectInfo service where information
+# about objects can be queried. Can be left empty to rely on messages being
+# published on object_topic. The service is queried at query_object_info_rate.
+object_service: "/gazebo_world/object_info"
+
+# rate at which to publish information to /tf. This may differ
+# from the query_object_info_rate, i.e. it may be set higer, in order
+# to keep refreshing the timestamps of the /tf tree. Because it is expected
+# that objects don't change their state very often, query_object_info_rate
+# (or the rate at which object messages arrive at object_topic) can be lower.
+publish_tf_rate: 10
+
+# when using the object_msgs/ObjectInfo service
+# to obtain object information, this is the rate at which this is done.
+# If no service is to be used, and instead it should be relied on
+# messages published on object_topic only, then object_service
+# should be left empty, and query_object_info_rate will be ignored.
+query_object_info_rate: 1

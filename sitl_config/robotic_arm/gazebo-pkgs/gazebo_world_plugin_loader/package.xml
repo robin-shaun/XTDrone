@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<package>
+  <name>gazebo_world_plugin_loader</name>
+  <version>1.0.2</version>
+  <description>
+      Offers a *system* plugin which can be
+      used to load other *world* plugins after the world has been
+      loaded, so it doesn't have to be specified in the Gazebo "world" file.
+  </description>
+
+  <!-- One maintainer tag required, multiple allowed, one person per tag --> 
+  <maintainer email="jennifer.e.buehler@gmail.com">Jennifer Buehler</maintainer>
+
+  <!-- One license tag required, multiple allowed, one license per tag -->
+  <!-- Commonly used license strings: -->
+  <!--   BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 -->
+  <license>GPLv3</license>
+
+  <!-- Url tags are optional, but mutiple are allowed, one per tag -->
+  <!-- Optional attribute type can be: website, bugtracker, or repository -->
+  <!-- Example: -->
+  <!-- <url type="website">http://wiki.ros.org/gazebo_world_plugin_loader</url> -->
+
+  <!-- Author tags are optional, mutiple are allowed, one per tag -->
+  <!-- Authors do not have to be maintianers, but could be -->
+  <author email="jennifer.e.buehler@gmail.com">Jennifer Buehler</author>
+
+  <!-- The *_depend tags are used to specify dependencies -->
+  <!-- Dependencies can be catkin packages or system dependencies -->
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>gazebo_ros</build_depend>
+  <build_depend>gazebo</build_depend>
+  
+  <run_depend>roscpp</run_depend>
+  <run_depend>gazebo_ros</run_depend>
+  <run_depend>gazebo</run_depend>
+
+  <!-- The export tag contains other, unspecified, tags -->
+  <export>
+    <!-- You can specify that this package is a metapackage here: -->
+    <!-- <metapackage/> -->
+    <!-- Other tools can request additional information be placed here -->
+  </export>
+</package>

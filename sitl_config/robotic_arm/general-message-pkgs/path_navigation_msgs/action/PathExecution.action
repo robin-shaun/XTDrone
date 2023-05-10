@@ -1,0 +1,12 @@
+# the path
+nav_msgs/Path path
+
+# (optional) an identifier for this path.
+int32 id
+
+---
+
+# The actual end pose when robot has navigated.
+geometry_msgs/PoseWithCovarianceStamped finalpose
+
+---

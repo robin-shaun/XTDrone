@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>gazebo_grasp_plugin_ros</name>
+  <version>0.0.1</version>
+  <description>The gazebo_grasp_plugin_ros package</description>
+
+  <maintainer email="jennifer.e.buehler@gmail.com">Jennifer Buehler</maintainer>
+
+  <license>BSD</license>
+
+  <url type="website">https://github.com/JenniferBuehler/gazebo-pkgs</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>message_generation</build_depend>
+  <exec_depend>message_runtime</exec_depend>
+  <depend>gazebo_grasp_plugin</depend>
+  <depend>roscpp</depend>
+
+  <!-- The export tag contains other, unspecified, tags -->
+  <export>
+    <!-- Other tools can request additional information be placed here -->
+  </export>
+</package>

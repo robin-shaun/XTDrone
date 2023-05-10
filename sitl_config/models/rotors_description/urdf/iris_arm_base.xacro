@@ -6,6 +6,7 @@
   -->
   <xacro:arg name='name' default='iris_0' />
   <xacro:arg name='mavlink_addr' default='INADDR_ANY' />
+  <!-- <xacro:arg name='mavlink_udp_port' default='18570' />-->
   <xacro:arg name='mavlink_udp_port' default='14560' />
   <xacro:arg name='mavlink_tcp_port' default='4560' />
   <xacro:arg name='serial_enabled' default='false' />
@@ -33,15 +34,35 @@
   <xacro:arg name='log_file' default='iris' />
 
   <!-- macros for gazebo plugins, sensors -->
-  <xacro:include filename="$(arg rotors_description_dir)/urdf/component_snippets.xacro" />
+  <xacro:include filename="$(find le_arm)/urdf/component_snippets.xacro" />
 
   <!-- Instantiate iris "mechanics" -->
-  <xacro:include filename="$(arg rotors_description_dir)/urdf/iris.xacro" />
+  <xacro:include filename="$(find le_arm)/urdf/iris.xacro" />
 
   <gazebo>
       <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
           <robotNamespace>/</robotNamespace>
       </plugin>
+
+      <plugin name="gazebo_grasp_fix" filename="libgazebo_grasp_fix.so">
+          <arm>
+            <arm_name>gripper</arm_name>
+            <palm_link>base_link</palm_link>
+            <gripper_link>left_knuckle_link</gripper_link>
+            <gripper_link>right_knuckle_link</gripper_link>
+            <gripper_link>left_inner_knuckle_link</gripper_link>
+            <gripper_link>left_finger_link</gripper_link>
+            <gripper_link>right_inner_knuckle_link</gripper_link>
+            <gripper_link>right_finger_link</gripper_link>
+          </arm>
+      <forces_angle_tolerance>10</forces_angle_tolerance>
+      <update_rate>20</update_rate>
+      <grip_count_threshold>1</grip_count_threshold>
+      <max_grip_count>2</max_grip_count>
+      <release_tolerance>0.1</release_tolerance>
+      <disable_collisions_on_attach>true</disable_collisions_on_attach>
+      <contact_topic>__default_topic__</contact_topic>
+     </plugin>
   </gazebo>
   <!-- Instantiate arm "mechanics" -->
   <xacro:include filename="$(find le_arm)/urdf/le_arm.urdf.xacro" />
@@ -202,9 +223,10 @@
   </xacro:if>
 
   <!-- Instantiate a VI sensor. -->
-  <xacro:vi_sensor_macro namespace="$(arg name)" parent_link="base_link">
+  <!-- <xacro:vi_sensor_macro namespace="$(arg name)" parent_link="base_link">
   <origin xyz="0.2 0.0 0.0" rpy="0.0 0.0 0.0" />
-  </xacro:vi_sensor_macro>
+  </xacro:vi_sensor_macro> -->
 
   <xacro:include filename="$(find le_arm)/urdf/sensors/camera.urdf.xacro"/>
+
 </robot>

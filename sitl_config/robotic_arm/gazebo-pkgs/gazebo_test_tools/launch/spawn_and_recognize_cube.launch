@@ -1,0 +1,14 @@
+<launch>
+    <arg name="cube_x" default="0.2"/>
+    <arg name="cube_y" default="0"/>
+    <arg name="cube_z" default="0.76"/>
+    <arg name="cube_name" default="cube1"/>
+    <arg name="in_frame" default="world"/>
+
+	<node name="test_cube_spawn" pkg="gazebo_test_tools" type="cube_spawner" respawn="false"
+        output="screen" args="$(arg cube_name) $(arg cube_x) $(arg cube_y) $(arg cube_z) $(arg in_frame)"/>
+
+	<node name="test_recognise_cube" pkg="gazebo_test_tools" type="fake_object_recognizer_cmd" respawn="false" output="screen" args="cube1 1"/>
+
+</launch>
+

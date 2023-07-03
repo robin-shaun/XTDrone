@@ -1,0 +1,117 @@
+[
+{
+  "directory": "/home/ls/catkin_ws/build/gtest/googlemock",
+  "command": "/usr/bin/c++  -DGTEST_CREATE_SHARED_LIBRARY=1 -Dgmock_main_EXPORTS -I/usr/src/googletest/googlemock/include -I/usr/src/googletest/googlemock -I/usr/src/googletest/googletest/include -I/usr/src/googletest/googletest  -fPIC    -Wall -Wshadow -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles/gmock_main.dir/__/googletest/src/gtest-all.cc.o -c /usr/src/googletest/googletest/src/gtest-all.cc",
+  "file": "/usr/src/googletest/googletest/src/gtest-all.cc"
+},
+{
+  "directory": "/home/ls/catkin_ws/build/gtest/googlemock",
+  "command": "/usr/bin/c++  -DGTEST_CREATE_SHARED_LIBRARY=1 -Dgmock_main_EXPORTS -I/usr/src/googletest/googlemock/include -I/usr/src/googletest/googlemock -I/usr/src/googletest/googletest/include -I/usr/src/googletest/googletest  -fPIC    -Wall -Wshadow -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles/gmock_main.dir/src/gmock-all.cc.o -c /usr/src/googletest/googlemock/src/gmock-all.cc",
+  "file": "/usr/src/googletest/googlemock/src/gmock-all.cc"
+},
+{
+  "directory": "/home/ls/catkin_ws/build/gtest/googlemock",
+  "command": "/usr/bin/c++  -DGTEST_CREATE_SHARED_LIBRARY=1 -Dgmock_main_EXPORTS -I/usr/src/googletest/googlemock/include -I/usr/src/googletest/googlemock -I/usr/src/googletest/googletest/include -I/usr/src/googletest/googletest  -fPIC    -Wall -Wshadow -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles/gmock_main.dir/src/gmock_main.cc.o -c /usr/src/googletest/googlemock/src/gmock_main.cc",
+  "file": "/usr/src/googletest/googlemock/src/gmock_main.cc"
+},
+{
+  "directory": "/home/ls/catkin_ws/build/gtest/googlemock",
+  "command": "/usr/bin/c++  -DGTEST_CREATE_SHARED_LIBRARY=1 -Dgmock_EXPORTS -I/usr/src/googletest/googlemock/include -I/usr/src/googletest/googlemock -I/usr/src/googletest/googletest/include -I/usr/src/googletest/googletest  -fPIC    -Wall -Wshadow -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles/gmock.dir/__/googletest/src/gtest-all.cc.o -c /usr/src/googletest/googletest/src/gtest-all.cc",
+  "file": "/usr/src/googletest/googletest/src/gtest-all.cc"
+},
+{
+  "directory": "/home/ls/catkin_ws/build/gtest/googlemock",
+  "command": "/usr/bin/c++  -DGTEST_CREATE_SHARED_LIBRARY=1 -Dgmock_EXPORTS -I/usr/src/googletest/googlemock/include -I/usr/src/googletest/googlemock -I/usr/src/googletest/googletest/include -I/usr/src/googletest/googletest  -fPIC    -Wall -Wshadow -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles/gmock.dir/src/gmock-all.cc.o -c /usr/src/googletest/googlemock/src/gmock-all.cc",
+  "file": "/usr/src/googletest/googlemock/src/gmock-all.cc"
+},
+{
+  "directory": "/home/ls/catkin_ws/build/gtest/googlemock/gtest",
+  "command": "/usr/bin/c++  -DGTEST_CREATE_SHARED_LIBRARY=1 -Dgtest_main_EXPORTS -I/usr/src/googletest/googletest/include -I/usr/src/googletest/googletest  -fPIC    -Wall -Wshadow -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles/gtest_main.dir/src/gtest_main.cc.o -c /usr/src/googletest/googletest/src/gtest_main.cc",
+  "file": "/usr/src/googletest/googletest/src/gtest_main.cc"
+},
+{
+  "directory": "/home/ls/catkin_ws/build/gtest/googlemock/gtest",
+  "command": "/usr/bin/c++  -DGTEST_CREATE_SHARED_LIBRARY=1 -Dgtest_EXPORTS -I/usr/src/googletest/googletest/include -I/usr/src/googletest/googletest  -fPIC    -Wall -Wshadow -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles/gtest.dir/src/gtest-all.cc.o -c /usr/src/googletest/googletest/src/gtest-all.cc",
+  "file": "/usr/src/googletest/googletest/src/gtest-all.cc"
+},
+{
+  "directory": "/home/ls/catkin_ws/build/fixed_wing_formation_control",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"fixed_wing_formation_control\\\" -I/home/ls/catkin_ws/devel/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -I/opt/ros/melodic/share/orocos_kdl/cmake/../../../include -I/usr/include/eigen3    -std=c++11 -o CMakeFiles/test_pid.dir/src/test/test_pid.cpp.o -c /home/ls/catkin_ws/src/fixed_wing_formation_control/src/test/test_pid.cpp",
+  "file": "/home/ls/catkin_ws/src/fixed_wing_formation_control/src/test/test_pid.cpp"
+},
+{
+  "directory": "/home/ls/catkin_ws/build/fixed_wing_formation_control",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"fixed_wing_formation_control\\\" -I/home/ls/catkin_ws/devel/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -I/opt/ros/melodic/share/orocos_kdl/cmake/../../../include -I/usr/include/eigen3    -std=c++11 -o CMakeFiles/test_filter.dir/src/test/test_filter.cpp.o -c /home/ls/catkin_ws/src/fixed_wing_formation_control/src/test/test_filter.cpp",
+  "file": "/home/ls/catkin_ws/src/fixed_wing_formation_control/src/test/test_filter.cpp"
+},
+{
+  "directory": "/home/ls/catkin_ws/build/fixed_wing_formation_control",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"fixed_wing_formation_control\\\" -I/home/ls/catkin_ws/devel/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -I/opt/ros/melodic/share/orocos_kdl/cmake/../../../include -I/usr/include/eigen3    -std=c++11 -o CMakeFiles/vir_sim_leader.dir/src/test/vir_leader/vir_sim_leader.cpp.o -c /home/ls/catkin_ws/src/fixed_wing_formation_control/src/test/vir_leader/vir_sim_leader.cpp",
+  "file": "/home/ls/catkin_ws/src/fixed_wing_formation_control/src/test/vir_leader/vir_sim_leader.cpp"
+},
+{
+  "directory": "/home/ls/catkin_ws/build/fixed_wing_formation_control",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"fixed_wing_formation_control\\\" -I/home/ls/catkin_ws/devel/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -I/opt/ros/melodic/share/orocos_kdl/cmake/../../../include -I/usr/include/eigen3    -std=c++11 -o CMakeFiles/vir_dir_leader.dir/src/test/vir_leader/vir_dir_leader.cpp.o -c /home/ls/catkin_ws/src/fixed_wing_formation_control/src/test/vir_leader/vir_dir_leader.cpp",
+  "file": "/home/ls/catkin_ws/src/fixed_wing_formation_control/src/test/vir_leader/vir_dir_leader.cpp"
+},
+{
+  "directory": "/home/ls/catkin_ws/build/fixed_wing_formation_control",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"fixed_wing_formation_control\\\" -I/home/ls/catkin_ws/devel/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -I/opt/ros/melodic/share/orocos_kdl/cmake/../../../include -I/usr/include/eigen3    -std=c++11 -o CMakeFiles/commander.dir/src/commander/commander.cpp.o -c /home/ls/catkin_ws/src/fixed_wing_formation_control/src/commander/commander.cpp",
+  "file": "/home/ls/catkin_ws/src/fixed_wing_formation_control/src/commander/commander.cpp"
+},
+{
+  "directory": "/home/ls/catkin_ws/build/fixed_wing_formation_control",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"fixed_wing_formation_control\\\" -I/home/ls/catkin_ws/devel/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -I/opt/ros/melodic/share/orocos_kdl/cmake/../../../include -I/usr/include/eigen3    -std=c++11 -o CMakeFiles/control_monitor.dir/src/fw_control_monitor/control_monitor.cpp.o -c /home/ls/catkin_ws/src/fixed_wing_formation_control/src/fw_control_monitor/control_monitor.cpp",
+  "file": "/home/ls/catkin_ws/src/fixed_wing_formation_control/src/fw_control_monitor/control_monitor.cpp"
+},
+{
+  "directory": "/home/ls/catkin_ws/build/fixed_wing_formation_control",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"fixed_wing_formation_control\\\" -I/home/ls/catkin_ws/devel/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -I/opt/ros/melodic/share/orocos_kdl/cmake/../../../include -I/usr/include/eigen3    -std=c++11 -o CMakeFiles/task_main.dir/src/task_main/task_main.cpp.o -c /home/ls/catkin_ws/src/fixed_wing_formation_control/src/task_main/task_main.cpp",
+  "file": "/home/ls/catkin_ws/src/fixed_wing_formation_control/src/task_main/task_main.cpp"
+},
+{
+  "directory": "/home/ls/catkin_ws/build/fixed_wing_formation_control",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"fixed_wing_formation_control\\\" -Dformation_controller_EXPORTS -I/home/ls/catkin_ws/devel/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -I/opt/ros/melodic/share/orocos_kdl/cmake/../../../include -I/usr/include/eigen3  -fPIC   -std=c++11 -o CMakeFiles/formation_controller.dir/src/formation_controller/formation_controller.cpp.o -c /home/ls/catkin_ws/src/fixed_wing_formation_control/src/formation_controller/formation_controller.cpp",
+  "file": "/home/ls/catkin_ws/src/fixed_wing_formation_control/src/formation_controller/formation_controller.cpp"
+},
+{
+  "directory": "/home/ls/catkin_ws/build/fixed_wing_formation_control",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"fixed_wing_formation_control\\\" -Dtecs_EXPORTS -I/home/ls/catkin_ws/devel/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -I/opt/ros/melodic/share/orocos_kdl/cmake/../../../include -I/usr/include/eigen3  -fPIC   -std=c++11 -o CMakeFiles/tecs.dir/src/fixed_wing_lib/vertical_controller/tecs.cpp.o -c /home/ls/catkin_ws/src/fixed_wing_formation_control/src/fixed_wing_lib/vertical_controller/tecs.cpp",
+  "file": "/home/ls/catkin_ws/src/fixed_wing_formation_control/src/fixed_wing_lib/vertical_controller/tecs.cpp"
+},
+{
+  "directory": "/home/ls/catkin_ws/build/fixed_wing_formation_control",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"fixed_wing_formation_control\\\" -Dabs_formation_controller_EXPORTS -I/home/ls/catkin_ws/devel/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -I/opt/ros/melodic/share/orocos_kdl/cmake/../../../include -I/usr/include/eigen3  -fPIC   -std=c++11 -o CMakeFiles/abs_formation_controller.dir/src/formation_controller/abs_formation_controller.cpp.o -c /home/ls/catkin_ws/src/fixed_wing_formation_control/src/formation_controller/abs_formation_controller.cpp",
+  "file": "/home/ls/catkin_ws/src/fixed_wing_formation_control/src/formation_controller/abs_formation_controller.cpp"
+},
+{
+  "directory": "/home/ls/catkin_ws/build/fixed_wing_formation_control",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"fixed_wing_formation_control\\\" -I/home/ls/catkin_ws/devel/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -I/opt/ros/melodic/share/orocos_kdl/cmake/../../../include -I/usr/include/eigen3    -std=c++11 -o CMakeFiles/switch_fw_mode.dir/src/test/switch_fw_mode.cpp.o -c /home/ls/catkin_ws/src/fixed_wing_formation_control/src/test/switch_fw_mode.cpp",
+  "file": "/home/ls/catkin_ws/src/fixed_wing_formation_control/src/test/switch_fw_mode.cpp"
+},
+{
+  "directory": "/home/ls/catkin_ws/build/fixed_wing_formation_control",
+  "command": "/usr/bin/c++  -DL1_controller_EXPORTS -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"fixed_wing_formation_control\\\" -I/home/ls/catkin_ws/devel/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -I/opt/ros/melodic/share/orocos_kdl/cmake/../../../include -I/usr/include/eigen3  -fPIC   -std=c++11 -o CMakeFiles/L1_controller.dir/src/fixed_wing_lib/lateral_controller/L1_controller.cpp.o -c /home/ls/catkin_ws/src/fixed_wing_formation_control/src/fixed_wing_lib/lateral_controller/L1_controller.cpp",
+  "file": "/home/ls/catkin_ws/src/fixed_wing_formation_control/src/fixed_wing_lib/lateral_controller/L1_controller.cpp"
+},
+{
+  "directory": "/home/ls/catkin_ws/build/fixed_wing_formation_control",
+  "command": "/usr/bin/c++  -DL1_vel_controller_EXPORTS -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"fixed_wing_formation_control\\\" -I/home/ls/catkin_ws/devel/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -I/opt/ros/melodic/share/orocos_kdl/cmake/../../../include -I/usr/include/eigen3  -fPIC   -std=c++11 -o CMakeFiles/L1_vel_controller.dir/src/fixed_wing_lib/lateral_controller/L1_vel_controller.cpp.o -c /home/ls/catkin_ws/src/fixed_wing_formation_control/src/fixed_wing_lib/lateral_controller/L1_vel_controller.cpp",
+  "file": "/home/ls/catkin_ws/src/fixed_wing_formation_control/src/fixed_wing_lib/lateral_controller/L1_vel_controller.cpp"
+},
+{
+  "directory": "/home/ls/catkin_ws/build/fixed_wing_formation_control",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"fixed_wing_formation_control\\\" -I/home/ls/catkin_ws/devel/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -I/opt/ros/melodic/share/orocos_kdl/cmake/../../../include -I/usr/include/eigen3    -std=c++11 -o CMakeFiles/pack_fw_states.dir/src/pack_fw_states/pack_fw_states.cpp.o -c /home/ls/catkin_ws/src/fixed_wing_formation_control/src/pack_fw_states/pack_fw_states.cpp",
+  "file": "/home/ls/catkin_ws/src/fixed_wing_formation_control/src/pack_fw_states/pack_fw_states.cpp"
+},
+{
+  "directory": "/home/ls/catkin_ws/build/fixed_wing_formation_control",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"fixed_wing_formation_control\\\" -Dtrack_vel_EXPORTS -I/home/ls/catkin_ws/devel/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -I/opt/ros/melodic/share/orocos_kdl/cmake/../../../include -I/usr/include/eigen3  -fPIC   -std=c++11 -o CMakeFiles/track_vel.dir/src/fixed_wing_lib/lateral_controller/track_vel.cpp.o -c /home/ls/catkin_ws/src/fixed_wing_formation_control/src/fixed_wing_lib/lateral_controller/track_vel.cpp",
+  "file": "/home/ls/catkin_ws/src/fixed_wing_formation_control/src/fixed_wing_lib/lateral_controller/track_vel.cpp"
+},
+{
+  "directory": "/home/ls/catkin_ws/build/fixed_wing_formation_control",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"fixed_wing_formation_control\\\" -Dlateral_controller_EXPORTS -I/home/ls/catkin_ws/devel/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -I/opt/ros/melodic/share/orocos_kdl/cmake/../../../include -I/usr/include/eigen3  -fPIC   -std=c++11 -o CMakeFiles/lateral_controller.dir/src/fixed_wing_lib/lateral_controller/lateral_controller.cpp.o -c /home/ls/catkin_ws/src/fixed_wing_formation_control/src/fixed_wing_lib/lateral_controller/lateral_controller.cpp",
+  "file": "/home/ls/catkin_ws/src/fixed_wing_formation_control/src/fixed_wing_lib/lateral_controller/lateral_controller.cpp"
+}
+]

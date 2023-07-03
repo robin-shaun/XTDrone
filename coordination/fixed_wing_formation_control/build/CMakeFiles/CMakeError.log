@@ -1,0 +1,42 @@
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/lightforever/catkin_ws/src/fixed_wing_formation_control/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/ninja" "cmTC_66a23"
+[1/2] Building C object CMakeFiles/cmTC_66a23.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_66a23
+FAILED: cmTC_66a23 
+: && /usr/bin/aarch64-linux-gnu-gcc-7   -rdynamic CMakeFiles/cmTC_66a23.dir/CheckSymbolExists.c.o  -o cmTC_66a23   && :
+CMakeFiles/cmTC_66a23.dir/CheckSymbolExists.c.o：在函数‘main’中：
+CheckSymbolExists.c:(.text+0x14)：对‘pthread_create’未定义的引用
+CheckSymbolExists.c:(.text+0x18)：对‘pthread_create’未定义的引用
+collect2: error: ld returned 1 exit status
+ninja: build stopped: subcommand failed.
+
+File /home/lightforever/catkin_ws/src/fixed_wing_formation_control/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/lightforever/catkin_ws/src/fixed_wing_formation_control/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/ninja" "cmTC_ec434"
+[1/2] Building C object CMakeFiles/cmTC_ec434.dir/CheckFunctionExists.c.o
+[2/2] Linking C executable cmTC_ec434
+FAILED: cmTC_ec434 
+: && /usr/bin/aarch64-linux-gnu-gcc-7 -DCHECK_FUNCTION_EXISTS=pthread_create  -rdynamic CMakeFiles/cmTC_ec434.dir/CheckFunctionExists.c.o  -o cmTC_ec434  -lpthreads && :
+/usr/lib/gcc-cross/aarch64-linux-gnu/7/../../../../aarch64-linux-gnu/bin/ld: 找不到 -lpthreads
+collect2: error: ld returned 1 exit status
+ninja: build stopped: subcommand failed.
+
+

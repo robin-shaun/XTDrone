@@ -108,7 +108,7 @@ Robot Arm
 
 - Founders: Kun Xiao, Shaochang Tan
 - Adviser: Xiangke Wang
-- Developers: Kun Xiao, Shaochang Tan, Guanzheng Wang, Lan Ma, Yuke Li, Qipeng Wang, Xinyu Hu, Xinning Wu, Jiayi Zheng, Yufan Peng, Zijun Zheng, Jiarun Yan, Feng Yi, Ruoqiao Guan, Wenxin Hu, Yi Bao, An Zhuo， Xudong Liu, Jie Min, Ciyu Ruan
+- Developers: Kun Xiao, Shaochang Tan, Guanzheng Wang, Lan Ma, Yuke Li, Qipeng Wang, Xinyu Hu, Xinning Wu, Jiayi Zheng, Yufan Peng, Zijun Zheng, Jiarun Yan, Feng Yi, Ruoqiao Guan, Wenxin Hu, Yi Bao, An Zhuo， Xudong Liu, Jie Min, Chuanlu Liu, Ciyu Ruan
 
 ### Contributers
 

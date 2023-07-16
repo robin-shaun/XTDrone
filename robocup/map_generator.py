@@ -198,7 +198,7 @@ def create_rover_point(rover_num):
         center_box.append([x, y])
     return center_box
 
-map_num=random.randint(0,6)
+map_num=random.randint(0,2)
 content = open("base"+str(map_num)+".world", 'r')
 with open("house.world", 'w') as f:
     count = 5

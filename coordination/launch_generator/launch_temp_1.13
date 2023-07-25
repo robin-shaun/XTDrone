@@ -16,6 +16,7 @@
             <arg name="sdf" value="plane"/>
             <arg name="mavlink_udp_port" value="14560"/>
             <arg name="mavlink_tcp_port" value="4560"/>
+            <arg name="udp_gimbal_port" value="13030"/>
             <arg name="ID" value="$(arg ID)"/>
             <arg name="ID_in_group" value="$(arg ID_in_group)"/>
         </include>

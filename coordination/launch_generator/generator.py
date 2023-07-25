@@ -107,6 +107,7 @@ with open('multi_vehicle.launch','w') as f:
                 offboard_remote=24540+id_in_all
                 SITL=18570+id_in_all
                 TCP=4560+id_in_all
+                gimbal_remote=13030+id_in_all
                 for line in launch_lines:
                     if "<!-- UAV" in line:
                         f.write("     <!-- "+type_name+("_%d -->\n" %id_in_type) )
@@ -122,6 +123,8 @@ with open('multi_vehicle.launch','w') as f:
                         f.write('''            <arg name="mavlink_udp_port" value="%d"/>\n'''%SITL)
                     elif "mavlink_tcp_port" in line:
                         f.write('''            <arg name="mavlink_tcp_port" value="%d"/>\n'''%TCP)
+                    elif "udp_gimbal_port" in line:
+                        f.write("""            <arg name="udp_gimbal_port" value="%d"/>\n"""%gimbal_remote)
                     elif '''<arg name="vehicle" value=''' in line:
                         f.write('''            <arg name="vehicle" value="%s"/>\n'''%type_name)
                     elif '''<arg name="sdf" value=''' in line:

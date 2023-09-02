@@ -26,6 +26,8 @@
     <!-- generate sdf vehicle model -->
     <arg name="cmd" default="xmlstarlet ed -d '//plugin[@name=&quot;gimbal_controller&quot;]/udp_gimbal_port_remote' -s '//plugin[@name=&quot;gimbal_controller&quot;]' -t elem -n udp_gimbal_port_remote -v $(arg udp_gimbal_port) -d '//plugin[@name=&quot;mavlink_interface&quot;]/mavlink_tcp_port' -s '//plugin[@name=&quot;mavlink_interface&quot;]' -t elem -n mavlink_tcp_port -v $(arg mavlink_tcp_port)
     $(find px4)/Tools/sitl_gazebo/models/$(arg sdf)/$(arg sdf).sdf"/>
+    <!-- <arg name="cmd" default="xmlstarlet ed -d '//plugin[@name=&quot;mavlink_interface&quot;]/mavlink_tcp_port' -s '//plugin[@name=&quot;mavlink_interface&quot;]' -t elem -n mavlink_tcp_port -v $(arg mavlink_tcp_port)
+    $(find px4)/Tools/sitl_gazebo/models/$(arg sdf)/$(arg sdf).sdf"/> -->
     <param command="$(arg cmd)" name="model_description"/>
     <!-- PX4 SITL -->
     <arg unless="$(arg interactive)" name="px4_command_arg1" value=""/>

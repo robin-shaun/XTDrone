@@ -37,7 +37,7 @@ include(GNUInstallDirs)
 #######################
 
 option(BUILD_GSTREAMER_PLUGIN "enable gstreamer plugin" ON)
-option(BUILD_ROS_PLUGINS "Enable building ROS dependent plugins" OFF)
+option(BUILD_ROS_PLUGINS "Enable building ROS dependent plugins" ON)
 option(GENERATE_ROS_MODELS "Generate model sdf for ROS environment" OFF)
 
 option(SEND_VISION_ESTIMATION_DATA "Send Mavlink VISION_POSITION_ESTIMATE msgs" OFF)
@@ -108,6 +108,7 @@ if (BUILD_ROS_PLUGINS)
   find_package(geometry_msgs REQUIRED)
   find_package(roscpp REQUIRED)
   find_package(sensor_msgs REQUIRED)
+  find_package(std_msgs REQUIRED)
 endif()
 
 # find MAVLink
@@ -373,7 +374,6 @@ add_library(gazebo_usv_dynamics_plugin SHARED src/gazebo_usv_dynamics_plugin.cpp
 add_library(gazebo_parachute_plugin SHARED src/gazebo_parachute_plugin.cpp)
 add_library(gazebo_airship_dynamics_plugin SHARED src/gazebo_airship_dynamics_plugin.cpp)
 add_library(gazebo_drop_plugin SHARED src/gazebo_drop_plugin.cpp)
-add_library(gazebo_ros_wind_plugin_xtdrone SHARED src/gazebo_ros_wind_plugin_xtdrone.cpp)
 
 set(plugins
   gazebo_airspeed_plugin
@@ -401,7 +401,7 @@ set(plugins
   gazebo_parachute_plugin
   gazebo_airship_dynamics_plugin
   gazebo_drop_plugin
-  gazebo_ros_wind_plugin_xtdrone
+  #gazebo_ros_wind_plugin_xtdrone
   )
 
 foreach(plugin ${plugins})
@@ -410,7 +410,7 @@ endforeach()
 target_link_libraries(gazebo_opticalflow_plugin ${OpticalFlow_LIBS})
 
 # If BUILD_ROS_PLUGINS set to ON, build plugins that have ROS dependencies
-# Current plugins that can be used with ROS interface: gazebo_motor_failure_plugin
+# Current plugins that can be used with ROS interface: gazebo_motor_failure_plugin, gazebo_ros_wind_plugin_xtdrone
 if (BUILD_ROS_PLUGINS)
   add_library(gazebo_motor_failure_plugin SHARED src/gazebo_motor_failure_plugin.cpp)
   target_link_libraries(gazebo_motor_failure_plugin ${GAZEBO_libraries} ${roscpp_LIBRARIES})
@@ -424,6 +424,23 @@ if (BUILD_ROS_PLUGINS)
   )
 
   target_link_libraries(gazebo_motor_failure_plugin
+    ${catkin_LIBRARIES}
+    ${roscpp_LIBRARIES}
+    ${GAZEBO_libraries}
+  )
+
+	add_library(gazebo_ros_wind_plugin_xtdrone SHARED src/gazebo_ros_wind_plugin_xtdrone.cpp)
+	target_link_libraries(gazebo_ros_wind_plugin_xtdrone ${GAZEBO_libraries} ${roscpp_LIBRARIES})
+	list(APPEND plugins gazebo_ros_wind_plugin_xtdrone)
+	message(STATUS "adding gazebo_ros_wind_plugin_xtdrone to build")
+	
+	include_directories(
+    include
+    ${std_msgs_INCLUDE_DIRS}
+    ${geometry_msgs_INCLUDE_DIRS}
+  )
+  
+  target_link_libraries(gazebo_ros_wind_plugin_xtdrone
     ${catkin_LIBRARIES}
     ${roscpp_LIBRARIES}
     ${GAZEBO_libraries}

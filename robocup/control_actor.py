@@ -11,6 +11,8 @@ from nav_msgs.msg import Odometry
 from ObstacleAvoid import ObstacleAviod
 import math
 import ast
+import numpy as np
+
 
 class ControlActor:
     def __init__(self, actor_id):
@@ -62,6 +64,11 @@ class ControlActor:
         line=content.readline()
         self.black_box=ast.literal_eval(line)
         self.box_num = len(self.black_box)
+
+                # 读取文件并初始化障碍物数据
+        with open('obstacle.txt', 'r') as file:
+            lines = file.readlines()
+            self.obstacle_data = [line.strip().split() for line in lines]
         self.cmd_pub = rospy.Publisher('/actor_' + self.id + '/cmd_motion', ActorMotion, queue_size=10)
         self.gazeboModelstate = rospy.ServiceProxy('gazebo/get_model_state', GetModelState)
         print('actor_' + self.id + ": " + "communication initialized")
@@ -129,7 +136,7 @@ class ControlActor:
                 self.current_pose.x = 0.0
                 self.current_pose.y = 0.0
                 self.current_pose.z = 1.25
-                # collosion: if the actor is in the black box, then go backward and update a new target position
+            # collosion: if the actor is in the black box, then go backward and update a new target position
             # update new random target position
             if (self.avoid_finish_flag and self.distance_flag):
                 while self.suitable_point:
@@ -137,12 +144,30 @@ class ControlActor:
                     self.suitable_point = False
                     self.x = random.uniform(self.x_min, self.x_max)
                     self.y = random.uniform(self.y_min, self.y_max)
+                            # 定义阈值
+                    collision_threshold = 0.5
+                    # 生成路径点
+                    path_points = []
+                    for t in range(101):  # 生成
+                        alpha = t / 100.0
+                        x_path = (1 - alpha) * self.current_pose.x+ alpha * self.x
+                        y_path = (1 - alpha) * self.current_pose.y + alpha * self.y
+                        path_points.append((x_path, y_path))
+        
                     for i in range(self.box_num):
                         if (self.x > self.black_box[i][0][0]-1.5) and (self.x < self.black_box[i][0][1]+1.5):
                             if (self.y > self.black_box[i][1][0]-1.5) and (self.y < self.black_box[i][1][1]+1.5):
                                 self.suitable_point = True
                                 while_time = while_time+1
-                                #print self.id + 'while time :  ', while_time
+                                break
+
+                    for point in path_points:
+                        for obstacle in self.obstacle_data :
+                            point = [float(point[0]), float(point[1])]
+                            obstacle = [float(obstacle[0]), float(obstacle[1])]
+                            if np.sqrt((point[0] - obstacle[0])**2 + (point[1] - obstacle[1])**2) < collision_threshold :
+                                self.suitable_point = True
+                                while_time = while_time+1
                                 break
                 self.target_motion.x = self.x
                 self.target_motion.y = self.y
@@ -339,18 +364,18 @@ class ControlActor:
                     else:
                         self.avoid.x = middd_pos[self.subtarget_count].x
                         self.avoid.y = middd_pos[self.subtarget_count].y
-            '''
+            
             if self.catching_flag == 1 or self.catching_flag == 2:
                 self.target_motion.v = 3
             else:
                 self.target_motion.v = 2
                 if self.count % 200 == 0:
-                print self.id + '   vel:', self.target_motion.v
-            '''
+                    print(self.id + '   vel:', self.target_motion.v)
+            
             #reduce difficulty
-            self.avoid.v = 1
-            if self.id == 5:
-                print('self.avoid:', self.avoid)
+            # self.avoid.v = 1
+            # if self.id == 5:
+            #     print('self.avoid:', self.avoid)
             self.cmd_pub.publish(self.avoid)
             rate.sleep()
 

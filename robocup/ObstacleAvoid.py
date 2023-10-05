@@ -3,7 +3,7 @@ import math
 from geometry_msgs.msg import Point
 import sys
 
-class ObstacleAviod:
+class ObstacleAvoid:
     def __init__(self):
         self.indexOfObstInSp = []
         self.obstInUAVCoorSys = []
@@ -42,7 +42,7 @@ class ObstacleAviod:
             else:
                 self.flag = False
         subTargList.append(tempTargePos)
-        #print subTargList
+        
         return subTargList
 
     def GetSubTarget(self, startPos, targetPos, safeDis):
@@ -177,10 +177,13 @@ if __name__ == "__main__":
     curr = Point()
     curr.x = float(sys.argv[1])
     curr.y = float(sys.argv[2])
+    print('curr',curr.x,curr.y)
     targ = Point()
     targ.x = float(sys.argv[3])
     targ.y = float(sys.argv[4])
-    avoid = ObstacleAviod()
+    print('targ',targ.x,targ.y)
+
+    avoid = ObstacleAvoid()
     tar = avoid.GetPointList(curr, targ, 1)
 
 

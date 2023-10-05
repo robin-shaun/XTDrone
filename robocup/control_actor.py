@@ -1,3 +1,5 @@
+#!/usr/bin/python2
+# -*- coding:utf-8 -*-
 import rospy
 import random
 from ros_actor_cmd_pose_plugin_msgs.msg import ActorMotion
@@ -8,7 +10,7 @@ import sys
 import numpy
 import copy
 from nav_msgs.msg import Odometry
-from ObstacleAvoid import ObstacleAviod
+from ObstacleAvoid import ObstacleAvoid
 import math
 import ast
 import numpy as np
@@ -44,7 +46,7 @@ class ControlActor:
         self.target_motion = Point()
         self.avoid.v = 2
         # obstacle avoidance:
-        self.Obstacleavoid = ObstacleAviod()  #ji wu 
+        self.Obstacleavoid = ObstacleAvoid()  #ji wu 
         self.left_actors = range(self.actor_num)
         self.avoid_finish_flag = True
         self.subtarget_count = 0
@@ -365,15 +367,15 @@ class ControlActor:
                         self.avoid.x = middd_pos[self.subtarget_count].x
                         self.avoid.y = middd_pos[self.subtarget_count].y
             
-            if self.catching_flag == 1 or self.catching_flag == 2:
-                self.target_motion.v = 3
-            else:
-                self.target_motion.v = 2
-                if self.count % 200 == 0:
-                    print(self.id + '   vel:', self.target_motion.v)
+            # if self.catching_flag == 1 or self.catching_flag == 2:
+            #     self.target_motion.v = 3
+            # else:
+            #     self.target_motion.v = 2
+            #     if self.count % 200 == 0:
+            #         print(self.id + '   vel:', self.target_motion.v)
             
             #reduce difficulty
-            # self.avoid.v = 1
+            self.avoid.v = 1
             # if self.id == 5:
             #     print('self.avoid:', self.avoid)
             self.cmd_pub.publish(self.avoid)

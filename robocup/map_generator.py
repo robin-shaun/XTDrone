@@ -13,11 +13,13 @@ rover_num = 20
 
 
 def rand_x(num):
-    correct=[[0,0],[5,5],[5,5],[-15,15],[15,-15],[0,0],[2,2]]
+    correct=[[0,0],[2,2],[5,5],[-15,15],[15,-15],[0,0],[2,2],[5,0],[0,0],[24,-15],[17.5,-15],[15,-15],[18,-15],[3.7,5],[5,5],[17.5,-15],[15,-15]]
     if num > 0.33 and num < 0.66:
         x = random.uniform(61.3+correct[map_num][0], 95.5)
     elif num > 0.66:
         x = random.uniform(3.55, 30.8-correct[map_num][1])
+        if map_num==8 or map_num==7:
+            x = random.uniform(2.55, 27.8)
     else:
         x = random.uniform(-30.7, -29.7)
     return x
@@ -39,23 +41,31 @@ def create_point():
             if m == 0:
                 py = random.uniform(0, 1)
                 if py > 0.5:
-                    y = -32#map_num=6时，y=1.4,map_num=5时，y=39
+                    y = -32
                 else:
-                    y = 14
-                if map_num==6:
-                    y=18
-                if map_num==5:
-                    y=-18
+                    y = 15
+                if map_num==6 :
+                    y=14.5
+                if map_num==15 or map_num==11 or map_num==10\
+                    or map_num==7:
+                    y=14.3
+                if map_num==5 or map_num==13 or map_num==12\
+                   or  map_num==9 or  map_num==8 or map_num==16:
+                    y=-24
                 p = random.uniform(0.33, 1)
                 x = int(rand_x(p))
             elif m == 1:
                 y = int(random.choice((-1, 1)) * random.uniform(13, 31))
+                if map_num==15 or map_num==14 or map_num==11\
+                     or map_num==10 or map_num==7:
+                    y=random.uniform(-32,-23)
                 if map_num==6:
-                    y=random.uniform(-31,6);
+                    y=random.uniform(-31,3)
                     if y >=-22:
-                        y+=25
-                if map_num==5:
-                    y=random.uniform(-31,6);
+                        y+=26
+                if map_num==5 or map_num==13 or map_num==12\
+                   or  map_num==9 or  map_num==8 or map_num==16:
+                    y=random.uniform(-31,6)
                     if y >=-2:
                         y+=25
                 p = random.uniform(0.33, 1)
@@ -64,12 +74,14 @@ def create_point():
                 y = int(random.choice((-1, 1)) * random.uniform(14, 30))
                 p = random.uniform(0.33, 1)
                 x = int(rand_x(p))
-                if map_num==6:
-                    y=random.uniform(-30,3);
+                if map_num==6 or map_num==15 or map_num==14 or map_num==11\
+                     or map_num==10 or map_num==7:
+                    y=random.uniform(-30,3)
                     if y >=-23:
                         y+=27
-                if map_num==5:
-                    y=random.uniform(-30,3);
+                if map_num==5 or map_num==13 or map_num==12\
+                   or  map_num==9 or  map_num==8 or map_num==16:
+                    y=random.uniform(-30,3)
                     if y >=-3:
                         y+=27
             box_len = len(center_box_judge)
@@ -96,7 +108,8 @@ def obstacle_list(center_list):
     black_box = [[[-35.375, -34.825], [-4, -3]], [[-3.275, -2.725], [-4, -3]], [[20.725, 21.275], [-4, -3]], \
                  [[57.725, 58.275], [-4, -3]], [[83.725, 84.275], [-4, -3]], [[-25.475, -24.925], [3, 4]],
                  [[8.725, 9.275], [3, 4]], \
-                 [[26.725, 27.275], [3, 4]], [[70.725, 71.275], [3, 4]], [[90.225, 90.775], [3, 4]]]
+                 [[26.725, 27.275], [3, 4]], [[70.725, 71.275], [3, 4]], [[90.225, 90.775], [3, 4]],\
+                [[79.4, 92.5], [-29.8, -28.6]], [[79, 85.2], [-33.7, -32.4]], [[88, 94.2], [-33.7, -32.4]],[[2.52 , 8.73],[34.5 , 35.7]]]
     for i in range(len(center_list)):
         j = i
         if i > len(size_box) - 1:
@@ -131,24 +144,44 @@ def change_list(list_o, d):
 
 
 def create_human_point(black_box):
-    in_obstacle = True
-    count=1
-    while in_obstacle and count<500:
-        a = random.uniform(-50, 140)
-        b = random.uniform(-50, 50)
-        for i in range(int(len(black_box))):
-            if (a > (black_box[i][0][0] - 3)) and (a < (black_box[i][0][1] + 3)) or (b > (black_box[i][1][0] - 3)) and (
-                    b < (black_box[i][1][1] + 3)):
+    count = 1
+    while count < 1e5:
+        a = random.uniform(-40, 110)
+        b = random.uniform(-40, 40)
+        in_obstacle = False
+        
+        for box in black_box:
+            xmin, xmax = box[0]
+            ymin, ymax = box[1]
+            if (xmin - 3) < a < (xmax + 3) and (ymin - 3) < b < (ymax + 3):
                 in_obstacle = True
-                count=count+1
                 break
-            else:
-                in_obstacle = False
-    if count==100:
-        a= random.choice((-50, 140))
-        b= random.choice((-50, 50))
-        print('AAA')
-    return int(a), int(b)
+        
+        if not in_obstacle:
+            return int(a), int(b)
+        
+        count += 1
+    
+    print('ERROR: Actor generation failed after 100,000 attempts!')
+    return None
+    # in_obstacle = True
+    # count=1
+    # while in_obstacle and count<500:
+    #     a = random.uniform(-40, 110)
+    #     b = random.uniform(-40, 40)
+    #     for i in range(int(len(black_box))):
+    #         if (a > (black_box[i][0][0] - 3)) and (a < (black_box[i][0][1] + 3)) or (b > (black_box[i][1][0] - 3)) and (
+    #                 b < (black_box[i][1][1] + 3)):
+    #             in_obstacle = True
+    #             count=count+1
+    #             break
+    #         else:
+    #             in_obstacle = False
+    # if count==100:
+    #     a= random.choice((-40, 110))
+    #     b= random.choice((-40, 40))
+    #     print('AAA')
+    # return int(a), int(b)
 
 
 def rand_rover(p):
@@ -156,7 +189,7 @@ def rand_rover(p):
         x = random.uniform(-48, 122)
         y = random.uniform(-48, -42)
     elif p == 1:
-        x = random.uniform(-48, 122)
+        x = random.uniform(-48, -20) or random.uniform(-11, 122)
         y = random.uniform(-3, 3)
     elif p == 2:
         x = random.uniform(-48, 122)
@@ -172,7 +205,7 @@ def rand_rover(p):
         y = random.uniform(-48, 48)
     elif p == 6:
         x = random.uniform(-11, -17)
-        y = random.uniform(-48, 48)
+        y = random.uniform(-48, -10) or random.uniform(10, 48)
     else:
         x = random.uniform(-41, -47)
         y = random.uniform(-48, 48)
@@ -198,7 +231,10 @@ def create_rover_point(rover_num):
         center_box.append([x, y])
     return center_box
 
-map_num=random.randint(0,2)
+map_num=random.randint(1,3)
+# map_num=
+print(map_num)
+
 content = open("base"+str(map_num)+".world", 'r')
 with open("house.world", 'w') as f:
     count = 5
@@ -213,9 +249,10 @@ with open("house.world", 'w') as f:
     name_list = ['house_1_146', 'house_3_156', 'house_3_157', 'house_3_158', 'gas_station_73', 'fast_food_93',
                  'house_1_66', 'house_1_67', 'house_1_146_clone', 'house_2_71', 'house_2_125', 'house_2_126',
                  'house_3_68']
-    if count_loop==10:
+    if count_loop>=10:
         lines = content.readlines()
         f.writelines(lines)
+        print(map_num)
         print('Base world is used!')
     else:
         for num, line in enumerate(lines):
@@ -269,12 +306,7 @@ with open("rover.world", 'w') as f:
                             line = " <pose frame=''>" + str(rover_center_list[i][0]) + ' ' + str(
                                 rover_center_list[i][1]) + ' ' + str(pose_ori[-4]) + ' ' + str(
                                 pose_ori[-3]) + ' ' + str(pose_ori[-2]) + ' ' + str(pose_ori[-1]) + '\n'
-                        elif "<link name='front_left_wheel'>" in lines[num - 1]:
-                            pose_ori = line.split()
-                            line = " <pose frame=''>" + str(rover_center_list[i][0] - 1.2293) + ' ' + str(
-                                rover_center_list[i][1] - 0.6585) + ' ' + str(pose_ori[-4]) + ' ' + str(
-                                pose_ori[-3]) + ' ' + str(pose_ori[-2]) + ' ' + str(pose_ori[-1]) + '\n'
-                        elif "<link name='front_left_wheel_steering_block'>" in lines[num - 1]:
+                        elif "<link name='front_left_whe or map_num==10el_steering_block'>" in lines[num - 1]:
                             pose_ori = line.split()
                             line = " <pose frame=''>" + str(rover_center_list[i][0] - 1.2189) + ' ' + str(
                                 rover_center_list[i][1] - 0.4431) + ' ' + str(pose_ori[-4]) + ' ' + str(
@@ -329,10 +361,11 @@ with open(output_path + "robocup.world", 'w') as f:
     for num, line in enumerate(lines):
         if count == 1:
             line = line_1
-        if 'filename="libros_actor_cmd_pose_plugin.so">' in line:
+        if "filename='libros_actor_cmd_pose_plugin.so'>" in line:
             count = 0
             a, b = create_human_point(black_box)
             line_1 = "        <init_pose>" + str(a) + ' ' + str(b) + " 1.25 1.57 0 0</init_pose>"
+            print(line_1)
         count = count + 1
         f.write(line)
         if num + 1 < len(lines):
@@ -346,6 +379,38 @@ result_list = change_list(black_box, 1.0)
 length = len(result_list)
 ARRS = []
 f = open('obstacle.txt', 'w+')
+
+for i in range(-50,130):
+    f.write(str(i+0.5))
+    f.write(' ')
+    f.write("50")
+    f.write(' ')
+    f.write('\n')
+    
+
+for i in range(-50,130):
+    f.write(str(i+0.5))
+    f.write(' ')
+    f.write("-50")
+    
+    f.write(' ')
+    f.write('\n')
+
+for i in range(-50,50):
+    f.write("-50")
+    f.write(' ')
+    f.write(str(i+0.5))
+    f.write(' ')
+    f.write('\n')
+
+for i in range(-50,50):
+    f.write("130")
+    f.write(' ')
+    f.write(str(i+0.5))
+    f.write(' ')
+    f.write('\n')
+  
+
 for i in range(length):
     jointsFrame = result_list[i]
     ARRS.append(jointsFrame)

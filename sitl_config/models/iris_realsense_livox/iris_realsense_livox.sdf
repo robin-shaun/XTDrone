@@ -596,7 +596,7 @@
     <!-- livox avia -->
     <include>
       <uri>model://livox_avia</uri>
-      <pose>0.05 0 0.05 0 0 0</pose>
+      <pose>0.05 0 0.095 0 0 0</pose>
     </include>
     <joint name="livox_joint" type="revolute">
       <child>livox_avia::livox_base</child>

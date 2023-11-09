@@ -27,7 +27,7 @@
         <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
           <mesh>
-            <scale>0.5 0.5 0.5</scale>
+            <scale>1 1 1</scale>
             <uri>model://livox_avia/meshes/livox_mid40.dae</uri>
           </mesh>
         </geometry>

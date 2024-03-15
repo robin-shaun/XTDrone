@@ -199,7 +199,7 @@ void GazeboRosControlPlugin::Load(gazebo::physics::ModelPtr parent, sdf::Element
       (boost::bind(&GazeboRosControlPlugin::Update, this));
 
   }
-  catch(pluginlib::PluginlibException &ex)
+  catch(pluginlib::LibraryLoadException &ex)
   {
     ROS_FATAL_STREAM_NAMED("gazebo_ros_control","Failed to create robot simulation interface loader: "<<ex.what());
   }

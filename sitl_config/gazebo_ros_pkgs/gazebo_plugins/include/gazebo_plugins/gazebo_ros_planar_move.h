@@ -76,6 +76,8 @@ namespace gazebo {
       std::string odometry_frame_;
       std::string robot_base_frame_;
       double odometry_rate_;
+      double cmd_timeout_;
+      ros::Time last_cmd_received_time_;
 
       // Custom Callback Queue
       ros::CallbackQueue queue_;

@@ -30,6 +30,10 @@
 #include <gazebo/sensors/CameraSensor.hh>
 #include <gazebo/sensors/SensorTypes.hh>
 
+#ifdef ENABLE_PROFILER
+#include <ignition/common/Profiler.hh>
+#endif
+
 namespace gazebo
 {
 // Register this plugin with the simulator
@@ -76,6 +80,10 @@ void GazeboRosCamera::OnNewFrame(const unsigned char *_image,
     unsigned int _width, unsigned int _height, unsigned int _depth,
     const std::string &_format)
 {
+#ifdef ENABLE_PROFILER
+  IGN_PROFILE("GazeboRosCamera::OnNewFrame");
+#endif
+
 # if GAZEBO_MAJOR_VERSION >= 7
   common::Time sensor_update_time = this->parentSensor_->LastMeasurementTime();
 # else
@@ -107,8 +115,18 @@ void GazeboRosCamera::OnNewFrame(const unsigned char *_image,
       // zero and the conditional always will be true.
       if (sensor_update_time - this->last_update_time_ >= this->update_period_)
       {
+#ifdef ENABLE_PROFILER
+        IGN_PROFILE_BEGIN("PutCameraData");
+#endif
         this->PutCameraData(_image, sensor_update_time);
+#ifdef ENABLE_PROFILER
+        IGN_PROFILE_END();
+        IGN_PROFILE_BEGIN("PublishCameraInfo");
+#endif
         this->PublishCameraInfo(sensor_update_time);
+#ifdef ENABLE_PROFILER
+        IGN_PROFILE_END();
+#endif
         this->last_update_time_ = sensor_update_time;
       }
     }

@@ -95,14 +95,14 @@ class SimIfaceControl():
     rospy.init_node(NAME, anonymous=True)
 
   def setPoseService(self,pose_msg):
-    print "waiting for service to set pose"
+    print('waiting for service to set pose')
     rospy.wait_for_service(self.service_name);
     try:
       set_pose = rospy.ServiceProxy(self.service_name, SetPose)
       resp1 = set_pose(pose_msg)
       return resp1.success
-    except rospy.ServiceException, e:
-      print "service call failed: %s"%e
+    except rospy.ServiceException as e:
+      print("service call failed: %s" % e)
 
   def waitTopicInput(self,p3d):
     #self.p3d_p = [p3d.pose.pose.position.x, p3d.pose.pose.position.y, p3d.pose.pose.position.z]
@@ -191,7 +191,7 @@ class SimIfaceControl():
           time.sleep(0.001)
 
 def print_usage(exit_code = 0):
-    print '''Commands:
+    print('''Commands:
     -update_rate <Hz> - update rate, default to 10 Hz
     -timeout <seconds> - test timeout in seconds. default to 1 seconds
     -x <x in meters>
@@ -204,7 +204,7 @@ def print_usage(exit_code = 0):
     -s set pose service name
     -t set pose topic name
     -p wait for this ros topic to be published first
-'''
+''')
 
 if __name__ == '__main__':
     #print usage if not arguments

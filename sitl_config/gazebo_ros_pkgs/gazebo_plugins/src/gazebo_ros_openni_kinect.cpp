@@ -32,6 +32,10 @@
 #include <sdf/sdf.hh>
 #include <gazebo/sensors/SensorTypes.hh>
 
+#ifdef ENABLE_PROFILER
+#include <ignition/common/Profiler.hh>
+#endif
+
 #include <sensor_msgs/point_cloud2_iterator.h>
 
 #include <tf/tf.h>
@@ -102,6 +106,12 @@ void GazeboRosOpenniKinect::Load(sensors::SensorPtr _parent, sdf::ElementPtr _sd
     this->point_cloud_cutoff_max_ = 5.0;
   else
     this->point_cloud_cutoff_max_ = _sdf->GetElement("pointCloudCutoffMax")->Get<double>();
+
+  // allow optional publication of depth images in 16UC1 instead of 32FC1
+  if (!_sdf->HasElement("useDepth16UC1Format"))
+    this->use_depth_image_16UC1_format_ = false;
+  else
+    this->use_depth_image_16UC1_format_ = _sdf->GetElement("useDepth16UC1Format")->Get<bool>();
 
   load_connection_ = GazeboRosCameraUtils::OnLoad(boost::bind(&GazeboRosOpenniKinect::Advertise, this));
   GazeboRosCameraUtils::Load(_parent, _sdf);
@@ -185,9 +195,14 @@ void GazeboRosOpenniKinect::OnNewDepthFrame(const float *_image,
     unsigned int _width, unsigned int _height, unsigned int _depth,
     const std::string &_format)
 {
+#ifdef ENABLE_PROFILER
+  IGN_PROFILE("GazeboRosOpenniKinect::OnNewDepthFrame");
+#endif
   if (!this->initialized_ || this->height_ <=0 || this->width_ <=0)
     return;
-
+#ifdef ENABLE_PROFILER
+  IGN_PROFILE_BEGIN("fill ROS message");
+#endif
   this->depth_sensor_update_time_ = this->parentSensor->LastMeasurementTime();
   if (this->parentSensor->IsActive())
   {
@@ -213,7 +228,14 @@ void GazeboRosOpenniKinect::OnNewDepthFrame(const float *_image,
       // do this first so there's chance for sensor to run 1 frame after activate
       this->parentSensor->SetActive(true);
   }
+#ifdef ENABLE_PROFILER
+  IGN_PROFILE_END();
+  IGN_PROFILE_BEGIN("PublishCameraInfo");
+#endif
   PublishCameraInfo();
+#ifdef ENABLE_PROFILER
+  IGN_PROFILE_END();
+#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -393,16 +415,32 @@ bool GazeboRosOpenniKinect::FillDepthImageHelper(
     uint32_t rows_arg, uint32_t cols_arg,
     uint32_t step_arg, void* data_arg)
 {
-  image_msg.encoding = sensor_msgs::image_encodings::TYPE_32FC1;
   image_msg.height = rows_arg;
   image_msg.width = cols_arg;
-  image_msg.step = sizeof(float) * cols_arg;
-  image_msg.data.resize(rows_arg * cols_arg * sizeof(float));
   image_msg.is_bigendian = 0;
+  // deal with the differences in between 32FC1 & 16UC1
+  // http://www.ros.org/reps/rep-0118.html#id4
+  union uint16_or_float
+  {
+    uint16_t* dest_uint16;
+    float* dest_float;
+  };
+  uint16_or_float dest;
+  if (!this->use_depth_image_16UC1_format_)
+  {
+    image_msg.encoding = sensor_msgs::image_encodings::TYPE_32FC1;
+    image_msg.step = sizeof(float) * cols_arg;
+    image_msg.data.resize(rows_arg * cols_arg * sizeof(float));
+    dest.dest_float = (float*)(&(image_msg.data[0]));
+  }
+  else
+  {
+    image_msg.encoding = sensor_msgs::image_encodings::TYPE_16UC1;
+    image_msg.step = sizeof(uint16_t) * cols_arg;
+    image_msg.data.resize(rows_arg * cols_arg * sizeof(uint16_t));
+    dest.dest_uint16 = (uint16_t*)(&(image_msg.data[0]));
+  }
 
-  const float bad_point = std::numeric_limits<float>::quiet_NaN();
-
-  float* dest = (float*)(&(image_msg.data[0]));
   float* toCopyFrom = (float*)data_arg;
   int index = 0;
 
@@ -416,11 +454,17 @@ bool GazeboRosOpenniKinect::FillDepthImageHelper(
       if (depth > this->point_cloud_cutoff_ &&
           depth < this->point_cloud_cutoff_max_)
       {
-        dest[i + j * cols_arg] = depth;
+        if (!this->use_depth_image_16UC1_format_)
+          dest.dest_float[i + j * cols_arg] = depth;
+        else
+          dest.dest_uint16[i + j * cols_arg] = depth * 1000.0;
       }
       else //point in the unseeable range
       {
-        dest[i + j * cols_arg] = bad_point;
+        if (!this->use_depth_image_16UC1_format_)
+          dest.dest_float[i + j * cols_arg] = std::numeric_limits<float>::quiet_NaN();
+        else
+          dest.dest_uint16[i + j * cols_arg] = 0;
       }
     }
   }

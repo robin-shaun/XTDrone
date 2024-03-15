@@ -92,19 +92,19 @@ class LinkPoseTest(unittest.TestCase):
         self.valid_pose = Pose()
 
     def printLinkPose(self, p3d):
-        print "P3D pose translan: " + "x: " + str(p3d.pose.pose.position.x)
-        print "                   " + "y: " + str(p3d.pose.pose.position.y)
-        print "                   " + "z: " + str(p3d.pose.pose.position.z)
-        print "P3D pose rotation: " + "x: " + str(p3d.pose.pose.orientation.x)
-        print "                   " + "y: " + str(p3d.pose.pose.orientation.y)
-        print "                   " + "z: " + str(p3d.pose.pose.orientation.z)
-        print "                   " + "w: " + str(p3d.pose.pose.orientation.w)
-        print "P3D rate translan: " + "x: " + str(p3d.twist.twist.linear.x)
-        print "                   " + "y: " + str(p3d.twist.twist.linear.y)
-        print "                   " + "z: " + str(p3d.twist.twist.linear.z)
-        print "P3D rate rotation: " + "x: " + str(p3d.twist.twist.angular.x)
-        print "                   " + "y: " + str(p3d.twist.twist.angular.y)
-        print "                   " + "z: " + str(p3d.twist.twist.angular.z)
+        print("P3D pose translan: " + "x: " + str(p3d.pose.pose.position.x))
+        print("                   " + "y: " + str(p3d.pose.pose.position.y))
+        print("                   " + "z: " + str(p3d.pose.pose.position.z))
+        print("P3D pose rotation: " + "x: " + str(p3d.pose.pose.orientation.x))
+        print("                   " + "y: " + str(p3d.pose.pose.orientation.y))
+        print("                   " + "z: " + str(p3d.pose.pose.orientation.z))
+        print("                   " + "w: " + str(p3d.pose.pose.orientation.w))
+        print("P3D rate translan: " + "x: " + str(p3d.twist.twist.linear.x))
+        print("                   " + "y: " + str(p3d.twist.twist.linear.y))
+        print("                   " + "z: " + str(p3d.twist.twist.linear.z))
+        print("P3D rate rotation: " + "x: " + str(p3d.twist.twist.angular.x))
+        print("                   " + "y: " + str(p3d.twist.twist.angular.y))
+        print("                   " + "z: " + str(p3d.twist.twist.angular.z))
 
 
     def linkP3dInput(self, p3d):
@@ -130,11 +130,11 @@ class LinkPoseTest(unittest.TestCase):
 
     def checkPose(self):
         # difference in pose
-        print  "error: "   + str(self.link_sample_count) \
-                           + " error:" + str(self.link_error_total) \
-                           + " avg err:" + str(self.link_error_rms) \
-                           + " max err:" + str(self.link_error_max) \
-                           + " count: " + str(self.link_sample_count)
+        print("error: " + str(self.link_sample_count)
+              + " error:" + str(self.link_error_total)
+              + " avg err:" + str(self.link_error_rms)
+              + " max err:" + str(self.link_error_max)
+              + " count: " + str(self.link_sample_count))
         if self.link_sample_count >= self.min_link_samples:
           if self.link_error_rms < self.tolerance:
             if self.link_error_max < self.max_error:
@@ -142,7 +142,7 @@ class LinkPoseTest(unittest.TestCase):
 
 
     def test_link_pose(self):
-        print "LNK\n"
+        print("LNK\n")
         rospy.init_node(NAME, anonymous=True)
         self.link_pose_topic = rospy.get_param(self.link_pose_topic_name,self.link_pose_topic);
         self.valid_pose_topic = rospy.get_param(self.valid_pose_topic_name,self.valid_pose_topic);
@@ -157,7 +157,7 @@ class LinkPoseTest(unittest.TestCase):
             rospy.stdinfo("Waiting for test to start at time [%s]"% self.test_start_time)
             time.sleep(0.1)
 
-        print "subscribe"
+        print("subscribe")
         rospy.Subscriber(self.link_pose_topic, Odometry, self.linkP3dInput)
         rospy.Subscriber(self.valid_pose_topic, Odometry, self.validP3dInput)
 
@@ -169,7 +169,7 @@ class LinkPoseTest(unittest.TestCase):
         self.assert_(self.success)
 
 if __name__ == '__main__':
-    print "Waiting for test to start at time "
+    print("Waiting for test to start at time")
     rostest.run(PKG, sys.argv[0], LinkPoseTest, sys.argv) #, text_mode=True)
 
 

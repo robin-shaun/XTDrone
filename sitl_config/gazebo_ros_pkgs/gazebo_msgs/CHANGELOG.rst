@@ -2,13 +2,24 @@
 Changelog for package gazebo_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-2.8.7 (2020-05-01)
+2.9.2 (2021-04-21)
+------------------
+* [Noetic] Bridge to republish PerformanceMetrics in ROS (`#1145 <https://github.com/ros-simulation/gazebo_ros_pkgs/issues/1145>`_)
+  Co-authored-by: Ian Chen <ichen@osrfoundation.org>
+* Contributors: Alejandro Hernández Cordero
+
+2.9.1 (2020-05-20)
 ------------------
 
-2.8.6 (2019-12-26)
+2.9.0 (2020-05-19)
 ------------------
-* ROS API: remove unhelpful error in GetWorldProperties call (`#747 <https://github.com/ros-simulation/gazebo_ros_pkgs/issues/747>`_)
-* Contributors: Kevin Allen
+* Bump CMake version to avoid CMP0048 warning (`#1066 <https://github.com/ros-simulation/gazebo_ros_pkgs/issues/1066>`_)
+* add additional light options to 'set_light_properties' service (`#874 <https://github.com/ros-simulation/gazebo_ros_pkgs/issues/874>`_)
+  The optional 'Light' properties 'cast_shadows', 'specular', 'direction',
+  and 'pose' are not optional any more. These properties are now set via the
+  corresponding fields in the ROS message. By default, this will be 0.
+  https://github.com/ros-simulation/gazebo_ros_pkgs/pull/874
+* Contributors: Alejandro Hernández Cordero, Christian Rauch
 
 2.8.5 (2019-06-04)
 ------------------

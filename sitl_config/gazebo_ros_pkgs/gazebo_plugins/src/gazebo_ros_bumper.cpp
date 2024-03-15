@@ -36,6 +36,10 @@
 #include <ignition/math/Quaternion.hh>
 #include <ignition/math/Vector3.hh>
 
+#ifdef ENABLE_PROFILER
+#include <ignition/common/Profiler.hh>
+#endif
+
 #include <tf/tf.h>
 
 #include <gazebo_plugins/gazebo_ros_bumper.h>
@@ -76,7 +80,8 @@ void GazeboRosBumper::Load(sensors::SensorPtr _parent, sdf::ElementPtr _sdf)
 
   this->robot_namespace_ = "";
   if (_sdf->HasElement("robotNamespace"))
-    this->robot_namespace_ = GetRobotNamespace(_parent, _sdf, "Bumper");
+    this->robot_namespace_ =
+      _sdf->GetElement("robotNamespace")->Get<std::string>() + "/";
 
   // "publishing contact/collisions to this topic name: "
   //   << this->bumper_topic_name_ << std::endl;
@@ -131,9 +136,15 @@ void GazeboRosBumper::Load(sensors::SensorPtr _parent, sdf::ElementPtr _sdf)
 // Update the controller
 void GazeboRosBumper::OnContact()
 {
+#ifdef ENABLE_PROFILER
+  IGN_PROFILE("GazeboRosBumper::OnContact");
+#endif
   if (this->contact_pub_.getNumSubscribers() <= 0)
     return;
 
+#ifdef ENABLE_PROFILER
+  IGN_PROFILE_BEGIN("fill message");
+#endif
   msgs::Contacts contacts;
   contacts = this->parentSensor->Contacts();
   /// \TODO: need a time for each Contact in i-loop, they may differ
@@ -310,8 +321,14 @@ void GazeboRosBumper::OnContact()
     state.total_wrench = total_wrench;
     this->contact_state_msg_.states.push_back(state);
   }
-
+#ifdef ENABLE_PROFILER
+  IGN_PROFILE_END();
+  IGN_PROFILE_BEGIN("publish");
+#endif
   this->contact_pub_.publish(this->contact_state_msg_);
+#ifdef ENABLE_PROFILER
+  IGN_PROFILE_END();
+#endif
 }
 
 

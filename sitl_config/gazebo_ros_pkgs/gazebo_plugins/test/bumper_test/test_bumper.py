@@ -87,12 +87,12 @@ class BumperTest(unittest.TestCase):
         # see if total wrench is close to 98.1N
         if self.sample_count > 20:
           if abs(self.fz_avg - 98.1) < 0.01:
-            print "z force ",self.fz_avg
+            print("z force ", self.fz_avg)
             self.success = True
 
 
     def test_bumper(self):
-        print "LNK\n"
+        print("LNK\n")
         rospy.init_node(NAME, anonymous=True)
         self.bumper_topic = rospy.get_param(self.bumper_topic_name,self.bumper_topic);
         self.min_samples = rospy.get_param(self.min_samples_topic,self.min_samples);
@@ -103,7 +103,7 @@ class BumperTest(unittest.TestCase):
             rospy.stdinfo("Waiting for test to start at time [%s]"% self.test_start_time)
             time.sleep(0.1)
 
-        print "subscribe"
+        print("subscribe")
         rospy.Subscriber(self.bumper_topic, ContactsState, self.bumperStateInput)
 
         start_t = time.time()
@@ -114,7 +114,7 @@ class BumperTest(unittest.TestCase):
         self.assert_(self.success)
 
 if __name__ == '__main__':
-    print "Waiting for test to start at time "
+    print("Waiting for test to start at time ")
     rostest.run(PKG, sys.argv[0], BumperTest, sys.argv) #, text_mode=True)
 
 

@@ -134,6 +134,7 @@ namespace gazebo
     private: void DepthInfoConnect();
     private: void DepthInfoDisconnect();
     private: common::Time last_depth_image_camera_info_update_time_;
+    private: bool use_depth_image_16UC1_format_;
     protected: ros::Publisher depth_image_camera_info_pub_;
 
     using GazeboRosCameraUtils::PublishCameraInfo;

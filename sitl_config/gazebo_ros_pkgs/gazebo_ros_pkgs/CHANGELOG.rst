@@ -2,11 +2,16 @@
 Changelog for package gazebo_ros_pkgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-2.8.7 (2020-05-01)
+2.9.2 (2021-04-21)
 ------------------
 
-2.8.6 (2019-12-26)
+2.9.1 (2020-05-20)
 ------------------
+
+2.9.0 (2020-05-19)
+------------------
+* Bump CMake version to avoid CMP0048 warning (`#1066 <https://github.com/ros-simulation/gazebo_ros_pkgs/issues/1066>`_)
+* Contributors: Alejandro Hernández Cordero
 
 2.8.5 (2019-06-04)
 ------------------

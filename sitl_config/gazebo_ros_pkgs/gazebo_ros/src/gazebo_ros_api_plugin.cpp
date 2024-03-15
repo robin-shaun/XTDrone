@@ -30,14 +30,14 @@ namespace gazebo
 {
 
 GazeboRosApiPlugin::GazeboRosApiPlugin() :
-  plugin_loaded_(false),
+  physics_reconfigure_initialized_(false),
+  world_created_(false),
   stop_(false),
+  plugin_loaded_(false),
   pub_link_states_connection_count_(0),
   pub_model_states_connection_count_(0),
   pub_performance_metrics_connection_count_(0),
-  physics_reconfigure_initialized_(false),
   pub_clock_frequency_(0),
-  world_created_(false),
   enable_ros_network_(true)
 {
   robot_namespace_.clear();
@@ -84,11 +84,8 @@ GazeboRosApiPlugin::~GazeboRosApiPlugin()
   ROS_DEBUG_STREAM_NAMED("api_plugin","Callback Queue Joined");
 
   // Physics Dynamic Reconfigure
-  if (physics_reconfigure_thread_)
-  {
-    physics_reconfigure_thread_->join();
-    ROS_DEBUG_STREAM_NAMED("api_plugin","Physics reconfigure joined");
-  }
+  physics_reconfigure_thread_->join();
+  ROS_DEBUG_STREAM_NAMED("api_plugin","Physics reconfigure joined");
 
   // Delete Force and Wrench Jobs
   lock_.lock();
@@ -154,16 +151,13 @@ void GazeboRosApiPlugin::Load(int argc, char** argv)
   /// \brief setup custom callback queue
   gazebo_callback_queue_thread_.reset(new boost::thread( &GazeboRosApiPlugin::gazeboQueueThread, this) );
 
+  /// \brief start a thread for the physics dynamic reconfigure node
+  physics_reconfigure_thread_.reset(new boost::thread(boost::bind(&GazeboRosApiPlugin::physicsReconfigureThread, this)));
+
   // below needs the world to be created first
   load_gazebo_ros_api_plugin_event_ = gazebo::event::Events::ConnectWorldCreated(boost::bind(&GazeboRosApiPlugin::loadGazeboRosApiPlugin,this,_1));
 
   nh_->getParam("enable_ros_network", enable_ros_network_);
-
-  if (enable_ros_network_)
-  {
-    /// \brief start a thread for the physics dynamic reconfigure node
-    physics_reconfigure_thread_.reset(new boost::thread(boost::bind(&GazeboRosApiPlugin::physicsReconfigureThread, this)));
-  }
 
   plugin_loaded_ = true;
   ROS_INFO_NAMED("api_plugin", "Finished loading Gazebo ROS API Plugin.");
@@ -494,7 +488,7 @@ void GazeboRosApiPlugin::advertiseServices()
                                                            ros::VoidPtr(), &gazebo_queue_);
   set_model_state_topic_ = nh_->subscribe(model_state_so);
 
-  // TSC
+  // XTDrone modified by TSC -start
   // topic callback version for set_model_states
   ros::SubscribeOptions model_states_so =
   ros::SubscribeOptions::create<gazebo_msgs::ModelStates>(
@@ -502,7 +496,8 @@ void GazeboRosApiPlugin::advertiseServices()
                                                            boost::bind( &GazeboRosApiPlugin::updateModelStates,this,_1),
                                                            ros::VoidPtr(), &gazebo_queue_);
   set_model_states_topic_ = nh_->subscribe(model_states_so);
-  // TSC
+  // XTDrone modified by TSC -end
+
 
   // Advertise more services on the custom queue
   std::string pause_physics_service_name("pause_physics");
@@ -868,6 +863,7 @@ bool GazeboRosApiPlugin::deleteModel(gazebo_msgs::DeleteModel::Request &req,
   gazebo::msgs::Request *msg = gazebo::msgs::CreateRequest("entity_delete",req.model_name);
   request_pub_->Publish(*msg,true);
   delete msg;
+  msg = nullptr;
 
   ros::Duration model_spawn_timeout(60.0);
   ros::Time timeout = ros::Time::now() + model_spawn_timeout;
@@ -917,6 +913,7 @@ bool GazeboRosApiPlugin::deleteLight(gazebo_msgs::DeleteLight::Request &req,
     gazebo::msgs::Request* msg = gazebo::msgs::CreateRequest("entity_delete", req.light_name);
     request_pub_->Publish(*msg, true);
     delete msg;
+    msg = nullptr;
 
     res.success = false;
 
@@ -1132,7 +1129,7 @@ bool GazeboRosApiPlugin::getWorldProperties(gazebo_msgs::GetWorldProperties::Req
   for (unsigned int i = 0; i < world_->GetModelCount(); i ++)
     res.model_names.push_back(world_->GetModel(i)->GetName());
 #endif
-  // Note: currently rendering is always enabled in gazebo
+  gzerr << "disabling rendering has not been implemented, rendering is always enabled\n";
   res.rendering_enabled = true; //world->GetRenderEngineEnabled();
   res.success = true;
   res.status_message = "GetWorldProperties: got properties";
@@ -1377,14 +1374,33 @@ bool GazeboRosApiPlugin::setLightProperties(gazebo_msgs::SetLightProperties::Req
 
     phy_light->FillMsg(light);
 
+    light.set_cast_shadows(req.cast_shadows);
+
     light.mutable_diffuse()->set_r(req.diffuse.r);
     light.mutable_diffuse()->set_g(req.diffuse.g);
     light.mutable_diffuse()->set_b(req.diffuse.b);
     light.mutable_diffuse()->set_a(req.diffuse.a);
 
+    light.mutable_specular()->set_r(req.specular.r);
+    light.mutable_specular()->set_g(req.specular.g);
+    light.mutable_specular()->set_b(req.specular.b);
+    light.mutable_specular()->set_a(req.specular.a);
+
     light.set_attenuation_constant(req.attenuation_constant);
     light.set_attenuation_linear(req.attenuation_linear);
     light.set_attenuation_quadratic(req.attenuation_quadratic);
+
+    light.mutable_direction()->set_x(req.direction.x);
+    light.mutable_direction()->set_y(req.direction.y);
+    light.mutable_direction()->set_z(req.direction.z);
+
+    light.mutable_pose()->mutable_position()->set_x(req.pose.position.x);
+    light.mutable_pose()->mutable_position()->set_y(req.pose.position.y);
+    light.mutable_pose()->mutable_position()->set_z(req.pose.position.z);
+    light.mutable_pose()->mutable_orientation()->set_w(req.pose.orientation.w);
+    light.mutable_pose()->mutable_orientation()->set_x(req.pose.orientation.x);
+    light.mutable_pose()->mutable_orientation()->set_y(req.pose.orientation.y);
+    light.mutable_pose()->mutable_orientation()->set_z(req.pose.orientation.z);
 
     light_modify_pub_->Publish(light, true);
 
@@ -1663,8 +1679,7 @@ void GazeboRosApiPlugin::updateModelState(const gazebo_msgs::ModelState::ConstPt
   /*bool success =*/ setModelState(req,res);
 }
 
-
-//TSC
+// XTDrone modified by TSC -start
 void GazeboRosApiPlugin::updateModelStates(const gazebo_msgs::ModelStates::ConstPtr& model_states)
 {
   int model_num = 0;
@@ -1679,6 +1694,7 @@ void GazeboRosApiPlugin::updateModelStates(const gazebo_msgs::ModelStates::Const
   /*bool success =*/ setModelState(req,res);
   }
 }
+// XTDrone modified by TSC -end
 
 
 bool GazeboRosApiPlugin::applyJointEffort(gazebo_msgs::ApplyJointEffort::Request &req,
@@ -2688,6 +2704,7 @@ bool GazeboRosApiPlugin::spawnAndConform(TiXmlDocument &gazebo_model_xml, const 
   gazebo::msgs::Request *entity_info_msg = gazebo::msgs::CreateRequest("entity_info", model_name);
   request_pub_->Publish(*entity_info_msg,true);
   delete entity_info_msg;
+  entity_info_msg = nullptr;
   // todo: should wait for response response_sub_, check to see that if _msg->response == "nonexistant"
 
 #if GAZEBO_MAJOR_VERSION >= 8

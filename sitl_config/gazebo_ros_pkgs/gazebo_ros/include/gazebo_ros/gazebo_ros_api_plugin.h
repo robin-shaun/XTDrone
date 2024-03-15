@@ -213,10 +213,11 @@ public:
 
   /// \brief
   void updateModelState(const gazebo_msgs::ModelState::ConstPtr& model_state);
-
+  
+  // XTDrone midified by TSC -start
   /// \brief
   void updateModelStates(const gazebo_msgs::ModelStates::ConstPtr& model_states);
-  //TSC
+  // XTDrone midified by TSC -end
 
   /// \brief
   bool applyJointEffort(gazebo_msgs::ApplyJointEffort::Request &req,gazebo_msgs::ApplyJointEffort::Response &res);
@@ -390,10 +391,11 @@ private:
   ros::ServiceServer clear_body_wrenches_service_;
   ros::Subscriber    set_link_state_topic_;
   ros::Subscriber    set_model_state_topic_;
-  ros::Subscriber    set_model_states_topic_;
-  // TSC
   ros::Publisher     pub_link_states_;
   ros::Publisher     pub_model_states_;
+  // XTDrone modified by TSC -start 
+  ros::Subscriber    set_model_states_topic_;
+  // XTDrone modified by TSC -end
   ros::Publisher     pub_performance_metrics_;
   int                pub_link_states_connection_count_;
   int                pub_model_states_connection_count_;

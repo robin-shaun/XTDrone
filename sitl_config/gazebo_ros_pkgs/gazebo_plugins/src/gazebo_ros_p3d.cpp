@@ -20,6 +20,9 @@
 #include <stdlib.h>
 
 #include "gazebo_plugins/gazebo_ros_p3d.h"
+#ifdef ENABLE_PROFILER
+#include <ignition/common/Profiler.hh>
+#endif
 #include <ignition/math/Rand.hh>
 
 namespace gazebo
@@ -212,6 +215,9 @@ void GazeboRosP3D::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
 // Update the controller
 void GazeboRosP3D::UpdateChild()
 {
+#ifdef ENABLE_PROFILER
+  IGN_PROFILE("GazeboRosP3D::UpdateChild");
+#endif
   if (!this->link_)
     return;
 
@@ -220,7 +226,9 @@ void GazeboRosP3D::UpdateChild()
 #else
   common::Time cur_time = this->world_->GetSimTime();
 #endif
-
+#ifdef ENABLE_PROFILER
+  IGN_PROFILE_BEGIN("fill ROS message");
+#endif
   if (cur_time < this->last_time_)
   {
       ROS_WARN_NAMED("p3d", "Negative update time difference detected.");
@@ -357,6 +365,9 @@ void GazeboRosP3D::UpdateChild()
       this->last_time_ = cur_time;
     }
   }
+#ifdef ENABLE_PROFILER
+  IGN_PROFILE_END();
+#endif
 }
 
 //////////////////////////////////////////////////////////////////////////////

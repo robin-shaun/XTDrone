@@ -27,6 +27,9 @@
  **/
 #include <boost/algorithm/string.hpp>
 #include <gazebo_plugins/gazebo_ros_joint_state_publisher.h>
+#ifdef ENABLE_PROFILER
+#include <ignition/common/Profiler.hh>
+#endif
 #include <tf/transform_broadcaster.h>
 #include <tf/transform_listener.h>
 
@@ -109,7 +112,11 @@ void GazeboRosJointStatePublisher::Load ( physics::ModelPtr _parent, sdf::Elemen
                                  boost::bind ( &GazeboRosJointStatePublisher::OnUpdate, this, _1 ) );
 }
 
-void GazeboRosJointStatePublisher::OnUpdate ( const common::UpdateInfo & _info ) {
+void GazeboRosJointStatePublisher::OnUpdate ( const common::UpdateInfo & _info )
+{
+#ifdef ENABLE_PROFILER
+  IGN_PROFILE("GazeboRosCamera::OnNewFrame");
+#endif
     // Apply a small linear velocity to the model.
 #if GAZEBO_MAJOR_VERSION >= 8
     common::Time current_time = this->world_->SimTime();
@@ -125,11 +132,14 @@ void GazeboRosJointStatePublisher::OnUpdate ( const common::UpdateInfo & _info )
     double seconds_since_last_update = ( current_time - last_update_time_ ).Double();
 
     if ( seconds_since_last_update > update_period_ ) {
-
+#ifdef ENABLE_PROFILER
+        IGN_PROFILE_BEGIN("publishJointStates");
+#endif
         publishJointStates();
-
+#ifdef ENABLE_PROFILER
+        IGN_PROFILE_END();
+#endif
         last_update_time_+= common::Time ( update_period_ );
-
     }
 
 }

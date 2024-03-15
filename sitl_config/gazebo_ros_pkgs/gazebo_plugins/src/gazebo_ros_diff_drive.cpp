@@ -52,6 +52,10 @@
 
 #include <gazebo_plugins/gazebo_ros_diff_drive.h>
 
+#ifdef ENABLE_PROFILER
+#include <ignition/common/Profiler.hh>
+#endif
+
 #include <ignition/math/Angle.hh>
 #include <ignition/math/Pose3.hh>
 #include <ignition/math/Quaternion.hh>
@@ -239,7 +243,10 @@ void GazeboRosDiffDrive::publishWheelTF()
 // Update the controller
 void GazeboRosDiffDrive::UpdateChild()
 {
-
+#ifdef ENABLE_PROFILER
+  IGN_PROFILE("GazeboRosDiffDrive::UpdateChild");
+  IGN_PROFILE_BEGIN("update");
+#endif
     /* force reset SetParam("fmax") since Joint::Reset reset MaxForce to zero at
        https://bitbucket.org/osrf/gazebo/src/8091da8b3c529a362f39b042095e12c94656a5d1/gazebo/physics/Joint.cc?at=gazebo2_2.2.5#cl-331
        (this has been solved in https://bitbucket.org/osrf/gazebo/diff/gazebo/physics/Joint.cc?diff2=b64ff1b7b6ff&at=issue_964 )
@@ -299,6 +306,9 @@ void GazeboRosDiffDrive::UpdateChild()
         }
         last_update_time_+= common::Time ( update_period_ );
     }
+#ifdef ENABLE_PROFILER
+    IGN_PROFILE_END();
+#endif
 }
 
 // Finalize the controller
@@ -352,7 +362,7 @@ void GazeboRosDiffDrive::UpdateOdometryEncoder()
 
     double b = wheel_separation_;
 
-    // Book: Sigwart 2011 Autonompus Mobile Robots page:337
+    // Book: Sigwart 2011 Autonomous Mobile Robots page:337
     double sl = vl * ( wheel_diameter_ / 2.0 ) * seconds_since_last_update;
     double sr = vr * ( wheel_diameter_ / 2.0 ) * seconds_since_last_update;
     double ssum = sl + sr;

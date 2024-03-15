@@ -23,3 +23,9 @@ services:
 
   - service: /gazebo/get_loggers
     type: roscpp/GetLoggers
+
+  - service: /ros_network_by_default/get_loggers
+    type: roscpp/GetLoggers
+
+  - service: /ros_network_by_default/set_logger_level
+    type: roscpp/SetLoggerLevel

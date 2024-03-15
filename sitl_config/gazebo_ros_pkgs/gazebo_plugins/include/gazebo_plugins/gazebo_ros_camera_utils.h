@@ -47,7 +47,6 @@
 #include <gazebo/msgs/MessageTypes.hh>
 #include <gazebo/common/Time.hh>
 #include <gazebo/sensors/SensorTypes.hh>
-#include <gazebo/plugins/CameraPlugin.hh>
 #include <gazebo_plugins/gazebo_ros_utils.h>
 
 namespace gazebo

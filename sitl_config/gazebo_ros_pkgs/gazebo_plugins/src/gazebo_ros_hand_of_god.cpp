@@ -41,6 +41,9 @@
  */
 
 #include <gazebo_plugins/gazebo_ros_hand_of_god.h>
+#ifdef ENABLE_PROFILER
+#include <ignition/common/Profiler.hh>
+#endif
 #include <ros/ros.h>
 
 namespace gazebo
@@ -137,6 +140,9 @@ namespace gazebo
   // Update the controller
   void GazeboRosHandOfGod::GazeboUpdate()
   {
+#ifdef ENABLE_PROFILER
+    IGN_PROFILE("GazeboRosHandOfGod::GazeboUpdate");
+#endif
     // Get TF transform relative to the /world link
     geometry_msgs::TransformStamped hog_desired_tform;
     static bool errored = false;
@@ -150,7 +156,9 @@ namespace gazebo
       }
       return;
     }
-
+#ifdef ENABLE_PROFILER
+    IGN_PROFILE_BEGIN("Convert TF transform to Gazebo Pose");
+#endif
     // Convert TF transform to Gazebo Pose
     const geometry_msgs::Vector3 &p = hog_desired_tform.transform.translation;
     const geometry_msgs::Quaternion &q = hog_desired_tform.transform.rotation;
@@ -173,7 +181,10 @@ namespace gazebo
     ignition::math::Quaterniond err_rot =  (ignition::math::Matrix4d(world_pose.Rot()).Inverse()
                                           * ignition::math::Matrix4d(hog_desired.Rot())).Rotation();
     ignition::math::Quaterniond not_a_quaternion = err_rot.Log();
-
+#ifdef ENABLE_PROFILER
+    IGN_PROFILE_END();
+    IGN_PROFILE_BEGIN("fill ROS message");
+#endif
     floating_link_->AddForce(
         kl_ * err_pos - cl_ * worldLinearVel);
 
@@ -197,8 +208,14 @@ namespace gazebo
     hog_actual_tform.transform.rotation.x = world_pose.Rot().X();
     hog_actual_tform.transform.rotation.y = world_pose.Rot().Y();
     hog_actual_tform.transform.rotation.z = world_pose.Rot().Z();
-
+#ifdef ENABLE_PROFILER
+    IGN_PROFILE_END();
+    IGN_PROFILE_BEGIN("sendTransform");
+#endif
     tf_broadcaster_->sendTransform(hog_actual_tform);
+#ifdef ENABLE_PROFILER
+    IGN_PROFILE_END();
+#endif
   }
 
 }

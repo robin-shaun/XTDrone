@@ -1,8 +1,12 @@
 string light_name                    # name of Gazebo Light
+bool cast_shadows
 std_msgs/ColorRGBA diffuse           # diffuse color as red, green, blue, alpha
+std_msgs/ColorRGBA specular          # specular color as red, green, blue, alpha
 float64 attenuation_constant
 float64 attenuation_linear
 float64 attenuation_quadratic
+geometry_msgs/Vector3 direction
+geometry_msgs/Pose pose              # pose in world frame
 ---
 bool success                         # return true if get successful
 string status_message                # comments if available

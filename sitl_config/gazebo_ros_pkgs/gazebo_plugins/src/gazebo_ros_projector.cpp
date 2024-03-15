@@ -32,6 +32,10 @@
 #include <gazebo/rendering/RTShaderSystem.hh>
 #include <gazebo_plugins/gazebo_ros_projector.h>
 
+#ifdef ENABLE_PROFILER
+#include <ignition/common/Profiler.hh>
+#endif
+
 #include <std_msgs/String.h>
 #include <std_msgs/Int32.h>
 
@@ -75,9 +79,6 @@ GazeboRosProjector::~GazeboRosProjector()
 void GazeboRosProjector::Load( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
 {
   this->world_ = _parent->GetWorld();
-
-
-
 
   // Create a new transport node for talking to the projector
   this->node_.reset(new transport::Node());
@@ -144,20 +145,34 @@ void GazeboRosProjector::Load( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
 // Load a texture into the projector
 void GazeboRosProjector::LoadImage(const std_msgs::String::ConstPtr& imageMsg)
 {
+#ifdef ENABLE_PROFILER
+  IGN_PROFILE("GazeboRosProjector::LoadImage");
+  IGN_PROFILE_BEGIN("publish");
+#endif
   msgs::Projector msg;
   msg.set_name("texture_projector");
   msg.set_texture(imageMsg->data);
   this->projector_pub_->Publish(msg);
+#ifdef ENABLE_PROFILER
+  IGN_PROFILE_END();
+#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // Toggle the activation of the projector
 void GazeboRosProjector::ToggleProjector(const std_msgs::Int32::ConstPtr& projectorMsg)
 {
+#ifdef ENABLE_PROFILER
+  IGN_PROFILE("GazeboRosProjector::ToggleProjector");
+  IGN_PROFILE_BEGIN("publish");
+#endif
   msgs::Projector msg;
   msg.set_name("texture_projector");
   msg.set_enabled(projectorMsg->data);
   this->projector_pub_->Publish(msg);
+#ifdef ENABLE_PROFILER
+  IGN_PROFILE_END();
+#endif
 }
 
 

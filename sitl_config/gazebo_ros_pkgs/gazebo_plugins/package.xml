@@ -1,11 +1,12 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>gazebo_plugins</name>
-  <version>2.8.7</version>
+  <version>2.9.2</version>
   <description>
     Robot-independent Gazebo plugins for sensors, motors and dynamic reconfigurable components.
   </description>
 
+  <maintainer email="ahcorde@osrfoundation.org">Alejandro Hernández Cordero</maintainer>
   <maintainer email="jrivero@osrfoundation.org">Jose Luis Rivero</maintainer>
 
   <license>BSD, Apache 2.0</license>
@@ -30,6 +31,7 @@
   <depend>geometry_msgs</depend>
   <depend>sensor_msgs</depend>
   <depend>trajectory_msgs</depend>
+  <depend>visualization_msgs</depend>
   <depend>std_srvs</depend>
   <depend>roscpp</depend>
   <depend>rospy</depend>

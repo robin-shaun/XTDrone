@@ -2,6 +2,9 @@
 <launch>
 
   <env name="GAZEBO_PLUGIN_PATH" value="$(find gazebo_plugins)/../../../devel/lib"/>
+  <!-- Changed GAZEBO_MASTER_URI to avoid collision with the other tests -->
+  <env name="GAZEBO_MASTER_URI" value="http://localhost:11347" />
+
 
   <include file="$(find gazebo_ros)/launch/range_world.launch">
     <arg name="gui" value="false"/>

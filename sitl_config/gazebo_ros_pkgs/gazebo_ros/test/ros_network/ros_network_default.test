@@ -1,5 +1,9 @@
 <?xml version="1.0"?>
 <launch>
+
+  <!-- Changed GAZEBO_MASTER_URI to avoid collision with the other test-->
+  <env name="GAZEBO_MASTER_URI" value="http://localhost:11346" />
+
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="paused"   value="false"/>
     <arg name="gui"      value="false"/>

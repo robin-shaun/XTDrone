@@ -2,12 +2,21 @@
 Changelog for package gazebo_ros_control
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-2.8.7 (2020-05-01)
+2.9.2 (2021-04-21)
 ------------------
-* gazebo_ros_control: catch all pluginlib exceptions (`#1062 <https://github.com/ros-simulation/gazebo_ros_pkgs/issues/1062>`_)
-* Contributors: Max Schwarz
+* colcon.pkg: build gazebo first in colcon workspace (`#1135 <https://github.com/ros-simulation/gazebo_ros_pkgs/issues/1135>`_)
+  Add a colcon.pkg file to gazebo_dev with gazebo's cmake project
+  name "Gazebo" listed as a dependency to support building
+  gazebo from source in a colcon workspace.
+  * Add colcon.pkg files for other packages
+  Copy colcon.pkg to gazebo_ros, gazebo_plugins, and
+  gazebo_ros_control so that --merge-install won't be required.
+* Contributors: Steve Peters
 
-2.8.6 (2019-12-26)
+2.9.1 (2020-05-20)
+------------------
+
+2.9.0 (2020-05-19)
 ------------------
 * restrict Windows header namespace. (`#1023 <https://github.com/ros-simulation/gazebo_ros_pkgs/issues/1023>`_)
 * [Windows][melodic-devel] more Windows build break fix (`#975 <https://github.com/ros-simulation/gazebo_ros_pkgs/issues/975>`_)

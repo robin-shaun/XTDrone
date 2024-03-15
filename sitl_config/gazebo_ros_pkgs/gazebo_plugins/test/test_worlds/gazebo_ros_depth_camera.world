@@ -104,18 +104,24 @@
                             <height>480</height>
                             <format>R8G8B8</format>
                         </image>
-                        <clip near="0.01" far="100.0" />
-                        <save enabled="false" path="/tmp" />
-                        <depth_camera output="points" />
+                        <clip>
+                          <near>0.1</near>
+                          <far>100</far>
+                        </clip>
+                        <depth_camera>
+                          <output>points;normals;reflectance</output>
+                        </depth_camera>
                     </camera>
                     <plugin name="plugin_1" filename="libgazebo_ros_depth_camera.so">
                         <alwaysOn>1</alwaysOn>
                         <updateRate>10.0</updateRate>
                         <imageTopicName>image_raw</imageTopicName>
                         <pointCloudTopicName>points</pointCloudTopicName>
+                        <normalsTopicName>normals</normalsTopicName>
                         <cameraInfoTopicName>camera_info</cameraInfoTopicName>
                         <cameraName>depth_cam</cameraName>
                         <frameName>/base_link</frameName>
+                        <reduceNormals>50</reduceNormals>
                         <pointCloudCutoff>0.001</pointCloudCutoff>
                         <distortionK1>0.00000001</distortionK1>
                         <distortionK2>0.00000001</distortionK2>
@@ -132,6 +138,39 @@
             </link>
             <static>false</static>
         </model>
+
+        <model  name="box_reflectance">
+          <pose>1.0 0.0 5.0 0 0 0</pose>
+          <link name="box_link">
+            <visual name="visual">
+              <geometry>
+                <box>
+                  <size>.2 .2 .2</size>
+                </box>
+              </geometry>
+              <material>
+                <script>
+                  <uri>file://media/materials/scripts/gazebo.material</uri>
+                  <name>Gazebo/Red</name>
+                </script>
+              </material>
+              <plugin filename="libReflectancePlugin.so" name="reflectance_plugin">
+                <reflectance_map>
+                  <uri>model://suv/materials/textures/</uri>
+                  <name>wheels_01.png</name>
+                </reflectance_map>
+              </plugin>
+            </visual>
+            <collision name="visual">
+              <geometry>
+                <box>
+                  <size>.2 .2 .2</size>
+                </box>
+              </geometry>
+            </collision>
+          </link>
+        </model>
+
         <model name="model_2">
             <pose>5.0 0.0 5.0 0.0 0.0 0.0</pose>
             <link name="link_1">

@@ -3,7 +3,7 @@ project(gazebo_plugins)
 
 option(ENABLE_DISPLAY_TESTS "Enable the building of tests that requires a display" OFF)
 
-find_package(catkin REQUIRED COMPONENTS 
+find_package(catkin REQUIRED COMPONENTS
   gazebo_dev
   message_generation
   gazebo_msgs
@@ -28,6 +28,7 @@ find_package(catkin REQUIRED COMPONENTS
   diagnostic_updater
   camera_info_manager
   std_msgs
+  visualization_msgs
 )
 
 # Through transitive dependencies in the packages above, gazebo_plugins depends
@@ -62,6 +63,23 @@ else()
 endif()
 
 find_package(Boost REQUIRED COMPONENTS thread)
+if (CATKIN_ENABLE_TESTING)
+  find_package(OpenCV COMPONENTS core imgproc calib3d highgui REQUIRED)
+else()
+  find_package(OpenCV COMPONENTS core highgui REQUIRED)
+endif()
+
+option(ENABLE_PROFILER "Enable Ignition Profiler" FALSE)
+if (ENABLE_PROFILER)
+  find_package(ignition-common3 QUIET)
+  if (ignition-common3_FOUND)
+    add_definitions("-DIGN_PROFILER_ENABLE=1" "-DIGN_PROFILER_REMOTERY=1")
+    message("Profiler is active")
+  else()
+    message("Can't find Ignition common3. Profiler will not be actived")
+    add_definitions("-DIGN_PROFILER_ENABLE=0" "-DIGN_PROFILER_REMOTERY=0")
+  endif()
+endif()
 
 execute_process(COMMAND
   pkg-config --variable=plugindir OGRE
@@ -85,6 +103,7 @@ include_directories(include
   ${OGRE_INCLUDE_DIRS}
   ${OGRE-Terrain_INCLUDE_DIRS}
   ${OGRE-Paging_INCLUDE_DIRS}
+  ${OpenCV_INCLUDE_DIRS}
 )
 
 link_directories(
@@ -104,23 +123,23 @@ endif()
 
 catkin_package(
   INCLUDE_DIRS include
-  LIBRARIES 
-  vision_reconfigure 
-  gazebo_ros_utils 
-  gazebo_ros_camera_utils 
-  gazebo_ros_camera 
+  LIBRARIES
+  vision_reconfigure
+  gazebo_ros_utils
+  gazebo_ros_camera_utils
+  gazebo_ros_camera
   gazebo_ros_triggered_camera
-  gazebo_ros_multicamera 
+  gazebo_ros_multicamera
   gazebo_ros_triggered_multicamera
-  gazebo_ros_depth_camera 
-  gazebo_ros_openni_kinect 
-  gazebo_ros_gpu_laser 
-  gazebo_ros_laser 
-  gazebo_ros_block_laser 
-  gazebo_ros_p3d 
-  gazebo_ros_imu 
+  gazebo_ros_depth_camera
+  gazebo_ros_openni_kinect
+  gazebo_ros_gpu_laser
+  gazebo_ros_laser
+  gazebo_ros_block_laser
+  gazebo_ros_p3d
+  gazebo_ros_imu
   gazebo_ros_imu_sensor
-  gazebo_ros_f3d 
+  gazebo_ros_f3d
   gazebo_ros_ft_sensor
   gazebo_ros_bumper
   gazebo_ros_template
@@ -158,6 +177,7 @@ catkin_package(
   rosconsole
   camera_info_manager
   std_msgs
+  visualization_msgs
 )
 add_dependencies(${PROJECT_NAME}_gencfg ${catkin_EXPORTED_TARGETS})
 
@@ -268,7 +288,7 @@ target_link_libraries(gazebo_ros_projector ${Boost_LIBRARIES} ${catkin_LIBRARIES
 
 add_library(gazebo_ros_prosilica src/gazebo_ros_prosilica.cpp)
 add_dependencies(gazebo_ros_prosilica ${PROJECT_NAME}_gencfg)
-target_link_libraries(gazebo_ros_prosilica gazebo_ros_camera_utils CameraPlugin ${catkin_LIBRARIES})
+target_link_libraries(gazebo_ros_prosilica gazebo_ros_camera_utils CameraPlugin ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
 add_library(gazebo_ros_force src/gazebo_ros_force.cpp)
 target_link_libraries(gazebo_ros_force ${catkin_LIBRARIES} ${Boost_LIBRARIES})
@@ -293,7 +313,7 @@ add_library(gazebo_ros_skid_steer_drive src/gazebo_ros_skid_steer_drive.cpp)
 target_link_libraries(gazebo_ros_skid_steer_drive ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 
 add_library(gazebo_ros_video src/gazebo_ros_video.cpp)
-target_link_libraries(gazebo_ros_video ${catkin_LIBRARIES} ${Boost_LIBRARIES} ${OGRE_LIBRARIES})
+target_link_libraries(gazebo_ros_video ${catkin_LIBRARIES} ${Boost_LIBRARIES} ${OGRE_LIBRARIES} ${OpenCV_LIBRARIES})
 
 add_library(gazebo_ros_planar_move src/gazebo_ros_planar_move.cpp)
 target_link_libraries(gazebo_ros_planar_move ${catkin_LIBRARIES} ${Boost_LIBRARIES})
@@ -323,9 +343,8 @@ target_link_libraries(gazebo_ros_template ${catkin_LIBRARIES} ${Boost_LIBRARIES}
 install(TARGETS
   hokuyo_node
   camera_synchronizer
-  pub_joint_trajectory_test
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-  )
+)
 
 install(TARGETS
   vision_reconfigure
@@ -394,9 +413,8 @@ install(DIRECTORY include/
    FILES_MATCHING PATTERN "*.h"
 )
 
-install(PROGRAMS scripts/set_wrench.py scripts/set_pose.py scripts/gazebo_model
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-  )
+catkin_install_python(PROGRAMS scripts/set_wrench.py scripts/set_pose.py scripts/gazebo_model
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 install(DIRECTORY Media
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
@@ -418,6 +436,7 @@ if (CATKIN_ENABLE_TESTING)
   target_link_libraries(set_model_state-test ${catkin_LIBRARIES})
 
   add_rostest(test/range/range_plugin.test)
+  add_rostest(test/block_laser_clipping.test)
 
   if (ENABLE_DISPLAY_TESTS)
     add_rostest_gtest(depth_camera-test
@@ -439,11 +458,11 @@ if (CATKIN_ENABLE_TESTING)
     add_rostest_gtest(distortion_barrel_test
                       test/camera/distortion_barrel.test
                       test/camera/distortion_barrel.cpp)
-    target_link_libraries(distortion_barrel_test ${catkin_LIBRARIES})
+    target_link_libraries(distortion_barrel_test ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
     add_rostest_gtest(distortion_pincushion_test
                       test/camera/distortion_pincushion.test
                       test/camera/distortion_pincushion.cpp)
-    target_link_libraries(distortion_pincushion_test ${catkin_LIBRARIES})
+    target_link_libraries(distortion_pincushion_test ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
     add_rostest_gtest(triggered-camera-test
                       test/camera/triggered_camera.test
                       test/camera/triggered_camera.cpp)

@@ -4,6 +4,8 @@
 // OpenCV includes
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
+// undistort function has been moved to calib3d in opencv4
+#include <opencv2/calib3d.hpp>
 
 // Test includes
 #include <gtest/gtest.h>

@@ -219,7 +219,7 @@ bool DefaultRobotHWSim::initSim(
       // joint->SetParam("vel") to control the joint.
       const ros::NodeHandle nh(robot_namespace + "/gazebo_ros_control/pid_gains/" +
                                joint_names_[j]);
-      if (pid_controllers_[j].init(nh, true))
+      if (pid_controllers_[j].init(nh))
       {
         switch (joint_control_methods_[j])
         {

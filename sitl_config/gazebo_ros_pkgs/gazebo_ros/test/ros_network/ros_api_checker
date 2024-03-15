@@ -19,7 +19,7 @@ class Tester(unittest.TestCase):
 
     def _test_extra_topics(self, topics):
         cmd = ['rostopic', 'list']
-        po = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        po = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         out, err = po.communicate()
         self.assertEqual(po.returncode, 0, 'rostopic failed (%s). stdout: %s stderr: %s'%(cmd, out, err))
         topics_actual = set(out.split('\n')) - set([''])
@@ -29,7 +29,7 @@ class Tester(unittest.TestCase):
 
     def _test_extra_services(self, services):
         cmd = ['rosservice', 'list']
-        po = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        po = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         out, err = po.communicate()
         self.assertEqual(po.returncode, 0, 'rosservice failed (%s). stdout: %s stderr: %s'%(cmd, out, err))
         services_actual = set(out.split('\n')) - set([''])
@@ -44,7 +44,7 @@ class Tester(unittest.TestCase):
         self.assertIn('num_subscribers', t)
 
         cmd = ['rostopic', 'info', t['topic']]
-        po = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        po = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         out, err = po.communicate()
         self.assertEqual(po.returncode, 0, 'rostopic info failed (%s). stdout: %s stderr: %s'%(cmd, out, err))
         self._parse_rostopic(t, out)
@@ -92,7 +92,7 @@ class Tester(unittest.TestCase):
         self.assertIn('type', s)
 
         cmd = ['rosservice', 'info', s['service']]
-        po = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        po = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         out, err = po.communicate()
         self.assertEqual(po.returncode, 0, 'rosservice info failed (%s). stdout: %s stderr: %s'%(cmd, out, err))
         self._parse_rosservice(s, out)

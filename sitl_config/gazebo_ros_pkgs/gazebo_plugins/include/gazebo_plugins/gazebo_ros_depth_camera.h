@@ -35,6 +35,8 @@
 #include <sensor_msgs/fill_image.h>
 #include <std_msgs/Float64.h>
 #include <image_transport/image_transport.h>
+#include <visualization_msgs/MarkerArray.h>
+#include <visualization_msgs/Marker.h>
 
 // gazebo stuff
 #include <sdf/Param.hh>
@@ -68,25 +70,37 @@ namespace gazebo
 
     /// \brief Load the plugin
     /// \param take in SDF root element
-    public: virtual void Load(sensors::SensorPtr _parent, sdf::ElementPtr _sdf);
+    public: virtual void Load(sensors::SensorPtr _parent, sdf::ElementPtr _sdf) override;
 
-    /// \brief Advertise point cloud and depth image
+    /// \brief Advertise point cloud, depth image, normals and reflectance
     public: virtual void Advertise();
 
     /// \brief Update the controller
     protected: virtual void OnNewDepthFrame(const float *_image,
                    unsigned int _width, unsigned int _height,
-                   unsigned int _depth, const std::string &_format);
+                   unsigned int _depth, const std::string &_format) override;
 
     /// \brief Update the controller
     protected: virtual void OnNewRGBPointCloud(const float *_pcd,
                     unsigned int _width, unsigned int _height,
-                    unsigned int _depth, const std::string &_format);
+                    unsigned int _depth, const std::string &_format) override;
 
     /// \brief Update the controller
     protected: virtual void OnNewImageFrame(const unsigned char *_image,
                    unsigned int _width, unsigned int _height,
-                   unsigned int _depth, const std::string &_format);
+                   unsigned int _depth, const std::string &_format) override;
+
+#if GAZEBO_MAJOR_VERSION == 9 && GAZEBO_MINOR_VERSION > 12
+     /// \brief Update the reflectance frame
+     protected: virtual void OnNewReflectanceFrame(const float * _reflectance,
+                    unsigned int _width, unsigned int _height,
+                    unsigned int _depth, const std::string &_format) override;
+
+    /// \brief Update the normals frame
+    protected: virtual void OnNewNormalsFrame(const float * _normals,
+                   unsigned int _width, unsigned int _height,
+                   unsigned int _depth, const std::string &_format) override;
+#endif
 
     /// \brief Put camera data to the ROS topic
     private: void FillPointdCloud(const float *_src);
@@ -98,6 +112,20 @@ namespace gazebo
     private: int point_cloud_connect_count_;
     private: void PointCloudConnect();
     private: void PointCloudDisconnect();
+
+    /// \brief Keep track of number of connections for reflectance
+    private: int reflectance_connect_count_;
+    /// \brief Increase the counter which count the subscribers are connected
+    private: void ReflectanceConnect();
+    /// \brief Decrease the counter which count the subscribers are connected
+    private: void ReflectanceDisconnect();
+
+    /// \brief Keep track of number of connections for normals
+    private: int normals_connect_count_;
+    /// \brief Increase the counter which count the subscribers are connected
+    private: void NormalsConnect();
+    /// \brief Decrease the counter which count the subscribers are connected
+    private: void NormalsDisconnect();
 
     /// \brief Keep track of number of connctions for point clouds
     private: int depth_image_connect_count_;
@@ -116,15 +144,30 @@ namespace gazebo
     /// \brief A pointer to the ROS node.  A node will be instantiated if it does not exist.
     private: ros::Publisher point_cloud_pub_;
     private: ros::Publisher depth_image_pub_;
+    private: ros::Publisher reflectance_pub_;
+    private: ros::Publisher normal_pub_;
 
     /// \brief PointCloud2 point cloud message
     private: sensor_msgs::PointCloud2 point_cloud_msg_;
     private: sensor_msgs::Image depth_image_msg_;
+    private: sensor_msgs::Image reflectance_msg_;
+
+    /// \brief copy of the pointcloud data, used to place normals in the world
+    private: float * pcd_ = nullptr;
 
     private: double point_cloud_cutoff_;
 
+    /// \brief adding one value each reduce_normals_ to the array marker
+    private: int reduce_normals_;
+
     /// \brief ROS image topic name
     private: std::string point_cloud_topic_name_;
+
+    /// \brief ROS reflectance topic name
+    private: std::string reflectance_topic_name_;
+
+    /// \brief ROS normals topic name
+    private: std::string normals_topic_name_;
 
     private: void InfoConnect();
     private: void InfoDisconnect();
@@ -138,6 +181,7 @@ namespace gazebo
     private: int depth_info_connect_count_;
     private: void DepthInfoConnect();
     private: void DepthInfoDisconnect();
+    private: bool use_depth_image_16UC1_format_;
 
     // overload with our own
     private: common::Time depth_sensor_update_time_;
@@ -148,4 +192,3 @@ namespace gazebo
 
 }
 #endif
-

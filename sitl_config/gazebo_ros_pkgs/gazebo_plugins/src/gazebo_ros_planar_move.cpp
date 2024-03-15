@@ -23,6 +23,9 @@
  */
 
 #include <gazebo_plugins/gazebo_ros_planar_move.h>
+#ifdef ENABLE_PROFILER
+#include <ignition/common/Profiler.hh>
+#endif
 
 namespace gazebo
 {
@@ -111,6 +114,17 @@ namespace gazebo
     {
       odometry_rate_ = sdf->GetElement("odometryRate")->Get<double>();
     }
+    cmd_timeout_ = -1;
+    if (!sdf->HasElement("cmdTimeout"))
+    {
+      ROS_WARN_NAMED("planar_move", "PlanarMovePlugin (ns = %s) missing <cmdTimeout>, "
+          "defaults to %f",
+          robot_namespace_.c_str(), cmd_timeout_);
+    }
+    else
+    {
+      cmd_timeout_ = sdf->GetElement("cmdTimeout")->Get<double>();
+    }
 
 #if GAZEBO_MAJOR_VERSION >= 8
     last_odom_publish_time_ = parent_->GetWorld()->SimTime();
@@ -167,7 +181,20 @@ namespace gazebo
   // Update the controller
   void GazeboRosPlanarMove::UpdateChild()
   {
+#ifdef ENABLE_PROFILER
+    IGN_PROFILE("GazeboRosPlanarMove::UpdateChild");
+    IGN_PROFILE_BEGIN("fill ROS message");
+#endif
     boost::mutex::scoped_lock scoped_lock(lock);
+    if (cmd_timeout_>=0)
+    {
+      if ((ros::Time::now()-last_cmd_received_time_).toSec() > cmd_timeout_)
+      {
+        x_ = 0;
+        y_ = 0;
+        rot_ = 0;
+      }
+    }
 #if GAZEBO_MAJOR_VERSION >= 8
     ignition::math::Pose3d pose = parent_->WorldPose();
 #else
@@ -179,6 +206,9 @@ namespace gazebo
           y_ * cosf(yaw) + x_ * sinf(yaw),
           0));
     parent_->SetAngularVel(ignition::math::Vector3d(0, 0, rot_));
+#ifdef ENABLE_PROFILER
+    IGN_PROFILE_END();
+#endif
     if (odometry_rate_ > 0.0) {
 #if GAZEBO_MAJOR_VERSION >= 8
       common::Time current_time = parent_->GetWorld()->SimTime();
@@ -188,7 +218,13 @@ namespace gazebo
       double seconds_since_last_update =
         (current_time - last_odom_publish_time_).Double();
       if (seconds_since_last_update > (1.0 / odometry_rate_)) {
+#ifdef ENABLE_PROFILER
+        IGN_PROFILE_BEGIN("publishOdometry");
+#endif
         publishOdometry(seconds_since_last_update);
+#ifdef ENABLE_PROFILER
+        IGN_PROFILE_END();
+#endif
         last_odom_publish_time_ = current_time;
       }
     }
@@ -207,6 +243,7 @@ namespace gazebo
       const geometry_msgs::Twist::ConstPtr& cmd_msg)
   {
     boost::mutex::scoped_lock scoped_lock(lock);
+    last_cmd_received_time_ = ros::Time::now();
     x_ = cmd_msg->linear.x;
     y_ = cmd_msg->linear.y;
     rot_ = cmd_msg->angular.z;

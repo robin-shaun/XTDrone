@@ -27,6 +27,10 @@
 
 #include <gazebo_plugins/gazebo_ros_joint_pose_trajectory.h>
 
+#ifdef ENABLE_PROFILER
+#include <ignition/common/Profiler.hh>
+#endif
+
 namespace gazebo
 {
 GZ_REGISTER_MODEL_PLUGIN(GazeboRosJointPoseTrajectory);
@@ -337,6 +341,11 @@ bool GazeboRosJointPoseTrajectory::SetTrajectory(
 // Play the trajectory, update states
 void GazeboRosJointPoseTrajectory::UpdateStates()
 {
+#ifdef ENABLE_PROFILER
+  IGN_PROFILE("GazeboRosJointPoseTrajectory::UpdateStates");
+
+  IGN_PROFILE_BEGIN("update");
+#endif
   boost::mutex::scoped_lock lock(this->update_mutex);
   if (this->has_trajectory_)
   {
@@ -437,6 +446,9 @@ void GazeboRosJointPoseTrajectory::UpdateStates()
       }
     }
   }
+#ifdef ENABLE_PROFILER
+  IGN_PROFILE_END();
+#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////

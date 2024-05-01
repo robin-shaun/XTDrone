@@ -2460,55 +2460,55 @@
       </joint>
       <static>1</static>
       <allow_auto_disable>0</allow_auto_disable>
-      <pose frame=''>-2.83005 -45.0898 -0.161234 -0.001128 -0.015612 3.09415</pose>
+      <pose frame=''>-2.83005 -45.0898 -0.161234 0 0 0</pose>
     </model>
 	<model name='rover_static_clone_clone_10_clone_clone_1'>
-        <pose frame=''>-2.83005 -45.0898 -0.161234 -0.001128 -0.015612 3.09415</pose>
+        <pose frame=''>-2.83005 -45.0898 -0.161234 0 0 0</pose>
         <scale>1 1 1</scale>
         <link name='base_link'>
-          <pose frame=''>-2.83005 -45.0898 -0.161234 -0.001128 -0.015612 3.09415</pose>
+          <pose frame=''>-2.83005 -45.0898 -0.161234 0 0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
         <link name='front_left_wheel'>
-          <pose frame=''>-4.05934 -45.7483 0.203655 -1.52113 -0.015612 3.09415</pose>
+          <pose frame=''>-4.05934 -45.7483 0.203655 0 0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
         <link name='front_left_wheel_steering_block'>
-          <pose frame=''>-4.04898 -45.5329 0.212077 1.56967 -0.015612 3.09415</pose>
+          <pose frame=''>-4.04898 -45.5329 0.212077 0 0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
         <link name='front_right_wheel'>
-          <pose frame=''>-3.99144 -44.3186 0.205269 1.51887 -0.015612 3.09415</pose>
+          <pose frame=''>-3.99144 -44.3186 0.205269 0 0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
         <link name='front_right_wheel_steering_block'>
-          <pose frame=''>-4.00154 -44.534 0.213205 1.56967 -0.015612 3.09415</pose>
+          <pose frame=''>-4.00154 -44.534 0.213205 0 0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
         <link name='rear_left_wheel'>
-          <pose frame=''>-1.86608 -45.8524 0.169372 -1.52113 -0.015612 3.09415</pose>
+          <pose frame=''>-1.86608 -45.8524 0.169372 0 0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
         <link name='rear_right_wheel'>
-          <pose frame=''>-1.79818 -44.4228 0.170987 1.51887 -0.015612 3.09415</pose>
+          <pose frame=''>-1.79818 -44.4228 0.170987 0 0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
         <link name='rover/imu_link'>
-          <pose frame=''>-2.83005 -45.0898 -0.161234 -0.001128 -0.015612 3.09415</pose>
+          <pose frame=''>-2.83005 -45.0898 -0.161234 0 0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>

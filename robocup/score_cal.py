@@ -1,7 +1,7 @@
 #coding: utf-8
 import rospy
 import sys
-from std_msgs.msg import Int16,String
+from std_msgs.msg import Int16,String, Time
 from ros_actor_cmd_pose_plugin_msgs.msg import ActorInfo
 from gazebo_msgs.srv import DeleteModel,GetModelState
 import time
@@ -29,6 +29,7 @@ def actor_info_callback(msg):
                 count_flag[i] = True
                 find_time[i] = rospy.get_time()
                 print("find actor_"+str(i))
+                find_actor_pub[i].publish(rospy.get_time())
             elif rospy.get_time() - find_time[i] >= 15:
                 del_model('actor_'+str(i))
                 left_actors.remove(i)
@@ -63,6 +64,7 @@ def actor_info1_callback(msg):
                 count_flag[i] = True
                 find_time[i] = rospy.get_time()
                 print("find actor_"+str(i))
+                find_actor_pub[i].publish(rospy.get_time())
                 flag_1=i
             elif rospy.get_time() - find_time[i] >= 15:
                 del_model('actor_'+str(i))
@@ -101,6 +103,8 @@ def actor_info2_callback(msg):
                 count_flag[i] = True
                 find_time[i] = rospy.get_time()
                 print("find actor_"+str(i))
+                count = find_actor_pub[i].publish(rospy.get_time())
+                
                 flag_2=i
             elif rospy.get_time() - find_time[i] >= 15:
                 del_model('actor_'+str(i))
@@ -132,6 +136,7 @@ if __name__ == "__main__":
     count_flag = [False] * actor_num
     topic_arrive_time = [0.0] * actor_num
     find_time = [0.0] * actor_num
+    find_actor_pub = []
     flag_1=0
     flag_2=1
     rospy.init_node('score_cal')
@@ -148,6 +153,8 @@ if __name__ == "__main__":
     actor_brown_sub = rospy.Subscriber("/actor_brown_info",ActorInfo,actor_info_callback,queue_size=1)
     actor_red1_sub = rospy.Subscriber("/actor_red1_info",ActorInfo,actor_info1_callback,queue_size=1)
     actor_red2_sub = rospy.Subscriber("/actor_red2_info",ActorInfo,actor_info2_callback,queue_size=1)
+    for i in range(actor_num):
+        find_actor_pub.append(rospy.Publisher("/find_actor_%d"%i, Time, queue_size=5))
 
     mono_cam = 1
     stereo_cam =0
@@ -188,6 +195,4 @@ if __name__ == "__main__":
         cv2.imshow("Multi-UAV search simulation competition judgment system",background)
         cv2.waitKey( 1)
         rate.sleep()
-
-
 

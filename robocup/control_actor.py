@@ -4,8 +4,8 @@ import rospy
 import random
 from ros_actor_cmd_pose_plugin_msgs.msg import ActorMotion
 from geometry_msgs.msg import Point
-from gazebo_msgs.srv import GetModelState
-from std_msgs.msg import String
+from gazebo_msgs.srv import GetModelState, SetModelState, SetModelStateRequest, SetModelStateResponse
+from std_msgs.msg import String, Time
 import sys
 import numpy
 import copy
@@ -14,6 +14,7 @@ from ObstacleAvoid import ObstacleAvoid
 import math
 import ast
 import numpy as np
+import os
 
 
 class ControlActor:
@@ -24,6 +25,7 @@ class ControlActor:
         self.actor_num = 6
         self.vehicle_type = 'typhoon_h480'
         self.f = 10
+        self.spon_dis = 5
         self.flag = True
         self.distance_flag = True
         self.suitable_point = True
@@ -34,10 +36,10 @@ class ControlActor:
         # self.x_min = -10.0
         # self.y_max = -20.0
         # self.y_min = -30.0
-        self.x_max = 150.0
+        self.x_max = 130.0
         self.x_min = -50.0
-        self.y_max = 50.0
-        self.y_min = -50.0
+        self.y_max = 60.0
+        self.y_min = -60.0
         self.id = actor_id
         self.velocity = 1.5
         self.avoid = ActorMotion()
@@ -45,6 +47,11 @@ class ControlActor:
         self.current_pose = Point()
         self.target_motion = Point()
         self.avoid.v = 2
+        self.teleportation_interval = 25
+        self.teleportation_time = Time()
+        self.black_box_path = os.path.expanduser('~/XTDrone/robocup/black_box.txt')
+        self.black_box = open(self.black_box_path, "r")
+
         # obstacle avoidance:
         self.Obstacleavoid = ObstacleAvoid()  #ji wu 
         self.left_actors = range(self.actor_num)
@@ -67,11 +74,13 @@ class ControlActor:
         self.black_box=ast.literal_eval(line)
         self.box_num = len(self.black_box)
 
-                # 读取文件并初始化障碍物数据
-        with open('obstacle.txt', 'r') as file:
+        # 读取文件并初始化障碍物数据
+        with open('2024.txt', 'r') as file:
             lines = file.readlines()
             self.obstacle_data = [line.strip().split() for line in lines]
         self.cmd_pub = rospy.Publisher('/actor_' + self.id + '/cmd_motion', ActorMotion, queue_size=10)
+        message_pub = rospy.Publisher("/find_actor_%s"%self.id, Time, queue_size=10)
+        
         self.gazeboModelstate = rospy.ServiceProxy('gazebo/get_model_state', GetModelState)
         print('actor_' + self.id + ": " + "communication initialized")
         self.state_uav0_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+"_0/ground_truth/odom", Odometry, self.cmd_uav0_pose_callback,queue_size=1)
@@ -81,6 +90,50 @@ class ControlActor:
         self.state_uav4_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+"_4/ground_truth/odom", Odometry, self.cmd_uav4_pose_callback,queue_size=1)
         self.state_uav5_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+"_5/ground_truth/odom", Odometry, self.cmd_uav5_pose_callback,queue_size=1)
         self.left_actors_sub = rospy.Subscriber("/left_actors",String,self.left_actors_callback,queue_size=1)
+        self.find_actor_sub = rospy.Subscriber("/find_actor_%s"%self.id, Time, self.actor_teleportation_callback, queue_size=1)
+        
+
+
+    def actor_teleportation_callback(self, msg):
+        self.teleportation_time = msg
+        responce = SetModelStateResponse()
+        responce.success = False
+        while not responce.success:
+            if rospy.get_time() - self.teleportation_time.data.secs < self.teleportation_interval:
+                print(rospy.get_time() - self.teleportation_time.data.secs)
+                continue
+            else:
+                new_point = SetModelStateRequest()
+                new_point.model_state.model_name = "actor_%s"%self.id
+                new_point.model_state.pose.position.x, new_point.model_state.pose.position.y = self.create_human_point()
+                print(new_point)
+                tele = rospy.ServiceProxy("/gazebo/set_model_state", SetModelState)
+                responce = tele(new_point)
+
+
+    def create_human_point(self):
+        count = 1
+        spon_dis = 5
+        while count < 1e5:
+            a = random.uniform(-40, 110)
+            b = random.uniform(-40, 40)
+            in_obstacle = False
+            
+            for box in self.black_box:
+                xmin, xmax = box[0]
+                ymin, ymax = box[1]
+                if (xmin - spon_dis) < a < (xmax + spon_dis) and (ymin - spon_dis) < b < (ymax + spon_dis):
+                    in_obstacle = True
+                    break
+            
+            if not in_obstacle:
+                return int(a), int(b)
+            
+            count += 1
+        
+        print('ERROR: Actor generation failed after 100,000 attempts!')
+        return None
+
 
     def left_actors_callback(self, msg):
         left = msg.data
@@ -144,10 +197,12 @@ class ControlActor:
                 while self.suitable_point:
                     while_time = 0
                     self.suitable_point = False
-                    self.x = random.uniform(self.x_min, self.x_max)
-                    self.y = random.uniform(self.y_min, self.y_max)
-                            # 定义阈值
-                    collision_threshold = 0.5
+                    shres = 2
+                    self.x = random.uniform(self.x_min-shres, self.x_max+shres)
+                    self.y = random.uniform(self.y_min-shres, self.y_max+shres)
+                 
+                    # 定义阈值
+                    collision_threshold = 1.5
                     # 生成路径点
                     path_points = []
                     for t in range(101):  # 生成
@@ -157,8 +212,8 @@ class ControlActor:
                         path_points.append((x_path, y_path))
         
                     for i in range(self.box_num):
-                        if (self.x > self.black_box[i][0][0]-1.5) and (self.x < self.black_box[i][0][1]+1.5):
-                            if (self.y > self.black_box[i][1][0]-1.5) and (self.y < self.black_box[i][1][1]+1.5):
+                        if (self.x > self.black_box[i][0][0]-self.spon_dis) and (self.x < self.black_box[i][0][1]+self.spon_dis):
+                            if (self.y > self.black_box[i][1][0]-self.spon_dis) and (self.y < self.black_box[i][1][1]+self.spon_dis):
                                 self.suitable_point = True
                                 while_time = while_time+1
                                 break
@@ -179,15 +234,15 @@ class ControlActor:
                 self.escape_suce_flag = False
 
                 if self.target_motion.x < self.x_min:
-                    self.target_motion.x = self.x_min
+                    self.target_motion.x = self.x_min+5
                 elif self.target_motion.x > self.x_max:
-                    self.target_motion.x = self.x_max
+                    self.target_motion.x = self.x_max-5
                 if self.target_motion.y < self.y_min:
-                    self.target_motion.y = self.y_min
+                    self.target_motion.y = self.y_min+5
                 elif self.target_motion.y > self.y_max:
-                    self.target_motion.y = self.y_max               
+                    self.target_motion.y = self.y_max-5              
                 try:                   
-                    self.subtarget_pos = self.Obstacleavoid.GetPointList(self.current_pose, self.target_motion, 1) # current pose, target pose, safe distance
+                    self.subtarget_pos = self.Obstacleavoid.GetPointList(self.current_pose, self.target_motion, 0.5) # current pose, target pose, safe distance
                     self.subtarget_length = len(self.subtarget_pos)
                     middd_pos = [Point() for k in range(self.subtarget_length)]
                     middd_pos = copy.deepcopy(self.subtarget_pos)
@@ -202,7 +257,7 @@ class ControlActor:
                 except:
                     dis_list = [0,0,0,0]
                     for i in range(len(self.black_box)):
-                        if (self.current_pose.x > self.black_box[i][0][0]-1.0) and (self.current_pose.x < self.black_box[i][0][1]+1.0):
+                        if (self.current_pose.x > self.black_box[i][0][0]-self.spon_dis) and (self.current_pose.x < self.black_box[i][0][1]+1.0):
                             if (self.current_pose.y > self.black_box[i][1][0]-1.0) and (self.current_pose.y < self.black_box[i][1][1]+1.0):
                                 dis_list[0] = abs(self.current_pose.x - (self.black_box[i][0][0] - 1.0))
                                 dis_list[1] = abs(self.current_pose.x - (self.black_box[i][0][1] + 1.0))
@@ -380,6 +435,35 @@ class ControlActor:
             #     print('self.avoid:', self.avoid)
             self.cmd_pub.publish(self.avoid)
             rate.sleep()
+
+
+    def random_move(self):
+        dis_list = [0,0,0,0]
+        for i in range(len(self.black_box)):
+            if (self.current_pose.x > self.black_box[i][0][0]-self.spon_dis) and (self.current_pose.x < self.black_box[i][0][1]+1.0):
+                if (self.current_pose.y > self.black_box[i][1][0]-1.0) and (self.current_pose.y < self.black_box[i][1][1]+1.0):
+                    dis_list[0] = abs(self.current_pose.x - (self.black_box[i][0][0] - 1.0))
+                    dis_list[1] = abs(self.current_pose.x - (self.black_box[i][0][1] + 1.0))
+                    dis_list[2] = abs(self.current_pose.y - (self.black_box[i][1][0] - 1.0))
+                    dis_list[3] = abs(self.current_pose.y - (self.black_box[i][1][1] + 1.0))
+                    dis_min = dis_list.index(min(dis_list))
+                    self.subtarget_length = 1
+                    if dis_min == 0:
+                        self.avoid.x = self.black_box[i][0][0] - 1.0
+                        self.avoid.y = self.current_pose.y
+                    elif dis_min == 1:
+                        self.avoid.x = self.black_box[i][0][1] + 1.0
+                        self.avoid.y = self.current_pose.y
+                    elif dis_min == 2:
+                        
+                        self.avoid.y = self.black_box[i][1][0] - 1.0
+                        self.avoid.x = self.current_pose.x
+                    else:
+                        self.avoid.y = self.black_box[i][1][1] + 1.0
+                        self.avoid.x = self.current_pose.x
+                    break
+
+
 
     def pos2ang(self, deltax, deltay):   #([xb,yb] to [xa, ya])
         if not deltax == 0:

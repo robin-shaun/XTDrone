@@ -5,7 +5,7 @@ import random
 from ros_actor_cmd_pose_plugin_msgs.msg import ActorMotion
 from geometry_msgs.msg import Point
 from gazebo_msgs.srv import GetModelState, SetModelState, SetModelStateRequest, SetModelStateResponse
-from std_msgs.msg import String, Time
+from std_msgs.msg import String, Time, Float32
 import sys
 import numpy
 import copy
@@ -15,6 +15,7 @@ import math
 import ast
 import numpy as np
 import os
+
 
 
 class ControlActor:
@@ -79,7 +80,7 @@ class ControlActor:
             lines = file.readlines()
             self.obstacle_data = [line.strip().split() for line in lines]
         self.cmd_pub = rospy.Publisher('/actor_' + self.id + '/cmd_motion', ActorMotion, queue_size=10)
-        message_pub = rospy.Publisher("/find_actor_%s"%self.id, Time, queue_size=10)
+        message_pub = rospy.Publisher("/find_actor_%s"%self.id, Float32, queue_size=10)
         
         self.gazeboModelstate = rospy.ServiceProxy('gazebo/get_model_state', GetModelState)
         print('actor_' + self.id + ": " + "communication initialized")
@@ -90,17 +91,16 @@ class ControlActor:
         self.state_uav4_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+"_4/ground_truth/odom", Odometry, self.cmd_uav4_pose_callback,queue_size=1)
         self.state_uav5_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+"_5/ground_truth/odom", Odometry, self.cmd_uav5_pose_callback,queue_size=1)
         self.left_actors_sub = rospy.Subscriber("/left_actors",String,self.left_actors_callback,queue_size=1)
-        self.find_actor_sub = rospy.Subscriber("/find_actor_%s"%self.id, Time, self.actor_teleportation_callback, queue_size=1)
+        self.find_actor_sub = rospy.Subscriber("/find_actor_%s"%self.id, Float32, self.actor_teleportation_callback, queue_size=1)
         
 
-
     def actor_teleportation_callback(self, msg):
-        self.teleportation_time = msg
+        self.teleportation_time = msg.data
         responce = SetModelStateResponse()
         responce.success = False
         while not responce.success:
-            if rospy.get_time() - self.teleportation_time.data.secs < self.teleportation_interval:
-                print(rospy.get_time() - self.teleportation_time.data.secs)
+            if rospy.get_time() - self.teleportation_time < self.teleportation_interval:
+                print(rospy.get_time() - self.teleportation_time)
                 continue
             else:
                 new_point = SetModelStateRequest()

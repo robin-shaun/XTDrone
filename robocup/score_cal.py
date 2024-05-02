@@ -1,11 +1,12 @@
 #coding: utf-8
 import rospy
 import sys
-from std_msgs.msg import Int16,String, Time
+from std_msgs.msg import Int16,String, Time, Float32
 from ros_actor_cmd_pose_plugin_msgs.msg import ActorInfo
 from gazebo_msgs.srv import DeleteModel,GetModelState
 import time
 import cv2
+
 
 uav_type = sys.argv[1]
 actor_num = 6
@@ -17,7 +18,7 @@ actor_id_dict = {'green':[0], 'blue':[1], 'brown':[2], 'white':[3], 'red':[4,5]}
 
 
 def actor_info_callback(msg):
-    global target_finish, start_time, score, count_flag, left_actors, actors_pos, find_time, topic_arrive_time
+    global target_finish, start_time, score, count_flag, left_actors, actors_pos, find_time, topic_arrive_time, find_actors, find_finish
     actor_id = actor_id_dict[msg.cls]
     for i in actor_id:
         if i not in left_actors:
@@ -29,7 +30,11 @@ def actor_info_callback(msg):
                 count_flag[i] = True
                 find_time[i] = rospy.get_time()
                 print("find actor_"+str(i))
+                if i in find_actors:
+                    find_actors.remove(i)
+                find_finish = actor_num-len(find_actors)
                 find_actor_pub[i].publish(rospy.get_time())
+                score = find_finish * 50 + target_finish * 100 - sensor_cost * 3e-3
             elif rospy.get_time() - find_time[i] >= 15:
                 del_model('actor_'+str(i))
                 left_actors.remove(i)
@@ -38,20 +43,20 @@ def actor_info_callback(msg):
                 target_finish = 6-len(left_actors)
                 # calculate score
                 if target_finish == 6:
-                    score = (1200 - time_usage) - sensor_cost * 3e-3 
+                    score = (2160 - time_usage) - sensor_cost * 3e-3 
                     print('score:',score)
                     print("Mission finished")
                     while True:
                         pass
                 else:
-                    score = (2 + target_finish) * 60 - sensor_cost * 3e-3
+                    score = find_finish * 50 + target_finish * 100 - sensor_cost * 3e-3
                     print('score:',score)
                     break        
         else:
             count_flag[i] = False
 
 def actor_info1_callback(msg):
-    global target_finish, start_time, score, count_flag, left_actors, actors_pos, find_time, topic_arrive_time,flag_1,flag_2
+    global target_finish, start_time, score, count_flag, left_actors, actors_pos, find_time, topic_arrive_time,flag_1,flag_2, find_actors, find_finish
     red_cnt = 0
     actor_id = actor_id_dict[msg.cls]
     for i in actor_id:
@@ -65,6 +70,11 @@ def actor_info1_callback(msg):
                 find_time[i] = rospy.get_time()
                 print("find actor_"+str(i))
                 find_actor_pub[i].publish(rospy.get_time())
+                if i in find_actors:
+                    find_actors.remove(i)
+                find_finish = actor_num-len(find_actors)
+                find_actor_pub[i].publish(rospy.get_time())
+                score = find_finish * 50 + target_finish * 100 - sensor_cost * 3e-3
                 flag_1=i
             elif rospy.get_time() - find_time[i] >= 15:
                 del_model('actor_'+str(i))
@@ -74,13 +84,13 @@ def actor_info1_callback(msg):
                 target_finish = 6-len(left_actors)
                 # calculate score
                 if target_finish == 6:
-                    score = (1200 - time_usage) - sensor_cost * 3e-3 
+                    score = (2160 - time_usage) - sensor_cost * 3e-3 
                     print('score:',score)
                     print("Mission finished")
                     while True:
                         pass
                 else:
-                    score = (2 + target_finish) * 60 - sensor_cost * 3e-3
+                    score = find_finish * 50 + target_finish * 100 - sensor_cost * 3e-3
                     print('score:',score)
                     break        
         else:
@@ -90,7 +100,7 @@ def actor_info1_callback(msg):
                 flag_1=0
 
 def actor_info2_callback(msg):
-    global target_finish, start_time, score, count_flag, left_actors, actors_pos, find_time, topic_arrive_time,flag_1,flag_2
+    global target_finish, start_time, score, count_flag, left_actors, actors_pos, find_time, topic_arrive_time,flag_1,flag_2, find_actors, find_finish
     red_cnt = 0
     actor_id = actor_id_dict[msg.cls]
     for i in actor_id:
@@ -104,7 +114,11 @@ def actor_info2_callback(msg):
                 find_time[i] = rospy.get_time()
                 print("find actor_"+str(i))
                 count = find_actor_pub[i].publish(rospy.get_time())
-                
+                if i in find_actors:
+                    find_actors.remove(i)
+                find_finish = actor_num-len(find_actors)
+                find_actor_pub[i].publish(rospy.get_time())
+                score = find_finish * 50 + target_finish * 100 - sensor_cost * 3e-3
                 flag_2=i
             elif rospy.get_time() - find_time[i] >= 15:
                 del_model('actor_'+str(i))
@@ -115,13 +129,13 @@ def actor_info2_callback(msg):
                  
                 # calculate score
                 if target_finish == 6:
-                    score = (1200 - time_usage) - sensor_cost * 3e-3 
+                    score = (2160 - time_usage) - sensor_cost * 3e-3 
                     print('score:',score)
                     print("Mission finished")
                     while True:
                         pass
                 else:
-                    score = (2 + target_finish) * 60 - sensor_cost * 3e-3
+                    score = find_finish * 50 + target_finish * 100 - sensor_cost * 3e-3
                     print('score:',score)
                     break        
         else:
@@ -132,6 +146,8 @@ def actor_info2_callback(msg):
 
 if __name__ == "__main__":
     left_actors = range(actor_num)
+    find_actors = range(actor_num)
+    actors_pos = [None] * actor_num
     actors_pos = [None] * actor_num
     count_flag = [False] * actor_num
     topic_arrive_time = [0.0] * actor_num
@@ -154,19 +170,20 @@ if __name__ == "__main__":
     actor_red1_sub = rospy.Subscriber("/actor_red1_info",ActorInfo,actor_info1_callback,queue_size=1)
     actor_red2_sub = rospy.Subscriber("/actor_red2_info",ActorInfo,actor_info2_callback,queue_size=1)
     for i in range(actor_num):
-        find_actor_pub.append(rospy.Publisher("/find_actor_%d"%i, Time, queue_size=5))
+        find_actor_pub.append(rospy.Publisher("/find_actor_%d"%i, Float32, queue_size=5))
 
     mono_cam = 1
     stereo_cam =0
     laser1d = 0
-    laser2d = 0
+    laser2d = 1
     laser3d = 0
     gimbal = 1
     bino_cam = 0
-    sensor_cost = mono_cam * 5e2 + stereo_cam * 1e3 + laser1d * 2e2+ laser2d * 5e3 + laser3d * 2e4 + gimbal * 2e2 + bino_cam * 2e3
+    sensor_cost = mono_cam * 5e2 + stereo_cam * 1e3 + laser1d * 2e2+ laser2d * 1e3 + laser3d * 2e3 + gimbal * 2e2 + bino_cam * 2e3
     
     target_finish = 0
-    score = (2 + target_finish) * 60 - sensor_cost * 3e-3
+    find_finish = 0
+    score = find_finish * 50 + target_finish * 100 - sensor_cost * 3e-3
     rate = rospy.Rate(10)
 
     while not rospy.is_shutdown():

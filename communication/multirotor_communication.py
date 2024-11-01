@@ -1,9 +1,10 @@
 import rospy
-from mavros_msgs.msg import PositionTarget, ParamValue
+from mavros_msgs.msg import PositionTarget, ParamValue, State
 from mavros_msgs.srv import CommandBool, SetMode, ParamSet
 from geometry_msgs.msg import PoseStamped, Pose, Twist
 from std_msgs.msg import String
 from pyquaternion import Quaternion
+
 import sys
 
 rospy.init_node(sys.argv[1]+'_'+sys.argv[2]+"_communication")
@@ -26,10 +27,17 @@ class Communication:
         self.flight_mode = None
         self.mission = None
         self.last_cmd = None
-            
-        '''
-        ros subscribers
-        '''
+        
+        
+        # MAVROS Connection Check
+        mavros_state = rospy.wait_for_message(self.vehicle_type+'_'+self.vehicle_id+"/mavros/state", State)
+        if not mavros_state.connected:
+            rospy.logwarn(self.vehicle_type+'_'+self.vehicle_id+": No connection to FCU. Check mavros!")
+            exit(0)
+
+        ####################
+        ## ROS Interfaces ##
+        ####################
         self.local_pose_sub = rospy.Subscriber(self.vehicle_type+'_'+self.vehicle_id+"/mavros/local_position/pose", PoseStamped, self.local_pose_callback,queue_size=1)
         self.cmd_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+'_'+self.vehicle_id+"/cmd",String,self.cmd_callback,queue_size=3)
         self.cmd_pose_flu_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+'_'+self.vehicle_id+"/cmd_pose_flu", Pose, self.cmd_pose_flu_callback,queue_size=1)

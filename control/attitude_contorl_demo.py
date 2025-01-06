@@ -2,8 +2,8 @@
 import rospy
 import tty, termios
 import sys,select
-from mavros_msgs.msg import AttitudeTarget,PositionTarget,State
-from mavros_msgs.srv import CommandBool, SetMode
+from mavros_msgs.msg import AttitudeTarget,PositionTarget,State, ParamValue
+from mavros_msgs.srv import CommandBool, SetMode, ParamSet
 from geometry_msgs.msg import PoseStamped, Twist, TwistStamped
 from nav_msgs.msg import Odometry
 import time
@@ -49,6 +49,10 @@ class pub:
         self.body_target_pub = rospy.Publisher(uav_type + "_0/mavros/setpoint_raw/attitude", AttitudeTarget, queue_size=2)
         self.flightModeService = rospy.ServiceProxy(uav_type + "_0/mavros/set_mode", SetMode)
         self.armService = rospy.ServiceProxy(uav_type + "_0/mavros/cmd/arming", CommandBool)
+
+        self.set_param_srv = rospy.ServiceProxy(uav_type+"_0/mavros/param/set", ParamSet)
+        rcl_except = ParamValue(4, 0.0)
+        self.set_param_srv("COM_RCL_EXCEPT", rcl_except)
 
     def local_pose_callback(self, msg):
         self.px = msg.pose.position.x

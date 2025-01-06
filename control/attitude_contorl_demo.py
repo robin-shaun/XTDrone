@@ -120,6 +120,7 @@ class pub:
         offborad_mission=None
         self.att =AttitudeTarget()
         target_raw_pose = PositionTarget()
+        target_raw_pose.coordinate_frame = PositionTarget.FRAME_LOCAL_NED
         takeoff_x,takeoff_y,takeoff_z,takeoff_yaw=0,0,2,0
         control_x,control_y,control_z,yaw_r=1,0,2,0
         angle_max=0.3

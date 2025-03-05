@@ -1,6 +1,6 @@
 import rospy
-from mavros_msgs.msg import PositionTarget
-from mavros_msgs.srv import CommandBool, SetMode
+from mavros_msgs.msg import PositionTarget, ParamValue, State
+from mavros_msgs.srv import CommandBool, SetMode, ParamSet
 from geometry_msgs.msg import PoseStamped, Pose
 from std_msgs.msg import String
 import sys
@@ -15,11 +15,19 @@ class Communication:
         self.vehicle_type = 'plane'
         self.vehicle_id = vehicle_id
         self.local_pose = None
+        self.coordinate_frame = 1
         self.target_motion = PositionTarget()
+        self.target_motion.coordinate_frame = self.coordinate_frame
         self.arm_state = False
         self.motion_type = 0
         self.flight_mode = None
         self.mission = None
+
+        # MAVROS Connection Check
+        mavros_state = rospy.wait_for_message(self.vehicle_type+'_'+self.vehicle_id+"/mavros/state", State)
+        if not mavros_state.connected:
+            rospy.logwarn(self.vehicle_type+'_'+self.vehicle_id+": No connection to FCU. Check mavros!")
+            exit(0)
             
         '''
         ros subscribers
@@ -39,6 +47,9 @@ class Communication:
         '''
         self.armService = rospy.ServiceProxy(self.vehicle_type+'_'+self.vehicle_id+"/mavros/cmd/arming", CommandBool)
         self.flightModeService = rospy.ServiceProxy(self.vehicle_type+'_'+self.vehicle_id+"/mavros/set_mode", SetMode)
+        self.set_param_srv = rospy.ServiceProxy(self.vehicle_type+'_'+self.vehicle_id+"/mavros/param/set", ParamSet)
+        rcl_except = ParamValue(4, 0.0)
+        self.set_param_srv("COM_RCL_EXCEPT", rcl_except)
 
         print("communication initialized")
 

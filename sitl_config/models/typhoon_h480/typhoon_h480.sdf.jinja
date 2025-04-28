@@ -401,7 +401,7 @@
         <always_on>1</always_on>
         <update_rate>10</update_rate>
         <visualize>true</visualize>
-        <plugin name="CameraManagerPlugin" filename="libgazebo_camera_manager_plugin.so">
+        <!-- <plugin name="CameraManagerPlugin" filename="libgazebo_camera_manager_plugin.so">
             <robotNamespace>typhoon_h480</robotNamespace>
             <interval>1</interval>
             <width>3840</width>
@@ -411,6 +411,21 @@
             <system_id>{{ mavlink_id }}</system_id>
             <cam_component_id>{{ cam_component_id }}</cam_component_id>
             <mavlink_cam_udp_port>{{ mavlink_cam_udp_port }}</mavlink_cam_udp_port>
+        </plugin> -->
+        <plugin name="cgo3_camera_controller" filename="libgazebo_ros_camera.so">
+          <robotNamespace></robotNamespace>
+          <alwaysOn>true</alwaysOn>
+          <updateRate>30</updateRate>
+          <cameraName>/cgo3_camera</cameraName>
+          <imageTopicName>image_raw</imageTopicName>
+          <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+          <frameName>cgo3_camera_optical_frame</frameName>
+          <hackBaseline>0.0</hackBaseline>
+          <distortionK1>0.0</distortionK1>
+          <distortionK2>0.0</distortionK2>
+          <distortionK3>0.0</distortionK3>
+          <distortionT1>0.0</distortionT1>
+          <distortionT2>0.0</distortionT2>
         </plugin>
       </sensor>
     </link>

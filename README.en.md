@@ -72,4 +72,4 @@ Keyan Chen, Jiangwei Xu, Yongguang Lu, Gao Chen, Changhao Sun, Ying Nie, Fanjie 
 
 ### Business cooperation
 
-For commercial inquiries, please contact Kun Xiao <robin_shaun@foxmail.com>.
+For commercial inquiries, please contact An Zhuo <zhuoan@stu.pku.edu.cn>.

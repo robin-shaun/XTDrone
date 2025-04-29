@@ -107,7 +107,7 @@ K. Xiao, L. Ma, S. Tan, Y. Cong , X. Wang, "Implementation of UAV Coordination B
 
 ### 加入我们
 
-欢迎广大无人机开发者们加入我们的团队，共同学习进步。如有意向，请把简历（包含对PX4 ROS与Gazebo的掌握情况）发到robin_shaun@foxmail.com，让我们一起完善XTDrone仿真平台。
+欢迎广大无人机开发者们加入我们的团队，共同学习进步。如有意向，请把简历（包含对PX4 ROS与Gazebo的掌握情况）发到<zhuoan@stu.pku.edu.cn>，让我们一起完善XTDrone仿真平台。
 
 ### 贡献者
 
@@ -121,4 +121,4 @@ K. Xiao, L. Ma, S. Tan, Y. Cong , X. Wang, "Implementation of UAV Coordination B
 
 ### 合作
 
-如果想与XTDrone团队建立合作，请联系肖昆<robin_shaun@foxmail.com>。
+如果想与XTDrone团队建立合作，请联系卓安<zhuoan@stu.pku.edu.cn>。

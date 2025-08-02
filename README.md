@@ -5,6 +5,10 @@
 ### 介绍
 XTDrone是基于PX4、ROS与Gazebo的无人机通用仿真平台。支持多旋翼飞行器（包含四轴和六轴）、固定翼飞行器、复合翼飞行器（包含quadplane，tailsitter和tiltrotor）与其他无人系统（如无人车、无人船与机械臂）。在XTDrone上验证过的算法，可以方便地部署到真实无人机上。
 
+目前适用于ROS2的XTDrone2已经推出：
+- Github: https://github.com/andy-zhuo-02/XTDrone2
+- Gitee: https://gitee.com/andy_zhuo/XTDrone2
+
 <img src="./images/vehicles.png" width="640"  />
 
 单机仿真架构如下图所示，详见论文

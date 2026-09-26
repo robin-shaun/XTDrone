@@ -3,6 +3,7 @@ import time
 import sys
 import numpy
 from rclpy.node import Node
+from rclpy.qos import qos_profile_sensor_data
 from std_msgs.msg import String,Float32MultiArray,Int32MultiArray
 from geometry_msgs.msg import PoseStamped, Pose, Twist,Vector3
 
@@ -34,7 +35,7 @@ class Leader(Node):
         self.Kz=0.5
 
         super().__init__('leader')
-        self.pose_sub = self.create_subscription(PoseStamped,uav_type+'_'+str(self.id)+"/mavros/local_position/pose",self.pose_callback, 10)
+        self.pose_sub = self.create_subscription(PoseStamped,uav_type+'_'+str(self.id)+"/mavros/local_position/pose",self.pose_callback, qos_profile_sensor_data)
         self.cmd_vel_sub = self.create_subscription(Twist,"/xtdrone/leader/cmd_vel_flu",self.cmd_vel_callback,10)
         self.avoid_vel_sub = self.create_subscription(Vector3,"/xtdrone/"+uav_type+'_'+str(self.id)+"/avoid_vel",self.avoid_vel_callback,10)
         self.leader_cmd_sub = self.create_subscription(String,"/xtdrone/leader/cmd",self.cmd_callback,10)

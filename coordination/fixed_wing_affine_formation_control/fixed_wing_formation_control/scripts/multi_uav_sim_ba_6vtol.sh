@@ -1,0 +1,23 @@
+#本脚本启动的是六机仿真，不能行间注释，否则无法使用
+
+#!/bin/bash
+gnome-terminal --window  -e 'bash -c "cd ~/catkin_ws; catkin build; exec bash"' \
+--tab -e 'bash -c "sleep 2; source ~/.bashrc; roslaunch px4 fixed_wing_formation_control.launch; exec bash"' \
+--tab -e 'bash -c "sleep 10; rosrun fixed_wing_formation_control pack_fw0_states; exec bash"' \
+--tab -e 'bash -c "sleep 11; rosrun fixed_wing_formation_control pack_fw1_states; exec bash"' \
+--tab -e 'bash -c "sleep 12; rosrun fixed_wing_formation_control pack_fw2_states; exec bash"' \
+--tab -e 'bash -c "sleep 13; rosrun fixed_wing_formation_control pack_fw3_states; exec bash"' \
+--tab -e 'bash -c "sleep 14; rosrun fixed_wing_formation_control pack_fw4_states; exec bash"' \
+--tab -e 'bash -c "sleep 15; rosrun fixed_wing_formation_control pack_fw5_states; exec bash"' \
+--tab -e 'bash -c "sleep 8; rosrun fixed_wing_formation_control follower0_main; exec bash"' \
+--tab -e 'bash -c "sleep 9; rosrun fixed_wing_formation_control follower1_main; exec bash"' \
+--tab -e 'bash -c "sleep 10; rosrun fixed_wing_formation_control follower2_main; exec bash"' \
+--tab -e 'bash -c "sleep 11; rosrun fixed_wing_formation_control follower3_main; exec bash"' \
+--tab -e 'bash -c "sleep 12; rosrun fixed_wing_formation_control follower4_main; exec bash"' \
+--tab -e 'bash -c "sleep 13; rosrun fixed_wing_formation_control follower5_main; exec bash"' \
+--tab -e 'bash -c "sleep 8; rosrun fixed_wing_formation_control switch_fw0_mode; exec bash"' \
+--tab -e 'bash -c "sleep 8; rosrun fixed_wing_formation_control switch_fw1_mode; exec bash"' \
+--tab -e 'bash -c "sleep 8; rosrun fixed_wing_formation_control switch_fw2_mode; exec bash"' \
+--tab -e 'bash -c "sleep 8; rosrun fixed_wing_formation_control switch_fw3_mode; exec bash"' \
+--tab -e 'bash -c "sleep 8; rosrun fixed_wing_formation_control switch_fw4_mode; exec bash"' \
+--tab -e 'bash -c "sleep 8; rosrun fixed_wing_formation_control switch_fw5_mode; exec bash"' \ 

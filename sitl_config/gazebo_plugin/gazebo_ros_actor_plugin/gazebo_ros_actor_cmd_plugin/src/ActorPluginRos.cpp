@@ -20,6 +20,9 @@
 
 #include "actor_plugin_ros/ActorPluginRos.hpp"
 
+#include <algorithm>
+#include <cmath>
+
 using namespace gazebo;
 GZ_REGISTER_MODEL_PLUGIN(ActorPluginRos)
 
@@ -58,12 +61,12 @@ void ActorPluginRos::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
 
   this->sdf = _sdf;
   this->actor = boost::dynamic_pointer_cast<physics::Actor>(_model);
+  if (!this->actor)
+  {
+    gzerr << "ActorPluginRos must be attached to a Gazebo actor.\n";
+    return;
+  }
   this->world = this->actor->GetWorld();
-
-  this->connections.push_back(event::Events::ConnectWorldUpdateBegin(
-      std::bind(&ActorPluginRos::OnUpdate, this, std::placeholders::_1)));
-
-  this->Reset();
 
   // Read in the animation factor (applied in the OnUpdate function).
   if (_sdf->HasElement("animation_factor"))
@@ -76,21 +79,36 @@ void ActorPluginRos::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   else
     this->init_pose = ignition::math::Pose3d(0, 0, 1.0191, 1.57, 0, 0);
 
+  if (_sdf->HasElement("min_x"))
+    this->minX = _sdf->Get<double>("min_x");
+  if (_sdf->HasElement("max_x"))
+    this->maxX = _sdf->Get<double>("max_x");
+  if (_sdf->HasElement("min_y"))
+    this->minY = _sdf->Get<double>("min_y");
+  if (_sdf->HasElement("max_y"))
+    this->maxY = _sdf->Get<double>("max_y");
+  if (_sdf->HasElement("min_actor_distance"))
+    this->minActorDistance = std::max(0.0, _sdf->Get<double>("min_actor_distance"));
+  if (_sdf->HasElement("max_angular_speed"))
+    this->maxAngularSpeed = std::max(0.0, _sdf->Get<double>("max_angular_speed"));
+
+  if (this->minX > this->maxX)
+    std::swap(this->minX, this->maxX);
+  if (this->minY > this->maxY)
+    std::swap(this->minY, this->maxY);
+
   // this->velocity =20;
   // Make sure the actor stays within bounds
-  this->init_pose.Pos().X(std::max(-50.0, std::min(150.0, this->init_pose.Pos().X())));
-  this->init_pose.Pos().Y(std::max(-50.0, std::min(50.0, this->init_pose.Pos().Y())));
+  this->init_pose.Pos().X(std::max(this->minX, std::min(this->maxX, this->init_pose.Pos().X())));
+  this->init_pose.Pos().Y(std::max(this->minY, std::min(this->maxY, this->init_pose.Pos().Y())));
   this->init_pose.Pos().Z(1.0191);
 
-  // Distance traveled is used to coordinate motion with the walking
-  // animation
-  double distanceTraveled = (this->init_pose.Pos() -
-                             this->actor->WorldPose().Pos())
-                                .Length();
-
   this->actor->SetWorldPose(this->init_pose, false, false);
-  // this->actor->SetScriptTime(this->actor->ScriptTime() +
-  //                            (distanceTraveled * 5.0));
+  this->Reset();
+  this->RefreshOtherActors();
+
+  this->connections.push_back(event::Events::ConnectWorldUpdateBegin(
+      std::bind(&ActorPluginRos::OnUpdate, this, std::placeholders::_1)));
 }
 
 /////////////////////////////////////////////////
@@ -98,6 +116,8 @@ void ActorPluginRos::Reset()
 {
   this->velocity = 0.8;
   this->lastUpdate = 0;
+  this->lastActorRefresh = 0;
+  this->GET_CMD_FLAG = false;
 
   // this->target = ignition::math::Vector3d(0, 0, 1.2138);
   this->target = this->init_pose.Pos();
@@ -143,13 +163,54 @@ void ActorPluginRos::ChooseNewTarget()
 }
 
 /////////////////////////////////////////////////
+void ActorPluginRos::RefreshOtherActors()
+{
+  this->otherActors.clear();
+  for (unsigned int i = 0; i < this->world->ModelCount(); ++i)
+  {
+    auto other = boost::dynamic_pointer_cast<physics::Actor>(
+        this->world->ModelByIndex(i));
+    if (other && other != this->actor)
+      this->otherActors.push_back(other);
+  }
+}
+
+/////////////////////////////////////////////////
+bool ActorPluginRos::CanMoveTo(
+    const ignition::math::Vector3d &_candidate) const
+{
+  if (this->minActorDistance <= 0.0)
+    return true;
+
+  const ignition::math::Vector3d current = this->actor->WorldPose().Pos();
+  for (const auto &other : this->otherActors)
+  {
+    ignition::math::Vector3d candidateDelta =
+        _candidate - other->WorldPose().Pos();
+    ignition::math::Vector3d currentDelta =
+        current - other->WorldPose().Pos();
+    candidateDelta.Z(0.0);
+    currentDelta.Z(0.0);
+
+    const double candidateDistance = candidateDelta.Length();
+    const double currentDistance = currentDelta.Length();
+    if (candidateDistance < this->minActorDistance &&
+        candidateDistance <= currentDistance)
+    {
+      return false;
+    }
+  }
+  return true;
+}
+
+/////////////////////////////////////////////////
 void ActorPluginRos::CmdPoseCallback(const ros_actor_cmd_pose_plugin_msgs::ActorMotion::ConstPtr &cmd_msg)
 {
   GET_CMD_FLAG = true;
-  target[0] = cmd_msg->x;
-  target[1] = cmd_msg->y;
-  target[2] = cmd_msg->v;
-  //target[2] is cmd_vel
+  target.X(cmd_msg->x);
+  target.Y(cmd_msg->y);
+  target.Z(this->init_pose.Pos().Z());
+  this->velocity = std::max(0.0, static_cast<double>(cmd_msg->v));
   //target = ignition::math::Vector3d(10, 10, 1.0191);
   //std::cout << "I'm here!" << endl;
 }
@@ -203,62 +264,60 @@ bool ActorPluginRos::ToggleWaveAnimation(ros_actor_cmd_pose_plugin_msgs::ToggleA
 /////////////////////////////////////////////////
 void ActorPluginRos::OnUpdate(const common::UpdateInfo &_info)
 {
-  this->velocity = target[2];
   // Time delta
   double dt = (_info.simTime - this->lastUpdate).Double();
+  if (dt < 0.0)
+    dt = 0.0;
+
+  if ((_info.simTime - this->lastActorRefresh).Double() >= 0.1)
+  {
+    this->RefreshOtherActors();
+    this->lastActorRefresh = _info.simTime;
+  }
 
   if (this->wave_toggled)
   {
     this->actor->SetScriptTime(this->actor->ScriptTime() +
                                dt);
+    this->lastUpdate = _info.simTime;
   }
   else
   {
 
     ignition::math::Pose3d pose = this->actor->WorldPose();
     ignition::math::Vector3d pos = this->target - pose.Pos();
+    // ActorMotion contains only a planar target. Never use its speed as Z.
+    pos.Z(0.0);
     ignition::math::Vector3d rpy = pose.Rot().Euler();
 
     double distance = pos.Length();
 
-    // Choose a new target position if the actor has reached its current target.
-    if (distance < 0.01)
+    if (distance >= 0.01)
     {
-      // FIXME: Commented out to prevent swerve after actor reached its target.
-      //this->ChooseNewTarget();
-      pos = this->target - pose.Pos();
-    }
-    // Choose a suitable velocity at different distance.
-    if (distance > 1.0)
-    {
-      this->velocity = velocity / distance;
-    }
-    else if (distance <= 1.0)
-    {
-      this->velocity = velocity;
-    }
+      // Compute the yaw orientation.
+      ignition::math::Angle yaw = atan2(pos.Y(), pos.X()) + 1.5707 - rpy.Z();
+      yaw.Normalize();
 
-    // Compute the yaw orientation.
-    ignition::math::Angle yaw = atan2(pos.Y(), pos.X()) + 1.5707 - rpy.Z();
-    yaw.Normalize();
+      // Turn and translate in the same update. Waiting until the actor has
+      // fully turned leaves overlapping actors stationary for several seconds.
+      const double maxYawStep = this->maxAngularSpeed * dt;
+      const double yawStep = std::max(-maxYawStep,
+          std::min(maxYawStep, yaw.Radian()));
+      pose.Rot() = ignition::math::Quaterniond(
+          1.5707, 0, rpy.Z() + yawStep);
 
-    //ignition::math::Angle yaw = this->last_angle;
-
-    // Rotate in place, instead of jumping.
-    if (std::abs(yaw.Radian()) > IGN_DTOR(10))
-    {
-      pose.Rot() = ignition::math::Quaterniond(1.5707, 0, rpy.Z() + yaw.Radian() * 0.1);
-    }
-    else
-    {
-      pose.Pos() += pos * this->velocity * dt;
-      pose.Rot() = ignition::math::Quaterniond(1.5707, 0, rpy.Z() + yaw.Radian());
+      // Clamp the step so a large simulation time step cannot overshoot.
+      const double step = std::min(this->velocity * dt, distance);
+      const ignition::math::Vector3d candidate =
+          pose.Pos() + pos * (step / distance);
+      if (this->CanMoveTo(candidate))
+        pose.Pos() = candidate;
     }
 
     // Make sure the actor stays within bounds
-    pose.Pos().X(std::max(-50.0, std::min(150.0, pose.Pos().X())));
-    pose.Pos().Y(std::max(-50.0, std::min(50.0, pose.Pos().Y())));
-    pose.Pos().Z(1.0191);
+    pose.Pos().X(std::max(this->minX, std::min(this->maxX, pose.Pos().X())));
+    pose.Pos().Y(std::max(this->minY, std::min(this->maxY, pose.Pos().Y())));
+    pose.Pos().Z(this->init_pose.Pos().Z());
 
     // Distance traveled is used to coordinate motion with the walking
     // animation
@@ -275,11 +334,11 @@ void ActorPluginRos::OnUpdate(const common::UpdateInfo &_info)
     }
      
     this->actor->SetScriptTime(this->actor->ScriptTime() +
-                               (distanceTraveled * 5.0));
+                               (distanceTraveled * this->animationFactor));
     this->lastUpdate = _info.simTime;
 
     gzdbg << "[XTDrone_Actor_Plugin]: Publish topic actor_pose_pub" << std::endl;
-    gzdbg << "Target:  x:" << target[0] << ", y:" << target[1] << ",vel:" << target[2] << std::endl;
+    gzdbg << "Target:  x:" << target.X() << ", y:" << target.Y() << ",vel:" << this->velocity << std::endl;
     gzdbg << "Actor_Position:  " << std::dec << pose.Pos().X() << "," << pose.Pos().Y() << "," << pose.Pos().Z() << std::endl;
     gzdbg << "init_pose:  " << std::dec << init_pose << "vel: " << this->velocity << std::endl;
   }

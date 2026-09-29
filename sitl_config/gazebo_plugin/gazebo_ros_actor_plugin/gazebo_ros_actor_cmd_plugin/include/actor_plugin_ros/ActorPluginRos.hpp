@@ -71,6 +71,12 @@ namespace gazebo
       /// \brief Choose New Target
       private: void ChooseNewTarget();
 
+      /// \brief Refresh the list of other actors in the world.
+      private: void RefreshOtherActors();
+
+      /// \brief Return true if a candidate move preserves actor separation.
+      private: bool CanMoveTo(const ignition::math::Vector3d &_candidate) const;
+
       /// \brief Service to toggle the waving animation
       private: bool ToggleWaveAnimation(ros_actor_cmd_pose_plugin_msgs::ToggleActorWaving::Request &req, ros_actor_cmd_pose_plugin_msgs::ToggleActorWaving::Response &res);
 
@@ -84,17 +90,29 @@ namespace gazebo
       /// \brief Pointer to the sdf element.
       private: sdf::ElementPtr sdf;
 
-      /// \brief Velocity of the actor
-      private: ignition::math::Vector3d velocity;
+      /// \brief Commanded planar speed of the actor in metres per second.
+      private: double velocity = 0.8;
 
       /// \brief List of connections
       private: std::vector<event::ConnectionPtr> connections;
+
+      /// \brief Other actors used for inexpensive separation checks.
+      private: std::vector<physics::ActorPtr> otherActors;
 
       /// \brief Current target location
       private: ignition::math::Vector3d target;
 
       /// \brief initial postion
       private: ignition::math::Pose3d init_pose;
+
+      /// \brief Planar movement limits.
+      private: double minX = -50.0;
+      private: double maxX = 150.0;
+      private: double minY = -60.0;
+      private: double maxY = 60.0;
+      private: double minActorDistance = 2.0;
+      private: double maxAngularSpeed = 4.0;
+      private: common::Time lastActorRefresh;
 
       /// \brief Last received linear vel command.
       private: ignition::math::Vector3d last_linear;

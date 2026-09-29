@@ -4,6 +4,7 @@ import rospy
 import random
 from ros_actor_cmd_pose_plugin_msgs.msg import ActorMotion
 from geometry_msgs.msg import Point
+from gazebo_msgs.msg import ModelStates
 from gazebo_msgs.srv import GetModelState, SetModelState, SetModelStateRequest, SetModelStateResponse
 from std_msgs.msg import String, Time, Float32
 import sys
@@ -20,6 +21,8 @@ import os
 
 class ControlActor:
     def __init__(self, actor_id):
+        self.id = actor_id
+        rospy.init_node('actor_' + self.id)
         self.count = 0
         self.shooting_count = 0
         self.uav_num = 6
@@ -41,13 +44,24 @@ class ControlActor:
         self.x_min = -50.0
         self.y_max = 60.0
         self.y_min = -60.0
-        self.id = actor_id
-        self.velocity = 1.5
+        self.normal_speed = 1.0
+        self.tracked_speed = 2.0
+        self.separation_speed = 2.0
+        self.actor_avoidance_radius = 4.0
+        self.actor_min_distance = 2.0
+        self.actor_spawn_distance = 6.0
+        self.uav_safety_radius = 7.0
+        self.uav_spawn_distance = 8.0
+        self.uav_takeoff_points = [(0.0, -3.0), (3.0, -3.0),
+                                   (0.0, 0.0), (3.0, 0.0),
+                                   (0.0, 3.0), (3.0, 3.0)]
+        self.actor_positions = {}
+        self.uav_positions = {}
         self.avoid = ActorMotion()
         self.last_pose = Point()
         self.current_pose = Point()
         self.target_motion = Point()
-        self.avoid.v = 2
+        self.avoid.v = self.normal_speed
         self.teleportation_interval = 25
         self.teleportation_time = Time()
         self.black_box_path = os.path.expanduser('~/XTDrone/robocup/black_box.txt')
@@ -76,7 +90,7 @@ class ControlActor:
         self.box_num = len(self.black_box)
 
         # 读取文件并初始化障碍物数据
-        with open('2024.txt', 'r') as file:
+        with open('obstacle.txt', 'r') as file:
             lines = file.readlines()
             self.obstacle_data = [line.strip().split() for line in lines]
         self.cmd_pub = rospy.Publisher('/actor_' + self.id + '/cmd_motion', ActorMotion, queue_size=10)
@@ -92,6 +106,7 @@ class ControlActor:
         self.state_uav5_sub = rospy.Subscriber("/xtdrone/"+self.vehicle_type+"_5/ground_truth/odom", Odometry, self.cmd_uav5_pose_callback,queue_size=1)
         self.left_actors_sub = rospy.Subscriber("/left_actors",String,self.left_actors_callback,queue_size=1)
         self.find_actor_sub = rospy.Subscriber("/find_actor_%s"%self.id, Float32, self.actor_teleportation_callback, queue_size=1)
+        self.actor_states_sub = rospy.Subscriber("/gazebo/model_states", ModelStates, self.actor_states_callback, queue_size=1)
         
 
     def actor_teleportation_callback(self, msg):
@@ -117,17 +132,45 @@ class ControlActor:
         while count < 1e5:
             a = random.uniform(-40, 110)
             b = random.uniform(-40, 40)
-            in_obstacle = False
+            candidate_x = int(a)
+            candidate_y = int(b)
+            unsafe = False
             
             for box in self.black_box:
                 xmin, xmax = box[0]
                 ymin, ymax = box[1]
-                if (xmin - spon_dis) < a < (xmax + spon_dis) and (ymin - spon_dis) < b < (ymax + spon_dis):
-                    in_obstacle = True
+                if ((xmin - spon_dis) < candidate_x < (xmax + spon_dis) and
+                        (ymin - spon_dis) < candidate_y < (ymax + spon_dis)):
+                    unsafe = True
                     break
-            
-            if not in_obstacle:
-                return int(a), int(b)
+
+            if unsafe:
+                count += 1
+                continue
+
+            own_name = 'actor_' + self.id
+            for actor_name, actor_pose in self.actor_positions.items():
+                if actor_name == own_name:
+                    continue
+                if math.hypot(candidate_x - actor_pose.x,
+                              candidate_y - actor_pose.y) < self.actor_spawn_distance:
+                    unsafe = True
+                    break
+
+            if unsafe:
+                count += 1
+                continue
+
+            uav_points = list(self.uav_takeoff_points)
+            uav_points.extend((pose.x, pose.y) for pose in self.uav_positions.values())
+            for uav_x, uav_y in uav_points:
+                if math.hypot(candidate_x - uav_x,
+                              candidate_y - uav_y) < self.uav_spawn_distance:
+                    unsafe = True
+                    break
+
+            if not unsafe:
+                return candidate_x, candidate_y
             
             count += 1
         
@@ -146,6 +189,149 @@ class ControlActor:
                 continue
             left_actors.append(int(i))
         self.left_actors = left_actors
+
+    def actor_states_callback(self, msg):
+        actor_positions = {}
+        uav_positions = {}
+        for index, model_name in enumerate(msg.name):
+            if model_name.startswith('actor_'):
+                actor_positions[model_name] = msg.pose[index].position
+            elif model_name.startswith(self.vehicle_type + '_'):
+                uav_positions[model_name] = msg.pose[index].position
+        self.actor_positions = actor_positions
+        self.uav_positions = uav_positions
+
+    def update_tracking_state(self):
+        for i in range(self.uav_num):
+            uav_speed_squared = ((self.gazebo_uav_twist[i].x) ** 2 +
+                                 (self.gazebo_uav_twist[i].y) ** 2)
+            self.dis_actor_uav[i] = ((self.current_pose.x - self.gazebo_uav_pose[i].x) ** 2 +
+                                     (self.current_pose.y - self.gazebo_uav_pose[i].y) ** 2) ** 0.5
+
+            if (self.catching_flag == 0 and uav_speed_squared > 1.0 and
+                    self.dis_actor_uav[i] < 20.0):
+                self.tracking_flag[i] += 1
+                if self.tracking_flag[i] > 20:   # tracked for 2 seconds
+                    self.catching_flag = 1
+                    self.tracking_flag[i] = 0
+                    self.catching_uav_num = i
+                    print('catch', self.id)
+                    break
+            else:
+                self.tracking_flag[i] = 0
+
+        # Only the UAV that triggered tracking may clear that state. A far
+        # unrelated UAV must not cancel another UAV's active pursuit.
+        if self.catching_flag != 0 and self.catching_uav_num < self.uav_num:
+            catching_distance = ((self.current_pose.x - self.gazebo_uav_pose[self.catching_uav_num].x) ** 2 +
+                                 (self.current_pose.y - self.gazebo_uav_pose[self.catching_uav_num].y) ** 2) ** 0.5
+            if catching_distance >= 20.0:
+                self.catching_flag = 0
+                self.catching_uav_num = 10
+
+    def build_motion_command(self):
+        """Steer away from nearby actors without changing the planned waypoint."""
+        command = ActorMotion()
+        command.x = self.avoid.x
+        command.y = self.avoid.y
+        command.v = self.avoid.v
+
+        desired_x = command.x - self.current_pose.x
+        desired_y = command.y - self.current_pose.y
+        desired_length = math.sqrt(desired_x ** 2 + desired_y ** 2)
+        if desired_length > 1e-6:
+            steer_x = desired_x / desired_length
+            steer_y = desired_y / desired_length
+        else:
+            steer_x = 0.0
+            steer_y = 0.0
+
+        separation_x = 0.0
+        separation_y = 0.0
+        nearby_actor = False
+        nearby_uav = False
+        emergency_separation = False
+        own_name = 'actor_' + self.id
+
+        for actor_name, actor_pose in self.actor_positions.items():
+            if actor_name == own_name:
+                continue
+
+            away_x = self.current_pose.x - actor_pose.x
+            away_y = self.current_pose.y - actor_pose.y
+            distance = math.sqrt(away_x ** 2 + away_y ** 2)
+            if distance >= self.actor_avoidance_radius:
+                continue
+
+            nearby_actor = True
+            if distance < 1e-6:
+                # Give exactly overlapping actors deterministic, different exits.
+                angle = (int(self.id) + 1) * 2.0 * math.pi / (self.actor_num + 1)
+                unit_x = math.cos(angle)
+                unit_y = math.sin(angle)
+            else:
+                unit_x = away_x / distance
+                unit_y = away_y / distance
+
+            strength = 2.0 * (self.actor_avoidance_radius - distance) / self.actor_avoidance_radius
+            steer_x += unit_x * strength
+            steer_y += unit_y * strength
+            separation_x += unit_x
+            separation_y += unit_y
+            if distance < self.actor_min_distance:
+                emergency_separation = True
+
+        # Keep pedestrians outside the launch / landing footprint even when a
+        # UAV is stationary and therefore cannot yet satisfy tracking logic.
+        for uav_name, uav_pose in self.uav_positions.items():
+            away_x = self.current_pose.x - uav_pose.x
+            away_y = self.current_pose.y - uav_pose.y
+            distance = math.sqrt(away_x ** 2 + away_y ** 2)
+            if distance >= self.uav_safety_radius:
+                continue
+
+            nearby_actor = True
+            nearby_uav = True
+            if distance < 1e-6:
+                angle = (int(self.id) + 1) * 2.0 * math.pi / (self.actor_num + 1)
+                unit_x = math.cos(angle)
+                unit_y = math.sin(angle)
+            else:
+                unit_x = away_x / distance
+                unit_y = away_y / distance
+
+            # UAV separation takes priority over the current walking target.
+            strength = 3.0 * (self.uav_safety_radius - distance) / self.uav_safety_radius
+            steer_x += unit_x * strength
+            steer_y += unit_y * strength
+            separation_x += unit_x * 2.0
+            separation_y += unit_y * 2.0
+            if distance < self.actor_min_distance:
+                emergency_separation = True
+
+        if not nearby_actor:
+            return command
+
+        if emergency_separation:
+            steer_x = separation_x
+            steer_y = separation_y
+            command.v = max(command.v, self.separation_speed)
+
+        steer_length = math.sqrt(steer_x ** 2 + steer_y ** 2)
+        if steer_length < 1e-6:
+            angle = (int(self.id) + 1) * 2.0 * math.pi / (self.actor_num + 1)
+            steer_x = math.cos(angle)
+            steer_y = math.sin(angle)
+            steer_length = 1.0
+
+        target_distance = (self.uav_safety_radius if nearby_uav
+                           else self.actor_avoidance_radius)
+        command.x = self.current_pose.x + target_distance * steer_x / steer_length
+        command.y = self.current_pose.y + target_distance * steer_y / steer_length
+        command.x = max(self.x_min, min(self.x_max, command.x))
+        command.y = max(self.y_min, min(self.y_max, command.y))
+        return command
+
     def cmd_uav0_pose_callback(self, msg):
         self.gazebo_uav_pose[0] = msg.pose.pose.position
         self.gazebo_uav_twist[0] = msg.twist.twist.linear
@@ -171,11 +357,9 @@ class ControlActor:
         self.gazebo_uav_twist[5] = msg.twist.twist.linear
 
     def loop(self):
-        rospy.init_node('actor_' + self.id)
         rate = rospy.Rate(self.f)
         
         while not rospy.is_shutdown():
-            self.avoid.v = 2.0
             self.count = self.count + 1
             # get the pose of uav and actor
             if not int(self.id) in self.left_actors:
@@ -302,24 +486,7 @@ class ControlActor:
                 self.distance_flag = False            
 
             # dodging uavs: if there is a uav catching 'me', escape
-            for i in range(self.uav_num):
-                if ((self.gazebo_uav_twist[i].x)**2+(self.gazebo_uav_twist[i].y)**2) > 1.0:
-                    self.dis_actor_uav[i] = ((self.current_pose.x-self.gazebo_uav_pose[i].x)**2+(self.current_pose.y-self.gazebo_uav_pose[i].y)**2)**0.5
-                    if self.dis_actor_uav[i] < 20.0 and (self.catching_flag == 0):
-                        self.tracking_flag[i] = self.tracking_flag[i]+1
-                        if self.tracking_flag[i] > 20:   # 2s and excape
-                            self.catching_flag = 1
-                            self.tracking_flag[i] = 0
-                            self.catching_uav_num = i
-                            print('catch', self.id)
-                            print('catch', self.id)
-                            break  
-                    if self.dis_actor_uav[i] >= 20.0:
-                        # if self.catching_flag[i] == 1 or self.catching_flag[i] == 2:
-                        #     self.escape_suce_flag = True
-                        self.tracking_flag[i] = 0
-                        self.catching_flag = 0
-                        self.catching_uav_num = 10
+            self.update_tracking_state()
 
             # # escaping (get a new target position)
             if self.catching_flag == 1:
@@ -429,11 +596,13 @@ class ControlActor:
             #     if self.count % 200 == 0:
             #         print(self.id + '   vel:', self.target_motion.v)
             
-            #reduce difficulty
-            self.avoid.v = 1
+            if self.catching_flag in (1, 2):
+                self.avoid.v = self.tracked_speed
+            else:
+                self.avoid.v = self.normal_speed
             # if self.id == 5:
             #     print('self.avoid:', self.avoid)
-            self.cmd_pub.publish(self.avoid)
+            self.cmd_pub.publish(self.build_motion_command())
             rate.sleep()
 
 

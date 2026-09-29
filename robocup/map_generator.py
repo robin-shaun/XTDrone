@@ -10,6 +10,11 @@ import os
 ## file path
 output_path = os.path.expanduser('~/PX4_Firmware/Tools/sitl_gazebo/worlds/')
 rover_num = 20
+actor_min_spawn_distance = 8.0
+uav_start_clearance = 8.0
+uav_takeoff_points = [(0.0, -3.0), (3.0, -3.0),
+                      (0.0, 0.0), (3.0, 0.0),
+                      (0.0, 3.0), (3.0, 3.0)]
 
 
 def rand_x(num):
@@ -143,22 +148,41 @@ def change_list(list_o, d):
     return list_result
 
 
-def create_human_point(black_box):
+def create_human_point(black_box, occupied_points=None):
+    if occupied_points is None:
+        occupied_points = []
     count = 1
     while count < 1e5:
         a = random.uniform(-40, 110)
         b = random.uniform(-40, 40)
+        candidate_x = int(a)
+        candidate_y = int(b)
         in_obstacle = False
         
         for box in black_box:
             xmin, xmax = box[0]
             ymin, ymax = box[1]
-            if (xmin - 3) < a < (xmax + 3) and (ymin - 3) < b < (ymax + 3):
+            if ((xmin - 3) < candidate_x < (xmax + 3) and
+                    (ymin - 3) < candidate_y < (ymax + 3)):
                 in_obstacle = True
                 break
+
+        if not in_obstacle:
+            for actor_x, actor_y in occupied_points:
+                if math.hypot(candidate_x - actor_x,
+                              candidate_y - actor_y) < actor_min_spawn_distance:
+                    in_obstacle = True
+                    break
+
+        if not in_obstacle:
+            for uav_x, uav_y in uav_takeoff_points:
+                if math.hypot(candidate_x - uav_x,
+                              candidate_y - uav_y) < uav_start_clearance:
+                    in_obstacle = True
+                    break
         
         if not in_obstacle:
-            return int(a), int(b)
+            return candidate_x, candidate_y
         
         count += 1
     
@@ -358,12 +382,14 @@ with open(output_path + "robocup.world", 'w') as f:
     lines = content.readlines()
     lines_rover = rover_content.readlines()
     count = 2
+    actor_points = []
     for num, line in enumerate(lines):
         if count == 1:
             line = line_1
         if "filename='libros_actor_cmd_pose_plugin.so'>" in line:
             count = 0
-            a, b = create_human_point(black_box)
+            a, b = create_human_point(black_box, actor_points)
+            actor_points.append((a, b))
             line_1 = "        <init_pose>" + str(a) + ' ' + str(b) + " 1.25 1.57 0 0</init_pose>"
             print(line_1)
         count = count + 1

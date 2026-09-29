@@ -7,7 +7,7 @@ class ObstacleAvoid:
     def __init__(self):
         self.indexOfObstInSp = []
         self.obstInUAVCoorSys = []
-        self.obstlist = numpy.loadtxt('2024.txt')
+        self.obstlist = numpy.loadtxt('obstacle.txt')
         self.flag = True
         self.useOriginalCurPos = False
         self.subTarg = Point()

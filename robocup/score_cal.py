@@ -143,8 +143,8 @@ def _process_actor_detection(msg, actor_ids):
         print('Time usage:', time_usage)
         if target_finish == actor_num:
             elapsed = max(0.0, now - start_time)
-            score = (2160.0 - elapsed - sensor_cost * 3e-3
-                     - uav_loss_count * uav_loss_penalty)
+            score = (2580.0 - elapsed - sensor_cost * 3e-3
+                     - uav_loss_count * 30.0)
             _finish('Mission finished', score)
         else:
             print('score:', score)
@@ -206,8 +206,8 @@ def _process_red_detection(msg, flag_name, reset_value):
             print('Time usage:', time_usage)
             if target_finish == actor_num:
                 elapsed = max(0.0, now - start_time)
-                score = (2160.0 - elapsed - sensor_cost * 3e-3
-                         - uav_loss_count * uav_loss_penalty)
+                score = (2580.0 - elapsed - sensor_cost * 3e-3
+                         - uav_loss_count * 30.0)
                 _finish('Mission finished', score)
             else:
                 print('score:', score)

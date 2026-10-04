@@ -27,14 +27,6 @@ DETECTION_DURATION = 15.0
 MISSION_TIMEOUT = 600.0
 DEFAULT_UAV_LOSS_PENALTY = 100.0
 UAV_MISS_LIMIT = 3
-#跟踪分数相关设置
-TRACKING_DURATION = 20.0
-TRACKING_DISTANCE = 10.0
-uav_positions = [None] * uav_num
-tracking_start_time = [None] * actor_num
-tracked_actors = set()
-
-
 
 left_actors = []
 find_actors = []
@@ -42,8 +34,6 @@ actors_pos = [None] * actor_num
 count_flag = [False] * actor_num
 topic_arrive_time = [0.0] * actor_num
 find_time = [0.0] * actor_num
-
-
 find_actor_pub = []
 mission_finished = False
 uav_loss_count = 0
@@ -54,7 +44,8 @@ find_finish = 0
 score = 0.0
 time_usage = 0.0
 start_time = 0.0
-
+flag_1 = 0
+flag_2 = 1
 
 
 def _now():
@@ -69,16 +60,8 @@ def _publish_score():
 
 
 def _progress_score():
-    track_finish = len(tracked_actors)
-
-    return (
-        find_finish * 50
-        + track_finish * 80
-        + target_finish * 100
-        - sensor_cost * 3e-3
-        - uav_loss_count * uav_loss_penalty
-    )
-
+    return (find_finish * 50 + target_finish * 100
+            - sensor_cost * 3e-3 - uav_loss_count * uav_loss_penalty)
 
 
 def _finish(reason, final_score=None):
@@ -160,7 +143,7 @@ def _process_actor_detection(msg, actor_ids):
         print('Time usage:', time_usage)
         if target_finish == actor_num:
             elapsed = max(0.0, now - start_time)
-            score = (2580.0 - elapsed - sensor_cost * 3e-3
+            score = (2160.0 - elapsed - sensor_cost * 3e-3
                      - uav_loss_count * uav_loss_penalty)
             _finish('Mission finished', score)
         else:
@@ -168,80 +151,92 @@ def _process_actor_detection(msg, actor_ids):
             _publish_score()
 
 
+def _process_red_detection(msg, flag_name, reset_value):
+    """Process a red-target message using the legacy two-target matching.
+
+    Both red topics are allowed to match either actor_4 or actor_5.  The
+    callback only clears a pending red detection after both red target
+    candidates fail the same message, which is the behavior used by the
+    Downloads version of this node.
+    """
+    global find_finish, score, time_usage, flag_1, flag_2
+    if mission_finished or getattr(msg, 'cls', '') != 'red':
+        return
+
+    red_cnt = 0
+    actor_ids = actor_id_dict['red']
+    now = _now()
+    for actor_id in actor_ids:
+        if actor_id not in left_actors:
+            continue
+
+        position = actors_pos[actor_id]
+        previous = topic_arrive_time[actor_id]
+        topic_arrive_time[actor_id] = now
+        valid = (position is not None and
+                 ((msg.x - position.x) ** 2 +
+                  (msg.y - position.y) ** 2) < err_threshold ** 2 and
+                 now - previous < DETECTION_INTERVAL)
+
+        if valid:
+            if not count_flag[actor_id]:
+                count_flag[actor_id] = True
+                find_time[actor_id] = now
+                if actor_id in find_actors:
+                    find_actors.remove(actor_id)
+                find_finish = actor_num - len(find_actors)
+                if actor_id < len(find_actor_pub):
+                    find_actor_pub[actor_id].publish(now)
+                score = _progress_score()
+                print('find actor_' + str(actor_id))
+                _publish_score()
+                if flag_name == 'flag_1':
+                    flag_1 = actor_id
+                else:
+                    flag_2 = actor_id
+                continue
+
+            if now - find_time[actor_id] < DETECTION_DURATION:
+                continue
+            if not _delete_actor(actor_id):
+                continue
+
+            _reset_detection(actor_id)
+            print('actor_%d is OK' % actor_id)
+            print('Time usage:', time_usage)
+            if target_finish == actor_num:
+                elapsed = max(0.0, now - start_time)
+                score = (2160.0 - elapsed - sensor_cost * 3e-3
+                         - uav_loss_count * uav_loss_penalty)
+                _finish('Mission finished', score)
+            else:
+                print('score:', score)
+                _publish_score()
+            continue
+
+        red_cnt += 1
+
+    # Match the Downloads implementation: reset the candidate remembered by
+    # this red topic only when both red actors fail this message.
+    if red_cnt == len(actor_ids):
+        current_flag = flag_1 if flag_name == 'flag_1' else flag_2
+        if current_flag != reset_value and current_flag in actor_ids:
+            count_flag[current_flag] = False
+            if flag_name == 'flag_1':
+                flag_1 = reset_value
+            else:
+                flag_2 = reset_value
+
+
 def actor_info_callback(msg):
     ids = actor_id_dict.get(getattr(msg, 'cls', ''), [])
     _process_actor_detection(msg, ids)
 
 def actor_info1_callback(msg):
-    _process_actor_detection(msg, [5] if getattr(msg, 'cls', '') == 'red' else [])
+    _process_red_detection(msg, 'flag_1', 0)
 
 def actor_info2_callback(msg):
-    _process_actor_detection(msg, [4] if getattr(msg, 'cls', '') == 'red' else [])
-    
-def _update_tracking(now):
-    global score
-
-    for actor_id in list(left_actors):
-
-        actor_pos = actors_pos[actor_id]
-
-        if actor_pos is None:
-            tracking_start_time[actor_id] = None
-            continue
-
-        in_tracking_range = False
-
-        for uav_id in range(uav_num):
-
-            if uav_lost[uav_id]:
-                continue
-
-            uav_pos = uav_positions[uav_id]
-
-            if uav_pos is None:
-                continue
-
-            dx = uav_pos.x - actor_pos.x
-            dy = uav_pos.y - actor_pos.y
-
-            distance_sq = dx * dx + dy * dy
-
-            if distance_sq <= TRACKING_DISTANCE ** 2:
-                in_tracking_range = True
-                break
-
-        # 当前至少有一架无人机在跟踪范围内
-        if in_tracking_range:
-
-            # 本轮连续跟踪开始
-            if tracking_start_time[actor_id] is None:
-                tracking_start_time[actor_id] = now
-
-            # 连续跟踪达到20秒
-            elif (
-                now - tracking_start_time[actor_id]
-                >= TRACKING_DURATION
-            ):
-
-                # 同一目标跟踪分只记一次
-                if actor_id not in tracked_actors:
-
-                    tracked_actors.add(actor_id)
-
-                    print(
-                        'actor_%d tracking success' % actor_id
-                    )
-
-                    score = _progress_score()
-                    _publish_score()
-
-        else:
-            # 本轮连续跟踪失败，重新计时
-            # 但不会取消已经获得的跟踪分
-            tracking_start_time[actor_id] = None
-
-
-
+    _process_red_detection(msg, 'flag_2', 1)
 
 if __name__ == "__main__":
     left_actors = list(range(actor_num))
@@ -249,14 +244,13 @@ if __name__ == "__main__":
     actors_pos = [None] * actor_num
     count_flag = [False] * actor_num
     topic_arrive_time = [0.0] * actor_num
-    tracking_start_time = [None] * actor_num
-    tracked_actors = set()
-
     find_time = [0.0] * actor_num
     find_actor_pub = []
     mission_finished = False
     uav_loss_count = 0
     uav_loss_penalty = DEFAULT_UAV_LOSS_PENALTY
+    flag_1 = 0
+    flag_2 = 1
     uav_seen = [False] * uav_num
     uav_lost = [False] * uav_num
     uav_miss_count = [0] * uav_num
@@ -304,26 +298,17 @@ if __name__ == "__main__":
                 success = getattr(response, 'success', True)
                 if success:
                     uav_pos_tmp = response.pose.position
-
-                    # 保存该无人机当前位置
-                    uav_positions[i] = uav_pos_tmp
-
                     uav_seen[i] = True
                     uav_miss_count[i] = 0
-
                     if uav_pos_tmp.z > MAX_UAV_ALTITUDE:
                         score = 0
-                        _finish(
-                            'Warning: UAV %d is higher than 6 meters' % i,
-                            0
-                        )
+                        _finish('Warning: UAV %d is higher than 6 meters' % i, 0)
                         break
                 elif uav_seen[i] and not uav_lost[i]:
                     uav_miss_count[i] += 1
                     if uav_miss_count[i] >= UAV_MISS_LIMIT:
                         uav_lost[i] = True
                         uav_loss_count += 1
-                        uav_positions[i] = None
                         score = _progress_score()
                         print('UAV %d lost; penalty %.1f' % (i, uav_loss_penalty))
             except Exception as exc:
@@ -346,17 +331,10 @@ if __name__ == "__main__":
                     actors_pos[i] = actors_pos_tmp
             except Exception:
                 continue
-        # 更新本轮时间
-        now = rospy.get_time()
-        time_usage = now - start_time
-
-        # 根据 UAV 和目标真实位置进行连续跟踪判定
-        _update_tracking(now)
-
+        time_usage = rospy.get_time() - start_time
         if time_usage > MISSION_TIMEOUT:
             _finish('Time out, mission failed', score)
             break
-
         score = _progress_score()
         _publish_score()
         time_usage_pub.publish(int(time_usage))

@@ -2,12 +2,30 @@ import numpy
 import math
 from geometry_msgs.msg import Point
 import sys
+import os
 
 class ObstacleAvoid:
-    def __init__(self):
+    def __init__(self, obstacle_path=None):
         self.indexOfObstInSp = []
         self.obstInUAVCoorSys = []
-        self.obstlist = numpy.loadtxt('obstacle.txt')
+        if obstacle_path is None:
+            base_dir = os.path.dirname(os.path.abspath(__file__))
+            candidates = [os.path.join(base_dir, '2024.txt'),
+                          os.path.join(base_dir, 'obstacle.txt'),
+                          '2024.txt']
+            obstacle_path = next((path for path in candidates
+                                  if os.path.isfile(path)), None)
+        if obstacle_path is None or not os.path.isfile(obstacle_path):
+            raise IOError('Obstacle data file was not found')
+
+        self.obstlist = numpy.loadtxt(obstacle_path)
+        if self.obstlist.size == 0:
+            raise ValueError('Obstacle data file is empty: %s' % obstacle_path)
+        if self.obstlist.ndim == 1:
+            self.obstlist = self.obstlist.reshape((1, -1))
+        if self.obstlist.shape[1] < 2:
+            raise ValueError('Obstacle data must contain x and y columns: %s' %
+                             obstacle_path)
         self.flag = True
         self.useOriginalCurPos = False
         self.subTarg = Point()

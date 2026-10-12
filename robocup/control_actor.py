@@ -665,7 +665,7 @@ class ControlActor:
                 self.current_pose = self.gazebo_actor_pose
                 self.actor_pose_ready = True
             except rospy.ServiceException as e:
-                print("Gazebo model state service"+self.id+"  call failed: %s") % e
+                print(("Gazebo model state service"+self.id+"  call failed: %s") % e)
                 self.current_pose.x = 0.0
                 self.current_pose.y = 0.0
                 self.current_pose.z = 1.25

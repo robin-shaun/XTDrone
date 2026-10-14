@@ -38,7 +38,11 @@ class ControlActor:
         # with the private ROS parameter when a scenario intentionally pauses
         # actors for a long time.
         self.get_moving = bool(rospy.get_param('~enable_stall_recovery', True))
-        self.stall_limit_cycles = int(rospy.get_param('~stall_limit_cycles', 1000))
+        # A command can be rejected by Gazebo when an actor is close to a
+        # wall or another actor.  Recover after a short, configurable period
+        # instead of waiting for the old 100 second timeout.
+        self.stall_limit_cycles = max(5, int(rospy.get_param(
+            '~stall_limit_cycles', 30)))
         self.x = 0.0
         self.y = 0.0
         # self.x_max = 50.0
@@ -51,6 +55,7 @@ class ControlActor:
         self.y_min = -60.0
         self.normal_speed = 1.0
         self.escape_speed = 2.0
+        self.wall_clearance = 1.0
         self.actor_avoidance_radius = 4.0
         self.actor_min_distance = 2.0
         self.actor_spawn_distance = 6.0
@@ -73,6 +78,7 @@ class ControlActor:
         self.escape_requested = False
         self.escape_active = False
         self.actor_pose_ready = False
+        self.route_waiting = False
         self.uav_odom = {}
         self.base_dir = os.path.dirname(os.path.abspath(__file__))
         self.black_box_path = self._find_data_file(
@@ -180,9 +186,42 @@ class ControlActor:
             print('actor_' + self.id + ' escape triggered by typhoon_h480_' +
                   str(uav_id))
 
+    @staticmethod
+    def _valid_position(position):
+        try:
+            return (math.isfinite(float(position.x)) and
+                    math.isfinite(float(position.y)) and
+                    math.isfinite(float(getattr(position, 'z', 0.0))))
+        except (AttributeError, TypeError, ValueError):
+            return False
+
+    def _update_actor_pose(self):
+        """Read the world pose without replacing a valid pose on failure."""
+        try:
+            state = self.gazeboModelstate('actor_' + self.id, 'world')
+            if not getattr(state, 'success', True):
+                self.actor_pose_ready = False
+                return False
+            position = state.pose.position
+            if not self._valid_position(position):
+                self.actor_pose_ready = False
+                return False
+        except (rospy.ServiceException, AttributeError, TypeError, ValueError):
+            self.actor_pose_ready = False
+            return False
+
+        self.last_pose = copy.deepcopy(self.current_pose)
+        self.current_pose = copy.deepcopy(position)
+        self.gazebo_actor_pose = copy.deepcopy(position)
+        self.actor_pose_ready = True
+        return True
+
 
     def _box_indices_at(self, x, y, clearance=0.0):
         """Return map obstacles containing a point, including clearance."""
+        if not (math.isfinite(x) and math.isfinite(y) and
+                math.isfinite(clearance) and clearance >= 0.0):
+            return []
         result = []
         for index, box in enumerate(self.black_box):
             if (box[0][0] - clearance <= x <= box[0][1] + clearance and
@@ -192,13 +231,18 @@ class ControlActor:
 
 
     def _near_obstacle_point(self, x, y, clearance=1.5):
+        if not (math.isfinite(x) and math.isfinite(y) and
+                math.isfinite(clearance) and clearance >= 0.0):
+            return True
         clearance_squared = clearance * clearance
-        cell_x = int(math.floor(x / self.obstacle_grid_size))
-        cell_y = int(math.floor(y / self.obstacle_grid_size))
-        cell_radius = int(math.ceil(clearance / self.obstacle_grid_size))
+        grid_size = float(getattr(self, 'obstacle_grid_size', 2.0))
+        grid = getattr(self, 'obstacle_grid', {})
+        cell_x = int(math.floor(x / grid_size))
+        cell_y = int(math.floor(y / grid_size))
+        cell_radius = int(math.ceil(clearance / grid_size))
         for offset_x in range(-cell_radius, cell_radius + 1):
             for offset_y in range(-cell_radius, cell_radius + 1):
-                for obstacle_x, obstacle_y in self.obstacle_grid.get(
+                for obstacle_x, obstacle_y in grid.get(
                         (cell_x + offset_x, cell_y + offset_y), []):
                     if ((x - obstacle_x) ** 2 + (y - obstacle_y) ** 2 <=
                             clearance_squared):
@@ -208,58 +252,267 @@ class ControlActor:
 
     def _point_is_safe(self, x, y, box_clearance=1.5,
                        obstacle_clearance=1.5):
+        if not (math.isfinite(x) and math.isfinite(y)):
+            return False
+        if (x < self.x_min or x > self.x_max or
+                y < self.y_min or y > self.y_max):
+            return False
         if self._box_indices_at(x, y, box_clearance):
             return False
         return not self._near_obstacle_point(x, y, obstacle_clearance)
 
 
-    def _segment_is_safe(self, start_x, start_y, target_x, target_y,
-                         clearance=1.5):
-        """Check a walking segment against rectangles and obstacle samples."""
+    @staticmethod
+    def _distance_to_segment(start_x, start_y, target_x, target_y,
+                             point_x, point_y):
         delta_x = target_x - start_x
         delta_y = target_y - start_y
-        length = math.sqrt(delta_x ** 2 + delta_y ** 2)
-        steps = max(1, int(math.ceil(length / 0.5)))
-        start_boxes = set(self._box_indices_at(start_x, start_y, clearance))
-        left_start_box = not start_boxes
+        length_squared = delta_x * delta_x + delta_y * delta_y
+        if length_squared <= 1e-12:
+            return math.hypot(point_x - start_x, point_y - start_y)
+        ratio = ((point_x - start_x) * delta_x +
+                 (point_y - start_y) * delta_y) / length_squared
+        ratio = max(0.0, min(1.0, ratio))
+        nearest_x = start_x + ratio * delta_x
+        nearest_y = start_y + ratio * delta_y
+        return math.hypot(point_x - nearest_x, point_y - nearest_y)
 
-        for step in range(1, steps + 1):
-            ratio = float(step) / steps
-            x = start_x + delta_x * ratio
-            y = start_y + delta_y * ratio
-            current_boxes = set(self._box_indices_at(x, y, clearance))
+    def _segment_is_safe(self, start_x, start_y, target_x, target_y,
+                         clearance=1.0, allow_recovery=False):
+        """Check the complete swept walking segment against map geometry.
 
-            if current_boxes:
-                if not start_boxes:
-                    return False
-                if any(index not in start_boxes for index in current_boxes):
-                    return False
-                if left_start_box:
-                    return False
-            elif start_boxes:
-                left_start_box = True
+        Checking only the two endpoints permits a command received between
+        controller iterations to jump through a thin wall.  Rectangle
+        intersection is evaluated analytically and point obstacles use the
+        exact distance to the segment.
+        """
+        values = (start_x, start_y, target_x, target_y, clearance)
+        if (not all(math.isfinite(value) for value in values) or
+                clearance < 0.0):
+            return False
+        if (start_x < self.x_min or start_x > self.x_max or
+                start_y < self.y_min or start_y > self.y_max or
+                target_x < self.x_min or target_x > self.x_max or
+                target_y < self.y_min or target_y > self.y_max):
+            return False
 
-            # If the actor starts inside a box, allow the initial exit but do
-            # not allow the route to enter sampled obstacles afterwards.
-            if (not start_boxes or left_start_box) and self._near_obstacle_point(
-                    x, y, clearance):
+        for box in self.black_box:
+            try:
+                xmin, xmax = sorted((float(box[0][0]), float(box[0][1])))
+                ymin, ymax = sorted((float(box[1][0]), float(box[1][1])))
+            except (IndexError, TypeError, ValueError):
                 return False
+            if not all(math.isfinite(value) for value in
+                       (xmin, xmax, ymin, ymax)):
+                return False
+
+            start_inside = (xmin <= start_x <= xmax and
+                            ymin <= start_y <= ymax)
+            # Segment/rectangle intersection using a slab test.  Boundary
+            # contact counts as blocked, matching Gazebo's collision guard.
+            expanded_xmin = xmin - clearance
+            expanded_xmax = xmax + clearance
+            expanded_ymin = ymin - clearance
+            expanded_ymax = ymax + clearance
+            dx = target_x - start_x
+            dy = target_y - start_y
+            entry, exit = 0.0, 1.0
+            for start, delta, low, high in (
+                    (start_x, dx, expanded_xmin, expanded_xmax),
+                    (start_y, dy, expanded_ymin, expanded_ymax)):
+                if abs(delta) < 1e-12:
+                    if low <= start <= high:
+                        continue
+                    break
+                first = (low - start) / delta
+                last = (high - start) / delta
+                if first > last:
+                    first, last = last, first
+                entry = max(entry, first)
+                exit = min(exit, last)
+                if entry > exit:
+                    break
+            else:
+                intersects_solid = self._segment_intersects_rectangle(
+                    start_x, start_y, target_x, target_y,
+                    xmin, xmax, ymin, ymax)
+                if intersects_solid:
+                    if not (allow_recovery and
+                            self._bounded_outward_recovery(
+                                start_x, start_y, target_x, target_y,
+                                xmin, xmax, ymin, ymax)):
+                        return False
+                elif entry <= exit:
+                    # Starting in the expanded safety margin is only allowed
+                    # to move tangentially or away from the solid box.
+                    if not self._moves_away_from_rectangle(
+                            start_x, start_y, target_x, target_y,
+                            xmin, xmax, ymin, ymax):
+                        return False
+
+        for obstacle_x, obstacle_y in getattr(self, 'obstacle_data', []):
+            try:
+                obstacle_x = float(obstacle_x)
+                obstacle_y = float(obstacle_y)
+            except (TypeError, ValueError):
+                return False
+            if not math.isfinite(obstacle_x) or not math.isfinite(obstacle_y):
+                return False
+            segment_distance = self._distance_to_segment(
+                start_x, start_y, target_x, target_y, obstacle_x, obstacle_y)
+            if segment_distance <= clearance:
+                start_distance = math.hypot(start_x - obstacle_x,
+                                            start_y - obstacle_y)
+                target_distance = math.hypot(target_x - obstacle_x,
+                                             target_y - obstacle_y)
+                direction_x = target_x - start_x
+                direction_y = target_y - start_y
+                outward_x = start_x - obstacle_x
+                outward_y = start_y - obstacle_y
+                moving_outward = (outward_x * direction_x +
+                                  outward_y * direction_y) >= -1e-9
+                if not (start_distance < clearance and
+                        target_distance > start_distance and moving_outward):
+                    return False
         return True
 
+    @staticmethod
+    def _segment_intersects_rectangle(start_x, start_y, target_x, target_y,
+                                      xmin, xmax, ymin, ymax):
+        dx = target_x - start_x
+        dy = target_y - start_y
+        entry, exit = 0.0, 1.0
+        for start, delta, low, high in (
+                (start_x, dx, xmin, xmax), (start_y, dy, ymin, ymax)):
+            if abs(delta) < 1e-12:
+                if start < low or start > high:
+                    return False
+                continue
+            first = (low - start) / delta
+            last = (high - start) / delta
+            if first > last:
+                first, last = last, first
+            entry = max(entry, first)
+            exit = min(exit, last)
+            if entry > exit:
+                return False
+        return exit >= 0.0 and entry <= 1.0
+
+    @staticmethod
+    def _moves_away_from_rectangle(start_x, start_y, target_x, target_y,
+                                   xmin, xmax, ymin, ymax):
+        nearest_x = min(max(start_x, xmin), xmax)
+        nearest_y = min(max(start_y, ymin), ymax)
+        away_x = start_x - nearest_x
+        away_y = start_y - nearest_y
+        return (away_x * (target_x - start_x) +
+                away_y * (target_y - start_y)) >= -1e-9
+
+    @staticmethod
+    def _bounded_outward_recovery(start_x, start_y, target_x, target_y,
+                                  xmin, xmax, ymin, ymax):
+        if not (xmin <= start_x <= xmax and ymin <= start_y <= ymax):
+            return False
+        dx = target_x - start_x
+        dy = target_y - start_y
+        distance = math.hypot(dx, dy)
+        if distance <= 1e-9 or distance > 4.0:
+            return False
+        distances = (start_x - xmin, xmax - start_x,
+                     start_y - ymin, ymax - start_y)
+        nearest = min(distances)
+        if nearest > 4.0:
+            return False
+        progress = False
+        epsilon = 1e-9
+        if distances[0] <= nearest + epsilon and dx < -epsilon:
+            progress = True
+        if distances[1] <= nearest + epsilon and dx > epsilon:
+            progress = True
+        if distances[2] <= nearest + epsilon and dy < -epsilon:
+            progress = True
+        if distances[3] <= nearest + epsilon and dy > epsilon:
+            progress = True
+        return progress
+
+
+    def _segment_is_safe_from_actors(self, start_x, start_y, target_x,
+                                     target_y):
+        """Reject routes that sweep through another actor's safety disc."""
+        own_name = 'actor_' + self.id
+        try:
+            radius = max(0.0, float(getattr(self, 'actor_min_distance', 2.0)))
+        except (TypeError, ValueError):
+            radius = 2.0
+        for actor_name, actor_pose in getattr(self, 'actor_positions', {}).items():
+            if actor_name == own_name:
+                continue
+            try:
+                actor_x = float(actor_pose.x)
+                actor_y = float(actor_pose.y)
+            except (AttributeError, TypeError, ValueError):
+                continue
+            if (not math.isfinite(actor_x) or not math.isfinite(actor_y) or
+                    self._distance_to_segment(start_x, start_y, target_x,
+                                              target_y, actor_x,
+                                              actor_y) < radius):
+                return False
+        return True
 
     def _route_is_safe(self, start_pose, waypoints, clearance=1.0):
         previous_x = start_pose.x
         previous_y = start_pose.y
         for waypoint in waypoints:
+            if not (self._valid_position(waypoint) and
+                    math.isfinite(float(previous_x)) and
+                    math.isfinite(float(previous_y))):
+                return False
             if not self._point_is_safe(waypoint.x, waypoint.y,
                                        clearance, clearance):
                 return False
+            allow_recovery = bool(self._box_indices_at(previous_x,
+                                                       previous_y, 0.0))
             if not self._segment_is_safe(previous_x, previous_y,
-                                         waypoint.x, waypoint.y, clearance):
+                                         waypoint.x, waypoint.y, clearance,
+                                         allow_recovery=allow_recovery):
+                return False
+            if not self._segment_is_safe_from_actors(
+                    previous_x, previous_y, waypoint.x, waypoint.y):
                 return False
             previous_x = waypoint.x
             previous_y = waypoint.y
         return True
+
+    def _obstacle_exit_targets(self, clearance=1.0):
+        """Return short, safe exits when Gazebo spawned an actor in a box."""
+        exits = []
+        x, y = self.current_pose.x, self.current_pose.y
+        for box in self.black_box:
+            try:
+                xmin, xmax = sorted((float(box[0][0]), float(box[0][1])))
+                ymin, ymax = sorted((float(box[1][0]), float(box[1][1])))
+            except (IndexError, TypeError, ValueError):
+                continue
+            if not (xmin <= x <= xmax and ymin <= y <= ymax):
+                continue
+            candidates = [
+                (xmin - clearance - 0.35, y),
+                (xmax + clearance + 0.35, y),
+                (x, ymin - clearance - 0.35),
+                (x, ymax + clearance + 0.35)]
+            distances = [math.hypot(px - x, py - y) for px, py in candidates]
+            for px, py in sorted(zip(candidates, distances), key=lambda item: item[1]):
+                target_x, target_y = px
+                if distances[candidates.index(px)] > 4.0:
+                    continue
+                if (self.x_min <= target_x <= self.x_max and
+                        self.y_min <= target_y <= self.y_max and
+                        self._segment_is_safe(x, y, target_x, target_y,
+                                              clearance, allow_recovery=True)):
+                    point = Point()
+                    point.x, point.y = target_x, target_y
+                    exits.append(point)
+        return exits
 
 
     def _plan_safe_route(self, start_pose, target, clearance=1.5):
@@ -267,9 +520,24 @@ class ControlActor:
         if not self._point_is_safe(target.x, target.y, clearance, clearance):
             return []
 
-        if self._segment_is_safe(start_pose.x, start_pose.y,
-                                 target.x, target.y, clearance):
+        if (self._segment_is_safe(start_pose.x, start_pose.y,
+                                  target.x, target.y, clearance) and
+                self._segment_is_safe_from_actors(
+                    start_pose.x, start_pose.y, target.x, target.y)):
             return [target]
+
+        # If a map was regenerated while Gazebo kept an actor in a building,
+        # first move to the nearest verified exit.  The C++ plugin applies the
+        # same bounded outward-recovery rule.
+        if self._box_indices_at(start_pose.x, start_pose.y, 0.0):
+            exits = self._obstacle_exit_targets(clearance)
+            if exits:
+                for exit_point in exits:
+                    remaining = self._plan_safe_route(exit_point, target,
+                                                      clearance)
+                    if remaining:
+                        return [exit_point] + remaining
+            return []
 
         # Expanded corners provide deterministic detours around rectangular
         # buildings.  A small extra margin avoids the inclusive box boundary.
@@ -313,8 +581,10 @@ class ControlActor:
                 candidate_distance = distance + edge_distance
                 if candidate_distance >= distances[next_index]:
                     continue
-                if not self._segment_is_safe(start_x, start_y,
-                                             next_x, next_y, clearance):
+                if (not self._segment_is_safe(start_x, start_y,
+                                              next_x, next_y, clearance) or
+                        not self._segment_is_safe_from_actors(
+                            start_x, start_y, next_x, next_y)):
                     continue
                 distances[next_index] = candidate_distance
                 previous[next_index] = node_index
@@ -338,6 +608,11 @@ class ControlActor:
 
     def _build_safe_route(self, target, clearance):
         """Use the legacy planner, then the local verified planner as fallback."""
+        # Every command path uses at least the configured wall clearance.  A
+        # smaller caller value must not let normal walking erode the margin
+        # used by escape and collision recovery.
+        clearance = max(float(clearance), float(getattr(
+            self, 'wall_clearance', 1.0)))
         planned_route = []
         if self.Obstacleavoid is not None:
             try:
@@ -348,7 +623,7 @@ class ControlActor:
                       str(exc))
 
         if planned_route and self._route_is_safe(self.current_pose,
-                                                 planned_route):
+                                                 planned_route, clearance):
             return copy.deepcopy(planned_route)
 
         planned_route = self._plan_safe_route(self.current_pose, target,
@@ -398,9 +673,19 @@ class ControlActor:
 
 
     def _keep_command_outside_obstacles(self, command):
+        if (not math.isfinite(getattr(command, 'v', 0.0)) or
+                command.v <= 0.0):
+            command.x = self.current_pose.x
+            command.y = self.current_pose.y
+            command.v = 0.0
+            return command
+
         if (self._point_is_safe(command.x, command.y, 1.0, 1.0) and
                 self._segment_is_safe(self.current_pose.x, self.current_pose.y,
-                                      command.x, command.y, 1.0)):
+                                      command.x, command.y, 1.0) and
+                self._segment_is_safe_from_actors(
+                    self.current_pose.x, self.current_pose.y,
+                    command.x, command.y)):
             return command
 
         for radius in (1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 8.0):
@@ -411,7 +696,10 @@ class ControlActor:
                 if (self._point_is_safe(target_x, target_y, 1.0, 1.0) and
                         self._segment_is_safe(self.current_pose.x,
                                               self.current_pose.y,
-                                              target_x, target_y, 1.0)):
+                                              target_x, target_y, 1.0) and
+                        self._segment_is_safe_from_actors(
+                            self.current_pose.x, self.current_pose.y,
+                            target_x, target_y)):
                     command.x = target_x
                     command.y = target_y
                     return command
@@ -420,6 +708,7 @@ class ControlActor:
         # building when no nearby safe point is available.
         command.x = self.current_pose.x
         command.y = self.current_pose.y
+        command.v = 0.0
         return command
 
 
@@ -483,11 +772,25 @@ class ControlActor:
     def actor_states_callback(self, msg):
         actor_positions = {}
         uav_positions = {}
-        for index, model_name in enumerate(msg.name):
-            if model_name.startswith('actor_'):
-                actor_positions[model_name] = msg.pose[index].position
-            elif model_name.startswith(self.vehicle_type + '_'):
-                uav_positions[model_name] = msg.pose[index].position
+        names = getattr(msg, 'name', None)
+        poses = getattr(msg, 'pose', None)
+        if not isinstance(names, (list, tuple)) or not isinstance(poses, (list, tuple)):
+            self.actor_positions = actor_positions
+            self.uav_positions = uav_positions
+            return
+        for index, model_name in enumerate(names):
+            if index >= len(poses):
+                continue
+            position = getattr(poses[index], 'position', None)
+            if not self._valid_position(position):
+                continue
+            try:
+                if model_name.startswith('actor_'):
+                    actor_positions[model_name] = position
+                elif model_name.startswith(self.vehicle_type + '_'):
+                    uav_positions[model_name] = position
+            except AttributeError:
+                continue
         self.actor_positions = actor_positions
         self.uav_positions = uav_positions
 
@@ -522,6 +825,7 @@ class ControlActor:
 
     def start_escape_route(self):
         self.target_motion = self.choose_escape_target()
+        self.route_waiting = False
         self.subtarget_pos = self._build_safe_route(self.target_motion, 1.0)
         if not self.subtarget_pos:
             print('actor_' + self.id + ' escape route unavailable; choosing a local target')
@@ -531,9 +835,10 @@ class ControlActor:
             self.subtarget_pos = self._build_safe_route(self.target_motion, 1.0)
 
         if not self.subtarget_pos:
-            # Do not issue an unverified long-range command.  Stop here and
-            # let the next control cycle retry route generation.
+            # Do not issue an unverified long-range command.  Hold only until
+            # the next stall-recovery cycle can try a bounded local exit.
             self.subtarget_pos = [copy.deepcopy(self.current_pose)]
+            self.route_waiting = True
         self.subtarget_length = len(self.subtarget_pos)
         self.subtarget_count = 0
         self.avoid.x = self.subtarget_pos[0].x
@@ -541,6 +846,61 @@ class ControlActor:
         self.avoid_finish_flag = False
         self.distance_flag = False
         self.arrive_count = 0
+
+    def _recover_from_stall(self):
+        """Select a short verified sidestep and resume the current route."""
+        speed = self.escape_speed if self.escape_active else self.normal_speed
+        current_x, current_y = self.current_pose.x, self.current_pose.y
+        desired_x = self.avoid.x - current_x
+        desired_y = self.avoid.y - current_y
+        desired_angle = math.atan2(desired_y, desired_x)
+        candidates = []
+        for radius in (2.0, 3.0, 4.0):
+            for offset in (0.0, math.pi / 2.0, -math.pi / 2.0,
+                           math.pi, math.pi / 4.0, -math.pi / 4.0):
+                angle = desired_angle + offset
+                point = Point()
+                point.x = max(self.x_min, min(self.x_max,
+                                              current_x + radius * math.cos(angle)))
+                point.y = max(self.y_min, min(self.y_max,
+                                              current_y + radius * math.sin(angle)))
+                if not self._point_is_safe(point.x, point.y, 1.0, 1.0):
+                    continue
+                if not self._segment_is_safe(current_x, current_y,
+                                             point.x, point.y, 1.0,
+                                             allow_recovery=True):
+                    continue
+                if not self._segment_is_safe_from_actors(
+                        current_x, current_y, point.x, point.y):
+                    continue
+                score = math.hypot(point.x - self.avoid.x,
+                                   point.y - self.avoid.y)
+                candidates.append((score, point))
+
+        exits = self._obstacle_exit_targets(1.0)
+        for point in exits:
+            candidates.append((math.hypot(point.x - self.avoid.x,
+                                          point.y - self.avoid.y), point))
+
+        if candidates:
+            candidates.sort(key=lambda item: item[0])
+            first = candidates[0][1]
+            self.subtarget_pos = [first]
+            self.subtarget_length = 1
+            self.subtarget_count = 0
+            self.avoid.x = first.x
+            self.avoid.y = first.y
+            self.avoid.v = speed
+            self.avoid_finish_flag = False
+            self.distance_flag = False
+            self.arrive_count = 0
+            self.route_waiting = False
+        else:
+            self.route_waiting = True
+            self.avoid.x = current_x
+            self.avoid.y = current_y
+            self.avoid.v = 0.0
+        self.shooting_count = 0
 
     def update_escape_state(self):
         if self.escape_requested:
@@ -576,8 +936,15 @@ class ControlActor:
             if actor_name == own_name:
                 continue
 
-            away_x = self.current_pose.x - actor_pose.x
-            away_y = self.current_pose.y - actor_pose.y
+            try:
+                actor_x = float(actor_pose.x)
+                actor_y = float(actor_pose.y)
+            except (AttributeError, TypeError, ValueError):
+                continue
+            if not (math.isfinite(actor_x) and math.isfinite(actor_y)):
+                continue
+            away_x = self.current_pose.x - actor_x
+            away_y = self.current_pose.y - actor_y
             distance = math.sqrt(away_x ** 2 + away_y ** 2)
             if distance >= self.actor_avoidance_radius:
                 continue
@@ -603,7 +970,14 @@ class ControlActor:
         # A UAV inside 7 m pushes the pedestrian away, but this does not arm
         # or start the escape behavior.  Escape is armed by a report and
         # triggered independently by the 20 m / 1 m/s odometry rule.
-        for uav_x, uav_y, unused_speed in self.uav_odom.values():
+        for uav_state in self.uav_odom.values():
+            try:
+                uav_x, uav_y, unused_speed = uav_state
+                uav_x, uav_y = float(uav_x), float(uav_y)
+            except (TypeError, ValueError):
+                continue
+            if not (math.isfinite(uav_x) and math.isfinite(uav_y)):
+                continue
             away_x = self.current_pose.x - uav_x
             away_y = self.current_pose.y - uav_y
             distance = math.sqrt(away_x ** 2 + away_y ** 2)
@@ -658,17 +1032,17 @@ class ControlActor:
             if not int(self.id) in self.left_actors:
                 print('actor_' + self.id + ' has been deleted')
                 break
-            try:
-                get_actor_state = self.gazeboModelstate('actor_' + self.id, 'ground_plane')
-                self.last_pose = self.current_pose
-                self.gazebo_actor_pose = get_actor_state.pose.position
-                self.current_pose = self.gazebo_actor_pose
-                self.actor_pose_ready = True
-            except rospy.ServiceException as e:
-                print(("Gazebo model state service"+self.id+"  call failed: %s") % e)
-                self.current_pose.x = 0.0
-                self.current_pose.y = 0.0
-                self.current_pose.z = 1.25
+            if not self._update_actor_pose():
+                # Publishing the last valid pose with zero speed prevents a
+                # stale target from carrying the actor through a wall while
+                # Gazebo's state service is temporarily unavailable.
+                hold = ActorMotion()
+                hold.x = self.current_pose.x
+                hold.y = self.current_pose.y
+                hold.v = 0.0
+                self.cmd_pub.publish(hold)
+                rate.sleep()
+                continue
             self.update_escape_state()
             # collosion: if the actor is in the black box, then go backward and update a new target position
             # update new random target position
@@ -688,6 +1062,9 @@ class ControlActor:
                     print('actor_' + self.id +
                           ' route unavailable; holding position')
                     self.subtarget_pos = [copy.deepcopy(self.current_pose)]
+                    self.route_waiting = True
+                else:
+                    self.route_waiting = False
 
                 self.subtarget_length = len(self.subtarget_pos)
                 self.subtarget_count = 0
@@ -720,18 +1097,20 @@ class ControlActor:
                 if distance_change < 0.00001:
                     self.shooting_count = self.shooting_count+1
                     if self.shooting_count > self.stall_limit_cycles:
-                        print('shot', self.id)
-                        self.distance_flag = False
-                        self.suitable_point = True
-                        self.avoid_finish_flag = True
-                        self.shooting_count = 0
+                        print('actor_' + self.id + ' stalled; selecting a local recovery route')
+                        self._recover_from_stall()
                 else:
                     self.shooting_count = 0
 
             
 
             if not self.avoid_finish_flag:
-                if self.distance_flag:
+                if self.route_waiting:
+                    # The current pose is only a temporary placeholder while
+                    # route generation is retried.  Never consume it as a
+                    # completed waypoint or end an active escape here.
+                    self.distance_flag = False
+                elif self.distance_flag:
                     self.subtarget_count += 1
                     self.distance_flag = False
                     #print self.id+ ': I am avoiding'
@@ -811,3 +1190,5 @@ class ControlActor:
 if __name__=="__main__":
     controlactors = ControlActor(sys.argv[1])
     controlactors.loop()
+
+
